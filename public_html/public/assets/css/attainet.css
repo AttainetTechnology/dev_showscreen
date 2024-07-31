@@ -157,11 +157,9 @@ tr:has(.estado4) a {
 
 tr:has(.estado5) {
 	background-color: rgb(227, 247, 227) !Important;
-	color: #ffffff !Important;
 }
 
 tr:has(.estado5) a {
-	color: #837575 !Important;
 	text-decoration: none;
 }
 
@@ -608,7 +606,7 @@ a:hover.btfichar {
 /* BOOTSTRAP */
 [class^="gc-full-page-title"] {
 	background-color: transparent !Important;
-	display: none;
+	//display: none;
 }
 
 /* BOOTSTRAP Botones*/
