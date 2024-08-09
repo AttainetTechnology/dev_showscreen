@@ -492,8 +492,6 @@ class Procesos_pedidos extends BaseControllerGC
         // Pasar la lista de clientes a la vista
         return view('procesos_pedidos', ['clientes' => $clientes]);
     }
-
-
     public function obtenerLineasPedidoConEstado2YCrearProcesos()
     {
         $data = datos_user();
@@ -502,7 +500,7 @@ class Procesos_pedidos extends BaseControllerGC
         $procesosPedidoModel = new ProcesosPedido($db);
         $procesosProductosModel = new ProcesosProductos($db);
 
-        //Añadir que filtre por id_lineapedido
+        // Obtener las líneas de pedido con estado = 2
         $lineasConEstado2 = $lineaPedidoModel->where('estado', 2)->findAll();
 
         foreach ($lineasConEstado2 as $linea) {
@@ -518,12 +516,25 @@ class Procesos_pedidos extends BaseControllerGC
 
                 // Si no existe, insertar la nueva fila
                 if (!$existe) {
-                    $procesosPedidoModel->insert([
+                    // Verificar si el proceso tiene restricciones en la tabla procesos_productos
+                    $restriccion = !empty($procesoProducto['restriccion']) ? $procesoProducto['restriccion'] : null;
+
+                    // Insertar la nueva fila en procesos_pedidos
+                    $insertData = [
                         'id_proceso' => $procesoProducto['id_proceso'],
                         'id_linea_pedido' => $linea['id_lineapedido'],
                         'id_maquina' => null,
                         'estado' => 2,
-                    ]);
+                        'restriccion' => $restriccion,
+                    ];
+
+                    $procesosPedidoModel->insert($insertData);
+                } else {
+                    // Si ya existe, verificar y actualizar la restricción si es necesario
+                    if (!empty($procesoProducto['restriccion']) && empty($existe['restriccion'])) {
+                        $updateData = ['restriccion' => $procesoProducto['restriccion']];
+                        $procesosPedidoModel->update($existe['id_relacion'], $updateData);
+                    }
                 }
             }
         }
