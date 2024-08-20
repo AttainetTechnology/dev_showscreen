@@ -40,13 +40,14 @@
             text-align: left!Important;
         }
         #col2{
-            max-width: 40vw;
+            max-width: 43vw;
             padding: 0rem;
             position: fixed;
             top:0px;
-            left:15vw;
+            left:9vw;
             height: 100vh;
             overflow: auto;
+            margin-top: 3vw;
         }
         #col2 .cabecera {
             position: fixed;
@@ -69,7 +70,7 @@
             padding: 0rem;
             position: fixed;
             top:10vw;
-            left:57vw;
+            left:53vw;
             height: auto;
         }
         #col4{
@@ -77,9 +78,10 @@
             padding: 0rem;
             position: fixed;
             top:0px;
-            left:62vw;
+            left:58vw;
             height: 100vh;
             overflow: auto;
+            margin-top: 3vw;
         }
         #col4 .cabecera {
             position: fixed;

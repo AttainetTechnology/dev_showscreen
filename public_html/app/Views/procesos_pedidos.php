@@ -16,7 +16,7 @@
     <!-- Iconos Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-
+<div class="wrapper">
 <div id="organizador">
     <div class="column" id="col2">
         <div class="cabecera">
@@ -238,6 +238,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 
