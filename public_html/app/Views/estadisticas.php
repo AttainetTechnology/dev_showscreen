@@ -201,14 +201,31 @@ use App\Models\Menu_familias_model; ?>
 				<div class="panel-heading">
 					<i class="fa fa-users fa-fw"></i> Incidencias
 				</div>
-<<<<<<< HEAD
-				<div class="panel-body">
-					Próximamente
-=======
 				<!-- /.panel-heading -->
-				<div class="panel-body">					
-						<p>No hay incidencias</p>
->>>>>>> d0b98aa39d1b71467a63ba0d5f8c4bbe22fe836d
+				<div class="panel-body">
+					<table>
+						<thead>
+							<tr>
+								<th>Usuario</th>
+								<th>Incidencia</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php if (!empty($incidencias)): ?>
+								<?php foreach ($incidencias as $incidencia): ?>
+									<tr>
+										<td><?= $incidencia->nombre_usuario ?></td>
+										<td><?= $incidencia->incidencia ?></td>
+
+									</tr>
+								<?php endforeach; ?>
+							<?php else: ?>
+								<tr>
+									<td colspan="3">No se encontraron incidencias en los últimos 7 días.</td>
+								</tr>
+							<?php endif; ?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -269,7 +286,7 @@ use App\Models\Menu_familias_model; ?>
 			modal.find('#salidaHora').val(salida_hora);
 
 		});
-		
+
 	});
 </script>
 <?= $this->endSection() ?>
