@@ -588,8 +588,9 @@ class Procesos_pedidos extends BaseControllerGC
                 ])->first();
 
                 $dataUpdate = [
-                    'restriccion' => $procesoProducto['restriccion']
+                    'restriccion' => $procesoProducto['restriccion'] ?? null
                 ];
+                
 
                 if (!$existe) {
                     $dataInsert = [
@@ -603,9 +604,10 @@ class Procesos_pedidos extends BaseControllerGC
                     $procesosPedidoModel->insert($dataInsert);
                 } else {
                     // Actualizar las restricciones si no coinciden
-                    if ($existe['restriccion'] !== $procesoProducto['restriccion']) {
+                    if (!isset($existe['restriccion']) || $existe['restriccion'] !== $procesoProducto['restriccion']) {
                         $procesosPedidoModel->update($existe['id_relacion'], $dataUpdate);
                     }
+                    
                 }
             }
         }
