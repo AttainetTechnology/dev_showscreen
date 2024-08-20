@@ -67,9 +67,7 @@ class Usuarios extends BaseControllerGC
             $query = $db->query('SELECT MAX(id) + 1 as next_id FROM users');
             $row = $query->getRow();
             $nextId = $row->next_id ? $row->next_id : 1;
-
-            $stateParameters->data['id'] = $nextId;
-
+            // $stateParameters->data['id'] = $nextId;
             $db->close();
             return $stateParameters;
         });
@@ -111,7 +109,11 @@ class Usuarios extends BaseControllerGC
             'maxUploadSize' => '7M', // 20 Mega Bytes
             'minUploadSize' => '1K', // 1 Kilo Byte
             'allowedFileTypes' => [
-                'gif', 'jpeg', 'jpg', 'png', 'tiff'
+                'gif',
+                'jpeg',
+                'jpg',
+                'png',
+                'tiff'
             ]
         ];
 
