@@ -19,100 +19,88 @@ use CodeIgniter\Model;
 class Fichar extends BaseFichar
 {
 	public function index()
-	{
-		helper('controlacceso');
-		
-		/* Comprobamos si hemos cambiado de día y activamos las comprobaciones */
-		$this -> CompruebaDia();
-	
-		/* Listamos todos los fichajes de hoy*/ 
-		$presentes = new Presentes($this->db);
-		$a1=$presentes
-			->orderBy('entrada','ASC')
-			->findAll();
-		$datos['presentes']=array();
-		$i=0;
-		// De cada fichaje saco sus datos de usuario y creamos la variable datos[presentes]
-		foreach ($a1 as $usera1) {
-			$a2 = model('Usuarios1_Model', true, $this->db)->where('id', $usera1['id_empleado'])->findAll();
-			if (!empty($a2)) {
-				$datos['presentes'][$i] = array_merge($a2[0], $usera1);
-				$i += 1;
-			}
-		}
+    {
+        helper('controlacceso');
 
-		$datos['cabecera']= view('template/cabecera');
-		$datos['menu']= view('template/menu-navegacion');
-		$datos['pie']= view('template/pie');
-		$datos['recarga_hora']= view('template/recarga_hora');
+        // Comprobamos si hemos cambiado de día y activamos las comprobaciones
+        $this->CompruebaDia();
 
-		  return view('presentes', $datos);
-	}
-	
-	public function CompruebaDia(){            
-		$aviso="";
-		$hoy= date('Y-m-d');
-		$dia= date('j');
-		
-		$datos = new Hoy($this->db);
-		$diahoy= $datos->where('id',1)->findAll();
+        // Listamos todos los fichajes de hoy
+        $presentes = new Presentes($this->db);
+        $a1 = $presentes
+            ->orderBy('entrada', 'ASC')
+            ->findAll();
+        $datos['presentes'] = array();
+        $i = 0;
+        // De cada fichaje saco sus datos de usuario y creamos la variable datos[presentes]
+        foreach ($a1 as $usera1) {
+            $a2 = model('Usuarios1_Model', true, $this->db)->where('id', $usera1['id_empleado'])->findAll();
+            if (!empty($a2)) {
+                $datos['presentes'][$i] = array_merge($a2[0], $usera1);
+                $i += 1;
+            }
+        }
 
-		if ($diahoy){
-			$fechaguardada=  $diahoy[0]['hoy'];
-			if ($hoy==$fechaguardada){
-				$aviso.= "Hoy es " .$dia. "</br>";
-				$session= session();
-				$session->setFlashdata('exito', $aviso);
-				} else {
-				$aviso.= 'Hemos cambiado de día</br>';
-				$this->CerrarFichajesAbiertos($aviso);
-				}       
-		}
-	} 
+        $datos['cabecera'] = view('template/cabecera');
+        $datos['menu'] = view('template/menu-navegacion');
+        $datos['pie'] = view('template/pie');
+        $datos['recarga_hora'] = view('template/recarga_hora');
 
-public function CerrarFichajesAbiertos($aviso){
+        return view('presentes', $datos);
+    }
 
-	// En database connection 
+    public function CompruebaDia()
+    {
+        $aviso = "";
+        $hoy = date('Y-m-d');
+        $dia = date('j');
 
-	$presentes = new Presentes($this->db);
-  	$hoy= date('Y-m-d');
-  	$datos['presentes']=$presentes
-	  	->select ('id_empleado,entrada,extras')
-	  	->orderBy('entrada','ASC')
-	  	->findAll(); 
-  	if ($datos){
-		  foreach ($datos as $row) {
-			  $i=0;
-			  foreach ($row as $key) {
-			  //print_r($key);
-			  $empleado=  $key['id_empleado'];
-			  $entrada=   $key['entrada'];
-			  $extras=    $key['extras'];
-			  $data = [
-				  'id_usuario'    => $empleado,
-				  'entrada'       => $entrada,
-				  'extras'        => $extras,
-				  'incidencia'    => 'sin cerrar'
-			  ];
-			//   $fichajes = model('Fichajes', true, $this->db);
-			  $fichajes = new Fichajes($this->db);
-			  $fichajes->insert($data);
-			  $exito= $fichajes->affectedRows();
-				  if($exito>0){
-				  $i=$i+1;
-				  $presentes->delete($empleado);
-				  $session= session();
-				  $aviso.= $i ." fichajes cerrados del día anterior.<br>";
-				  } else {
-				  $session= session();
-				  $aviso.="No se han registrado fichajes.<br>";
-				  }
-			  }
-		  }
-	  }
-  $this->Compruebalaborable($aviso);  
-  }
+        $datos = new Hoy($this->db);
+        $diahoy = $datos->where('id', 1)->findAll();
 
+        if ($diahoy) {
+            $fechaguardada = $diahoy[0]['hoy'];
+            if ($hoy == $fechaguardada) {
+                $aviso .= "Hoy es " . $dia . "</br>";
+                $session = session();
+                $session->setFlashdata('exito', $aviso);
+            } else {
+                $aviso .= 'Hemos cambiado de día</br>';
+                $this->CerrarFichajesAbiertos($aviso);
+            }
+        }
+    }
+
+    public function CerrarFichajesAbiertos($aviso)
+    {
+        $presentes = new Presentes($this->db);
+        $fichajes = new Fichajes($this->db);
+        $hoy = date('Y-m-d H:i:s');
+        $limite = (new DateTime($hoy))->modify('-8 hours')->format('Y-m-d H:i:s');
+
+        // Buscar todos los fichajes que llevan abiertos más de 8 horas
+        $fichajesAbiertos = $presentes
+            ->where('entrada <', $limite)
+            ->findAll();
+
+        foreach ($fichajesAbiertos as $fichaje) {
+            // Cerrar fichaje y mover a la tabla de ausentes
+            $data = [
+                'id_usuario' => $fichaje['id_empleado'],
+                'entrada' => $fichaje['entrada'],
+                'salida' => $hoy,
+                'incidencia' => 'Ausencia por tiempo excedido'
+            ];
+            $fichajes->insert($data);
+            $presentes->delete($fichaje['id_empleado']);
+        }
+
+        $session = session();
+        $aviso .= count($fichajesAbiertos) . " fichajes cerrados por tiempo excedido.<br>";
+        $session->setFlashdata('exito', $aviso);
+
+        $this->Compruebalaborable($aviso);
+    }
 	  /* Comprobamos si ayer fue sábado o domingo */ 
 		public function Compruebalaborable($aviso){
 		$ayer= date('d.m.Y',strtotime("-1 days"));
