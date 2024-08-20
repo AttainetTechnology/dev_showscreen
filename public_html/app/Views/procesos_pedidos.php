@@ -79,20 +79,29 @@
                 </thead>
                 <tbody>
                     <?php foreach ($lineas as $linea) : ?>
+                        <?php
+                        // Verificar si la clave 'restriccion' está definida antes de intentar acceder a ella
+                        $restriccion = isset($linea['restriccion']) ? $linea['restriccion'] : null;
+                        ?>
                         <tr class="linea" data-nombre-cliente="<?= esc($linea['cliente']); ?>" data-nombre-proceso="<?= esc($linea['proceso']); ?>" data-nombre-producto="<?= esc($linea['producto']); ?>" data-med-inicial="<?= isset($linea['med_inicial']) ? esc($linea['med_inicial']) : '0'; ?>" data-med-final="<?= isset($linea['med_final']) ? esc($linea['med_final']) : '0'; ?>">
                             <td><input type="checkbox" class="checkboxCol2" name="selectedLineCol2[]"></td>
-                            <td><?= $linea['id_linea_pedido']; ?></td>
-                            <td><?= $linea['cliente'] ?></td>
-                            <td><?= $linea['medidas'] ?></td>
-                            <td><?= $linea['fecha'] ?></td>
-                            <td><?= $linea['producto'] ?></td>
-                            <td><?= $linea['n_piezas'] ?></td>
-                            <td><?= $linea['proceso'] ?></td>
-                            <td><?= $linea['base'] ?></td>
+                            <td><?= esc($linea['id_linea_pedido']); ?></td>
+                            <td><?= esc($linea['cliente']); ?></td>
+                            <td><?= esc($linea['medidas']); ?></td>
+                            <td><?= esc($linea['fecha']); ?></td>
+                            <td><?= esc($linea['producto']); ?></td>
+                            <td><?= esc($linea['n_piezas']); ?></td>
+                            <td>
+                                <?= esc($linea['proceso']); ?>
+                                <?php if ($restriccion !== null && $restriccion !== '0' && $restriccion !== '') : ?>
+                                    <span style="margin-left: 5px;">🔒</span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= esc($linea['base']); ?></td>
                         </tr>
-
                     <?php endforeach; ?>
                 </tbody>
+
             </table>
         </div>
     </div>
@@ -172,7 +181,13 @@
                             <td><?= $linea['fecha'] ?></td>
                             <td><?= $linea['producto'] ?></td>
                             <td><?= $linea['n_piezas'] ?></td>
-                            <td><?= $linea['proceso'] ?></td>
+                            <td>
+                                <?= esc($linea['proceso']); ?>
+                                <?php if ($linea['restriccion'] !== null && $linea['restriccion'] !== '0' && $linea['restriccion'] !== '') : ?>
+                                    <span style="margin-left: 5px;">🔒</span>
+                                <?php endif; ?>
+                            </td>
+
                             <td><?= $linea['base'] ?></td>
                         </tr>
 
@@ -237,17 +252,67 @@
         // Generar contenido imprimible solo para la máquina seleccionada
         generarContenidoImprimible();
 
-        var printContents = document.getElementById(divId).innerHTML;
+        const printContents = document.getElementById(divId).innerHTML;
+        const printWindow = window.open('', '', 'height=600,width=800');
 
-        var printWindow = window.open('', '', 'height=600,width=800');
-        printWindow.document.write('<html><head><title>Impresión</title>');
-        printWindow.document.write('<style>');
-        printWindow.document.write('table { width: 100%; border-collapse: collapse; }');
-        printWindow.document.write('th, td { border: 1px solid black; padding: 8px; text-align: left; }');
-        printWindow.document.write('</style>');
-        printWindow.document.write('</head><body>');
-        printWindow.document.write(printContents);
-        printWindow.document.write('</body></html>');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Impresión</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            font-size: 12px;
+                            color: #333;
+                        }
+                        h1, h2 {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-bottom: 20px;
+                        }
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                        @media print {
+                            @page {
+                                margin: 1cm;
+                            }
+                            body {
+                                margin: 0;
+                                padding: 0;
+                            }
+                            header, footer {
+                                position: fixed;
+                                width: 100%;
+                                background-color: #f8f8f8;
+                                padding: 5px;
+                                text-align: center;
+                                font-size: 10px;
+                            }
+                            header {
+                                top: 0;
+                            }
+                            footer {
+                                bottom: 0;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${printContents}
+                </body>
+            </html>
+        `);
+
         printWindow.document.close();
         printWindow.print();
     }
@@ -278,62 +343,60 @@
         }));
     });
 
-
     function generarContenidoImprimible() {
-        let printableArea = document.getElementById('printableArea');
-        let maquinas = <?php echo json_encode($maquinas); ?>;
-        let lineasEstado3 = <?php echo json_encode($lineasEstado3); ?>;
+        const maquinas = <?php echo json_encode($maquinas); ?>;
+        const lineasEstado3 = <?php echo json_encode($lineasEstado3); ?>;
 
         // Obtener la fecha actual
-        let fechaActual = new Date();
-        // Formatear la fecha (p.ej., "DD/MM/YYYY")
-        let fechaFormateada = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear();
+        const fechaActual = new Date();
+        const fechaFormateada = fechaActual.toLocaleDateString();
 
-        let content = document.getElementById('printableContent');
-        // Añadir la fecha al contenido imprimible
-        content.innerHTML = `<h1>Informe de Procesos en Máquinas -  ${fechaFormateada}</h1>`;
+        const content = document.getElementById('printableContent');
+        content.innerHTML = `<h1>Informe de Procesos en Máquinas - ${fechaFormateada}</h1>`;
 
-        // Filtrar las máquinas para encontrar la seleccionada
-        let maquinaSeleccionada = maquinas.find(maquina => maquina.id_maquina === selectedMachineId);
+        const maquinaSeleccionada = maquinas.find(maquina => maquina.id_maquina === selectedMachineId);
         if (maquinaSeleccionada) {
-            let lineasMaquina = lineasEstado3.filter(linea => linea.id_maquina === selectedMachineId);
+            const lineasMaquina = lineasEstado3.filter(linea => linea.id_maquina === selectedMachineId);
 
             if (lineasMaquina.length > 0) {
-                let maquinaDiv = document.createElement('div');
+                const maquinaDiv = document.createElement('div');
                 maquinaDiv.innerHTML = `<h2>Máquina: ${maquinaSeleccionada.nombre}</h2>`;
 
-                let table = document.createElement('table');
+                const table = document.createElement('table');
                 table.className = 'table table-sm table-hover';
                 table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>ID Línea Pedido</th>
-                        <th>Cliente</th>
-                        <th>Medidas</th>
-                        <th>Fecha Entrega</th>
-                        <th>Producto</th>
-                        <th>Nº Piezas</th>
-                        <th>Proceso</th>
-                        <th>Base</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            `;
-                let tbody = table.querySelector('tbody');
+                    <thead>
+                        <tr>
+                            <th>ID Línea Pedido</th>
+                            <th>Cliente</th>
+                            <th>Medidas</th>
+                            <th>Fecha Entrega</th>
+                            <th>Producto</th>
+                            <th>Nº Piezas</th>
+                            <th>Proceso</th>
+                            <th>Base</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                `;
+
+                const tbody = table.querySelector('tbody');
 
                 lineasMaquina.forEach(linea => {
-                    let row = document.createElement('tr');
-                    row.innerHTML = `
-                    <td>${linea.id_linea_pedido}</td>
-                    <td>${linea.cliente}</td>
-                    <td>${linea.medidas}</td>
-                    <td>${linea.fecha}</td>
-                    <td>${linea.producto}</td>
-                    <td>${linea.n_piezas}</td>
-                    <td>${linea.proceso}</td>
-                    <td>${linea.base}</td>
-                `;
-                    tbody.appendChild(row);
+                    if (!linea.restriccion || linea.restriccion === '0' || linea.restriccion === '') {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${linea.id_linea_pedido}</td>
+                            <td>${linea.cliente}</td>
+                            <td>${linea.medidas}</td>
+                            <td>${linea.fecha}</td>
+                            <td>${linea.producto}</td>
+                            <td>${linea.n_piezas}</td>
+                            <td>${linea.proceso}</td>
+                            <td>${linea.base}</td>
+                        `;
+                        tbody.appendChild(row);
+                    }
                 });
 
                 maquinaDiv.appendChild(table);
@@ -342,6 +405,7 @@
         }
     }
 </script>
+
 </body>
 
 </html>
@@ -786,23 +850,31 @@
     }
 
 
-
     function marcarComoTerminado(button) {
-        // Selecciona los checkboxes marcados en la columna 4
-        const selectedLines = document.querySelectorAll('#col4 input[name="selectedLineCol4[]"]:checked');
+        event.stopPropagation();
+        event.preventDefault();
 
-        let lineItems = Array.from(selectedLines).map(line => {
+        const selectedLines = document.querySelectorAll('#col4 input[name="selectedLineCol4[]"]:checked');
+        let lineItems = [];
+        let hasRestriction = false;
+
+        selectedLines.forEach(line => {
             const row = line.closest('tr');
-            return {
+            const restriccion = row.querySelector('td:nth-child(8) span');
+
+            if (restriccion) {
+                hasRestriction = true;
+            }
+
+            lineItems.push({
                 idLineaPedido: row.querySelector('td:nth-child(2)').textContent.trim(),
                 nombreProceso: row.querySelector('td:nth-child(8)').textContent.trim()
-            };
+            });
         });
 
         if (lineItems.length > 0) {
             button.disabled = true;
 
-            // Guardar la máquina seleccionada en el almacenamiento local
             if (selectedMachineId) {
                 localStorage.setItem('selectedMachineId', selectedMachineId);
             }
@@ -818,11 +890,15 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
+                    if (data.error) {
+                        let message = 'Uno o más procesos seleccionados tienen restricciones pendientes.\n\n';
+                        data.procesosConRestricciones.forEach(item => {
+                            message += `${item.nombre_proceso}\nRestringido por: ${item.restricciones.join(', ')}\n\n`;
+                        });
+                        alert(message);
+                    } else {
                         localStorage.setItem('reloadedFromTerminar', 'true');
                         window.location.reload();
-                    } else {
-                        alert('Error al actualizar los estados.');
                     }
                 })
                 .catch(error => {

@@ -199,6 +199,7 @@ class Pedidos2 extends BaseControllerGC
 		echo view('add_pedido', $data);
 	}
 
+	//modal add pedido
 	public function save()
 	{
 		$data = usuario_sesion();
@@ -215,11 +216,19 @@ class Pedidos2 extends BaseControllerGC
 		];
 
 		if ($pedidoModel->insert($data)) {
+			// Obtener el ID del pedido recién insertado
+			$insertId = $pedidoModel->insertID();
+
+			// Registrar la acción en el log
+			$this->logAction('Pedido', 'Añadir Pedido, ID: ' . $insertId, $data);
+
+			// Redirigir a la página en marcha
 			return redirect()->to(base_url('pedidos2/enmarcha'));
 		} else {
 			return redirect()->back()->with('error', 'No se pudo guardar el pedido');
 		}
 	}
+
 	function paso_id_pedido($value, $id_pedido)
 	{
 		return $id_pedido . '<input type="hidden" name="id_pedido" value="' . $id_pedido . '">';
