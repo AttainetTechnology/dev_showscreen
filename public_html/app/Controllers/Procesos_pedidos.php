@@ -571,11 +571,7 @@ class Procesos_pedidos extends BaseControllerGC
         $procesosPedidoModel = new ProcesosPedido($db);
         $procesosProductosModel = new ProcesosProductos($db);
 
-<<<<<<< HEAD
-        // Obtener las líneas de pedido con estado = 2
-=======
         // Obtener líneas de pedido con estado = 2
->>>>>>> bf56a77726e11c22b7f328793308c469caa6decc
         $lineasConEstado2 = $lineaPedidoModel->where('estado', 2)->findAll();
 
         foreach ($lineasConEstado2 as $linea) {
@@ -596,30 +592,11 @@ class Procesos_pedidos extends BaseControllerGC
                 ];
 
                 if (!$existe) {
-<<<<<<< HEAD
-                    // Verificar si el proceso tiene restricciones en la tabla procesos_productos
-                    $restriccion = !empty($procesoProducto['restriccion']) ? $procesoProducto['restriccion'] : null;
-
-                    // Insertar la nueva fila en procesos_pedidos
-                    $insertData = [
-=======
                     $dataInsert = [
->>>>>>> bf56a77726e11c22b7f328793308c469caa6decc
                         'id_proceso' => $procesoProducto['id_proceso'],
                         'id_linea_pedido' => $linea['id_lineapedido'],
                         'id_maquina' => null,
                         'estado' => 2,
-<<<<<<< HEAD
-                        'restriccion' => $restriccion,
-                    ];
-
-                    $procesosPedidoModel->insert($insertData);
-                } else {
-                    // Si ya existe, verificar y actualizar la restricción si es necesario
-                    if (!empty($procesoProducto['restriccion']) && empty($existe['restriccion'])) {
-                        $updateData = ['restriccion' => $procesoProducto['restriccion']];
-                        $procesosPedidoModel->update($existe['id_relacion'], $updateData);
-=======
                         'restriccion' => $procesoProducto['restriccion'],
                     ];
 
@@ -628,7 +605,6 @@ class Procesos_pedidos extends BaseControllerGC
                     // Actualizar las restricciones si no coinciden
                     if ($existe['restriccion'] !== $procesoProducto['restriccion']) {
                         $procesosPedidoModel->update($existe['id_relacion'], $dataUpdate);
->>>>>>> bf56a77726e11c22b7f328793308c469caa6decc
                     }
                 }
             }
