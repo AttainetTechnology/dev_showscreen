@@ -9,7 +9,7 @@ div#report-success,
 .fecha_entrega_form_group,
 .fecha_entrada_form_group,
 .btn {
-	font-size: 14px !important;
+	font-size: 13px !important;
 }
 
 .btn {
@@ -255,6 +255,8 @@ input#field-precio {
 .btn-outline-dark {
 	color: #333 !Important;
 	border-color: #333 !Important;
+	margin: 5px !important;
+
 }
 
 .text-danger {
@@ -357,9 +359,9 @@ tr.header-columns {
 	font-size: small;
 }
 
-.iframe_lineapedidos {
+/* .iframe_lineapedidos {
 	min-height: 907px !Important;
-}
+} */
 
 .btn-check:checked+.gc-container .btn-outline-dark,
 .btn-check:active+.gc-container .btn-outline-dark,
@@ -775,7 +777,6 @@ a:hover.btfichar {
 	margin: 40px !important;
 	margin-top: 10px !important;
 }
-
 .modal-dialog {
 	height: 650px;
 	max-height: 650px;
@@ -840,4 +841,8 @@ a:hover.btfichar {
 .btn-custom svg,
 .btn-custom i {
 	margin: 0;
+}
+
+[class^="gc-footer"]{
+	display: none !important;
 }
