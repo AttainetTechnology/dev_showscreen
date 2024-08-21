@@ -17,10 +17,11 @@
                     <div class="form-group">
                         <label for="estado_proceso">Estado del Proceso</label>
                         <select class="form-control" id="estado_proceso" name="estado_proceso" required>
-                            <option value="activo">Activo</option>
-                            <option value="inactivo">Inactivo</option>
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
                         </select>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= base_url('procesos'); ?>'">Cerrar</button>
@@ -36,7 +37,7 @@
     $(document).ready(function() {
         $('#addProcessModal').modal('show');
         // Detecta cuando el modal se cierra (incluido al hacer clic fuera del modal)
-        $('#addProcessModal').on('hidden.bs.modal', function () {
+        $('#addProcessModal').on('hidden.bs.modal', function() {
             window.location.href = '<?= base_url('procesos'); ?>';
         });
         // Detecta cuando se hace clic fuera del modal para cerrarlo

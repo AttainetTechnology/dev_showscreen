@@ -28,7 +28,14 @@ class Procesos extends BaseControllerGC
         $procesoModel = new Proceso($db);
 
         $nombre_proceso = $this->request->getPost('nombre_proceso');
+
+        // Si no se selecciona explícitamente "inactivo", el valor predeterminado será "1" (activo)
         $estado_proceso = $this->request->getPost('estado_proceso');
+        if ($estado_proceso !== 'inactivo') {
+            $estado_proceso = '1'; // Activo por defecto
+        } else {
+            $estado_proceso = '0'; // Inactivo
+        }
 
         $procesoModel->insert([
             'nombre_proceso' => $nombre_proceso,
@@ -39,6 +46,7 @@ class Procesos extends BaseControllerGC
         return redirect()->to(base_url('procesos'));
     }
 
+
     public function restriccion($primaryKey)
     {
         $data = datos_user();
@@ -47,12 +55,17 @@ class Procesos extends BaseControllerGC
         $procesos = $procesoModel->where('id_proceso !=', $primaryKey)->findAll();
         $proceso_principal = $procesoModel->find($primaryKey);
 
+        // Verificar que estado_proceso esté bien definido
+        if ($proceso_principal['estado_proceso'] === null) {
+            $proceso_principal['estado_proceso'] = '1'; // Valor por defecto si no está definido
+        }
+
         $previous_proceso_id = $this->getPreviousProceso($primaryKey);
         $next_proceso_id = $this->getNextProceso($primaryKey);
 
         if ($this->request->is('post')) {
             $nombre_proceso = $this->request->getPost('nombre_proceso');
-            $estado_proceso = $this->request->getPost('estado_proceso');
+            $estado_proceso = $this->request->getPost('estado_proceso') ?? '1'; // Asegura que sea 1 por defecto
             $restricciones = $this->request->getPost('restricciones');
             $redirect_url = $this->request->getPost('redirect_url');
 
@@ -65,7 +78,6 @@ class Procesos extends BaseControllerGC
 
             $this->updateOrderAfterRestrictionChange($primaryKey, $restricciones_string);
 
-            // Redirigimos a la URL capturada
             return redirect()->to($redirect_url);
         }
 
@@ -80,7 +92,7 @@ class Procesos extends BaseControllerGC
     }
 
     private function updateOrderAfterRestrictionChange($id_proceso, $restricciones)
-    {      
+    {
         $data = datos_user();
         $dbClient = db_connect($data['new_db']);
         // Obtén los productos asociados al proceso modificado
