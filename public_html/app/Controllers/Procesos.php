@@ -28,20 +28,23 @@ class Procesos extends BaseControllerGC
         $procesoModel = new Proceso($db);
 
         $nombre_proceso = $this->request->getPost('nombre_proceso');
-
-        // Recibir el valor del estado_proceso desde el formulario
         $estado_proceso = $this->request->getPost('estado_proceso');
-        // Insertar el nuevo proceso con el estado recibido desde el formulario
+
+        // Validar que el nombre del proceso no contenga los caracteres prohibidos
+        if (preg_match("/[().']/i", $nombre_proceso)) {
+            // Si el nombre contiene caracteres prohibidos, redirigir con un mensaje de error
+            return redirect()->back()->withInput()->with('error', 'El nombre del proceso no puede contener los caracteres: ( ) . \'');
+        }
+
+        // Insertar el nuevo proceso si la validación es correcta
         $procesoModel->insert([
             'nombre_proceso' => $nombre_proceso,
-            'estado_proceso' => $estado_proceso, // Se usará el valor recibido directamente
+            'estado_proceso' => $estado_proceso,
             'restriccion' => null
         ]);
 
         return redirect()->to(base_url('procesos'));
     }
-
-
 
     public function restriccion($primaryKey)
     {

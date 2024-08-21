@@ -33,6 +33,15 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
+    document.getElementById('addProcessModal').addEventListener('submit', function(event) {
+        const nombreProceso = document.getElementById('nombre_proceso').value;
+        const regex = /[().']/;
+
+        if (regex.test(nombreProceso)) {
+            alert('El nombre del proceso no puede contener los caracteres: ( ) . \'');
+            event.preventDefault(); // Evita que el formulario se envíe
+        }
+    });
     $(document).ready(function() {
         $('#addProcessModal').modal('show');
         // Detecta cuando el modal se cierra (incluido al hacer clic fuera del modal)
