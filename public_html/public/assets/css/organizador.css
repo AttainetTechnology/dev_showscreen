@@ -3,14 +3,14 @@
     justify-content: space-between;
     width: 100%;
     height: 100vh;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
+    overflow-x: hidden;
 
 }
 
 .column {
     padding: 30px;
     box-sizing: border-box;
-    overflow-y: auto;
     text-align: center;
 }
 
@@ -22,23 +22,23 @@
 }
 
 #col3 {
-    flex: 0 0 4%;
+    flex: 0 0 2%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-
 .table {
     width: 100%;
-    margin-bottom: 0;
+    table-layout: auto;
+    word-wrap: break-word;
 }
 
 .table th,
 .table td {
-    text-align: left;
-    padding: 8px;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 #searchContainer {
@@ -57,7 +57,7 @@
 }
 
 #col2 .resultados {
-    height: 800px;
+    height: 700px;
     overflow-y: auto;
 }
 
@@ -74,7 +74,7 @@
 }
 
 #col4 .resultados {
-    height: 800px;
+    height: 700px;
     overflow-y: auto;
 }
 
@@ -148,4 +148,10 @@ input[type="checkbox"] {
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .column {
+        padding: 10px;
+    }
 }
