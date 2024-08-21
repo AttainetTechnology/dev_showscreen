@@ -1,148 +1,115 @@
-        
-        #organizador {
-            display: flex;
-            font-size: 0.8rem;
-        }
 
-    .verde-tenue {
-        background-color: #d8ecd0; 
-    }
+#organizador {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100vh; 
+    font-size: 0.8rem;
 
-    .fondo-rojo {
-        background-color: rgb(255, 200, 200); 
-    }
+}
 
-    .sin-color {
-        background-color: white; 
-    }
+.column {
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto; 
+    text-align: center;
+}
 
-        .boton-maquina{
-            margin-bottom: 0.5rem!Important;
-            width: 100%;
-            text-align: left;
-        }
-        .boton-maquina button{
-            text-align: left!Important;
-            background-color: #eee;
-        }
-        .boton-maquina button:hover{
-            background-color: #999;
-            color: #fff;
-        }
+#col2, #col4 {
+    flex: 0 0 48%;
+    padding: 60px;
+}
 
-        #col1{
-            max-width: 15vw;
-            padding: 1rem;
-            position: fixed;
-            top:0px;
-            left:0px;
-            height: 100vh;
-            text-align: left!Important;
-        }
-        #col2{
-            max-width: 43vw;
-            padding: 0rem;
-            position: fixed;
-            top:0px;
-            left:9vw;
-            height: 100vh;
-            overflow: auto;
-            margin-top: 3vw;
-        }
-        #col2 .cabecera {
-            position: fixed;
-            max-width: 40vw ! Important;
-            width: 40vw;
-            background-color: #fff;
-            min-height: 12vh;
-            z-index: 99;
-        }
-        #col2 .resultados {
-            max-width: 40vw ! Important;
-            width: 40vw;
-            background-color: #fff;
-            min-height: 88vh;
-            top:12vh;
-            position: relative;
-        }
-        #col3{
-            max-width: 10vw;
-            padding: 0rem;
-            position: fixed;
-            top:10vw;
-            left:53vw;
-            height: auto;
-        }
-        #col4{
-            max-width: 36vw;
-            padding: 0rem;
-            position: fixed;
-            top:0px;
-            left:58vw;
-            height: 100vh;
-            overflow: auto;
-            margin-top: 3vw;
-        }
-        #col4 .cabecera {
-            position: fixed;
-            max-width: 36vw ! Important;
-            width: 36vw;
-            background-color: #fff;
-            min-height: 12vh;
-            z-index: 99;
-        }
-        #col4 .resultados {
-            max-width: 36vw ! Important;
-            width: 36vw;
-            background-color: #fff;
-            min-height: 88vh;
-            top:12vh;
-            position: relative;
-        }
-        .btn {
-            font-size: 10px!Important;
-        }
-        .btn-md{
-            margin-bottom: 0.8rem;
-        }
-        .btn-md i {
-            font-size: large;
-        }
+#col3 {
+    flex: 0 0 4%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-        tbody tr {
-            border-bottom: 1px solid #ccc; 
-        }
-        tbody tr:last-child {
-            border-bottom: none; 
-        }
-        tbody td {
-            padding: 10px; 
-        }
-        input[type="checkbox"] {
-            margin-right: 10px; 
-        }
 
-        .column {
-            text-align: center; 
-        }
+.table {
+    width: 100%;
+    margin-bottom: 0;
+}
 
-        .fija{
-            position: fixed;
-        }
-        .fija.cabecera {
-            width: 42%;
-            background-color: #fff;
-        }
+.table th, .table td {
+    text-align: left;
+    padding: 8px;
+}
 
-        /* Casilla de seleccionar procesos */
-    
-        input[type="checkbox"] {
-            transform: scale(1); 
-            margin: 10px; 
-        }
-        input[type="checkbox"] {
-            width: 20px; 
-            height: 20px; 
-            cursor: pointer; 
-        }
-        
+#searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#searchInput {
+    width: calc(100% - 110px);
+    margin-right: 10px;
+}
+
+.cabecera{
+    padding: 15px;
+}
+
+.verde-tenue {
+    background-color: #d8ecd0;
+}
+
+.fondo-rojo {
+    background-color: rgb(255, 200, 200);
+}
+
+.sin-color {
+    background-color: white;
+}
+
+.boton-maquina {
+    margin-bottom: 0.5rem !important;
+    width: 100%;
+    text-align: left;
+}
+
+.boton-maquina button {
+    text-align: left !important;
+    background-color: #eee;
+}
+
+.boton-maquina button:hover {
+    background-color: #999;
+    color: #fff;
+}
+
+.btn {
+    font-size: 10px !important;
+}
+
+.btn-md {
+    margin-bottom: 0.8rem;
+}
+
+.btn-md i {
+    font-size: large;
+}
+
+tbody tr {
+    border-bottom: 1px solid #ccc;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody td {
+    padding: 10px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

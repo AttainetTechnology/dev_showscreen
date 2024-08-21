@@ -605,11 +605,10 @@ a:hover.btfichar {
 /* BOOTSTRAP */
 [class^="gc-full-page-title"] {
 	background-color: transparent !Important;
-	display: none;
+	/* display: none; */
 }
 
 /* BOOTSTRAP Botones*/
-
 .btn-outline-dark {
 	--bs-btn-color: #212529;
 	--bs-btn-border-color: #212529;
