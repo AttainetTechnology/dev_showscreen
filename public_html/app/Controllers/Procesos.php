@@ -29,22 +29,18 @@ class Procesos extends BaseControllerGC
 
         $nombre_proceso = $this->request->getPost('nombre_proceso');
 
-        // Si no se selecciona explícitamente "inactivo", el valor predeterminado será "1" (activo)
+        // Recibir el valor del estado_proceso desde el formulario
         $estado_proceso = $this->request->getPost('estado_proceso');
-        if ($estado_proceso !== 'inactivo') {
-            $estado_proceso = '1'; // Activo por defecto
-        } else {
-            $estado_proceso = '0'; // Inactivo
-        }
-
+        // Insertar el nuevo proceso con el estado recibido desde el formulario
         $procesoModel->insert([
             'nombre_proceso' => $nombre_proceso,
-            'estado_proceso' => $estado_proceso,
+            'estado_proceso' => $estado_proceso, // Se usará el valor recibido directamente
             'restriccion' => null
         ]);
 
         return redirect()->to(base_url('procesos'));
     }
+
 
 
     public function restriccion($primaryKey)

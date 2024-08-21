@@ -21,7 +21,6 @@
                             <option value="0">Inactivo</option>
                         </select>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= base_url('procesos'); ?>'">Cerrar</button>
