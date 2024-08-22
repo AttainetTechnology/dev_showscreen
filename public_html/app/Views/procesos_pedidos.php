@@ -68,7 +68,7 @@
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                                 </select>
-                            </th>>
+                            </th>
                             <th>
                                 Medidas
                                 <select id="medidasFilter" style="width: 100%;" onchange="filtrarPorMedida(this.value);">
