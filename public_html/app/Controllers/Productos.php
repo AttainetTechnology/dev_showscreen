@@ -19,7 +19,7 @@ class Productos extends BaseControllerGC
         $crud->requiredFields(['nombre_producto', 'id_familia', 'unidad']);
         $crud->setRelationNtoN('procesos', 'procesos_productos', 'procesos', 'id_producto', 'id_proceso', '{nombre_proceso}');
         $crud->setLangString('modal_save', 'Guardar Producto');
-        $crud->addFields(['nombre_producto', 'id_familia', 'precio', 'unidad', 'estado_producto', 'procesos']);
+        $crud->addFields(['nombre_producto', 'id_familia', 'precio', 'unidad', 'estado_producto']);
         $crud->editFields(['id_producto', 'nombre_producto', 'id_familia', 'imagen', 'precio', 'unidad', 'estado_producto']);
         $crud->unsetRead();
 
@@ -91,7 +91,10 @@ class Productos extends BaseControllerGC
             $productoId = $stateParameters->primaryKeyValue;
 
             // Delete related rows in the procesos_productos table
-            $db = db_connect();
+            helper('controlacceso');
+            $data = usuario_sesion();
+            $db = db_connect($data['new_db']);
+
             $db->table('procesos_productos')->where('id_producto', $productoId)->delete();
 
             // Delete the product's image folder
