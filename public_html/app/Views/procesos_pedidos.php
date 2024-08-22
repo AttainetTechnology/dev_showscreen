@@ -39,7 +39,7 @@
                 </div>
                 <div style="display: inline-block; vertical-align: middle;">
                     <button id="clearFilters" class="btn btn-sm btn-light ms-2">
-                        <i class="bi bi-x-circle"></i> Eliminar Filtros
+                        <i class="bi bi-x-circle"></i>Eliminar Filtros
                     </button>
                 </div>
             </div>
@@ -48,23 +48,27 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAllCol2" class="selectAll"></th>
-                            <th>id</th>
+                            <th>
+                                id
+                                <br>
+                                <input type="text" id="idSearchInputCol2" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol2();">
+                            </th>
                             <th>
                                 Cliente
                                 <select id="clienteFilter" style="width: 100%;" onchange="filtrarPorCliente(this.value);">
                                     <option value="">Todos</option>
-                                    <?php if (isset($clientes)) : ?>
-                                        <?php
+                                    <?php if (isset($clientes)) : ?>>
+                                    <?php
                                         usort($clientes, function ($a, $b) {
                                             return strcmp($a['nombre_cliente'], $b['nombre_cliente']);
                                         });
-                                        ?>
-                                        <?php foreach ($clientes as $cliente) : ?>
-                                            <option value="<?= esc($cliente['nombre_cliente']) ?>"><?= esc($cliente['nombre_cliente']) ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
+                                    ?>
+                                    <?php foreach ($clientes as $cliente) : ?>
+                                        <option value="<?= esc($cliente['nombre_cliente']) ?>"><?= esc($cliente['nombre_cliente']) ?></option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                                 </select>
-                            </th>
+                            </th>>
                             <th>
                                 Medidas
                                 <select id="medidasFilter" style="width: 100%;" onchange="filtrarPorMedida(this.value);">
@@ -162,7 +166,7 @@
                 </div>
                 <div style="display: inline-block; vertical-align: middle;">
                     <button id="clearMachineFilter" class="btn btn-sm btn-light ms-2" onclick="eliminarFiltroMaquina()">
-                        <i class="bi bi-x-circle"></i> Eliminar Filtro
+                        <i class="bi bi-x-circle"></i> Eliminar Filtros
                     </button>
                 </div>
             </div>
@@ -171,7 +175,11 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAllCol4" class="selectAll"></th>
-                            <th>id</th>
+                            <th>
+                                id
+                                <br>
+                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
+                            </th>
                             <th>
                                 Cliente
                                 <select id="clienteFilterCol4" style="width: 100%;" onchange="filtrarPorClienteCol4(this.value);">
@@ -453,6 +461,8 @@
     let selectedProcesoFilterCol4 = '';
     let selectedProductoFilterCol2 = '';
     let selectedProductoFilterCol4 = '';
+    let idFilterCol2 = '';
+    let idFilterCol4 = '';
 
     let sortable;
 
@@ -477,6 +487,7 @@
         const clientFilter = columna === 2 ? selectedClientFilterCol2 : selectedClientFilterCol4;
         const procesoFilter = columna === 2 ? selectedProcesoFilterCol2 : selectedProcesoFilterCol4;
         const productoFilter = columna === 2 ? selectedProductoFilterCol2 : selectedProductoFilterCol4;
+        const idFilter = columna === 2 ? idFilterCol2 : idFilterCol4;
         const maquinaFilter = columna === 4 ? selectedMachineId : null;
 
         tableRows.forEach(row => {
@@ -484,6 +495,7 @@
             const proceso = row.getAttribute('data-nombre-proceso');
             const producto = row.getAttribute('data-nombre-producto');
             const idMaquina = row.getAttribute('data-id-maquina');
+            const id = row.querySelector('td:nth-child(2)').textContent.trim();
             let display = true;
 
             if (clientFilter && cliente && !cliente.toLowerCase().includes(clientFilter)) {
@@ -495,9 +507,13 @@
             if (productoFilter && producto && !producto.toLowerCase().includes(productoFilter)) {
                 display = false;
             }
+            if (idFilter && id && !id.toUpperCase().includes(idFilter)) {
+                display = false;
+            }
             if (columna === 4 && maquinaFilter && idMaquina !== maquinaFilter) {
                 display = false;
             }
+
 
             row.style.display = display ? '' : 'none';
         });
@@ -526,6 +542,18 @@
             selectedProcesoFilterCol4 = valor.toLowerCase();
         }
         aplicarFiltros(columna);
+    }
+
+    function filtrarPorIdCol2() {
+        var input = document.getElementById("idSearchInputCol2");
+        idFilterCol2 = input.value.toUpperCase();
+        aplicarFiltros(2);
+    }
+
+    function filtrarPorIdCol4() {
+        var input = document.getElementById("idSearchInputCol4");
+        idFilterCol4 = input.value.toUpperCase();
+        aplicarFiltros(4);
     }
 
     function filtrarProcesosPorMaquina(idMaquina, nombreMaquina) {
@@ -763,9 +791,10 @@
 
         // Evento para limpiar filtros
         $('#clearFilters').on('click', () => {
-            ['#searchInput', '#clienteFilter', '#productoFilterCol2', '#productoFilterCol4', '#clienteFilterCol4', '#medidasFilter'].forEach(selector => {
+            ['#searchInput', '#clienteFilter', '#productoFilterCol2', '#productoFilterCol4', '#clienteFilterCol4', '#medidasFilter', ].forEach(selector => {
                 $(selector).val('').trigger('change');
             });
+            $('#idSearchInputCol2').val('').trigger('keyup');
             if (sortable) sortable.option("disabled", true);
         });
 
