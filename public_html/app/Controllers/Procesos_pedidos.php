@@ -303,6 +303,8 @@ class Procesos_pedidos extends BaseControllerGC
             $nuevoOrden++;
         }
     }
+
+
     public function marcarTerminado()
     {
         $data = usuario_sesion();
@@ -311,90 +313,57 @@ class Procesos_pedidos extends BaseControllerGC
         $lineaPedidoModel = new LineaPedido($db);
         $pedidoModel = new Pedido($db);
         $procesoModel = new Proceso($db);
-
         $data = $this->request->getJSON(true);
-
-        log_message('debug', 'Datos recibidos en marcarTerminado: ' . json_encode($data)); // Debug
-
         if (!isset($data['lineItems']) || !is_array($data['lineItems'])) {
-            log_message('error', 'Datos inválidos en marcarTerminado');
             return $this->response->setJSON(['error' => 'Datos inválidos']);
         }
-
         $procesosConRestricciones = [];
-
         foreach ($data['lineItems'] as $item) {
             $idLineaPedido = $item['idLineaPedido'] ?? null;
             $nombreProceso = $item['nombreProceso'] ?? null;
-
             if (is_null($idLineaPedido) || is_null($nombreProceso)) {
-                log_message('error', 'Datos faltantes para idLineaPedido o nombreProceso');
                 continue;
             }
-
             // Limpiar el nombre del proceso: eliminar espacios y emojis
             $nombreProcesoLimpio = trim(preg_replace('/\s+/', ' ', preg_replace('/[^\w\s\+\/-]/u', '', $nombreProceso)));
-
-            log_message('debug', 'Procesando item: ' . json_encode(['idLineaPedido' => $idLineaPedido, 'nombreProceso' => $nombreProcesoLimpio]));
-
             $proceso = $procesoModel->where('nombre_proceso', $nombreProcesoLimpio)->first();
             if (!$proceso) {
-                log_message('error', 'Proceso no encontrado: ' . $nombreProcesoLimpio);
                 continue;
             }
-
             $idProceso = $proceso['id_proceso'];
-            $procesoInfo = $procesosPedidoModel->where('id_linea_pedido', $idLineaPedido)->where('id_proceso', $idProceso)->first();
-
+            $procesoInfo = $procesosPedidoModel->where('id_linea_pedido', $idLineaPedido)->where('id_proceso', $idProceso)->first();  
             if (is_null($procesoInfo)) {
-                log_message('error', 'Información del proceso no encontrada para idLineaPedido: ' . $idLineaPedido . ' y idProceso: ' . $idProceso);
                 continue;
-            }
-
+            }   
             if (!empty($procesoInfo['restriccion'])) {
                 $idsRestricciones = explode(',', $procesoInfo['restriccion']);
                 $nombresRestricciones = [];
-
                 foreach ($idsRestricciones as $idRestriccion) {
                     $procesoRestringido = $procesoModel->find($idRestriccion);
                     if ($procesoRestringido) {
                         $nombresRestricciones[] = $procesoRestringido['nombre_proceso'];
                     }
                 }
-
                 $procesosConRestricciones[] = [
                     'nombre_proceso' => $nombreProcesoLimpio,
                     'restricciones' => $nombresRestricciones
                 ];
-
                 continue;
             }
-
             $idMaquina = $procesoInfo['id_maquina'] ?? null;
-
             if (is_null($idMaquina)) {
-                log_message('error', 'idMaquina no encontrado para idLineaPedido: ' . $idLineaPedido . ' y idProceso: ' . $idProceso);
                 continue;
             }
-
-            log_message('debug', 'Actualizando estado del proceso: ' . json_encode($procesoInfo));
-
             // Cambiar el estado del proceso a 4
             $procesosPedidoModel
                 ->where('id_linea_pedido', $idLineaPedido)
                 ->where('id_proceso', $idProceso)
                 ->set(['estado' => 4])
                 ->update();
-
-            // Eliminar el registro del proceso terminado
-            $procesosPedidoModel->where('id_linea_pedido', $idLineaPedido)->where('id_proceso', $idProceso)->delete();
-
             // Reordenar los procesos en la máquina
             $this->reordenarProcesosParaMaquina($idMaquina);
-
             // Eliminar id_proceso de las restricciones en otros procesos
             $this->eliminarRestricciones($idLineaPedido, $idProceso);
-
             $todosEnEstado4 = true;
             $procesos = $procesosPedidoModel->where('id_linea_pedido', $idLineaPedido)->findAll();
             foreach ($procesos as $proceso) {
@@ -408,15 +377,11 @@ class Procesos_pedidos extends BaseControllerGC
                     ->where('id_lineapedido', $idLineaPedido)
                     ->set(['estado' => 4])
                     ->update();
-
                 $lineaPedido = $lineaPedidoModel->find($idLineaPedido);
                 $idPedido = $lineaPedido['id_pedido'] ?? null;
-
                 if (is_null($idPedido)) {
-                    log_message('error', 'idPedido no encontrado para idLineaPedido: ' . $idLineaPedido);
                     continue;
                 }
-
                 $todasLineasEnEstado4 = true;
                 $lineasPedido = $lineaPedidoModel->where('id_pedido', $idPedido)->findAll();
                 foreach ($lineasPedido as $linea) {
@@ -425,21 +390,19 @@ class Procesos_pedidos extends BaseControllerGC
                         break;
                     }
                 }
-
                 if ($todasLineasEnEstado4) {
                     $pedidoModel->where('id_pedido', $idPedido)->set(['estado' => 4])->update();
                 }
             }
         }
-
+    
         if (!empty($procesosConRestricciones)) {
             return $this->response->setJSON([
                 'error' => 'Uno o más procesos tienen restricciones pendientes.',
                 'procesosConRestricciones' => $procesosConRestricciones
             ]);
         }
-
-        log_message('debug', 'Finalización de marcarTerminado'); // Debug
+    
         return $this->response->setJSON(['success' => 'Estados actualizados y líneas eliminadas']);
     }
 
@@ -590,7 +553,7 @@ class Procesos_pedidos extends BaseControllerGC
                 $dataUpdate = [
                     'restriccion' => $procesoProducto['restriccion'] ?? null
                 ];
-                
+
 
                 if (!$existe) {
                     $dataInsert = [
@@ -607,7 +570,6 @@ class Procesos_pedidos extends BaseControllerGC
                     if (!isset($existe['restriccion']) || $existe['restriccion'] !== $procesoProducto['restriccion']) {
                         $procesosPedidoModel->update($existe['id_relacion'], $dataUpdate);
                     }
-                    
                 }
             }
         }
