@@ -121,8 +121,6 @@
             <button data-action="cancelar" onclick="window.location.reload();" class="btn btn-md btn-warning"><i class="bi bi-arrow-clockwise"></i></button><br>
         </div>
         <div class="column" id="col4">
-
-
             <div class="cabecera">
                 <h4 id="tituloProcesosEnMaquina">Procesos en máquina</h4>
                 <br>
@@ -339,6 +337,7 @@
         });
 
         actualizarColores();
+        actualizarColoresCol2();
         generarContenidoImprimible();
         seleccionarMaquinaGuardada();
 
@@ -581,6 +580,7 @@
             nuevaFila.classList.add('fondo-rojo');
         });
         actualizarColores();
+        actualizarColoresCol2();
     }
 
     function crearNuevaFila(filaOriginal) {
@@ -695,6 +695,12 @@
         document.querySelectorAll('#col4 .linea').forEach(fila => {
             fila.classList.toggle('sin-color', fila.getAttribute('data-guardado') === 'guardado');
             fila.classList.toggle('verde-tenue', fila.getAttribute('data-guardado') !== 'guardado');
+        });
+    }
+
+    function actualizarColoresCol2() {
+        document.querySelectorAll('#col2 .linea').forEach(fila => {
+            fila.classList.toggle('proceso-col2', fila.getAttribute('data-guardado') !== 'guardado');
         });
     }
 
