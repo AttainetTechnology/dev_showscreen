@@ -815,13 +815,19 @@
                 }
             });
         });
+       
         document.querySelectorAll('.selectAll').forEach(selectAllCheckbox => {
             selectAllCheckbox.addEventListener('click', function(event) {
                 event.preventDefault(); // Evita que el checkbox principal se marque o desmarque
                 const columnId = this.id === 'selectAllCol2' ? 'Col2' : 'Col4';
                 const checkboxes = document.querySelectorAll(`input[name="selectedLine${columnId}[]"]`);
-                const isChecked = !this.classList.contains('highlight');
-                checkboxes.forEach(checkbox => checkbox.checked = isChecked);
+                const isChecked = !this.classList.contains('highlight');               
+                // Filtrar solo los checkboxes visibles
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.offsetParent !== null) { // Verifica si el checkbox es visible
+                        checkbox.checked = isChecked;
+                    }
+                });              
                 this.classList.toggle('highlight', isChecked);
             });
         });
