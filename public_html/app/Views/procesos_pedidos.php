@@ -26,6 +26,11 @@
                     <select id="searchInput" class="form-control d-inline-block" style="width: auto;">
                         <option value="">Seleccione un proceso...</option>
                         <?php if (isset($procesos)) : ?>
+                            <?php
+                            usort($procesos, function ($a, $b) {
+                                return strcmp($a['nombre_proceso'], $b['nombre_proceso']);
+                            });
+                            ?>
                             <?php foreach ($procesos as $proceso) : ?>
                                 <option value="<?= esc($proceso['nombre_proceso']) ?>"><?= esc($proceso['nombre_proceso']) ?></option>
                             <?php endforeach; ?>
@@ -38,8 +43,6 @@
                     </button>
                 </div>
             </div>
-
-
             <div class="resultados">
                 <table id="Tabla2" class="table">
                     <thead>
@@ -51,6 +54,11 @@
                                 <select id="clienteFilter" style="width: 100%;" onchange="filtrarPorCliente(this.value);">
                                     <option value="">Todos</option>
                                     <?php if (isset($clientes)) : ?>
+                                        <?php
+                                        usort($clientes, function ($a, $b) {
+                                            return strcmp($a['nombre_cliente'], $b['nombre_cliente']);
+                                        });
+                                        ?>
                                         <?php foreach ($clientes as $cliente) : ?>
                                             <option value="<?= esc($cliente['nombre_cliente']) ?>"><?= esc($cliente['nombre_cliente']) ?></option>
                                         <?php endforeach; ?>
@@ -71,12 +79,25 @@
                                 <select id="productoFilterCol2" style="width: 100%;" onchange="filtrarPorProducto(this.value, 2);">
                                     <option value="">Todos</option>
                                     <?php if (isset($productos)) : ?>
+                                        <?php
+                                        usort($productos, function ($a, $b) {
+                                            $aNombre = preg_replace('/[^\p{L}\p{N}\s]/u', '', iconv('UTF-8', 'ASCII//TRANSLIT', $a['nombre_producto']));
+                                            $bNombre = preg_replace('/[^\p{L}\p{N}\s]/u', '', iconv('UTF-8', 'ASCII//TRANSLIT', $b['nombre_producto']));
+
+                                            if (is_numeric($aNombre[0]) && !is_numeric($bNombre[0])) {
+                                                return 1;
+                                            } elseif (!is_numeric($aNombre[0]) && is_numeric($bNombre[0])) {
+                                                return -1;
+                                            } else {
+                                                return strcmp($aNombre, $bNombre);
+                                            }
+                                        });
+                                        ?>
                                         <?php foreach ($productos as $producto) : ?>
                                             <option value="<?= esc($producto['nombre_producto']) ?>"><?= esc($producto['nombre_producto']) ?></option>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </select>
-
                             </th>
 
                             <th>Nº Piezas</th>
@@ -128,6 +149,11 @@
                     <select id="maquinaFilterCol4" class="form-control d-inline-block" style="width: auto;" onchange="filtrarProcesosPorMaquina(this.value);">
                         <option value="">Todas las máquinas</option>
                         <?php if (isset($maquinas)) : ?>
+                            <?php
+                            usort($maquinas, function ($a, $b) {
+                                return strcmp($a['nombre'], $b['nombre']);
+                            });
+                            ?>
                             <?php foreach ($maquinas as $maquina) : ?>
                                 <option value="<?= esc($maquina['id_maquina']) ?>"><?= esc($maquina['nombre']) ?></option>
                             <?php endforeach; ?>
