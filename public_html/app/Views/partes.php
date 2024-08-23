@@ -3,7 +3,7 @@
         <?php foreach ($pedidos as $p) { ?>
             <?php foreach ($clientes as $cli) { ?>
                 <div id="fondo">
-                    <?
+                    <?php
                     if (isset($_GET['pg2'])) {
                         $volver = $_GET['pg2'];
                     }
@@ -67,16 +67,16 @@
                                     </tbody>
                                 </table>
                                 <div id="observaciones">
-                                    <? if ($l->lado != "") { ?>
+                                    <?php if ($l->lado != "") { ?>
                                         Lado a mecanizar: <strong><? echo $l->lado; ?></strong><br>
-                                    <? } ?>
-                                    <? if ($l->distancia != "") { ?>
+                                    <?php } ?>
+                                    <?php if ($l->distancia != "") { ?>
                                         Distancia de las ranuras: <strong><? echo $l->distancia; ?> cm.</strong><br><br>
-                                    <? } ?>
-                                    <? if ($l->observaciones != "") { ?>
+                                    <?php } ?>
+                                    <?php if ($l->observaciones != "") { ?>
                                         Observaciones: <strong><? echo $l->observaciones; ?></strong>
 
-                                    <? } ?>
+                                    <?php } ?>
                                 </div>
                             </div>
                             <!-- /.col -->
@@ -86,8 +86,8 @@
                                 <?php
                                 $i = '1';
                                 foreach ($procesos as $proc) { ?>
-                                    <? if ($i == '7') { ?><div class="detalles-pie">
-                                            <small>L.P: <strong><? echo $l->id_lineapedido; ?></strong> | User: <strong><? echo $nombre_usuario; ?> <? echo $apellidos_usuario; ?></strong> | Impresi&oacute;n: <? echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
+                                    <?php if ($i == '7') { ?><div class="detalles-pie">
+                                            <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong> | User: <strong><?php echo $nombre_usuario; ?> <?php echo $apellidos_usuario; ?></strong> | Impresi&oacute;n: <?php echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
                                         </div>
                                         <div class="pagina1"></div>
                                         <div class="pagina2"></div>
@@ -98,26 +98,26 @@
                                                 <img src="<?php echo base_url("public/assets/uploads/logo/") . "/" . $url_logo; ?>" class="logo_partes"><br>
                                                 Cliente:
                                                 <address>
-                                                    <strong><? echo $cli->nombre_cliente; ?></strong>
+                                                    <strong><?php echo $cli->nombre_cliente; ?></strong>
                                                 </address>
                                                 Referencia ped:
                                                 <address>
-                                                    <strong><? echo $p->referencia; ?></strong>
+                                                    <strong><?php echo $p->referencia; ?></strong>
                                                 </address>
                                             </div>
                                             <div id="parte_fila_right" class="imagenparte">
                                                 <div class="capa-numero-parte">
-                                                    <div class="numero_parte">Parte T. <strong><? echo $p->id_pedido; ?></strong></div>
+                                                    <div class="numero_parte">Parte T. <strong><?php echo $p->id_pedido; ?></strong></div>
                                                     <H2>Hoja 2 &nbsp;</H2>
                                                 </div>
-                                                <h3><b><? echo $prod->nombre_producto; ?></b> </h3>
+                                                <h3><b><?php echo $prod->nombre_producto; ?></b> </h3>
                                                 <div class="parte-fechas">
-                                                    <div class="f-entrada">Entrada: <? echo date("d-m-Y", strtotime($p->fecha_entrada)); ?> &nbsp; </div>
+                                                    <div class="f-entrada">Entrada: <?php echo date("d-m-Y", strtotime($p->fecha_entrada)); ?> &nbsp; </div>
                                                     <div class="f-entrega"> Entrega:
-                                                        <strong><? echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
+                                                        <strong><?php echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
                                                     </div>
                                                 </div>
-                                                <img src="<?php echo base_url("public/assets/uploads/files/"); ?>/<? echo $prod->imagen; ?>" class="imagen_parte" /><br />
+                                                <img src="<?php echo base_url("public/assets/uploads/files/"); ?>/<?php echo $prod->imagen; ?>" class="imagen_parte" /><br />
                                             </div>
                                             <!-- END Cabecera -->
 
@@ -135,25 +135,25 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td><b><? echo $l->n_piezas; ?></b></td>
-                                                                <td><b><? echo $prod->nombre_producto; ?></b></td>
-                                                                <td><b><? echo $l->nom_base; ?></b></td>
-                                                                <td><b> <? echo $l->med_inicial; ?></b></td>
-                                                                <td><b> <? echo $l->med_final; ?></b></td>
+                                                                <td><b><?php echo $l->n_piezas; ?></b></td>
+                                                                <td><b><?php echo $prod->nombre_producto; ?></b></td>
+                                                                <td><b><?php echo $l->nom_base; ?></b></td>
+                                                                <td><b> <?php echo $l->med_inicial; ?></b></td>
+                                                                <td><b> <?php echo $l->med_final; ?></b></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                     <div id="observaciones">
-                                                        <? if ($l->lado != "") { ?>
-                                                            Lado a mecanizar: <strong><? echo $l->lado; ?></strong><br>
-                                                        <? } ?>
-                                                        <? if ($l->distancia != "") { ?>
-                                                            Distancia de las ranuras: <strong><? echo $l->distancia; ?> cm.</strong><br>
-                                                        <? } ?>
+                                                        <?php if ($l->lado != "") { ?>
+                                                            Lado a mecanizar: <strong><?php echo $l->lado; ?></strong><br>
+                                                        <?php } ?>
+                                                        <?php if ($l->distancia != "") { ?>
+                                                            Distancia de las ranuras: <strong><?php echo $l->distancia; ?> cm.</strong><br>
+                                                        <?php } ?>
                                                         <br>
-                                                        <? if ($l->observaciones != "") { ?>
-                                                            Observaciones: <strong><? echo $l->observaciones; ?></strong>
-                                                        <? } ?>
+                                                        <?php if ($l->observaciones != "") { ?>
+                                                            Observaciones: <strong><?php echo $l->observaciones; ?></strong>
+                                                        <?php } ?>
                                                     </div><!-- DIV FILA OBSERVACIONES -->
                                                 </div> <!-- DIV COL XS 12-->
                                             </div> <!-- DIV ROW-->
@@ -162,7 +162,7 @@
 
                                         <!-- Fin Repetimos la cabecera para la segunda pagina -->
 
-                                    <? } ?>
+                                    <?php } ?>
                                     <div class="linea_proceso">
                                         <table class="tabla_proceso">
                                             <tr>
@@ -189,9 +189,9 @@
                                             </tr>
                                         </table>
                                     </div>
-                                    <? $i += '1'; ?>
+                                    <?php $i += '1'; ?>
 
-                                <? } //Cierro foreach proceso 
+                                <?php } //Cierro foreach proceso 
                                 ?>
                             </div>
                             <!-- /.col -->
@@ -203,23 +203,23 @@
                                 <div class="total">&nbsp;&nbsp;&nbsp;&nbsp;</div>
                             </div>
                         </div> <!-- Cierro el pie del parte -->
-                        <? if ((isset($mas_de_una_linea)) and ($mas_de_una_linea != "")) { ?>
+                        <?php if ((isset($mas_de_una_linea)) and ($mas_de_una_linea != "")) { ?>
                             <div class="pedido-completo-pie">
                                 <h3><b>Atenci&oacute;n!</b></h3> Este parte forma parte de un pedido con otros partes de trabajo. Comprueba si hay que utilizar el material sobrante con otro parte de trabajo:<br>
                                 <?php foreach ($mas_de_una_linea as $mas) { ?>
 
-                                    - <? echo $mas->n_piezas; ?> <? echo $mas->nombre_producto; ?> - Nom. base: <B><? echo $mas->nom_base; ?></B> <br>
-                                <?    }    ?>
+                                    - <?php echo $mas->n_piezas; ?> <?php echo $mas->nombre_producto; ?> - Nom. base: <B><?php echo $mas->nom_base; ?></B> <br>
+                                <?php    }    ?>
                             </div>
-                        <? } ?>
+                        <?php } ?>
                         <div class="detalles-pie">
-                            <small>L.P: <strong><? echo $l->id_lineapedido; ?></strong> | User: <strong><? echo $nombre_usuario; ?> <? echo $apellidos_usuario; ?></strong> | Impresi&oacute;n: <? echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
+                            <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong> | User: <strong><?php echo $nombre_usuario; ?> <?php echo $apellidos_usuario; ?></strong> | Impresi&oacute;n: <? echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
                         </div>
                     </div>
                     <!-- /#Printable area -->
                 </div> <!-- Fondo -->
 
-<?
+<?php
             } // Cierro foreach clientes
         } //Cierro foreach productos	
     }
