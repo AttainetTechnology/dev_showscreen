@@ -576,4 +576,22 @@ class Procesos_pedidos extends BaseControllerGC
 
         return $lineasConEstado2;
     }
+
+    public function getProcesosEstado4()
+    {
+        $data = datos_user();
+        $db = db_connect($data['new_db']);
+        $procesosPedidoModel = new ProcesosPedido($db);
+    
+        // Consulta para obtener procesos con estado = 4 junto con el nombre del proceso
+        $procesos = $procesosPedidoModel
+                    ->select('procesos_pedidos.id_linea_pedido, procesos_pedidos.id_proceso, procesos.nombre_proceso')
+                    ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
+                    ->where('procesos_pedidos.estado', 4)
+                    ->findAll();
+    
+        return $this->response->setJSON($procesos);
+    }
+    
+
 }
