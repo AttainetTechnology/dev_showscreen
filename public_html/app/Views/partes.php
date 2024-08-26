@@ -10,7 +10,22 @@
                     ?>
                     <a href="<? echo $volver; ?>" class="btn btn-warning btn-sm">Cerrar</a>
 
-                    <a href="<? echo base_url() . "/Partes_controller/CambiaEstado/" . $l->id_lineapedido . "?volver=" . $volver; ?>" class="btn btn-info btn-sm">Cerrar y marcar línea como recibida</a>
+                    <a href="javascript:void(0);" onclick="verificarYMarcarLinea(<?php echo $l->id_lineapedido; ?>, '<?php echo $volver; ?>');" class="btn btn-info btn-sm">Cerrar y marcar línea como recibida</a>
+
+                    <script>
+                        function verificarYMarcarLinea(id_lineapedido, volver) {
+                            fetch('<?php echo base_url(); ?>/Partes_controller/verificarEstadoProcesos/' + id_lineapedido)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'error') {
+                                        alert(data.message);
+                                    } else {
+                                        window.location.href = '<?php echo base_url(); ?>/Partes_controller/CambiaEstado/' + id_lineapedido + '?volver=' + volver;
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        }
+                    </script>
 
                     <input type="button" onclick="printDiv('printableArea')" value="Imprimir Parte" class="btn btn-success btn-sm" />
 
