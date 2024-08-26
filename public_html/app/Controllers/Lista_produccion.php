@@ -135,11 +135,50 @@ class Lista_produccion extends BaseControllerGC
         }
     }
 
+
     public function actualiza_linea($id_lineapedido, $estado)
     {
         $Lineaspedido_model = model('App\Models\Lineaspedido_model');
         $Lineaspedido_model->actualiza_linea($id_lineapedido, $estado);
-
+    
+        // Conectar a la base de datos
+        $data = datos_user();     
+        $db = db_connect($data['new_db']);
+        
+        // Eliminar todos los registros de la tabla procesos_pedidos con la misma id_linea_pedido
+        $builder = $db->table('procesos_pedidos');
+        $builder->where('id_linea_pedido', $id_lineapedido);
+        $builder->delete();
+        
+        // Obtener el id_pedido asociado a la línea de pedido
+        $builder = $db->table('linea_pedidos');
+        $builder->select('id_pedido');
+        $builder->where('id_lineapedido', $id_lineapedido);
+        $query = $builder->get();
+        $id_pedido = $query->getRow()->id_pedido;
+    
+        // Comprobar si todas las líneas de pedido asociadas al id_pedido están en estado 5
+        $builder = $db->table('linea_pedidos');
+        $builder->select('estado');
+        $builder->where('id_pedido', $id_pedido);
+        $query = $builder->get();
+        $allInState5 = true;
+        foreach ($query->getResult() as $row) {
+            if ($row->estado != 5) {
+                $allInState5 = false;
+                break;
+            }
+        }
+    
+        // Si todas las líneas de pedido están en estado 5, actualizar el estado del pedido a 5
+        if ($allInState5) {
+            $builder = $db->table('pedidos');
+            $builder->set('estado', 5);
+            $builder->where('id_pedido', $id_pedido);
+            $builder->update();
+        }
+    
+        // Redirigir a la URL de retorno si está definida
         if (isset($_GET['volver'])) {
             $volver = $_GET['volver'];
         }
