@@ -139,10 +139,11 @@
         <div class="column" id="col3">
             <button data-action="move-left" class="btn btn-md btn-primary"><i class="bi bi-arrow-left"></i></button><br>
             <button data-action="move-right" class="btn btn-md btn-primary"><i class="bi bi-arrow-right"></i></button><br>
-            <button data-action="confirm" class="btn btn-md btn-info"><i class="bi bi-floppy"></i></button><br>
-            <button data-action="btn-terminado" class="btn btn-md btn-success"><i class="bi bi-clipboard2-check"></i></button><br>
+            <button data-action="confirm" class="btn btn-md btn-info" ><i class="bi bi-floppy"></i></button><br>
+            <button data-action="btn-terminado" class="btn btn-md" style="background-color: #50b752; color: white;"><i class="bi bi-clipboard2-check"></i></button><br>
             <button data-action="btn-imprimir" onclick="printDiv('printableArea')" class="btn btn-secondary btn-md"><i class='bi bi-printer'></i></button><br>
             <button data-action="cancelar" onclick="window.location.reload();" class="btn btn-md btn-warning"><i class="bi bi-arrow-clockwise"></i></button><br>
+            <button data-action="pedido" class="btn btn-md btn-success"><i class="bi bi-box"></i></button><br>
         </div>
         <div class="column" id="col4">
             <div class="cabecera">
