@@ -1040,6 +1040,7 @@
                             message += `${item.nombre_proceso}\nRestringido por: ${item.restricciones.join(', ')}\n\n`;
                         });
                         alert(message);
+                        window.location.reload();
                     } else {
                         localStorage.setItem('reloadedFromTerminar', 'true');
                         window.location.reload();
