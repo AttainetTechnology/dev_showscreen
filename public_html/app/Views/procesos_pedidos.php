@@ -481,31 +481,50 @@
     });
 
     $(document).ready(function() {
-        // Manejar el clic en el botón "pedido"
-        $('[data-action="pedido"]').click(function() {
-            // Hacemos la petición AJAX para obtener los procesos con estado 4
-            $.ajax({
-                url: '<?= base_url('procesos_pedidos/getProcesosEstado4') ?>',
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    var tabla = '';
-                    $.each(response, function(index, proceso) {
-                        tabla += '<tr>';
-                        tabla += '<td>' + proceso.id_linea_pedido + '</td>';
-                        tabla += '<td>' + proceso.nombre_proceso + '</td>';
-                        tabla += '</tr>';
-                    });
-                    $('#tablaProcesos').html(tabla);
-                    $('#modalProcesos').modal('show');
-                },
-                error: function() {
-                    alert('Error al cargar los datos.');
-                }
-            });
+    // Manejar el clic en el botón "pedido"
+    $('[data-action="pedido"]').click(function() {
+        // Hacemos la petición AJAX para obtener los procesos con estado 4
+        $.ajax({
+            url: '<?= base_url('procesos_pedidos/getProcesosEstado4') ?>',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var tabla = '';
+                $.each(response, function(index, proceso) {
+                    tabla += '<tr>';
+                    tabla += '<td>' + proceso.id_linea_pedido + '</td>';
+                    tabla += '<td>' + proceso.nombre_proceso + '</td>';
+                    tabla += '<td>' + proceso.nombre_producto + '</td>';
+                    tabla += '<td><button class="btn btn-warning revertir-estado" data-id-relacion="' + proceso.id_relacion + '">Revertir</button></td>';
+                    tabla += '</tr>';
+                });
+                $('#tablaProcesos').html(tabla);
+                $('#modalProcesos').modal('show');
+            },
+            error: function() {
+                alert('Error al cargar los datos.');
+            }
         });
     });
 
+    // Manejar el clic en el botón "Revertir Estado"
+    $(document).on('click', '.revertir-estado', function() {
+        var idRelacion = $(this).data('id-relacion');
+
+        $.ajax({
+            url: '<?= base_url('procesos_pedidos/actualizarEstadoYEliminarRestricciones/') ?>' + idRelacion,
+            type: 'POST',
+            success: function(response) {
+                if (response.success) {
+            $('#modalProcesos').modal('hide');
+            location.reload(); 
+                } else {
+                    alert('Error al revertir el estado del proceso.');
+                }
+            },
+        });
+    });
+});
     // Funciones de filtrado
     function aplicarFiltros(columna) {
         const tableRows = document.querySelectorAll(`#col${columna} tbody tr`);

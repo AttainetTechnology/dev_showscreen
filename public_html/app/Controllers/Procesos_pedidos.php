@@ -331,10 +331,10 @@ class Procesos_pedidos extends BaseControllerGC
                 continue;
             }
             $idProceso = $proceso['id_proceso'];
-            $procesoInfo = $procesosPedidoModel->where('id_linea_pedido', $idLineaPedido)->where('id_proceso', $idProceso)->first();  
+            $procesoInfo = $procesosPedidoModel->where('id_linea_pedido', $idLineaPedido)->where('id_proceso', $idProceso)->first();
             if (is_null($procesoInfo)) {
                 continue;
-            }   
+            }
             if (!empty($procesoInfo['restriccion'])) {
                 $idsRestricciones = explode(',', $procesoInfo['restriccion']);
                 $nombresRestricciones = [];
@@ -395,14 +395,13 @@ class Procesos_pedidos extends BaseControllerGC
                 }
             }
         }
-    
+
         if (!empty($procesosConRestricciones)) {
             return $this->response->setJSON([
                 'error' => 'Uno o más procesos tienen restricciones pendientes.',
                 'procesosConRestricciones' => $procesosConRestricciones
             ]);
         }
-    
         return $this->response->setJSON(['success' => 'Estados actualizados y líneas eliminadas']);
     }
 
@@ -576,22 +575,156 @@ class Procesos_pedidos extends BaseControllerGC
 
         return $lineasConEstado2;
     }
-
+    //Procesos estado 4, manejo:
     public function getProcesosEstado4()
     {
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesosPedidoModel = new ProcesosPedido($db);
-    
-        // Consulta para obtener procesos con estado = 4 junto con el nombre del proceso
         $procesos = $procesosPedidoModel
-                    ->select('procesos_pedidos.id_linea_pedido, procesos_pedidos.id_proceso, procesos.nombre_proceso')
-                    ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
-                    ->where('procesos_pedidos.estado', 4)
-                    ->findAll();
-    
+            ->select('procesos_pedidos.id_relacion, procesos_pedidos.id_linea_pedido, procesos_pedidos.id_proceso, procesos.nombre_proceso, productos.nombre_producto')
+            ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
+            ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
+            ->join('productos', 'productos.id_producto = linea_pedidos.id_producto')
+            ->where('procesos_pedidos.estado', 4)
+            ->findAll();
+
         return $this->response->setJSON($procesos);
     }
-    
 
+    public function actualizarEstadoYEliminarRestricciones($idRelacion = null)
+    {
+        if (is_null($idRelacion)) {
+            return $this->response->setJSON(['error' => 'El idRelacion es requerido.']);
+        }
+
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $procesosPedidoModel = new ProcesosPedido($db);
+        $procesoModel = new Proceso($db);
+        $lineaPedidoModel = new LineaPedido($db);
+        $procesosProductosModel = new ProcesosProductos($db);
+
+        // Actualizar el proceso a estado 2 y eliminar los campos orden e id_maquina
+        $this->actualizarEstadoProceso($procesosPedidoModel, $idRelacion);
+
+        // Obtener los datos relevantes del proceso y línea de pedido
+        $procesoActual = $procesosPedidoModel->find($idRelacion);
+        if (!$procesoActual) {
+            return $this->response->setJSON(['error' => 'No se encontró el proceso asociado.']);
+        }
+
+        $idLineaPedido = $procesoActual['id_linea_pedido'];
+        $idProcesoActual = $procesoActual['id_proceso'];
+        $idProducto = $lineaPedidoModel->find($idLineaPedido)['id_producto'];
+
+        // Asegurarse de que la línea de pedido esté en estado 3
+        $this->actualizarEstadoLinea($lineaPedidoModel, $idLineaPedido);
+
+        // Gestionar las restricciones basadas en procesos en estado 2 o 3
+        $this->gestionarRestricciones($procesosPedidoModel, $procesosProductosModel, $idLineaPedido, $idProducto, $idProcesoActual, $idRelacion);
+
+        // Eliminar y actualizar restricciones en procesos relacionados
+        $this->actualizarRestriccionesEnProcesosRelacionados($procesosPedidoModel, $procesoModel, $idLineaPedido, $idProcesoActual);
+
+        return $this->response->setJSON(['success' => 'Estado actualizado y restricciones aplicadas correctamente.']);
+    }
+
+    private function actualizarEstadoProceso($procesosPedidoModel, $idRelacion)
+    {
+        $procesosPedidoModel->update($idRelacion, [
+            'estado' => 2,
+            'orden' => null,
+            'id_maquina' => null
+        ]);
+    }
+
+    private function actualizarEstadoLinea($lineaPedidoModel, $idLineaPedido)
+    {
+        $lineaPedido = $lineaPedidoModel->find($idLineaPedido);
+        if ($lineaPedido && $lineaPedido['estado'] != 3) {
+            $lineaPedidoModel->update($idLineaPedido, ['estado' => 3]);
+        }
+    }
+
+    private function gestionarRestricciones($procesosPedidoModel, $procesosProductosModel, $idLineaPedido, $idProducto, $idProcesoActual, $idRelacion)
+    {
+        $procesosRelacionados = $procesosPedidoModel
+            ->where('id_linea_pedido', $idLineaPedido)
+            ->whereIn('estado', [2, 3])
+            ->findAll();
+
+        $nuevasRestricciones = [];
+        foreach ($procesosRelacionados as $proceso) {
+            $idProcesoRelacionado = $proceso['id_proceso'];
+
+            $restriccionProducto = $procesosProductosModel
+                ->where('id_proceso', $idProcesoActual)
+                ->where('id_producto', $idProducto)
+                ->first();
+
+            if ($restriccionProducto && !empty($restriccionProducto['restriccion'])) {
+                $restriccionesArray = explode(',', $restriccionProducto['restriccion']);
+                if (in_array($idProcesoRelacionado, $restriccionesArray)) {
+                    $nuevasRestricciones[] = $idProcesoRelacionado;
+                }
+            }
+        }
+
+        if (!empty($nuevasRestricciones)) {
+            $procesosPedidoModel->update($idRelacion, [
+                'restriccion' => implode(',', $nuevasRestricciones)
+            ]);
+        }
+    }
+
+    private function actualizarRestriccionesEnProcesosRelacionados($procesosPedidoModel, $procesoModel, $idLineaPedido, $idProcesoActual)
+    {
+        $procesosRelacionados = $procesosPedidoModel->where('id_linea_pedido', $idLineaPedido)->findAll();
+
+        foreach ($procesosRelacionados as $proceso) {
+            $this->eliminarRestriccionProceso($procesosPedidoModel, $proceso, $idProcesoActual, $idLineaPedido);
+            $this->agregarRestriccionProceso($procesosPedidoModel, $procesoModel, $proceso, $idProcesoActual, $idLineaPedido);
+        }
+    }
+
+    private function eliminarRestriccionProceso($procesosPedidoModel, $proceso, $idProcesoActual, $idLineaPedido)
+    {
+        if (!empty($proceso['restriccion'])) {
+            $restricciones = explode(',', $proceso['restriccion']);
+            if (in_array($idProcesoActual, $restricciones)) {
+                $nuevasRestricciones = array_filter($restricciones, function ($value) use ($idProcesoActual) {
+                    return $value != $idProcesoActual;
+                });
+
+                $procesosPedidoModel
+                    ->where('id_proceso', $proceso['id_proceso'])
+                    ->where('id_linea_pedido', $idLineaPedido)
+                    ->set(['restriccion' => implode(',', $nuevasRestricciones) ?: null])
+                    ->update();
+            }
+        }
+    }
+
+    private function agregarRestriccionProceso($procesosPedidoModel, $procesoModel, $proceso, $idProcesoActual, $idLineaPedido)
+    {
+        if ($proceso['estado'] < 4 && $proceso['id_proceso'] != $idProcesoActual) {
+            $restriccionesConfig = $procesoModel->where('id_proceso', $proceso['id_proceso'])->first();
+
+            if ($restriccionesConfig) {
+                $restriccionesConfigArray = explode(',', $restriccionesConfig['restriccion']);
+                if (in_array($idProcesoActual, $restriccionesConfigArray)) {
+                    $restricciones = $proceso['restriccion'] ? explode(',', $proceso['restriccion']) : [];
+                    if (!in_array($idProcesoActual, $restricciones)) {
+                        $restricciones[] = $idProcesoActual;
+                        $procesosPedidoModel
+                            ->where('id_proceso', $proceso['id_proceso'])
+                            ->where('id_linea_pedido', $idLineaPedido)
+                            ->set(['restriccion' => implode(',', $restricciones)])
+                            ->update();
+                    }
+                }
+            }
+        }
+    }
 }
