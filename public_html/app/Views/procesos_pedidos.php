@@ -39,7 +39,7 @@
                 </div>
                 <div style="display: inline-block; vertical-align: middle;">
                     <button id="clearFilters" class="btn btn-sm btn-light ms-2">
-                        <i class="bi bi-x-circle"></i>Eliminar Filtros
+                        <i class="bi bi-x-circle"></i> Eliminar Filtros
                     </button>
                 </div>
             </div>
