@@ -843,6 +843,6 @@ a:hover.btfichar {
 	margin: 0;
 }
 
-[class^="gc-footer"]{
+/* [class^="gc-footer"]{
 	display: none !important;
-}
+} */
