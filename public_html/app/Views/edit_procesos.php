@@ -28,7 +28,7 @@
         <br>
         <h3 class="text-center mb-4">Editar Restricciones</h3>
         <?php
-        $restricciones_actuales = explode(',', $proceso_principal['restriccion']);
+        $restricciones_actuales = explode(',', $proceso_principal['restriccion'] ?? '');
         ?>
         <div class="row">
             <?php foreach ($procesos as $proceso): ?>

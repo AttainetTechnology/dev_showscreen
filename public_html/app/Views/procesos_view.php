@@ -77,7 +77,7 @@
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </ul>
-                        <?php else : ?>
+                        <?php else : ?> 
                             <p>No hay procesos disponibles.</p>
                         <?php endif; ?>
                     </div>

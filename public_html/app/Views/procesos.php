@@ -7,12 +7,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="processListModalLabel">Lista de Procesos</h5>
-                <button type="button" class="btn-close" aria-label="Close" onclick="window.location.href='<?= base_url() ?>'">&times;</button>
+                <button type="button" class="btn-close" aria-label="Close" onclick="window.location.href='<?= base_url() ?>'"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
                     <a href="<?= base_url('procesos/add'); ?>" class="btn btn-success btn-sm"> + Añadir</a>
-
                 </div>
                 <table class="table table-striped">
                     <thead>

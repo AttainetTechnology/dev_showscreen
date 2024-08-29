@@ -45,13 +45,13 @@ class Procesos extends BaseControllerGC
 
         return redirect()->to(base_url('procesos'));
     }
-
+    
     public function restriccion($primaryKey)
     {
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
-        $procesos = $procesoModel->where('id_proceso !=', $primaryKey)->findAll();
+        $procesos = $procesoModel->where('id_proceso !=', $primaryKey)->orderBy('nombre_proceso', 'ASC')->findAll();
         $proceso_principal = $procesoModel->find($primaryKey);
 
         // Verificar que estado_proceso esté bien definido
