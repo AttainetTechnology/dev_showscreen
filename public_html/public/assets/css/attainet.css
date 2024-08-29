@@ -359,9 +359,9 @@ tr.header-columns {
 	font-size: small;
 }
 
-/* .iframe_lineapedidos {
+.iframe_lineapedidos {
 	min-height: 907px !Important;
-} */
+}
 
 .btn-check:checked+.gc-container .btn-outline-dark,
 .btn-check:active+.gc-container .btn-outline-dark,

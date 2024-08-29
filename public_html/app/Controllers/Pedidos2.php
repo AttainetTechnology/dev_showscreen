@@ -295,10 +295,16 @@ class Pedidos2 extends BaseControllerGC
 			$pg2 = "Rafa";
 		}
 
-		return '<fieldset>
-					<input type="hidden" name="detalles" value="">
-					<iframe src="' . base_url('Pedidos2/Linea_pedidos/' . $id_pedido . '?pg2=' . $pg2) . '" frameborder="0" width="100%" class="iframe_lineapedidos"></iframe>
-				</fieldset>';
+		return '
+			<div class="guarda-pedido">
+				<!-- Botón de guardar pedido -->
+				</br>
+				<button type="submit" class="btn btn-primary btn-guardar-pedido">Guardar Pedido</button>
+			</div>
+			<fieldset>
+				<input type="hidden" name="detalles" value="">
+				<iframe src="' . base_url('Pedidos2/Linea_pedidos/' . $id_pedido . '?pg2=' . $pg2) . '" frameborder="0" width="100%" class="iframe_lineapedidos"></iframe>
+			</fieldset>';
 	}
 
 
