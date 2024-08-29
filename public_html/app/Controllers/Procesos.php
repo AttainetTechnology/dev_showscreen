@@ -13,8 +13,12 @@ class Procesos extends BaseControllerGC
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
         $procesos = $procesoModel->where('estado_proceso', 1)->orderBy('nombre_proceso', 'ASC')->findAll();
-        return view('procesos', ['procesos' => $procesos]);
+
+        // Pasar estado_proceso a la vista para mostrar botón correcto
+        return view('procesos', ['procesos' => $procesos, 'estado_proceso' => 1]);
     }
+
+
 
     public function add()
     {
@@ -147,14 +151,29 @@ class Procesos extends BaseControllerGC
         }
     }
 
-    public function delete($id)
+    public function cambiaEstado($id, $estado_actual)
     {
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
-        $procesoModel->delete($id);
-        return redirect()->to(base_url('procesos'));
+
+        // Obtener el proceso actual
+        $proceso = $procesoModel->find($id);
+
+        // Alternar el estado del proceso
+        $nuevo_estado = ($proceso['estado_proceso'] == 1) ? 0 : 1;
+
+        // Actualizar el estado del proceso
+        $procesoModel->update($id, ['estado_proceso' => $nuevo_estado]);
+
+        // Redirigir de vuelta a la vista que estaba antes del cambio
+        if ($estado_actual == 1) {
+            return redirect()->to(base_url('procesos'));
+        } else {
+            return redirect()->to(base_url('procesos/inactivos'));
+        }
     }
+
 
     public function getPreviousProceso($id)
     {
@@ -180,5 +199,16 @@ class Procesos extends BaseControllerGC
         } else {
             return $id;
         }
+    }
+
+    public function inactivos()
+    {
+        $data = datos_user();
+        $db = db_connect($data['new_db']);
+        $procesoModel = new Proceso($db);
+        $procesos = $procesoModel->where('estado_proceso', 0)->orderBy('nombre_proceso', 'ASC')->findAll();
+
+        // Pasar estado_proceso a la vista para mostrar botón correcto
+        return view('procesos', ['procesos' => $procesos, 'estado_proceso' => 0]);
     }
 }
