@@ -89,7 +89,7 @@ class Fichar extends BaseFichar
 				'id_usuario' => $fichaje['id_empleado'],
 				'entrada' => $fichaje['entrada'],
 				'salida' => $hoy,
-				'incidencia' => 'Ausencia por tiempo excedido'
+				'incidencia' => 'Tiempo excedido'
 			];
 			$fichajes->insert($data);
 			$presentes->delete($fichaje['id_empleado']);
