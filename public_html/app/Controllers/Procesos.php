@@ -75,6 +75,9 @@ class Procesos extends BaseControllerGC
                 'restriccion' => $restricciones_string
             ]);
 
+            $log = "Actualización de restriccion del proceso ID: {$primaryKey}";
+            $this->logAction('Procesos', $log, $data);
+
             $this->updateOrderAfterRestrictionChange($primaryKey, $restricciones_string);
 
             return redirect()->to($redirect_url);
