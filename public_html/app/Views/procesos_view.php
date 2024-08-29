@@ -87,19 +87,16 @@
                         <ul class="connectedSortable" style="border: 1px solid #000; margin: 10px; padding: 10px; min-height: 50px;" id="orderList">
                             <?php if (!empty($procesos)) : ?>
                                 <?php foreach ($procesos as $proceso) : ?>
-                                    <?php if ($proceso->estado_proceso == 1) : ?>
-                                        <li class="ui-state-default" data-id="<?= $proceso->id_proceso ?>">
-                                            <?= $proceso->nombre_proceso ?>
-                                            <button class="remove-process" data-id="<?= $proceso->id_proceso ?>">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </li>
-                                    <?php endif; ?>
+                                    <li class="ui-state-default" data-id="<?= $proceso->id_proceso ?>">
+                                        <?= $proceso->nombre_proceso ?>
+                                        <button class="remove-process" data-id="<?= $proceso->id_proceso ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </li>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <li class="placeholder">No hay procesos asociados.</li>
                             <?php endif; ?>
-
                         </ul>
                         <input type="hidden" id="order" value="">
                     </div>
