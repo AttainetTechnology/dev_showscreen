@@ -6,14 +6,33 @@ class Lista_produccion extends BaseControllerGC
 {
     protected $Menu_familias_model;
 
-    public function pendientes() { $this->todos('estado=', '0', 'Pendientes'); }
-    public function enmarcha() { $this->todos('estado=', '2', 'En cola'); }
-    public function enmaquina() { $this->todos('estado=', '3', 'En máquina'); }
-    public function terminados() { $this->todos('estado=', '4', 'Terminados'); }
-    public function entregados() { $this->todos('estado=', '5', 'Entregados'); }
-    public function todoslospartes() { $this->todos('estado<', '7', '(Todos)'); }
+    public function pendientes()
+    {
+        $this->todos('estado=', '0', 'Pendientes');
+    }
+    public function enmarcha()
+    {
+        $this->todos('estado=', '2', 'En cola');
+    }
+    public function enmaquina()
+    {
+        $this->todos('estado=', '3', 'En máquina');
+    }
+    public function terminados()
+    {
+        $this->todos('estado=', '4', 'Terminados');
+    }
+    public function entregados()
+    {
+        $this->todos('estado=', '5', 'Entregados');
+    }
+    public function todoslospartes()
+    {
+        $this->todos('estado<', '7', '(Todos)');
+    }
 
-    public function todos($coge_estado, $where_estado, $situacion) {
+    public function todos($coge_estado, $where_estado, $situacion)
+    {
         // Control de login    
         helper('controlacceso');
         $nivel = control_login();
@@ -48,10 +67,11 @@ class Lista_produccion extends BaseControllerGC
             $crud->setActionButton('Parte', 'fa fa-print', function ($row) {
                 $uri = service('uri');
                 $uri = current_url(true);
-                $pg2 = $uri;
-                return base_url('partes/print/') . '/' . $row->id_lineapedido . '?volver=' . $pg2;
-            }, false);
+                $pg2 = urlencode($uri); // Codifica la URL para evitar caracteres no permitidos
+                return base_url('partes/print/' . $row->id_lineapedido) . '?volver=' . $pg2 .  'target="_blank"';
+            }, true); // El último parámetro indica que es un enlace
         }
+
 
         if ($where_estado == '4') {
             $crud->setActionButton('Entregar', 'fa fa-truck', function ($row) {
@@ -59,7 +79,7 @@ class Lista_produccion extends BaseControllerGC
                 $uri = current_url(true);
                 $pg2 = $uri;
                 return base_url('/lista_produccion/actualiza_linea/') . '/' . $row->id_lineapedido . '/5/?volver=' . $pg2;
-            }, false);    
+            }, false);
         }
 
         $crud->callbackColumn('estado', array($this, '_cambia_color_lineas'));
@@ -78,21 +98,35 @@ class Lista_produccion extends BaseControllerGC
             exit;
         }
 
-        echo view('layouts/main', (array)$output);        
+        echo view('layouts/main', (array)$output);
     }
 
-    function _cambia_color_lineas($estado) {
+    function _cambia_color_lineas($estado)
+    {
         $nombre_estado = "";
-        if ($estado == '0') { $nombre_estado = "0. Pendiente de material"; }
-        if ($estado == '1') { $nombre_estado = "1. Falta material"; }
-        if ($estado == '2') { $nombre_estado = "2. Material recibido"; }
-        if ($estado == '3') { $nombre_estado = "3. En máquinas"; }
-        if ($estado == '4') { $nombre_estado = "4. Terminado"; }
-        if ($estado == '5') { $nombre_estado = "5. Entregado"; }
+        if ($estado == '0') {
+            $nombre_estado = "0. Pendiente de material";
+        }
+        if ($estado == '1') {
+            $nombre_estado = "1. Falta material";
+        }
+        if ($estado == '2') {
+            $nombre_estado = "2. Material recibido";
+        }
+        if ($estado == '3') {
+            $nombre_estado = "3. En máquinas";
+        }
+        if ($estado == '4') {
+            $nombre_estado = "4. Terminado";
+        }
+        if ($estado == '5') {
+            $nombre_estado = "5. Entregado";
+        }
         return "<div class='estado estado" . (($estado) ?: 'error') . "'>$nombre_estado</div>";
     }
 
-    function nombre_cliente($id_pedido) {
+    function nombre_cliente($id_pedido)
+    {
         $Pedidos_model = model('App\Models\Pedidos_model');
         $pedido = $Pedidos_model->obtener_datos_pedido($id_pedido);
         foreach ($pedido as $row) {
@@ -101,15 +135,54 @@ class Lista_produccion extends BaseControllerGC
         }
     }
 
-    public function actualiza_linea($id_lineapedido, $estado) {
+
+    public function actualiza_linea($id_lineapedido, $estado)
+    {
         $Lineaspedido_model = model('App\Models\Lineaspedido_model');
         $Lineaspedido_model->actualiza_linea($id_lineapedido, $estado);
-
+    
+        // Conectar a la base de datos
+        $data = datos_user();     
+        $db = db_connect($data['new_db']);
+        
+        // Eliminar todos los registros de la tabla procesos_pedidos con la misma id_linea_pedido
+        $builder = $db->table('procesos_pedidos');
+        $builder->where('id_linea_pedido', $id_lineapedido);
+        $builder->delete();
+        
+        // Obtener el id_pedido asociado a la línea de pedido
+        $builder = $db->table('linea_pedidos');
+        $builder->select('id_pedido');
+        $builder->where('id_lineapedido', $id_lineapedido);
+        $query = $builder->get();
+        $id_pedido = $query->getRow()->id_pedido;
+    
+        // Comprobar si todas las líneas de pedido asociadas al id_pedido están en estado 5
+        $builder = $db->table('linea_pedidos');
+        $builder->select('estado');
+        $builder->where('id_pedido', $id_pedido);
+        $query = $builder->get();
+        $allInState5 = true;
+        foreach ($query->getResult() as $row) {
+            if ($row->estado != 5) {
+                $allInState5 = false;
+                break;
+            }
+        }
+    
+        // Si todas las líneas de pedido están en estado 5, actualizar el estado del pedido a 5
+        if ($allInState5) {
+            $builder = $db->table('pedidos');
+            $builder->set('estado', 5);
+            $builder->where('id_pedido', $id_pedido);
+            $builder->update();
+        }
+    
+        // Redirigir a la URL de retorno si está definida
         if (isset($_GET['volver'])) {
             $volver = $_GET['volver'];
         }
         helper('url');
-        return redirect()->to($volver); 
+        return redirect()->to($volver);
     }
 }
-?>

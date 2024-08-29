@@ -66,12 +66,12 @@
                             </label>
                         <?php endif; ?>
                     </div>
-                    <button type="submit" class="btn btn-primary float-end" id="guardarModal">Guardar</button>   
+                    <button type="submit" class="btn btn-primary float-end" id="guardarModal">Guardar</button>
                 </form>
             </div>
-        </div> 
+        </div>
     </div>
-   
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

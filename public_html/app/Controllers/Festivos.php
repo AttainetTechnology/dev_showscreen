@@ -16,7 +16,6 @@ $nivel=control_login();
 //Fin Control de Login
 
 $crud = $this->_getClientDatabase();
-$crud->setLanguage('Spanish');
 $crud->setSubject('Festivo', 'Festivos');
 $crud->setTable('festivos');
 $crud->requiredFields(['festivo', 'fecha','tipo_festivo']);

@@ -9,11 +9,11 @@ class Usuarios extends BaseControllerGC
     public function index()
     {
         $crud = $this->_getClientDatabase();
-        
+
         // Obtener el NIF de la empresa
         $dbConnectionsModel = new \App\Models\DbConnectionsModel();
         $nif = $dbConnectionsModel->getNIF($this->data['id_empresa']);
-        
+
         // Configuración del CRUD
         $crud->setSubject('Usuario', 'Usuarios');
         $crud->setTable('users');
@@ -23,9 +23,9 @@ class Usuarios extends BaseControllerGC
         } else {
             $crud->columns(['nombre_usuario', 'apellidos_usuario', 'email', 'telefono', 'user_activo', 'fecha_alta', 'fecha_baja', 'userfoto']);
         }
-        
+
         $crud->unsetCssTheme();
-        
+
         // Configuración de los tipos de campo
         if (!empty($nif)) {
             $crud->fieldType('user_ficha', 'dropdown_search', ['0' => '❌', '1' => '✅']);
@@ -62,18 +62,15 @@ class Usuarios extends BaseControllerGC
 
         $crud->callbackBeforeInsert(function ($stateParameters) {
             $db = db_connect();
-            // Utiliza una consulta más directa para obtener el siguiente ID válido.
-            $query = $db->query('SELECT IFNULL(MAX(id), 0) as max_id FROM users');
+
+            // Use a more robust way to find the next available ID
+            $query = $db->query('SELECT MAX(id) + 1 as next_id FROM users');
             $row = $query->getRow();
-            $maxId = $row->max_id;
-        
-            // Ajusta el ID solo si es necesario, simplificando la lógica.
-            $stateParameters->data['id'] = $maxId >= 10 ? $maxId + 1 : 11;
-        
-            $db->close(); // Cierra explícitamente la conexión a la base de datos si es necesario.
+            $nextId = $row->next_id ? $row->next_id : 1;
+            // $stateParameters->data['id'] = $nextId;
+            $db->close();
             return $stateParameters;
         });
-        
 
         // Callbacks Insertar en la tabla LOG las acciones realizadas
         $crud->callbackAfterInsert(function ($stateParameters) {
@@ -112,10 +109,14 @@ class Usuarios extends BaseControllerGC
             'maxUploadSize' => '7M', // 20 Mega Bytes
             'minUploadSize' => '1K', // 1 Kilo Byte
             'allowedFileTypes' => [
-                'gif', 'jpeg', 'jpg', 'png', 'tiff'
+                'gif',
+                'jpeg',
+                'jpg',
+                'png',
+                'tiff'
             ]
         ];
-        
+
         // Formatos permitidos para 'userfoto'
         $crud->setFieldUpload('userfoto', $globalUploadPath, $globalUploadPath, $uploadValidations);
 

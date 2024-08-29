@@ -16,11 +16,13 @@
                     <div class="form-group">
                         <label for="id_cliente">Empresa:</label>
                         <select id="id_cliente" name="id_cliente" class="form-control">
-                            <?php foreach ($clientes as $cliente): ?>
+                            <option value="" selected disabled hidden>Seleccione empresa</option>
+                            <?php foreach ($clientes as $cliente) : ?>
                                 <option value="<?= $cliente['id_cliente'] ?>"><?= $cliente['nombre_cliente'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
+
                     <br>
                     <div class="form-group">
                         <label for="referencia">Referencia:</label>
@@ -48,7 +50,6 @@
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Guardar Pedido</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </form>
             </div>
         </div>

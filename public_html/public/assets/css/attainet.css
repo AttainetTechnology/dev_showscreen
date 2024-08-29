@@ -9,7 +9,7 @@ div#report-success,
 .fecha_entrega_form_group,
 .fecha_entrada_form_group,
 .btn {
-	font-size: 14px !important;
+	font-size: 13px !important;
 }
 
 .btn {
@@ -125,29 +125,26 @@ tr:has(.ruta2) {
 	text-align: center !important;
 }
 
-tr:has(.estado0) {
-	background-color: var(--amarilloclaro) !Important;
-}
 
-tr:has(.estado0) a {
-	color: var(--negro);
+/* tr:has(.estado0) a {
+	background-color: white !Important;
 	text-decoration: none;
-}
+} */
 
 tr:has(.estado1) {
 	background-color: #ff9933 !Important;
 }
 
 tr:has(.estado2) {
-	background-color: rgb(255, 200, 200) !Important;
+	background-color: #fff3cd !Important;
 }
 
 tr:has(.estado3) {
-	background-color: rgb(220, 251, 255) !Important;
+	background-color: #d9edf7!Important;
 }
 
 tr:has(.estado4) {
-	background-color: rgb(157, 206, 164) !Important;
+	background-color: #dff0d8 !Important;
 }
 
 tr:has(.estado4) a {
@@ -156,7 +153,7 @@ tr:has(.estado4) a {
 }
 
 tr:has(.estado5) {
-	background-color: rgb(227, 247, 227) !Important;
+	background-color:#50b752 !Important;
 }
 
 tr:has(.estado5) a {
@@ -256,6 +253,8 @@ input#field-precio {
 .btn-outline-dark {
 	color: #333 !Important;
 	border-color: #333 !Important;
+	margin: 5px !important;
+
 }
 
 .text-danger {
@@ -606,11 +605,10 @@ a:hover.btfichar {
 /* BOOTSTRAP */
 [class^="gc-full-page-title"] {
 	background-color: transparent !Important;
-	//display: none;
+	/* display: none; */
 }
 
 /* BOOTSTRAP Botones*/
-
 .btn-outline-dark {
 	--bs-btn-color: #212529;
 	--bs-btn-border-color: #212529;
@@ -777,7 +775,6 @@ a:hover.btfichar {
 	margin: 40px !important;
 	margin-top: 10px !important;
 }
-
 .modal-dialog {
 	height: 650px;
 	max-height: 650px;
@@ -843,3 +840,7 @@ a:hover.btfichar {
 .btn-custom i {
 	margin: 0;
 }
+
+/* [class^="gc-footer"]{
+	display: none !important;
+} */

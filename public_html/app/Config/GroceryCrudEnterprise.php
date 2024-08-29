@@ -75,7 +75,7 @@ class GroceryCrudEnterprise extends BaseConfig
             // If the maximum number is 1 then as we only have one button as a dropdown list the translation
             // is "Actions" rather than "More"
             'max_action_buttons' => [
-                'mobile' => 1,
+                'mobile' => 3,
                 'desktop' => 3
             ],
 

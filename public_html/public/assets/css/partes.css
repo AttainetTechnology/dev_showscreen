@@ -63,6 +63,7 @@ div#printableArea {
     background-color: #ffffff;
     margin: 10px;
     min-height: 1159px;
+    padding: 5rem;
 
 }
 
@@ -359,8 +360,8 @@ img.imagen_parte {
 
 #restoreImage {
     background-color: #dad9d9 !important;
-    margin-left: 20px;
-    margin-bottom: 10px;
+    margin-left: 30px;
+    margin-bottom: 20px;
 }
 
 .form-group {

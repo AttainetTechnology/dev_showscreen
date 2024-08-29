@@ -19,7 +19,7 @@ class Productos extends BaseControllerGC
         $crud->requiredFields(['nombre_producto', 'id_familia', 'unidad']);
         $crud->setRelationNtoN('procesos', 'procesos_productos', 'procesos', 'id_producto', 'id_proceso', '{nombre_proceso}');
         $crud->setLangString('modal_save', 'Guardar Producto');
-        $crud->addFields(['nombre_producto', 'id_familia', 'precio', 'unidad', 'estado_producto', 'procesos']);
+        $crud->addFields(['nombre_producto', 'id_familia', 'precio', 'unidad', 'estado_producto']);
         $crud->editFields(['id_producto', 'nombre_producto', 'id_familia', 'imagen', 'precio', 'unidad', 'estado_producto']);
         $crud->unsetRead();
 
@@ -91,7 +91,10 @@ class Productos extends BaseControllerGC
             $productoId = $stateParameters->primaryKeyValue;
 
             // Delete related rows in the procesos_productos table
-            $db = db_connect();
+            helper('controlacceso');
+            $data = usuario_sesion();
+            $db = db_connect($data['new_db']);
+
             $db->table('procesos_productos')->where('id_producto', $productoId)->delete();
 
             // Delete the product's image folder
@@ -156,7 +159,7 @@ class Productos extends BaseControllerGC
         $allProcesses = $query->getResult();
 
         $builder = $dbClient->table('procesos_productos');
-        $builder->select('*');
+        $builder->select('procesos_productos.*, procesos.nombre_proceso');
         $builder->where(['id_producto' => $id]);
         $builder->join('procesos', 'procesos.id_proceso=procesos_productos.id_proceso', 'left');
         $builder->orderby('orden', 'asc');
@@ -164,8 +167,14 @@ class Productos extends BaseControllerGC
 
         $orderedProcesses = $query->getResult();
 
-        return view('procesos_view', ['producto' => $producto, 'procesos' => $orderedProcesses, 'allProcesses' => $allProcesses]);
+        return view('procesos_view', [
+            'producto' => $producto,
+            'procesos' => $orderedProcesses,
+            'allProcesses' => $allProcesses
+        ]);
     }
+
+
 
     public function updateOrder()
     {
@@ -173,21 +182,53 @@ class Productos extends BaseControllerGC
         $data = usuario_sesion();
         $dbClient = db_connect($data['new_db']);
         $postData = $this->request->getPost();
+
         if (!isset($postData['data']) || !is_string($postData['data'])) {
             return $this->response->setStatusCode(400, 'Bad Request: Missing or invalid data parameter');
         }
-        $newOrder = json_decode($postData['data'], true);
 
+        $newOrder = json_decode($postData['data'], true);
         $id_producto = $newOrder[0]['id_producto'];
         $dbClient->table('procesos_productos')->where('id_producto', $id_producto)->delete();
 
         foreach ($newOrder as $item) {
+            $id_proceso = $item['id_proceso'];
+            $orden = $item['orden'];
+
+            // Obtener las restricciones del proceso actual
+            $proceso = $dbClient->table('procesos')->where('id_proceso', $id_proceso)->get()->getRow();
+            $restricciones = $proceso->restriccion;
+
+            if (!empty($restricciones)) {
+                $restriccionesArray = explode(',', $restricciones);
+
+                // Filtrar las restricciones para que solo incluyan procesos asociados al mismo producto
+                $builder = $dbClient->table('procesos_productos');
+                $builder->select('id_proceso');
+                $builder->where('id_producto', $id_producto);
+                $query = $builder->get();
+                $procesosProducto = $query->getResultArray();
+
+                $procesosProductoIds = array_column($procesosProducto, 'id_proceso');
+                $restriccionesFiltradas = array_intersect($restriccionesArray, $procesosProductoIds);
+
+                // Convertir las restricciones filtradas de nuevo a string
+                $restriccionesFiltradasString = implode(',', $restriccionesFiltradas);
+            } else {
+                $restriccionesFiltradasString = '';
+            }
+
+            // Insertar el proceso en la tabla procesos_productos con las restricciones filtradas
             $dbClient->table('procesos_productos')->insert([
-                'id_producto' => $item['id_producto'],
-                'id_proceso' => $item['id_proceso'],
-                'orden' => $item['orden']
+                'id_producto' => $id_producto,
+                'id_proceso' => $id_proceso,
+                'orden' => $orden,
+                'restriccion' => $restriccionesFiltradasString
             ]);
         }
+
+        $log = "Actualización procesos para producto ID: {$id_producto}";
+        $this->logAction('Productos/Procesos', $log, $data);
 
         return $this->response->setStatusCode(200, 'Order updated successfully');
     }
