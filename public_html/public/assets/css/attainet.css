@@ -841,6 +841,8 @@ a:hover.btfichar {
 	margin: 0;
 }
 
-/* [class^="gc-footer"]{
-	display: none !important;
-} */
+[class^="gc-column-text"]{
+	min-height: 38px;
+	height: auto!Important;
+	display: contents!Important;
+}
