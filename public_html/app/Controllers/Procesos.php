@@ -45,7 +45,7 @@ class Procesos extends BaseControllerGC
 
         return redirect()->to(base_url('procesos'));
     }
-    
+
     public function restriccion($primaryKey)
     {
         $data = datos_user();
@@ -54,9 +54,17 @@ class Procesos extends BaseControllerGC
         $procesos = $procesoModel->where('id_proceso !=', $primaryKey)->orderBy('nombre_proceso', 'ASC')->findAll();
         $proceso_principal = $procesoModel->find($primaryKey);
 
+        // Filtrar solo los procesos activos (estado_proceso = 1)
+        $procesos = $procesoModel->where('id_proceso !=', $primaryKey)
+            ->where('estado_proceso', 1)
+            ->orderBy('nombre_proceso', 'ASC')
+            ->findAll();
+
+        $proceso_principal = $procesoModel->find($primaryKey);
+
         // Verificar que estado_proceso esté bien definido
         if ($proceso_principal['estado_proceso'] === null) {
-            $proceso_principal['estado_proceso'] = '1'; // Valor por defecto si no está definido
+            $proceso_principal['estado_proceso'] = '1';
         }
 
         $previous_proceso_id = $this->getPreviousProceso($primaryKey);
@@ -64,7 +72,7 @@ class Procesos extends BaseControllerGC
 
         if ($this->request->is('post')) {
             $nombre_proceso = $this->request->getPost('nombre_proceso');
-            $estado_proceso = $this->request->getPost('estado_proceso') ?? '1'; // Asegura que sea 1 por defecto
+            $estado_proceso = $this->request->getPost('estado_proceso') ?? '1';
             $restricciones = $this->request->getPost('restricciones');
             $redirect_url = $this->request->getPost('redirect_url');
 
