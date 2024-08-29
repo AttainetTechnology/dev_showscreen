@@ -220,7 +220,7 @@ class Pedidos2 extends BaseControllerGC
 			$insertId = $pedidoModel->insertID();
 
 			// Registrar la acción en el log
-			$this->logAction('Pedido', 'Añadir Pedido, ID: ' . $insertId, $data);
+			$this->logAction('Pedido', 'Añadir Pedido', $data);
 
 			// Redirigir a la página en marcha
 			return redirect()->to(base_url('pedidos2/enmarcha'));
