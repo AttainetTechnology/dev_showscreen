@@ -227,6 +227,9 @@ class Productos extends BaseControllerGC
             ]);
         }
 
+        $log = "Actualización procesos para producto ID: {$id_producto}";
+        $this->logAction('Productos/Procesos', $log, $data);
+
         return $this->response->setStatusCode(200, 'Order updated successfully');
     }
 }
