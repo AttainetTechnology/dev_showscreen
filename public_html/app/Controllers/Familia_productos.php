@@ -11,7 +11,9 @@ class Familia_productos extends BaseControllerGC
 
     $crud->setSubject('Familia de productos','Familias de productos');
     $crud->setTable('familia_productos');
+    $crud->columns(['nombre']);
     $crud->requiredFields(['nombre']);
+    $crud->editFields(['nombre']);
     $crud->defaultOrdering('orden','asc');
     $crud->defaultOrdering('en_menu','desc');
     // $crud->unsetRead();
