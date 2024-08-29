@@ -12,7 +12,7 @@ class Procesos extends BaseControllerGC
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
-        $procesos = $procesoModel->orderBy('nombre_proceso', 'ASC')->findAll();
+        $procesos = $procesoModel->where('estado_proceso', 1)->orderBy('nombre_proceso', 'ASC')->findAll();
         return view('procesos', ['procesos' => $procesos]);
     }
 

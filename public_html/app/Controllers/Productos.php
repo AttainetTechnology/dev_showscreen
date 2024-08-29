@@ -97,11 +97,16 @@ class Productos extends BaseControllerGC
 
             $db->table('procesos_productos')->where('id_producto', $productoId)->delete();
 
-            // Delete the product's image folder
             $productoFolder = $globalUploadPath . $productoId;
             if (is_dir($productoFolder)) {
-                array_map('unlink', glob("$productoFolder/."));
-                rmdir($productoFolder);
+                // Obtén todos los archivos en el directorio y elimínalos
+                $files = glob("$productoFolder/*");
+                foreach ($files as $file) {
+                    if (is_file($file)) {
+                        unlink($file);
+                    }
+                }
+                rmdir($productoFolder); 
             }
             return $stateParameters;
         });

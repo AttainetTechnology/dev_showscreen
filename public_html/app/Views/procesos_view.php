@@ -70,32 +70,36 @@
                         <?php if (!empty($allProcesses)) : ?>
                             <ul id="sortable" class="connectedSortable">
                                 <?php foreach ($allProcesses as $proceso) : ?>
-                                    <?php if (!in_array($proceso->id_proceso, array_column($procesos, 'id_proceso'))) : ?>
+                                    <?php if ($proceso->estado_proceso == 1 && !in_array($proceso->id_proceso, array_column($procesos, 'id_proceso'))) : ?>
                                         <li class="ui-state-default" data-id="<?= $proceso->id_proceso ?>">
                                             <?= $proceso->nombre_proceso ?>
                                         </li>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </ul>
-                        <?php else : ?> 
+                        <?php else : ?>
                             <p>No hay procesos disponibles.</p>
                         <?php endif; ?>
+
                     </div>
                     <div class="col-md-6">
                         <h6>Ordenar Procesos</h6>
                         <ul class="connectedSortable" style="border: 1px solid #000; margin: 10px; padding: 10px; min-height: 50px;" id="orderList">
                             <?php if (!empty($procesos)) : ?>
                                 <?php foreach ($procesos as $proceso) : ?>
-                                    <li class="ui-state-default" data-id="<?= $proceso->id_proceso ?>">
-                                        <?= $proceso->nombre_proceso ?>
-                                        <button class="remove-process" data-id="<?= $proceso->id_proceso ?>">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </li>
+                                    <?php if ($proceso->estado_proceso == 1) : ?>
+                                        <li class="ui-state-default" data-id="<?= $proceso->id_proceso ?>">
+                                            <?= $proceso->nombre_proceso ?>
+                                            <button class="remove-process" data-id="<?= $proceso->id_proceso ?>">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </li>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <li class="placeholder">No hay procesos asociados.</li>
                             <?php endif; ?>
+
                         </ul>
                         <input type="hidden" id="order" value="">
                     </div>
