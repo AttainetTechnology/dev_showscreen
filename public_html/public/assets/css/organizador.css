@@ -19,14 +19,16 @@
     flex: 1;
     padding: 0 30px;
     min-width: 0;
+    width: 45vh;
 }
 
 #col3 {
-    flex: 0 0 2%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    width: 10vh;
+    margin-top: 25vh;
+    height: 100vh;
 }
 
 .table {
@@ -54,10 +56,14 @@
 
 .cabecera {
     padding: 30px;
+    height: 18vh;
+    min-height: 150px !important;
+    min-width: 98px !important;
 }
 
 #col2 .resultados {
-    height: 700px;
+    height: 80vh;
+    border-collapse: collapse;
     overflow-y: auto;
 }
 
@@ -74,7 +80,8 @@
 }
 
 #col4 .resultados {
-    height: 700px;
+    height: 80vh;
+    border-collapse: collapse;
     overflow-y: auto;
 }
 
