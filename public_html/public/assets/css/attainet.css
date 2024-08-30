@@ -514,7 +514,14 @@ Estilos para impresión
 }
 
 img.logo_app {
-	max-width: 80% !important;
+	max-width: 90% !important;
+    margin-left: 18px;
+    margin-top: 5px;
+}
+.p-3 {
+    padding: 1rem !important;
+    margin-left: 6px;
+    margin-top: -14px;
 }
 
 a.link-dark.rounded.seleccionado {

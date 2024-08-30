@@ -13,7 +13,7 @@
                 <div class="mb-3 btnListaProcesos">
                     <a href="<?= base_url('procesos/add'); ?>" class="btn btn-light addProcesos"> + Añadir</a>
                     <?php if ($estado_proceso == 1): ?>
-                        <a href="<?= base_url('procesos/inactivos'); ?>" class="btn btn-light btnInactAct">Inactivos</a>
+                        <a href="<?= base_url('procesos/inactivos'); ?>" class="btn btn-light btnInactAct">Desactivados</a>
                     <?php else: ?>
                         <a href="<?= base_url('procesos'); ?>" class="btn btn-light btnInactAct">Activos</a>
                     <?php endif; ?>
@@ -38,7 +38,7 @@
                                         </svg>
                                     </a>
                                     <a href="<?= base_url('procesos/cambiaEstado/' . $proceso['id_proceso'] . '/' . $estado_proceso); ?>" class="btn btn-light btnInactAct" onclick="return confirm('¿Estás seguro de cambiar el estado de este proceso?')">
-                                        <?= $estado_proceso == 1 ? 'Inactivar' : 'Activar' ?>
+                                        <?= $estado_proceso == 1 ? 'Desactivar' : 'Activar' ?>
                                     </a>
                                 </td>
                             </tr>
