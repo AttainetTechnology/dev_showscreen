@@ -886,3 +886,8 @@ a:hover.btfichar {
     color: #ffffff; 
 }
 
+[class^="gc-column-text"]{
+	min-height: 38px;
+	height: auto!Important;
+	display: contents!Important;
+}
