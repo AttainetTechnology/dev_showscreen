@@ -152,7 +152,7 @@
                 <h4 id="tituloProcesosEnMaquina">Procesos en máquina</h4>
                 <br>
                 <div style="display: inline-block; vertical-align: middle;">
-                    <select id="maquinaFilterCol4" class="form-control d-inline-block" style="width: auto;" onchange="filtrarProcesosPorMaquina(this.value);">
+                    <select id="maquinaFilterCol4" class="form-control d-inline-block" onchange="filtrarProcesosPorMaquina(this.value);">
                         <option value="">Todas las máquinas</option>
                         <?php if (isset($maquinas)) : ?>
                             <?php

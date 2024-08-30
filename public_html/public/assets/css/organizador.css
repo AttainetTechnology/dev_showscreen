@@ -17,7 +17,6 @@
 #col2,
 #col4 {
     flex: 1;
-    padding: 0 30px;
     min-width: 0;
     width: 45vh;
 }
@@ -49,20 +48,19 @@
     justify-content: space-between;
 }
 
-#searchInput {
+#searchInput, #maquinaFilterCol4 {
     width: calc(100% - 110px);
     margin-right: 10px;
 }
-
 .cabecera {
-    padding: 30px;
-    height: 18vh;
+    padding-top: 35px;
+    height: 16vh;
     min-height: 150px !important;
     min-width: 98px !important;
 }
 
 #col2 .resultados {
-    height: 80vh;
+    height: 78vh;
     border-collapse: collapse;
     overflow-y: auto;
 }
@@ -80,7 +78,7 @@
 }
 
 #col4 .resultados {
-    height: 80vh;
+    height: 78vh;
     border-collapse: collapse;
     overflow-y: auto;
 }
