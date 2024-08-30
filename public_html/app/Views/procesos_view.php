@@ -67,7 +67,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h6>Todos los Procesos</h6>
+                        <input type="text" id="filterInput" placeholder="Buscar procesos..." class="form-control mb-2">
                         <?php if (!empty($allProcesses)) : ?>
+                            <?php usort($allProcesses, function ($a, $b) {
+                                return strcmp($a->nombre_proceso, $b->nombre_proceso);
+                            }); ?>
                             <ul id="sortable" class="connectedSortable">
                                 <?php foreach ($allProcesses as $proceso) : ?>
                                     <?php if ($proceso->estado_proceso == 1 && !in_array($proceso->id_proceso, array_column($procesos, 'id_proceso'))) : ?>
@@ -82,6 +86,7 @@
                         <?php endif; ?>
 
                     </div>
+
                     <div class="col-md-6">
                         <h6>Ordenar Procesos</h6>
                         <ul class="connectedSortable" style="border: 1px solid #000; margin: 10px; padding: 10px; min-height: 50px;" id="orderList">
@@ -120,6 +125,13 @@
 
 <script>
     $(document).ready(function() {
+        // Filtro de búsqueda
+        $('#filterInput').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $('#sortable li').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
         // Mostrar el modal al cargar la página
         $('#procesosModal').modal('show');
 
