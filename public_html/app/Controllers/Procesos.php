@@ -39,6 +39,10 @@ class Procesos extends BaseControllerGC
             'estado_proceso' => $estado_proceso,
             'restriccion' => null
         ]);
+        // Registrar la acción en el log
+        $id_proceso = $procesoModel->insertID(); // Obtener el ID del nuevo proceso
+        $log = "Nuevo proceso añadido: {$nombre_proceso} con ID: {$id_proceso}";
+        $this->logAction('Procesos', $log, $data);
         return redirect()->to(base_url('procesos'));
     }
     public function restriccion($primaryKey)
@@ -142,6 +146,10 @@ class Procesos extends BaseControllerGC
         if ($nuevo_estado == 0) {
             $this->removeProcesoFromProductos($db, $id);
         }
+        // Registrar la acción en el log
+        $accion = $nuevo_estado == 1 ? 'activado' : 'desactivado';
+        $log = "Proceso ID: {$id} ha sido {$accion}";
+        $this->logAction('Procesos', $log, $data);
         // Redirigir de vuelta a la vista que estaba antes del cambio
         if ($estado_actual == 1) {
             return redirect()->to(base_url('procesos'));
