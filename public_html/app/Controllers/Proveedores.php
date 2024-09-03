@@ -29,7 +29,7 @@ class Proveedores extends BaseControllerGC
         $crud->setLangString('modal_save', 'Guardar Proveedor');
         // Personalizar el campo id_proveedor para incluir el botón
         $crud->callbackEditField('id_proveedor', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $button = "<a href='" . base_url("proveedores/verProductos/{$primaryKeyValue}") . "' class='btn btn-info mt-3' data-toggle='modal' data-target='#productosModal'>Ver Productos</a>";
+            $button = "<a href='" . base_url("proveedores/verProductos/{$primaryKeyValue}") . "' class='btn btn-warning btn-sm botonProductos' data-toggle='modal' data-target='#productosModal'><i class='fa fa-box fa-fw'></i> Ver Productos</a>";
             return $button . "<input type='hidden' name='id_proveedor' value='{$fieldValue}'>";
         });
         // Callbacks para LOG
@@ -76,8 +76,8 @@ class Proveedores extends BaseControllerGC
             'productos' => $productos,
             'productos_necesidad' => $productos_necesidad,
             'id_proveedor' => $id_proveedor,
-            'nombre_proveedor' => $proveedor['nombre_proveedor'], 
-            'familias' => $familias 
+            'nombre_proveedor' => $proveedor['nombre_proveedor'],
+            'familias' => $familias
         ]);
     }
 

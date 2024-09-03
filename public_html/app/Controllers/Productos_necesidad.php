@@ -34,9 +34,10 @@ class Productos_necesidad extends BaseControllerGC
 
         // Personalizar el campo id_producto para incluir el botón
         $crud->callbackEditField('id_producto', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $button = "<a href='" . base_url("productos_necesidad/verProductos/{$primaryKeyValue}") . "' class='btn btn-info mt-3' data-toggle='modal' data-target='#productoModal'>¿Vendemos este producto?</a>";
+            $button = "<a href='" . base_url("productos_necesidad/verProductos/{$primaryKeyValue}") . "' class='btn btn-warning btn-sm botonProductos' data-toggle='modal' data-target='#productoModal'><i class='fa fa-box fa-fw'></i> ¿Vendemos este producto?</a>";
             return $button . "<input type='hidden' name='id_producto' value='{$fieldValue}'>";
         });
+
         // Define paths and upload settings for images
         $globalUploadPath = 'public/assets/uploads/files/' . $this->data['id_empresa'] . '/productos_necesidad/';
         if (!is_dir($globalUploadPath)) {

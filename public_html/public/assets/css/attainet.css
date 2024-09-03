@@ -140,7 +140,7 @@ tr:has(.estado2) {
 }
 
 tr:has(.estado3) {
-	background-color: #d9edf7!Important;
+	background-color: #d9edf7 !Important;
 }
 
 tr:has(.estado4) {
@@ -153,7 +153,7 @@ tr:has(.estado4) a {
 }
 
 tr:has(.estado5) {
-	background-color:#50b752 !Important;
+	background-color: #50b752 !Important;
 	color: #ffffff !Important;
 }
 
@@ -406,8 +406,7 @@ span.extra {
 	background-color: #f2dedd;
 }
 
-Estilos para impresión
-.col-print-1 {
+Estilos para impresión .col-print-1 {
 	width: 8%;
 	float: left;
 }
@@ -515,13 +514,14 @@ Estilos para impresión
 
 img.logo_app {
 	max-width: 90% !important;
-    margin-left: 18px;
-    margin-top: 5px;
+	margin-left: 18px;
+	margin-top: 5px;
 }
+
 .p-3 {
-    padding: 1rem !important;
-    margin-left: 6px;
-    margin-top: -14px;
+	padding: 1rem !important;
+	margin-left: 6px;
+	margin-top: -14px;
 }
 
 a.link-dark.rounded.seleccionado {
@@ -729,7 +729,7 @@ a:hover.btfichar {
 	border-bottom: 10px solid #f8bf4388;
 }
 
-[class^="gc-column-action"]{
+[class^="gc-column-action"] {
 	background-color: white !important;
 }
 
@@ -784,6 +784,7 @@ a:hover.btfichar {
 	margin: 40px !important;
 	margin-top: 10px !important;
 }
+
 .modal-dialog {
 	height: 650px;
 	max-height: 650px;
@@ -829,7 +830,7 @@ a:hover.btfichar {
 	gap: 4px;
 	/* Ajusta el espacio entre el ícono y el texto */
 	background-color: #f8bf43 !important;
-	border-color: #f8bf43 !important ;
+	border-color: #f8bf43 !important;
 	border: none;
 	color: white;
 	padding: 10px 15px;
@@ -851,43 +852,64 @@ a:hover.btfichar {
 }
 
 /* Procesos-botones*/
-.btnInactAct,.editarProceso,.addProcesos{
+.btnInactAct,
+.editarProceso,
+.addProcesos {
 	font-size: 14px !important;
 	margin-right: 16px;
 }
+
 .btnInactAct {
-    background-color: #7b858d;
-    color: #ffffff !important;  
-    border: none;         
+	background-color: #7b858d;
+	color: #ffffff !important;
+	border: none;
 }
+
 .btnInactAct:hover {
-    background-color: #5a6268; 
-    color: #ffffff;          
+	background-color: #5a6268;
+	color: #ffffff;
 }
 
 .editarProceso {
-    background-color: #e0a800; ;
-    color: #ffffff !important;
-    border: none;           
+	background-color: #e0a800;
+	;
+	color: #ffffff !important;
+	border: none;
 }
 
 .editarProceso:hover {
-    background-color: #f7d46c;
-    color: #212529; 
+	background-color: #f7d46c;
+	color: #212529;
 }
 
-.addProcesos{
+.addProcesos {
 	background-color: #5c8d5e;
 	color: #ffffff !important;
-	border: none;           
-}
-.addProcesos:hover {
-    background-color: #2c6b3d !important;
-    color: #ffffff; 
+	border: none;
 }
 
-[class^="gc-column-text"]{
+.addProcesos:hover {
+	background-color: #2c6b3d !important;
+	color: #ffffff;
+}
+
+[class^="gc-column-text"] {
 	min-height: 38px;
-	height: auto!Important;
-	display: contents!Important;
+	height: auto !Important;
+	display: contents !Important;
+}
+
+[for="gc-form-id_proveedor"],
+[for="gc-form-id_producto"] {
+	display: none;
+}
+
+.botonProductos {
+	margin-bottom: 30px;
+}
+
+.comparador {
+	margin-top: 4vw;
+	margin-left: 4vh;
+	margin-right: 4vh;
 }
