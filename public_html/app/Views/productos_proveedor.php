@@ -57,6 +57,16 @@
                 <?php endif; ?>
                 <!-- Añadir Productos -->
                 <h5 class="mt-4">Añadir Productos</h5>
+                <!-- Filtro por Familia -->
+                <div class="form-group mb-4">
+                    <label for="filter-familia">Filtrar por Familia:</label>
+                    <select id="filter-familia" class="form-control">
+                        <option value="">Todas las familias</option>
+                        <?php foreach ($familias as $familia): ?>
+                            <option value="<?= esc($familia['id_familia']) ?>"><?= esc($familia['nombre']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <form action="<?= base_url('proveedores/agregarProducto') ?>" method="post">
                     <input type="hidden" name="id_proveedor" value="<?= esc($id_proveedor) ?>">
 
@@ -64,13 +74,9 @@
                         <label for="producto">Producto</label>
                         <select name="id_producto_necesidad" id="producto" class="form-control" <?= empty($productos_necesidad) ? 'disabled' : '' ?>>
                             <option value="" disabled selected>Selecciona producto</option>
-                            <?php if (empty($productos_necesidad)): ?>
-                                <option value="">No hay productos para añadir</option>
-                            <?php else: ?>
-                                <?php foreach ($productos_necesidad as $producto): ?>
-                                    <option value="<?= esc($producto['id_producto']) ?>"><?= esc($producto['nombre_producto']) ?></option>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                            <?php foreach ($productos_necesidad as $producto): ?>
+                                <option value="<?= esc($producto['id_producto']) ?>" data-familia="<?= esc($producto['id_familia']) ?>"><?= esc($producto['nombre_producto']) ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group">
@@ -83,15 +89,43 @@
                     </div>
                     <button type="submit" class="btn btn-success mt-2" <?= empty($productos_necesidad) ? 'disabled' : '' ?>>Añadir Producto</button>
                 </form>
+
                 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+                <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+
                 <script>
                     $(document).ready(function() {
+                        // Filtrar productos por familia
+                        $('#filter-familia').on('change', function() {
+                            var familiaId = $(this).val();
+                            var selectedProduct = $('#producto').val();
+                            var selectedProductBelongsToFamily = false;
+
+                            $('#producto option').each(function() {
+                                if (familiaId === "" || $(this).data('familia') == familiaId) {
+                                    $(this).show();
+                                    if ($(this).val() == selectedProduct) {
+                                        selectedProductBelongsToFamily = true;
+                                    }
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                            // Si el producto seleccionado no pertenece a la familia seleccionada, deseleccionarlo
+                            if (!selectedProductBelongsToFamily) {
+                                $('#producto').val('').change(); // Deselect
+                            }
+                        });
+
                         // Mostrar el modal
                         $('#productosModal').modal('show');
+
                         // Redirigir al cerrar el modal con clic fuera de él
                         $('#productosModal').on('hidden.bs.modal', function() {
                             window.location.href = '<?= base_url('proveedores') ?>';
                         });
+
                         // Activar la edición
                         $('.btn-edit').on('click', function() {
                             var row = $(this).closest('tr');

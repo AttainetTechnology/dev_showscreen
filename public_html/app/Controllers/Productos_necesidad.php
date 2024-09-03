@@ -17,7 +17,7 @@ class Productos_necesidad extends BaseControllerGC
         $crud->editFields(['nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
         $crud->columns(['nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
 
-        $crud->setRelation('id_familia', 'familia_productos', 'nombre');
+        $crud->setRelation('id_familia', 'familia_proveedor', 'nombre');
         
         // Display As
         $crud->displayAs('id_familia', 'Familia');
