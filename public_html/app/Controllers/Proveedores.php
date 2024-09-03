@@ -126,4 +126,31 @@ class Proveedores extends BaseControllerGC
             ->delete();
         return redirect()->back()->with('message', 'Producto eliminado con éxito.');
     }
+    public function actualizarProducto()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ProductosProveedorModel($db);
+
+        $idProveedor = $this->request->getPost('id_proveedor');
+        $idProductoNecesidad = $this->request->getPost('id_producto_necesidad');
+        $refProducto = $this->request->getPost('ref_producto');
+        $precio = $this->request->getPost('precio');
+
+        // Validación de los campos
+        if (empty($precio) || empty($refProducto)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Los campos de precio y referencia son obligatorios.']);
+        }
+
+        // Actualizar el producto
+        $model->where('id_proveedor', $idProveedor)
+            ->where('id_producto_necesidad', $idProductoNecesidad)
+            ->set([
+                'ref_producto' => $refProducto,
+                'precio' => $precio
+            ])
+            ->update();
+
+        return $this->response->setJSON(['success' => true]);
+    }
 }

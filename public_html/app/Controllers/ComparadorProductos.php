@@ -4,37 +4,41 @@ namespace App\Controllers;
 
 use App\Models\ProductosNecesidadModel;
 use App\Models\ProductosProveedorModel;
-use App\Models\ProveedoresModel;
 
 class ComparadorProductos extends BaseController
 {
     public function index()
     {
-        $productosModel = new ProductosNecesidadModel();
-        $productos = $productosModel->findAll();
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        
+        // Instanciar los modelos
+        $productosNecesidadModel = new ProductosNecesidadModel($db);
+        $productosProveedorModel = new ProductosProveedorModel($db);
 
-        $productosProveedorModel = new ProductosProveedorModel();
-        $proveedoresModel = new ProveedoresModel();
+        // Obtener todos los productos de necesidad, ordenados por nombre
+        $productos = $productosNecesidadModel->orderBy('nombre_producto', 'ASC')->findAll();
 
-        // Crear un array para almacenar productos con sus respectivos proveedores
-        $productosConProveedores = [];
+        // Crear un array para almacenar los productos y sus ofertas
+        $comparador = [];
 
+        // Recorrer todos los productos y obtener las ofertas de los proveedores
         foreach ($productos as $producto) {
-            // Obtener los proveedores para cada producto
-            $proveedores = $productosProveedorModel
-                ->select('proveedores.nombre_proveedor, productos_proveedor.precio')
+            // Obtener las ofertas de los proveedores para este producto
+            $ofertas = $productosProveedorModel
+                ->select('productos_proveedor.*, proveedores.nombre_proveedor')
                 ->join('proveedores', 'proveedores.id_proveedor = productos_proveedor.id_proveedor')
-                ->where('productos_proveedor.id_producto_necesidad', $producto['id_producto'])
+                ->where('id_producto_necesidad', $producto['id_producto'])
                 ->findAll();
 
-            // Añadir los proveedores al producto
-            $productosConProveedores[] = [
+            // Agregar las ofertas al array de comparador
+            $comparador[] = [
                 'producto' => $producto,
-                'proveedores' => $proveedores
+                'ofertas' => $ofertas
             ];
         }
 
         // Pasar los datos a la vista
-        return view('productos_lista', ['productosConProveedores' => $productosConProveedores]);
+        return view('comparadorProductos', ['comparador' => $comparador]);
     }
 }

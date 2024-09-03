@@ -7,9 +7,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="productosModalLabel">Productos de <?= esc($nombre_proveedor) ?></h5>
-                <button type="button" class="btn-close-custom" aria-label="Close" onclick="window.location.href='<?= base_url() ?>'">
-                    &times;
-                </button>
+                <a href="<?= base_url('proveedores'); ?>">
+                    <button type="button" class="btn-close-custom" aria-label="Close">
+                        &times;
+                    </button>
+                </a>
             </div>
             <div class="modal-body" id="productosModalBody">
                 <?php if (empty($productos)): ?>
@@ -27,12 +29,20 @@
                         <tbody>
                             <?php foreach ($productos as $producto): ?>
                                 <tr>
-                                    <td><?= esc($producto['ref_producto']) ?></td>
-                                    <td><?= esc($producto['nombre_producto']) ?></td>
-                                    <td><?= esc($producto['precio']) ?></td>
                                     <td>
-                                        <!-- Formulario para eliminar el producto -->
-                                        <form action="<?= base_url('proveedores/eliminarProducto') ?>" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                        <span class="ref_producto"><?= esc($producto['ref_producto']) ?></span>
+                                        <input type="text" class="form-control edit-ref_producto d-none" value="<?= esc($producto['ref_producto']) ?>">
+                                    </td>
+                                    <td><?= esc($producto['nombre_producto']) ?></td>
+                                    <td>
+                                        <span class="precio"><?= esc($producto['precio']) ?></span>
+                                        <input type="text" class="form-control edit-precio d-none" value="<?= esc($producto['precio']) ?>">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-edit">Editar</button>
+                                        <button type="button" class="btn btn-success btn-save d-none">Guardar</button>
+                                        <button type="button" class="btn btn-secondary btn-cancel d-none">Cancelar</button>
+                                        <form action="<?= base_url('proveedores/eliminarProducto') ?>" method="post" class="d-inline btn-delete">
                                             <input type="hidden" name="id_proveedor" value="<?= esc($id_proveedor) ?>">
                                             <input type="hidden" name="id_producto_necesidad" value="<?= esc($producto['id_producto_necesidad']) ?>">
                                             <button type="submit" class="btn btn-danger">
@@ -69,32 +79,57 @@
                     </div>
                     <div class="form-group">
                         <label for="precio">Precio</label>
-                        <input type="text" name="precio" id="precio" class="form-control" <?= empty($productos_necesidad) ? 'disabled' : '' ?>>
+                        <input type="text" name="precio" id="precio" class="form-control" required <?= empty($productos_necesidad) ? 'disabled' : '' ?>>
                     </div>
                     <button type="submit" class="btn btn-success mt-2" <?= empty($productos_necesidad) ? 'disabled' : '' ?>>Añadir Producto</button>
                 </form>
-
                 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
                 <script>
                     $(document).ready(function() {
+                        // Mostrar el modal
                         $('#productosModal').modal('show');
-
-                        $('#productosModal').on('show.bs.modal', function(event) {
-                            var button = $(event.relatedTarget);
-                            var idProveedor = button.data('id-proveedor');
-                            $('input[name="id_proveedor"]').val(idProveedor);
-                        });
-
+                        // Redirigir al cerrar el modal con clic fuera de él
                         $('#productosModal').on('hidden.bs.modal', function() {
-                            window.location.href = '<?= base_url('proveedores/') ?>';
+                            window.location.href = '<?= base_url('proveedores') ?>';
+                        });
+                        // Activar la edición
+                        $('.btn-edit').on('click', function() {
+                            var row = $(this).closest('tr');
+                            row.find('.ref_producto, .precio, .btn-delete').addClass('d-none');
+                            row.find('.edit-ref_producto, .edit-precio, .btn-save, .btn-cancel').removeClass('d-none');
+                            $(this).addClass('d-none');
                         });
 
-                        // Filtrar productos en el select
-                        $('#searchProducto').on('keyup', function() {
-                            var value = $(this).val().toLowerCase();
-                            $('#producto option').filter(function() {
-                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-                            });
+                        // Cancelar la edición
+                        $('.btn-cancel').on('click', function() {
+                            var row = $(this).closest('tr');
+                            row.find('.ref_producto, .precio, .btn-edit, .btn-delete').removeClass('d-none');
+                            row.find('.edit-ref_producto, .edit-precio, .btn-save, .btn-cancel').addClass('d-none');
+                        });
+
+                        // Guardar los cambios
+                        $('.btn-save').on('click', function() {
+                            var row = $(this).closest('tr');
+                            var refProducto = row.find('.edit-ref_producto').val();
+                            var precio = row.find('.edit-precio').val();
+                            var idProveedor = "<?= esc($id_proveedor) ?>";
+                            var idProductoNecesidad = row.find('input[name="id_producto_necesidad"]').val();
+
+                            $.post("<?= base_url('proveedores/actualizarProducto') ?>", {
+                                id_proveedor: idProveedor,
+                                id_producto_necesidad: idProductoNecesidad,
+                                ref_producto: refProducto,
+                                precio: precio
+                            }, function(response) {
+                                if (response.success) {
+                                    row.find('.ref_producto').text(refProducto).removeClass('d-none');
+                                    row.find('.precio').text(precio).removeClass('d-none');
+                                    row.find('.edit-ref_producto, .edit-precio, .btn-save, .btn-cancel').addClass('d-none');
+                                    row.find('.btn-edit, .btn-delete').removeClass('d-none');
+                                } else {
+                                    alert('Error al actualizar el producto.');
+                                }
+                            }, 'json');
                         });
                     });
                 </script>
