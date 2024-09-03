@@ -7,7 +7,7 @@ use App\Models\ProductosProveedorModel;
 
 class ComparadorProductos extends BaseController
 {
-    public function index()
+    public function index($id_producto = null)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
@@ -16,8 +16,13 @@ class ComparadorProductos extends BaseController
         $productosNecesidadModel = new ProductosNecesidadModel($db);
         $productosProveedorModel = new ProductosProveedorModel($db);
 
-        // Obtener todos los productos de necesidad, ordenados por nombre
-        $productos = $productosNecesidadModel->orderBy('nombre_producto', 'ASC')->findAll();
+        // Si se proporciona un ID de producto, filtrar por ese producto
+        if ($id_producto) {
+            $productos = $productosNecesidadModel->where('id_producto', $id_producto)->findAll();
+        } else {
+            // Si no se proporciona un ID de producto, obtener todos los productos de necesidad
+            $productos = $productosNecesidadModel->orderBy('nombre_producto', 'ASC')->findAll();
+        }
 
         // Crear un array para almacenar los productos y sus ofertas
         $comparador = [];
@@ -40,5 +45,43 @@ class ComparadorProductos extends BaseController
 
         // Pasar los datos a la vista
         return view('comparadorProductos', ['comparador' => $comparador]);
+    }
+    public function seleccionarMejor()
+    {
+        $productoIndex = $this->request->getPost('productoIndex');
+        $ofertaIndex = $this->request->getPost('ofertaIndex');
+
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosProveedorModel = new ProductosProveedorModel( $db);
+
+        // Desmarcar cualquier otra oferta como "mejor" para este producto
+        $productosProveedorModel->where('id_producto_necesidad', $productoIndex)
+                                ->set('seleccion_mejor', null)
+                                ->update();
+
+        // Marcar la oferta seleccionada como "mejor"
+        $productosProveedorModel->where('id', $ofertaIndex)
+                                ->set('seleccion_mejor', 1)
+                                ->update();
+
+        return $this->response->setJSON(['status' => 'success']);
+    }
+
+    public function deseleccionarMejor()
+    {
+        $productoIndex = $this->request->getPost('productoIndex');
+        $ofertaIndex = $this->request->getPost('ofertaIndex');
+
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosProveedorModel = new ProductosProveedorModel( $db);
+
+        // Desmarcar la oferta seleccionada
+        $productosProveedorModel->where('id', $ofertaIndex)
+                                ->set('seleccion_mejor', null)
+                                ->update();
+
+        return $this->response->setJSON(['status' => 'success']);
     }
 }

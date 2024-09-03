@@ -25,15 +25,17 @@ class Productos_necesidad extends BaseControllerGC
         $crud->displayAs('imagen', 'Imagen');
         $crud->displayAs('unidad', 'Unidad');
         $crud->displayAs('estado_producto', 'Estado');
-        
         $crud->setLangString('modal_save', 'Guardar Producto');
-        
+        // ACCIONES
+        $crud->setActionButton('Precio', 'fa fa-euro-sign', function ($row) {
+            $link = base_url('comparadorproductos/' . $row->id_producto); 
+            return $link;
+        }, false);         
         // Define paths and upload settings for images
         $globalUploadPath = 'public/assets/uploads/files/' . $this->data['id_empresa'] . '/productos_necesidad/';
         if (!is_dir($globalUploadPath)) {
             mkdir($globalUploadPath, 0777, true);
         }
-
         $uploadValidations = [
             'maxUploadSize' => '7M',
             'minUploadSize' => '1K',

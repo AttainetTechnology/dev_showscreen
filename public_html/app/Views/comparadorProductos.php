@@ -4,17 +4,11 @@
 
 <h2>Comparador de Productos</h2>
 
-<!-- Filtro de productos -->
-<div class="form-group mb-4">
-    <label for="filter-producto"></label>
-    <input type="text" id="filter-producto" class="form-control" placeholder="Buscador de productos">
-</div>
-
 <?php if (empty($comparador)): ?>
     <p>No hay productos disponibles para comparar.</p>
 <?php else: ?>
-    <?php foreach ($comparador as $index => $item): ?>
-        <div class="card mb-4 producto-item" data-producto-nombre="<?= strtolower(esc($item['producto']['nombre_producto'])) ?>">
+    <?php foreach ($comparador as $item): ?>
+        <div class="card mb-4">
             <div class="card-header">
                 <h5 class="mb-0"><?= esc($item['producto']['nombre_producto']) ?></h5>
             </div>
@@ -31,8 +25,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($item['ofertas'] as $ofertaIndex => $oferta): ?>
-                                <tr id="producto-<?= $index ?>-oferta-<?= $ofertaIndex ?>" class="selectable-row" data-producto-index="<?= $index ?>">
+                            <?php foreach ($item['ofertas'] as $oferta): ?>
+                                <tr id="producto-<?= $item['producto']['id_producto'] ?>-oferta-<?= $oferta['id'] ?>"
+                                    class="selectable-row <?= $oferta['seleccion_mejor'] == 1 ? 'table-success' : '' ?>"
+                                    data-producto-index="<?= $item['producto']['id_producto'] ?>">
                                     <td><?= esc($oferta['nombre_proveedor']) ?></td>
                                     <td><?= esc($oferta['ref_producto']) ?></td>
                                     <td><?= esc($oferta['precio']) ?></td>
@@ -49,29 +45,44 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Filtrar productos
-        $('#filter-producto').on('keyup', function() {
-            var value = $(this).val().toLowerCase();
-            $('.producto-item').filter(function() {
-                $(this).toggle($(this).data('producto-nombre').indexOf(value) > -1);
-            });
-        });
-
         $('.selectable-row').on('click', function() {
             var productoIndex = $(this).data('producto-index');
+            var ofertaIndex = $(this).attr('id').split('-').pop(); // Asegúrate de que 'pop' obtiene el ID correcto
 
-            // Si la fila ya está seleccionada, deseleccionarla
-            if ($(this).hasClass('table-success')) {
+            var isSelected = $(this).hasClass('table-success');
+
+            if (isSelected) {
                 $(this).removeClass('table-success');
-            } else {
-                // Eliminar la selección previa en el mismo producto
-                $('tr[data-producto-index="' + productoIndex + '"]').removeClass('table-success');
 
-                // Añadir la clase de selección a la fila clicada
+                $.ajax({
+                    url: '/comparadorProductos/deseleccionarMejor',
+                    method: 'POST',
+                    data: {
+                        productoIndex: productoIndex,
+                        ofertaIndex: ofertaIndex
+                    },
+                    success: function(response) {
+                        console.log('Proveedor deseleccionado exitosamente');
+                    },
+                    error: function() {
+                        console.error('Error al deseleccionar el proveedor');
+                    }
+                });
+
+            } else {
+                $('tr[data-producto-index="' + productoIndex + '"]').removeClass('table-success');
                 $(this).addClass('table-success');
+
+                $.ajax({
+                    url: '/comparadorProductos/seleccionarMejor',
+                    method: 'POST',
+                    data: {
+                        productoIndex: productoIndex,
+                        ofertaIndex: ofertaIndex
+                    },
+                });
             }
         });
     });
 </script>
-
 <?= $this->endSection() ?>

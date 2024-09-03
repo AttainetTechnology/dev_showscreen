@@ -76,5 +76,6 @@ $routes->post('procesos_pedidos/actualizarEstadoProcesos', 'Procesos_pedidos::ac
 
 $routes->get('presentes', 'Fichar::index');
 
-$routes->get('comparadorproductos', 'ComparadorProductos::index');
+$routes->get('comparadorproductos/(:num)', 'ComparadorProductos::index/$1');
+
 $routes->get('familiaproveedor', 'Familia_proveedor::index');
