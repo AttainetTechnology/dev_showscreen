@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ProductosProveedorModel;
+use App\Models\ProveedoresModel;
 
 class Proveedores extends BaseControllerGC
 {
@@ -59,15 +60,70 @@ class Proveedores extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new ProductosProveedorModel($db);
+        $proveedoresModel = new ProveedoresModel($db);
 
-        // Obtener los productos asociados al proveedor y el nombre del producto
+        // Obtener el nombre del proveedor
+        $proveedor = $proveedoresModel->find($id_proveedor);
+
+        // Obtener los productos asociados al proveedor, incluyendo el campo id_producto_necesidad
         $productos = $model
-            ->select('productos_proveedor.ref_producto, productos_necesidad.nombre_producto, productos_proveedor.precio')
+            ->select('productos_proveedor.ref_producto, productos_proveedor.id_producto_necesidad, productos_necesidad.nombre_producto, productos_proveedor.precio')
             ->join('productos_necesidad', 'productos_necesidad.id_producto = productos_proveedor.id_producto_necesidad')
             ->where('productos_proveedor.id_proveedor', $id_proveedor)
             ->findAll();
 
-        // Cargar la vista con los productos
-        return view('productos_proveedor', ['productos' => $productos]);
+        // Obtener los ID de productos ya asociados a este proveedor
+        $productosAsociados = $model
+            ->select('id_producto_necesidad')
+            ->where('id_proveedor', $id_proveedor)
+            ->findColumn('id_producto_necesidad');
+
+        // Obtener los productos disponibles de la tabla productos_necesidad que no están asociados a este proveedor
+        $productosNecesidadModel = new \App\Models\ProductosNecesidadModel($db);
+        if (!empty($productosAsociados)) {
+            $productos_necesidad = $productosNecesidadModel
+                ->whereNotIn('id_producto', $productosAsociados)
+                ->findAll();
+        } else {
+            $productos_necesidad = $productosNecesidadModel->findAll();
+        }
+
+        // Cargar la vista con los productos, el nombre del proveedor, el desplegable y el id_proveedor
+        return view('productos_proveedor', [
+            'productos' => $productos,
+            'productos_necesidad' => $productos_necesidad,
+            'id_proveedor' => $id_proveedor,
+            'nombre_proveedor' => $proveedor['nombre_proveedor'] // Pasa el nombre del proveedor a la vista
+        ]);
+    }
+
+    public function agregarProducto()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ProductosProveedorModel($db);
+        $data = [
+            'id_proveedor' => $this->request->getPost('id_proveedor'),
+            'id_producto_necesidad' => $this->request->getPost('id_producto_necesidad'),
+            'precio' => $this->request->getPost('precio'),
+            'ref_producto' => $this->request->getPost('ref_producto'),
+        ];
+        $model->insert($data);
+        return redirect()->back()->with('message', 'Producto añadido con éxito.');
+    }
+
+    public function eliminarProducto()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ProductosProveedorModel($db);
+        $idProveedor = $this->request->getPost('id_proveedor');
+        $idProductoNecesidad = $this->request->getPost('id_producto_necesidad');
+
+        // Eliminar el producto asociado al proveedor
+        $model->where('id_proveedor', $idProveedor)
+            ->where('id_producto_necesidad', $idProductoNecesidad)
+            ->delete();
+        return redirect()->back()->with('message', 'Producto eliminado con éxito.');
     }
 }
