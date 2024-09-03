@@ -12,6 +12,7 @@ class Proveedores extends BaseControllerGC
     {
         $crud = $this->_getClientDatabase();
         $crud->setSubject('Proveedor', 'Proveedores');
+        $crud->setTable('proveedores');
         // Relaciones
         $crud->setRelation('id_provincia', 'provincias', 'provincia');
         $crud->setRelation('pais', 'paises', 'nombre');
