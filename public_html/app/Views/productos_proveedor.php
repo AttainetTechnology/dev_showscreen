@@ -12,56 +12,47 @@
                 </button>
             </div>
             <div class="modal-body" id="productosModalBody">
-            <?php if (empty($productos)): ?>
-    <p>No hay productos asociados a este proveedor.</p>
-<?php else: ?>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Referencia Producto</th>
-                <th>ID Producto Necesidad</th>
-                <th>Precio</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($productos as $producto): ?>
-                <tr>
-                    <td><?= esc($producto['ref_producto']) ?></td>
-                    <td><?= esc($producto['id_producto_necesidad']) ?></td>
-                    <td><?= esc($producto['precio']) ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php endif; ?>
+                <?php if (empty($productos)): ?>
+                    <p>No hay productos asociados a este proveedor.</p>
+                <?php else: ?>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Referencia Producto</th>
+                                <th>Nombre del Producto</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($productos as $producto): ?>
+                                <tr>
+                                    <td><?= esc($producto['ref_producto']) ?></td>
+                                    <td><?= esc($producto['nombre_producto']) ?></td>
+                                    <td><?= esc($producto['precio']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 <script>
-$(document).ready(function() {
-    var idProveedor = window.location.pathname.split('/').pop();
-    if (idProveedor) {
-        $.get('<?= base_url('proveedores/getProductos/') ?>' + idProveedor, function(data) {
-            $('#productosModalBody').html(data);
-        }).fail(function(error) {
-            console.error("Error al cargar los productos del proveedor", error);
+    $(document).ready(function() {
+        $('#productosModal').modal('show');
+
+        $('#productosModal').on('hidden.bs.modal', function() {
+            window.location.href = '<?= base_url('proveedores/') ?>';
         });
-    }
-
-    $('#productosModal').on('hidden.bs.modal', function(e) {
-        window.location.href = '<?= base_url('proveedores/') ?>';
     });
-
-    $('#productosModal').modal('show');
-});
 </script>
+
 
 <?= $this->endSection() ?>

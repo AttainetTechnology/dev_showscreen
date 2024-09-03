@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\ProductosProveedorModel;
@@ -18,7 +19,7 @@ class Proveedores extends BaseControllerGC
 
         // Campos
         $crud->addFields(['nombre_proveedor', 'nif', 'email', 'telf', 'contacto', 'direccion', 'pais', 'id_provincia', 'poblacion', 'f_pago', 'fax', 'cargaen', 'contacto', 'observaciones_proveedor', 'web']);
-        $crud->editFields(['nombre_proveedor', 'nif', 'direccion', 'id_provincia', 'poblacion', 'telf', 'cargaen', 'f_pago', 'web', 'email', 'observaciones_proveedor', 'fax', 'contacto', 'id_proveedor']);
+        $crud->editFields(['id_proveedor', 'nombre_proveedor', 'nif', 'direccion', 'id_provincia', 'poblacion', 'telf', 'cargaen', 'f_pago', 'web', 'email', 'observaciones_proveedor', 'fax', 'contacto']);
 
         // Columnas
         $crud->columns(['nombre_proveedor', 'nif', 'direccion', 'contacto', 'id_provincia', 'telf', 'cargaen', 'web', 'email']);
@@ -30,7 +31,7 @@ class Proveedores extends BaseControllerGC
 
         // Personalizar el campo id_proveedor para incluir el botón
         $crud->callbackEditField('id_proveedor', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $button = "<a href='" . base_url("proveedores/verProductos/{$primaryKeyValue}") . "' class='btn btn-info mt-3'>Ver Productos</a>";
+            $button = "<a href='" . base_url("proveedores/verProductos/{$primaryKeyValue}") . "' class='btn btn-info mt-3' data-toggle='modal' data-target='#productosModal'>Ver Productos</a>";
             return $button . "<input type='hidden' name='id_proveedor' value='{$fieldValue}'>";
         });
 
@@ -55,20 +56,18 @@ class Proveedores extends BaseControllerGC
 
     public function verProductos($id_proveedor)
     {
-        // Carga la vista del modal (productos_proveedor_modal.php)
-        return view('productos_proveedor', ['id_proveedor' => $id_proveedor]);
-    }
-
-    public function getProductos($id_proveedor)
-    {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new ProductosProveedorModel($db);
-    
-        // Obtener los productos asociados al proveedor
-        $productos = $model->where('id_proveedor', $id_proveedor)->findAll();
-        
-        // Pasar los productos a la vista que solo genera la tabla
+
+        // Obtener los productos asociados al proveedor y el nombre del producto
+        $productos = $model
+            ->select('productos_proveedor.ref_producto, productos_necesidad.nombre_producto, productos_proveedor.precio')
+            ->join('productos_necesidad', 'productos_necesidad.id_producto = productos_proveedor.id_producto_necesidad')
+            ->where('productos_proveedor.id_proveedor', $id_proveedor)
+            ->findAll();
+
+        // Cargar la vista con los productos
         return view('productos_proveedor', ['productos' => $productos]);
     }
 }
