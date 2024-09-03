@@ -1,9 +1,7 @@
 <?= $this->extend('layouts/main') ?>
-
 <?= $this->section('content') ?>
 
 <h2>Comparador de Productos</h2>
-
 <?php if (empty($comparador)): ?>
     <p>No hay productos disponibles para comparar.</p>
 <?php else: ?>
@@ -41,19 +39,15 @@
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     $(document).ready(function() {
         $('.selectable-row').on('click', function() {
             var productoIndex = $(this).data('producto-index');
-            var ofertaIndex = $(this).attr('id').split('-').pop(); // Asegúrate de que 'pop' obtiene el ID correcto
-
+            var ofertaIndex = $(this).attr('id').split('-').pop();
             var isSelected = $(this).hasClass('table-success');
-
             if (isSelected) {
                 $(this).removeClass('table-success');
-
                 $.ajax({
                     url: '/comparadorProductos/deseleccionarMejor',
                     method: 'POST',
@@ -68,7 +62,6 @@
                         console.error('Error al deseleccionar el proveedor');
                     }
                 });
-
             } else {
                 $('tr[data-producto-index="' + productoIndex + '"]').removeClass('table-success');
                 $(this).addClass('table-success');
@@ -85,4 +78,5 @@
         });
     });
 </script>
+
 <?= $this->endSection() ?>

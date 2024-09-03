@@ -13,6 +13,7 @@ class ProductosNecesidadModel extends Model
         'id_familia', 
         'imagen', 
         'unidad', 
-        'estado_producto'
+        'estado_producto',
+        'id_producto_venta'
     ];
 }
