@@ -121,26 +121,29 @@ class Productos_necesidad extends BaseControllerGC
         return $this->response->setJSON($productos);
     }
     public function verProductos($id_producto)
-    {
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
-        $model = new Productos_model($db);
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $model = new Productos_model($db);
+    $familiaModel = new \App\Models\Familia_productos_model($db); 
+    
+    $productos = $model->orderBy('nombre_producto', 'ASC')->findAll();
+    $familias = $familiaModel->orderBy('nombre', 'ASC')->findAll();
 
-        // Obtener todos los productos de la tabla productos
-        $productos = $model->findAll();
+    // Obtener el producto necesidad actual para verificar si tiene un id_producto_venta asignado
+    $productosNecesidadModel = new \App\Models\ProductosNecesidadModel($db);
+    $productoNecesidad = $productosNecesidadModel->find($id_producto);
+    $idProductoVentaSeleccionado = $productoNecesidad['id_producto_venta'];
 
-        // Obtener el producto necesidad actual para verificar si tiene un id_producto_venta asignado
-        $productosNecesidadModel = new \App\Models\ProductosNecesidadModel($db);
-        $productoNecesidad = $productosNecesidadModel->find($id_producto);
-        $idProductoVentaSeleccionado = $productoNecesidad['id_producto_venta'];
+    // Cargar la vista con la lista de productos, familias, el id_producto y si está seleccionado
+    return view('selectProducto', [
+        'productos' => $productos,
+        'familias' => $familias, // Pasar las familias a la vista
+        'id_producto' => $id_producto,
+        'id_producto_venta' => $idProductoVentaSeleccionado
+    ]);
+}
 
-        // Cargar la vista con la lista de productos, el id_producto y si está seleccionado
-        return view('selectProducto', [
-            'productos' => $productos,
-            'id_producto' => $id_producto,
-            'id_producto_venta' => $idProductoVentaSeleccionado
-        ]);
-    }
     public function actualizarProductoVenta()
     {
         $data = usuario_sesion();

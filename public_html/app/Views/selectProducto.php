@@ -14,10 +14,20 @@
                 </a>
             </div>
             <div class="modal-body" id="productosModalBody">
+                <label for="filtrarFamilia">Filtrar por Familia:</label>
+                <select id="filtrarFamilia" class="form-control">
+                    <option value="">Todas las Familias</option>
+                    <?php foreach ($familias as $familia): ?>
+                        <option value="<?= esc($familia['id_familia']) ?>"><?= esc($familia['nombre']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <br>
+                <input type="text" id="buscarProducto" class="form-control" placeholder="Buscar producto por nombre">
+                <br>
                 <?php if (empty($productos)): ?>
                     <p>No hay productos disponibles.</p>
                 <?php else: ?>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="tablaProductos">
                         <thead>
                             <tr>
                                 <th>Nombre del Producto</th>
@@ -26,7 +36,7 @@
                         </thead>
                         <tbody>
                             <?php foreach ($productos as $producto): ?>
-                                <tr>
+                                <tr data-familia="<?= esc($producto['id_familia']) ?>"> <!-- Asigna el ID de la familia -->
                                     <td><?= esc($producto['nombre_producto']) ?></td>
                                     <td>
                                         <?php if ($producto['id_producto'] == $id_producto_venta): ?>
@@ -41,9 +51,6 @@
                     </table>
                 <?php endif; ?>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
         </div>
     </div>
 </div>
@@ -53,13 +60,41 @@
         // Mostrar el modal
         $('#productoModal').modal('show');
 
+        // Filtro de búsqueda de productos por nombre
+        $('#buscarProducto').on('keyup', function() {
+            filtrarProductos();
+        });
+
+        // Filtro por familia de productos
+        $('#filtrarFamilia').on('change', function() {
+            // Limpiar el campo de búsqueda cuando se selecciona una familia
+            $('#buscarProducto').val('');
+
+            // Llamar a la función de filtrado
+            filtrarProductos();
+        });
+        function filtrarProductos() {
+            var searchValue = $('#buscarProducto').val().toLowerCase();
+            var selectedFamilia = $('#filtrarFamilia').val();
+
+            $('#tablaProductos tbody tr').each(function() {
+                var productoText = $(this).text().toLowerCase();
+                var productoFamilia = $(this).data('familia'); // Obtener el data-familia de la fila
+
+                // Filtro por familia y búsqueda de texto
+                var matchesFamilia = selectedFamilia === "" || selectedFamilia == productoFamilia;
+                var matchesSearch = productoText.indexOf(searchValue) > -1;
+
+                // Mostrar u ocultar la fila si coincide con la búsqueda y la familia
+                $(this).toggle(matchesFamilia && matchesSearch);
+            });
+        }
         // Acción para seleccionar o deseleccionar un producto
         $('.btn-select').on('click', function() {
             var productoId = $(this).data('id');
             var action = $(this).data('action');
-            var idProductoNecesidad = <?= esc($id_producto) ?>; // Id del producto necesidad que estamos editando
+            var idProductoNecesidad = <?= esc($id_producto) ?>;
 
-            // Definir el producto_venta a actualizar o nullear si se desea deseleccionar
             var idProductoVenta = action === 'select' ? productoId : null;
 
             $.post('<?= base_url('productos_necesidad/actualizarProductoVenta') ?>', {
@@ -68,15 +103,12 @@
             }, function(response) {
                 if (response.success) {
                     alert(action === 'select' ? 'Producto seleccionado: ' + productoId : 'Producto deseleccionado');
-                    // Cerrar el modal y posiblemente redirigir o recargar la página
                     $('#productoModal').modal('hide');
                 } else {
                     alert('Error al realizar la acción.');
                 }
             }, 'json');
         });
-
-        // Redirigir al cerrar el modal
         $('#productoModal').on('hidden.bs.modal', function() {
             window.location.href = '<?= base_url('productos_necesidad') ?>';
         });
