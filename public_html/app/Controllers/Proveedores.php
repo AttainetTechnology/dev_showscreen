@@ -19,7 +19,7 @@ class Proveedores extends BaseControllerGC
         $crud->setRelation('id_contacto', 'contactos', '{nombre} {apellidos}');
         // Campos
         $crud->addFields(['nombre_proveedor', 'nif', 'email', 'telf', 'contacto', 'direccion', 'pais', 'id_provincia', 'poblacion', 'f_pago', 'fax', 'cargaen', 'contacto', 'observaciones_proveedor', 'web']);
-        $crud->editFields(['id_proveedor', 'nombre_proveedor', 'nif', 'direccion', 'id_provincia', 'poblacion', 'telf', 'cargaen', 'f_pago', 'web', 'email', 'observaciones_proveedor', 'fax', 'contacto']);
+        $crud->editFields(['para_boton', 'nombre_proveedor', 'nif', 'direccion', 'id_provincia', 'poblacion', 'telf', 'cargaen', 'f_pago', 'web', 'email', 'observaciones_proveedor', 'fax', 'contacto']);
         // Columnas
         $crud->columns(['nombre_proveedor', 'nif', 'direccion', 'contacto', 'id_provincia', 'telf', 'cargaen', 'web', 'email']);
         $crud->displayAs('id_provincia', 'Provincia');
@@ -28,7 +28,7 @@ class Proveedores extends BaseControllerGC
         $crud->displayAs('observaciones_proveedor', 'Observaciones');
         $crud->setLangString('modal_save', 'Guardar Proveedor');
         // Personalizar el campo id_proveedor para incluir el botón
-        $crud->callbackEditField('id_proveedor', function ($fieldValue, $primaryKeyValue, $rowData) {
+        $crud->callbackEditField('para_boton', function ($fieldValue, $primaryKeyValue, $rowData) {
             $button = "<a href='" . base_url("proveedores/verProductos/{$primaryKeyValue}") . "' class='btn btn-warning btn-sm botonProductos' data-toggle='modal' data-target='#productosModal'><i class='fa fa-box fa-fw'></i> Ver Productos</a>";
             return $button . "<input type='hidden' name='id_proveedor' value='{$fieldValue}'>";
         });

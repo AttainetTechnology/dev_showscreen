@@ -16,7 +16,7 @@ class Productos_necesidad extends BaseControllerGC
         $crud->setTable('productos_necesidad');
         // Fields
         $crud->addFields(['nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
-        $crud->editFields(['id_producto', 'nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
+        $crud->editFields(['para_boton', 'nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
         $crud->columns(['nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
         $crud->setRelation('id_familia', 'familia_proveedor', 'nombre');
         // Display As
@@ -33,7 +33,7 @@ class Productos_necesidad extends BaseControllerGC
         }, false);
 
         // Personalizar el campo id_producto para incluir el botón
-        $crud->callbackEditField('id_producto', function ($fieldValue, $primaryKeyValue, $rowData) {
+        $crud->callbackEditField('para_boton', function ($fieldValue, $primaryKeyValue, $rowData) {
             $button = "<a href='" . base_url("productos_necesidad/verProductos/{$primaryKeyValue}") . "' class='btn btn-warning btn-sm botonProductos' data-toggle='modal' data-target='#productoModal'><i class='fa fa-box fa-fw'></i> ¿Vendemos este producto?</a>";
             return $button . "<input type='hidden' name='id_producto' value='{$fieldValue}'>";
         });

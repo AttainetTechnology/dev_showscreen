@@ -56,6 +56,7 @@ $routes->get('Contactos_empresa/add/'                    , 'Contactos_empresa::a
 
 $routes->add('partes/print/(\d+)', 'Partes_controller::parte_print/$1');
 $routes->add('pedidos/print/(\d+)', 'Pedido_print_controller::pedido_print/$1');
+$routes->add('pedidos_proveedor/print/(\d+)', 'Pedido_print_controller::pedido_print_proveedor/$1');
 $routes->add('pedidos/parte_complejo/(\d+)', 'Parte_complejo::pedido_print/$1');
 $routes->add('informe_detalle/(\d+)', 'Informe_detalle::/$1');
 $routes->add('Submenus/(\d+)', 'Submenus::/$1');

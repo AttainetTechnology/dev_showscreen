@@ -21,7 +21,8 @@ class ProveedoresModel extends Model
         'contacto', 
         'observaciones_proveedor', 
         'email', 
-        'web'
+        'web',
+        'para_boton'
     ];
 }
 

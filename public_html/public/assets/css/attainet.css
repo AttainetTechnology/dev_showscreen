@@ -899,8 +899,7 @@ a:hover.btfichar {
 	display: contents !Important;
 }
 
-[for="gc-form-id_proveedor"],
-[for="gc-form-id_producto"] {
+[for="gc-form-para_boton"]{
 	display: none;
 }
 
