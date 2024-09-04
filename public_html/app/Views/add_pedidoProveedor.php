@@ -7,18 +7,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addPedidoModalLabel">Añadir Pedido</h5>
-                <button type="button" class="btn-close-custom" aria-label="Close" onclick="window.location.href='<?= base_url('pedidos2/enmarcha') ?>'">
+                <button type="button" class="btn-close-custom" aria-label="Close" onclick="window.location.href='<?= base_url('pedidos_proveedor') ?>'">
                     &times;
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('pedidos2/save') ?>" method="post">
+                <form action="<?= base_url('Pedidos_proveedor/save') ?>" method="post">
                     <div class="form-group">
                         <label for="id_cliente">Empresa:</label>
-                        <select id="id_cliente" name="id_cliente" class="form-control">
+                        <select id="id_cliente" name="id_proveedor" class="form-control">
                             <option value="" selected disabled hidden>Seleccione empresa</option>
-                            <?php foreach ($clientes as $cliente) : ?>
-                                <option value="<?= $cliente['id_cliente'] ?>"><?= $cliente['nombre_cliente'] ?></option>
+                            <?php foreach ($proveedores as $proveedor) : ?>
+                                <option value="<?= $proveedor['id_proveedor'] ?>"><?= $proveedor['nombre_proveedor'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -29,8 +29,8 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for="fecha_entrada">Fecha de Entrada:</label>
-                        <input type="date" id="fecha_entrada" name="fecha_entrada" class="form-control" value="<?= date('Y-m-d') ?>" required>
+                        <label for="fecha_salida">Fecha de Salida:</label>
+                        <input type="date" id="fecha_salida" name="fecha_salida" class="form-control" value="<?= date('Y-m-d') ?>" required>
                     </div>
                     <br>
                     <div class="form-group">
@@ -62,7 +62,7 @@
         $('#addPedidoModal').modal('show');
 
         $('#addPedidoModal').on('hidden.bs.modal', function(e) {
-            window.location.href = '<?= base_url('pedidos2/enmarcha') ?>';
+            window.location.href = '<?= base_url('pedidos_proveedor') ?>';
         });
     });
 </script>

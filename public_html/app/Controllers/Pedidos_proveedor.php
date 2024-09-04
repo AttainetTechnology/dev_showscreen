@@ -198,7 +198,7 @@ class Pedidos_proveedor extends BaseControllerGC
         $data['proveedores'] = $clienteModel->findAll();
         $data['usuario_html'] = $this->guarda_usuario();
 
-        echo view('add_pedido', $data);
+        echo view('add_pedidoProveedor', $data);
     }
 
     //modal add pedido
@@ -224,7 +224,7 @@ class Pedidos_proveedor extends BaseControllerGC
             $this->logAction('Pedido', 'Añadir Pedido', $data);
 
             // Redirigir a la página en marcha
-            return redirect()->to(base_url('pedidos_proveedor/enmarcha'));
+            return redirect()->to(base_url('pedidos_proveedor'));
         } else {
             return redirect()->back()->with('error', 'No se pudo guardar el pedido');
         }
@@ -345,13 +345,13 @@ class Pedidos_proveedor extends BaseControllerGC
 
         $this->idpedido = $id_pedido;
         $crud->fieldType('id_pedido', 'hidden', $id_pedido);
-        $crud->requiredFields(['n_piezas', 'id_producto']);
+        $crud->requiredFields(['n_piezas', 'id_producto', 'precio_compra']);
         $crud->fieldType('total_linea', 'invisible');
 
         //VISTAS
         $crud->columns(['n_piezas', 'id_producto', 'estado', 'total_linea']);
-        $crud->editFields(['id_pedido', 'n_piezas', 'id_producto',  'estado', 'fecha_salida', 'fecha_entrega', 'observaciones', 'total_linea', 'precio_compra']);
-        $crud->addFields(['id_pedido', 'n_piezas',  'id_producto', 'observaciones', 'total_linea', 'precio_compra']);
+        $crud->editFields(['id_pedido', 'n_piezas', 'precio_compra', 'id_producto',  'estado', 'fecha_salida', 'fecha_entrega', 'observaciones', 'total_linea']);
+        $crud->addFields(['id_pedido', 'n_piezas',  'id_producto', 'precio_compra', 'observaciones', 'total_linea']);
 
         // //RELACIONES
         $crud->setRelation('id_producto', 'productos_necesidad', 'nombre_producto');
