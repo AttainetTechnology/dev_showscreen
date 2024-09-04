@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Usuarios_model;
-
 // Comienza el foreach para cada $pedido
 foreach ($pedido as $ped) { ?>
     <div id="fondo">
@@ -41,7 +39,7 @@ foreach ($pedido as $ped) { ?>
                     </strong><br>
                     Ref: <strong><?php echo $ped->referencia; ?></strong>
                     <div class="parte-fechas">
-                        <div class="f-entrada">Entrada: <?php echo date("d/m/Y", strtotime($ped->fecha_salida)); ?> &nbsp; </div>
+                        <div class="f-entrada">Pedido: <?php echo date("d/m/Y", strtotime($ped->fecha_salida)); ?> &nbsp; </div>
                         <div class="f-entrega"> Entrega:
                             <strong><?php echo date("d/m/Y", strtotime($ped->fecha_entrega)); ?></strong>
                         </div>

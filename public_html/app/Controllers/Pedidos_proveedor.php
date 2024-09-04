@@ -2,18 +2,8 @@
 
 namespace App\Controllers;
 
-
-use CodeIgniter\Model;
-use App\Models\Lineapedidosnew_model;
-use App\Models\ProcesosProductos;
-use App\Models\ProcesosPedido;
-use App\Models\LineaPedido;
-use App\Models\ClienteModel;
-use App\Models\Usuarios2_Model;
-use App\Models\Pedidos_model;
 use App\Models\ProveedoresModel;
 use App\Models\PedidosProveedorModel;
-
 
 class Pedidos_proveedor extends BaseControllerGC
 {
@@ -78,7 +68,6 @@ class Pedidos_proveedor extends BaseControllerGC
         $crud->displayAs('id_pedido', 'Id pedido');
         $crud->displayAs('id_proveedor', 'Empresa');
         $crud->displayAs('id_usuario', 'Hace el pedido');
-        $crud->displayAs('rutas', '');
 
         //VISTAS
         $crud->columns(['id_pedido', 'fecha_salida', 'id_proveedor', 'referencia', 'estado', 'fecha_entrega', 'id_usuario', 'total_pedido']);
@@ -118,13 +107,6 @@ class Pedidos_proveedor extends BaseControllerGC
 			<a href="' . base_url('pedidos_proveedor/parte_complejo/' . $id_pedido) . '" class="btn btn-secondary btn-sm" target="_blanck">
 				<i class="fa fa-print fa-fw"></i> Parte complejo
 			</a>
-			<!-- Button trigger modal -->
-			<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#myModal">
-				<i class="fa fa-truck fa-fw"></i> Rutas de transporte
-			</button>    
-			<a href="' . base_url('pedidos_proveedor/entregar/' . $id_pedido) . '" class="btn btn-success btn-sm">
-				<i class="fa fa-check fa-fw"></i> Entregar pedido
-			</a>
 			<a href="' . base_url('pedidos_proveedor/anular/' . $id_pedido) . '" class="btn btn-danger btn-sm btn_anular">
 				<i class="fa fa-trash fa-fw"></i> Anular todo
 			</a>
@@ -132,13 +114,6 @@ class Pedidos_proveedor extends BaseControllerGC
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="myModalLabel">Rutas de transporte</h4>
-						</div>
-						// <div class="modal-body">
-							<iframe src="' . base_url('Ruta_pedido/rutas/' . $id_pedido . '/' . $id_proveedor) . '" frameborder="0" width="100%"></iframe>
-						// </div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button>
 						</div>
@@ -269,16 +244,6 @@ class Pedidos_proveedor extends BaseControllerGC
 		<b>' . $usuarios[$id_usuario] . '</b>';
     }
 
-
-    public function entregar($id_pedido)
-    {
-
-        $Lineaspedido_model = model('App\Models\LineapedidoModel');
-        $Lineaspedido_model->entrega_lineas($id_pedido);
-        // TABLA LOG
-        $this->logAction('Pedidos', 'Entrega pedido, ID: ' . $id_pedido, []);
-        return redirect()->to('pedidos_proveedor/index#/edit/' . $id_pedido);
-    }
     public function anular($id_pedido)
     {
         $Lineaspedido_model = model('App\Models\LineapedidoModel');
