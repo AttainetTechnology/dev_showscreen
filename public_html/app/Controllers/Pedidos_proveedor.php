@@ -499,7 +499,7 @@ class Pedidos_proveedor extends BaseControllerGC
     {
         $uri = current_url();
         $pg2 = $uri;
-        return base_url() . "/partes/print/" . $row->id_lineapedido . "?pg2=" . $pg2;
+        return base_url() . "partes/printproveedor/" . $row->id_lineapedido . "?pg2=" . $pg2;
     }
     /* Funciones de salida - Vistas */
     function _output_sencillo($output = null)
