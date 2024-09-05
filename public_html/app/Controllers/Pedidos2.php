@@ -226,7 +226,7 @@ class Pedidos2 extends BaseControllerGC
 
 	function guarda_usuario()
 	{
-		$datos = new \App\Models\Usuarios2_Model();
+		$datos = new Usuarios2_Model();
 		$data = usuario_sesion();
 		$id_empresa = $data['id_empresa'];
 		$id_usuario = $data['id_user'];

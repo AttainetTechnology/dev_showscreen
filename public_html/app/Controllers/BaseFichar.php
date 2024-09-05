@@ -67,7 +67,7 @@ class BaseFichar extends Controller
             ];
            
             // Conectar a la base de datos del cliente
-            $db = \Config\Database::connect($new_db);
+            $db = Database::connect($new_db);
 
             // Iniciar el servicio de sesión
             $session = \Config\Services::session();
