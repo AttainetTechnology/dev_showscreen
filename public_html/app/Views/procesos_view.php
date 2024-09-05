@@ -233,15 +233,18 @@
                 };
             });
 
+            // Cambiamos la redirección por un mensaje y no salimos del modal
             $.post('updateOrder', {
                 data: JSON.stringify(data)
             }).done(function() {
-                alert('Procesos guardados');
-                window.location.href = '<?= base_url('productos') ?>';
+                // Mostrar un mensaje de éxito sin redirigir
+                alert('Procesos guardados correctamente.');
+                // Puedes agregar algún código adicional aquí si necesitas actualizar la vista del modal
             }).fail(function() {
-                alert('Ha habido un error');
+                alert('Ha habido un error al guardar los procesos.');
             });
         }
+
 
         function obtenerIdProducto(url) {
             return url.substring(url.lastIndexOf('/') + 1);
