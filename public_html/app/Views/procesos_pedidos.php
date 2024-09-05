@@ -48,14 +48,14 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAllCol2" class="selectAll"></th>
-                            <th>
+                            <th class="columna-id">
                                 id
                                 <br>
-                                <input type="text" id="idSearchInputCol2" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol2();">
+                                <input type="text" id="idSearchInputCol2" class="form-control d-inline-block" style="width: 90%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol2();">
                             </th>
-                            <th>
+                            <th class="columna-cliente">
                                 Cliente
-                                <select id="clienteFilter" style="width: 100%;" onchange="filtrarPorCliente(this.value);">
+                                <select id="clienteFilter" style="width: 90%;" onchange="filtrarPorCliente(this.value);">
                                     <option value="">Todos</option>
                                     <?php if (isset($clientes)) : ?>>
                                     <?php
@@ -69,7 +69,7 @@
                                 <?php endif; ?>
                                 </select>
                             </th>
-                            <th>
+                            <th class="columna-medidas">
                                 Medidas
                                 <select id="medidasFilter" style="width: 100%;" onchange="filtrarPorMedida(this.value);">
                                     <option value="">Sin Orden</option>
@@ -177,14 +177,14 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAllCol4" class="selectAll"></th>
-                            <th>
+                            <th class="columna-id">
                                 id
                                 <br>
-                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
+                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block"style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
                             </th>
                             <th>
                                 Cliente
-                                <select id="clienteFilterCol4" style="width: 100%;" onchange="filtrarPorClienteCol4(this.value);">
+                                <select id="clienteFilterCol4" style="width: 90%;" onchange="filtrarPorClienteCol4(this.value);">
                                     <option value="">Todos</option>
                                     <?php if (isset($clientes)) : ?>
                                         <?php foreach ($clientes as $cliente) : ?>

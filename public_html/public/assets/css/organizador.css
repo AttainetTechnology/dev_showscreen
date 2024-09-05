@@ -4,12 +4,12 @@
     width: 100%;
     height: 100vh;
     font-size: 0.6rem;
-    overflow-x: hidden;
+    overflow-x: auto;
 
 }
 
 .column {
-    padding: 30px;
+    padding: 0px;
     box-sizing: border-box;
     text-align: center;
 }
@@ -18,16 +18,28 @@
 #col4 {
     flex: 1;
     min-width: 0;
-    width: 45vh;
+    width: 47vh;
 }
+
 
 #col3 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 10vh;
+    width: 6vh;
     margin-top: 25vh;
     height: 100vh;
+    padding: 2px !important;
+}
+
+#col2 {
+    padding-left: 10px !important;
+    padding-right: 5px;
+}
+
+#col4 {
+    padding-right: 10px !important;
+    padding-left: 5px;
 }
 
 .table {
@@ -48,10 +60,12 @@
     justify-content: space-between;
 }
 
-#searchInput, #maquinaFilterCol4 {
+#searchInput,
+#maquinaFilterCol4 {
     width: calc(100% - 110px);
     margin-right: 10px;
 }
+
 .cabecera {
     padding-top: 35px;
     height: 16vh;
@@ -62,7 +76,7 @@
 #col2 .resultados {
     height: 78vh;
     border-collapse: collapse;
-    overflow-y: auto;
+    overflow: scroll !important;
 }
 
 #col2 table {
@@ -104,7 +118,7 @@
 }
 
 .fondo-rojo {
-    background-color:#f2dede;
+    background-color: #f2dede;
 }
 
 .sin-color {
