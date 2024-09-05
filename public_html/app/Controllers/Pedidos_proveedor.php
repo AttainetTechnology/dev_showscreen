@@ -246,7 +246,6 @@ class Pedidos_proveedor extends BaseControllerGC
 		<b>' . $usuarios[$id_usuario] . '</b>';
     }
 
-
     public function anular($id_pedido)
     {
         $Lineaspedido_model = new LineaPedidoModel();
@@ -255,7 +254,6 @@ class Pedidos_proveedor extends BaseControllerGC
         $this->logAction('Pedidos', 'Anular pedido, ID: ' . $id_pedido, []);
         return redirect()->to('pedidos_proveedor/index#/edit/' . $id_pedido);
     }
-
 
     function lineas($value, $id_pedido)
     {
@@ -315,13 +313,13 @@ class Pedidos_proveedor extends BaseControllerGC
 
         $this->idpedido = $id_pedido;
         $crud->fieldType('id_pedido', 'hidden', $id_pedido);
-        $crud->requiredFields(['n_piezas', 'id_producto', 'precio_compra']);
+        $crud->requiredFields(['n_piezas', 'id_producto']);
         $crud->fieldType('total_linea', 'invisible');
 
         //VISTAS
         $crud->columns(['n_piezas', 'id_producto', 'estado', 'total_linea']);
         $crud->editFields(['id_pedido', 'n_piezas', 'precio_compra', 'id_producto',  'estado', 'fecha_salida', 'fecha_entrega', 'observaciones', 'total_linea']);
-        $crud->addFields(['id_pedido', 'n_piezas',  'id_producto', 'precio_compra', 'observaciones', 'total_linea']);
+        $crud->addFields(['id_pedido', 'n_piezas',  'id_producto', 'observaciones', 'total_linea']);
 
         // //RELACIONES
         $crud->setRelation('id_producto', 'productos_necesidad', 'nombre_producto');
@@ -437,11 +435,49 @@ class Pedidos_proveedor extends BaseControllerGC
     {
         log_message('debug', 'Datos recibidos para insertar línea de pedido: ' . print_r($post_array, true));
 
-        $n_piezas = $post_array->data['n_piezas'];
-        $precio_compra = $post_array->data['precio_compra'];
-        $total_linea = $n_piezas * $precio_compra;
+        // Verificar que 'id_producto' esté presente
+        if (!isset($post_array->data['id_producto'])) {
+            log_message('error', 'ID del producto no está presente en los datos.');
+            return $post_array;
+        }
 
-        $post_array->data['total_linea'] = $total_linea;
+        $id_producto = $post_array->data['id_producto'];
+        $n_piezas = $post_array->data['n_piezas'];
+
+        // Conectamos a la base de datos
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $builder = $db->table('productos_proveedor');
+
+        // Obtener el precio del producto con 'seleccion_mejor = 1'
+        $builder->select('precio');
+        $builder->where('id_producto_necesidad', $id_producto);
+        $builder->where('seleccion_mejor', 1);
+        $query = $builder->get();
+
+        if ($query->getNumRows() > 0) {
+            $producto = $query->getRow();
+            $precio = $producto->precio;
+
+            // Calcular el total de la línea
+            $total_linea = $n_piezas * $precio;
+            $post_array->data['total_linea'] = $total_linea;
+            $post_array->data['precio_compra'] = $precio;
+
+            // Actualizar la línea de pedido con el total calculado
+            $builder_linea = $db->table('linea_pedido_proveedor');
+            $builder_linea->set('total_linea', $total_linea);
+            $builder_linea->set('precio_compra', $precio);
+            $builder_linea->where('id_pedido', $post_array->data['id_pedido']);
+            $builder_linea->where('id_producto', $id_producto);
+            $builder_linea->update();
+
+            log_message('debug', 'Línea de pedido actualizada con total: ' . $total_linea);
+        } else {
+            log_message('error', 'No se encontró el producto con ID: ' . $id_producto . ' y seleccion_mejor = 1');
+            $post_array->data['total_linea'] = 0;
+        }
+
         return $post_array;
     }
 
