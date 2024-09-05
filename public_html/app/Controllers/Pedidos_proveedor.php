@@ -130,11 +130,6 @@ class Pedidos_proveedor extends BaseControllerGC
         $crud->callbackAddField('fecha_entrega', array($this, '_saca_fecha_entrega'));
         $crud->callbackAddField('id_usuario', array($this, 'guarda_usuario'));
 
-        //Redirigimos a la página tras insertar el pedido
-        $crud->callbackAfterInsert(function ($stateParameters) {
-            $redirectResponse = new \GroceryCrud\Core\Redirect\RedirectResponse();
-            return $redirectResponse->setUrl(base_url() . '/pedidos_proveedor/#/edit/' . $stateParameters->insertId);
-        });
 
         // Callbacks tabla LOG
         $crud->callbackAfterInsert(function ($stateParameters) {
@@ -331,7 +326,7 @@ class Pedidos_proveedor extends BaseControllerGC
         $crud->setLangString('modal_save', 'Guardar Línea de Pedido');
 
         //CALLBACKS
-    
+
         $crud->callbackColumn('total_linea', function ($value, $row) {
             return "<div class='estado" . $row->estado . "'><strong>" . $value . "€</strong></div>";
         });
