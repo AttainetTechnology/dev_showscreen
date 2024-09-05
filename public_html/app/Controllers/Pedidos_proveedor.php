@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\ProveedoresModel;
 use App\Models\PedidosProveedorModel;
+use App\Models\LineaPedidoModel;
 
 class Pedidos_proveedor extends BaseControllerGC
 {
@@ -16,7 +17,7 @@ class Pedidos_proveedor extends BaseControllerGC
 
     public function index()
     {
-        $this->todos('estado!=', '3');
+        $this->todos('estado!=', '6');
     }
 
     public function pendientesRealizar()
@@ -61,7 +62,8 @@ class Pedidos_proveedor extends BaseControllerGC
         $crud->fieldType('estado', 'dropdown_search', [
             "0" => "Pendiente de realizar",
             "1" => "Pendiente de recibir",
-            "2" => "Recibido"
+            "2" => "Recibido",
+            "6" => "Anulado"
         ]);
         //DISPLAY AS
         $crud->displayAs('bt_imprimir', '');
@@ -244,14 +246,16 @@ class Pedidos_proveedor extends BaseControllerGC
 		<b>' . $usuarios[$id_usuario] . '</b>';
     }
 
+
     public function anular($id_pedido)
     {
-        $Lineaspedido_model = model('App\Models\LineapedidoModel');
+        $Lineaspedido_model = new LineaPedidoModel();
         $Lineaspedido_model->anular_lineas($id_pedido);
         // TABLA LOG
         $this->logAction('Pedidos', 'Anular pedido, ID: ' . $id_pedido, []);
         return redirect()->to('pedidos_proveedor/index#/edit/' . $id_pedido);
     }
+
 
     function lineas($value, $id_pedido)
     {
@@ -305,7 +309,8 @@ class Pedidos_proveedor extends BaseControllerGC
         $crud->fieldType('estado', 'dropdown_search', [
             "0" => "Pendiente de realizar",
             "1" => "Pendiente de recibir",
-            "2" => "Recibido"
+            "2" => "Recibido",
+            "6" => "Anulado"
         ]);
 
         $this->idpedido = $id_pedido;
