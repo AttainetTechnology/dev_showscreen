@@ -11,7 +11,7 @@ class ComparadorProductos extends BaseController
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        
+
         // Instanciar los modelos
         $productosNecesidadModel = new ProductosNecesidadModel($db);
         $productosProveedorModel = new ProductosProveedorModel($db);
@@ -53,17 +53,21 @@ class ComparadorProductos extends BaseController
 
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $productosProveedorModel = new ProductosProveedorModel( $db);
+        $productosProveedorModel = new ProductosProveedorModel($db);
 
         // Desmarcar cualquier otra oferta como "mejor" para este producto
         $productosProveedorModel->where('id_producto_necesidad', $productoIndex)
-                                ->set('seleccion_mejor', null)
-                                ->update();
+            ->set('seleccion_mejor', null)
+            ->update();
 
         // Marcar la oferta seleccionada como "mejor"
         $productosProveedorModel->where('id', $ofertaIndex)
-                                ->set('seleccion_mejor', 1)
-                                ->update();
+            ->set('seleccion_mejor', 1)
+            ->update();
+
+        $log = "Seleccion producto: " . $productoIndex . ", oferta:" . $ofertaIndex;
+        $seccion = "Selección Mejor Oferta";
+        $this->logAction($seccion, $log, $data);
 
         return $this->response->setJSON(['status' => 'success']);
     }
@@ -75,12 +79,17 @@ class ComparadorProductos extends BaseController
 
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $productosProveedorModel = new ProductosProveedorModel( $db);
+        $productosProveedorModel = new ProductosProveedorModel($db);
 
         // Desmarcar la oferta seleccionada
         $productosProveedorModel->where('id', $ofertaIndex)
-                                ->set('seleccion_mejor', null)
-                                ->update();
+            ->set('seleccion_mejor', null)
+            ->update();
+
+        // Log de deselección de la mejor oferta
+        $log = "Deseleccion producto: " . $productoIndex . ", oferta:" . $ofertaIndex;
+        $seccion = "Deselección Mejor Oferta";
+        $this->logAction($seccion, $log, $data);
 
         return $this->response->setJSON(['status' => 'success']);
     }

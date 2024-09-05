@@ -138,15 +138,15 @@ class Pedidos_proveedor extends BaseControllerGC
 
         // Callbacks tabla LOG
         $crud->callbackAfterInsert(function ($stateParameters) {
-            $this->logAction('Pedido', 'Añadir Pedido', $stateParameters);
+            $this->logAction('Pedido Proveedor', 'Añadir Pedido', $stateParameters);
             return $stateParameters;
         });
         $crud->callbackAfterUpdate(function ($stateParameters) {
-            $this->logAction('Pedido', 'Editar Pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
+            $this->logAction('Pedido Proveedor', 'Editar Pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
             return $stateParameters;
         });
         $crud->callbackAfterDelete(function ($stateParameters) {
-            $this->logAction('Pedido', 'Eliminar Pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
+            $this->logAction('Pedido Proveedor', 'Eliminar Pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
             return $stateParameters;
         });
 
@@ -195,7 +195,7 @@ class Pedidos_proveedor extends BaseControllerGC
             $insertId = $pedidoModel->insertID();
 
             // Registrar la acción en el log
-            $this->logAction('Pedido', 'Añadir Pedido', $data);
+            $this->logAction('Pedido Proveedor', 'Añadir Pedido', $data);
 
             // Redirigir a la página en marcha
             return redirect()->to(base_url('pedidos_proveedor'));
@@ -249,7 +249,7 @@ class Pedidos_proveedor extends BaseControllerGC
         $Lineaspedido_model = new LineaPedidoModel();
         $Lineaspedido_model->anular_lineas($id_pedido);
         // TABLA LOG
-        $this->logAction('Pedidos', 'Anular pedido, ID: ' . $id_pedido, []);
+        $this->logAction('Pedido Proveedor', 'Anular pedido, ID: ' . $id_pedido, []);
         return redirect()->to('pedidos_proveedor/index#/edit/' . $id_pedido);
     }
 
@@ -352,17 +352,17 @@ class Pedidos_proveedor extends BaseControllerGC
         $crud->unsetRead();
 
         $crud->callbackAfterInsert(function ($stateParameters) use ($id_pedido) {
-            $this->logAction('Linea pedido', 'Añade línea de pedido', $stateParameters);
+            $this->logAction('Linea pedido proveedor', 'Añade línea de pedido', $stateParameters);
             $this->actualizarTotalPedido($id_pedido);
             return $stateParameters;
         });
         $crud->callbackAfterUpdate(function ($stateParameters) use ($id_pedido) {
-            $this->logAction('Linea pedido', 'Edita línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
+            $this->logAction('Linea pedido proveedor', 'Edita línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
             $this->actualizarTotalPedido($id_pedido);
             return $stateParameters;
         });
         $crud->callbackAfterDelete(function ($stateParameters) use ($id_pedido) {
-            $this->logAction('Linea pedido', 'Elimina línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
+            $this->logAction('Linea pedido proveedor', 'Elimina línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
             $this->actualizarTotalPedido($id_pedido);
             return $stateParameters;
         });

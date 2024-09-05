@@ -92,13 +92,29 @@ class Proveedores extends BaseControllerGC
             return redirect()->back()->with('error', 'El ID del producto necesidad es obligatorio.');
         }
 
-        $data = [
+        $productoData = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
             'id_producto_necesidad' => $this->request->getPost('id_producto_necesidad'),
             'precio' => $this->request->getPost('precio'),
             'ref_producto' => $this->request->getPost('ref_producto'),
         ];
+
+        // Log de adición de producto
+        $log = "Producto añadido al proveedor ID: " . $productoData['id_proveedor'];
+        $seccion = "Productos de proveedor";
+        $this->logAction($seccion, $log, $data);
+
+        // Insertar el producto en la base de datos
+        $model->insert($productoData);
+
+        // Verificar que la inserción fue exitosa antes de redirigir
+        if ($db->affectedRows() > 0) {
+            return redirect()->back()->with('message', 'Producto añadido con éxito.');
+        } else {
+            echo "Error al añadir el producto.";
+        }
     }
+
 
     public function eliminarProducto()
     {
@@ -111,6 +127,11 @@ class Proveedores extends BaseControllerGC
         $model->where('id_proveedor', $idProveedor)
             ->where('id_producto_necesidad', $idProductoNecesidad)
             ->delete();
+        // Log de eliminación de producto
+        $log = "Producto eliminado del proveedor ID: " . $idProveedor;
+        $seccion = "Productos de proveedor";
+        $this->logAction($seccion, $log, $data);
+
         return redirect()->back()->with('message', 'Producto eliminado con éxito.');
     }
     public function actualizarProducto()
@@ -135,6 +156,11 @@ class Proveedores extends BaseControllerGC
                 'precio' => $precio
             ])
             ->update();
+        // Log de actualización de producto
+        $log = "Producto actualizado para el proveedor ID: " . $idProveedor;
+        $seccion = "Productos de proveedor";
+        $this->logAction($seccion, $log, $data);
+
         return $this->response->setJSON(['success' => true]);
     }
 }

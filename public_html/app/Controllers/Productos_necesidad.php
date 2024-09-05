@@ -121,43 +121,60 @@ class Productos_necesidad extends BaseControllerGC
         return $this->response->setJSON($productos);
     }
     public function verProductos($id_producto)
-{
-    $data = usuario_sesion();
-    $db = db_connect($data['new_db']);
-    $model = new Productos_model($db);
-    $familiaModel = new \App\Models\Familia_productos_model($db); 
-    
-    $productos = $model->orderBy('nombre_producto', 'ASC')->findAll();
-    $familias = $familiaModel->orderBy('nombre', 'ASC')->findAll();
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Productos_model($db);
+        $familiaModel = new \App\Models\Familia_productos_model($db);
 
-    // Obtener el producto necesidad actual para verificar si tiene un id_producto_venta asignado
-    $productosNecesidadModel = new \App\Models\ProductosNecesidadModel($db);
-    $productoNecesidad = $productosNecesidadModel->find($id_producto);
-    $idProductoVentaSeleccionado = $productoNecesidad['id_producto_venta'];
+        $productos = $model->orderBy('nombre_producto', 'ASC')->findAll();
+        $familias = $familiaModel->orderBy('nombre', 'ASC')->findAll();
 
-    // Cargar la vista con la lista de productos, familias, el id_producto y si está seleccionado
-    return view('selectProducto', [
-        'productos' => $productos,
-        'familias' => $familias, // Pasar las familias a la vista
-        'id_producto' => $id_producto,
-        'id_producto_venta' => $idProductoVentaSeleccionado
-    ]);
-}
+        // Obtener el producto necesidad actual para verificar si tiene un id_producto_venta asignado
+        $productosNecesidadModel = new \App\Models\ProductosNecesidadModel($db);
+        $productoNecesidad = $productosNecesidadModel->find($id_producto);
+        $idProductoVentaSeleccionado = $productoNecesidad['id_producto_venta'];
 
+        // Cargar la vista con la lista de productos, familias, el id_producto y si está seleccionado
+        return view('selectProducto', [
+            'productos' => $productos,
+            'familias' => $familias, // Pasar las familias a la vista
+            'id_producto' => $id_producto,
+            'id_producto_venta' => $idProductoVentaSeleccionado
+        ]);
+    }
     public function actualizarProductoVenta()
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new \App\Models\ProductosNecesidadModel($db);
 
-        // Obtener el id del producto necesidad y el id del producto venta seleccionado
         $idProductoNecesidad = $this->request->getPost('id_producto_necesidad');
         $idProductoVenta = $this->request->getPost('id_producto_venta');
 
-        // Actualizar el registro en la base de datos (id_producto_venta puede ser null para deseleccionar)
-        $model->update($idProductoNecesidad, [
-            'id_producto_venta' => $idProductoVenta
-        ]);
+        // Si el id_producto_venta es null, deseleccionar el producto de venta
+        if ($idProductoVenta === null || $idProductoVenta === '') {
+            // Actualizar para eliminar la relación con el producto de venta
+            $model->update($idProductoNecesidad, [
+                'id_producto_venta' => null
+            ]);
+
+            // Log de deselección del producto de venta
+            $log = "Deselección de producto ID: " . $idProductoNecesidad;
+            $seccion = "Deselección de Producto";
+        } else {
+            // Actualizar el producto de venta
+            $model->update($idProductoNecesidad, [
+                'id_producto_venta' => $idProductoVenta
+            ]);
+
+            // Log de actualización del producto de venta
+            $log = "Actualización producto: " . $idProductoNecesidad . ", nuevo producto: " . $idProductoVenta;
+            $seccion = "Seleccion de producto";
+        }
+
+        // Registrar la acción en el log
+        $this->logAction($seccion, $log, $data);
 
         // Devolver una respuesta JSON
         return $this->response->setJSON(['success' => true]);

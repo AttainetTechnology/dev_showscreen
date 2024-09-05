@@ -73,6 +73,7 @@
             // Llamar a la función de filtrado
             filtrarProductos();
         });
+
         function filtrarProductos() {
             var searchValue = $('#buscarProducto').val().toLowerCase();
             var selectedFamilia = $('#filtrarFamilia').val();
@@ -89,6 +90,7 @@
                 $(this).toggle(matchesFamilia && matchesSearch);
             });
         }
+
         // Acción para seleccionar o deseleccionar un producto
         $('.btn-select').on('click', function() {
             var productoId = $(this).data('id');
@@ -102,13 +104,29 @@
                 id_producto_venta: idProductoVenta
             }, function(response) {
                 if (response.success) {
-                    alert(action === 'select' ? 'Producto seleccionado: ' + productoId : 'Producto deseleccionado');
-                    $('#productoModal').modal('hide');
+                    if (action === 'select') {
+                        // Deseleccionar todos los botones
+                        $('.btn-select').removeClass('btn-danger').addClass('btn-success').text('Seleccionar').data('action', 'select');
+
+                        // Actualizar el botón seleccionado a "Deseleccionar"
+                        $('button[data-id="' + productoId + '"]').removeClass('btn-success')
+                            .addClass('btn-danger')
+                            .text('Deseleccionar')
+                            .data('action', 'deselect');
+                    } else {
+                        // Volver a marcar el botón como "Seleccionar"
+                        $('button[data-id="' + productoId + '"]').removeClass('btn-danger')
+                            .addClass('btn-success')
+                            .text('Seleccionar')
+                            .data('action', 'select');
+                    }
                 } else {
                     alert('Error al realizar la acción.');
                 }
             }, 'json');
         });
+
+        // Si se cierra el modal, redirigir a la página de productos necesidad
         $('#productoModal').on('hidden.bs.modal', function() {
             window.location.href = '<?= base_url('productos_necesidad') ?>';
         });
