@@ -81,20 +81,23 @@ class Proveedores extends BaseControllerGC
         ]);
     }
 
-
     public function agregarProducto()
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new ProductosProveedorModel($db);
+
+        // Validar que el campo id_producto_necesidad no esté vacío
+        if (empty($this->request->getPost('id_producto_necesidad'))) {
+            return redirect()->back()->with('error', 'El ID del producto necesidad es obligatorio.');
+        }
+
         $data = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
             'id_producto_necesidad' => $this->request->getPost('id_producto_necesidad'),
             'precio' => $this->request->getPost('precio'),
             'ref_producto' => $this->request->getPost('ref_producto'),
         ];
-        $model->insert($data);
-        return redirect()->back()->with('message', 'Producto añadido con éxito.');
     }
 
     public function eliminarProducto()

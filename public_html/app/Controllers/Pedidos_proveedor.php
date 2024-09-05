@@ -106,9 +106,6 @@ class Pedidos_proveedor extends BaseControllerGC
 			<a href="' . base_url('pedidos_proveedor/print/' . $id_pedido) . '" class="btn btn-info btn-sm"  target="_blanck">
 				<i class="fa fa-print fa-fw"></i> Imprimir pedido
 			</a>
-			<a href="' . base_url('pedidos_proveedor/parte_complejo/' . $id_pedido) . '" class="btn btn-secondary btn-sm" target="_blanck">
-				<i class="fa fa-print fa-fw"></i> Parte complejo
-			</a>
 			<a href="' . base_url('pedidos_proveedor/anular/' . $id_pedido) . '" class="btn btn-danger btn-sm btn_anular">
 				<i class="fa fa-trash fa-fw"></i> Anular todo
 			</a>
@@ -246,6 +243,7 @@ class Pedidos_proveedor extends BaseControllerGC
 		<b>' . $usuarios[$id_usuario] . '</b>';
     }
 
+
     public function anular($id_pedido)
     {
         $Lineaspedido_model = new LineaPedidoModel();
@@ -254,6 +252,7 @@ class Pedidos_proveedor extends BaseControllerGC
         $this->logAction('Pedidos', 'Anular pedido, ID: ' . $id_pedido, []);
         return redirect()->to('pedidos_proveedor/index#/edit/' . $id_pedido);
     }
+
 
     function lineas($value, $id_pedido)
     {
@@ -332,7 +331,7 @@ class Pedidos_proveedor extends BaseControllerGC
         $crud->setLangString('modal_save', 'Guardar Línea de Pedido');
 
         //CALLBACKS
-        $crud->setActionButton('Parte', 'fa fa-print', array($this, 'imprimir_parte'), false);
+    
         $crud->callbackColumn('total_linea', function ($value, $row) {
             return "<div class='estado" . $row->estado . "'><strong>" . $value . "€</strong></div>";
         });
