@@ -47,6 +47,7 @@
             var productoIndex = $(this).data('producto-index');
             var ofertaIndex = $(this).attr('id').split('-').pop();
             var isSelected = $(this).hasClass('table-success');
+
             if (isSelected) {
                 $(this).removeClass('table-success');
                 $.ajax({
@@ -58,6 +59,7 @@
                     },
                     success: function(response) {
                         console.log('Proveedor deseleccionado exitosamente');
+                        alert('Has deseleccionado la mejor oferta para este producto.');
                     },
                     error: function() {
                         console.error('Error al deseleccionar el proveedor');
@@ -74,6 +76,13 @@
                         productoIndex: productoIndex,
                         ofertaIndex: ofertaIndex
                     },
+                    success: function(response) {
+                        console.log('Proveedor seleccionado exitosamente');
+                        alert('Has seleccionado una mejor oferta para este producto.');
+                    },
+                    error: function() {
+                        console.error('Error al seleccionar el proveedor');
+                    }
                 });
             }
         });
