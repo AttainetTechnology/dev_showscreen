@@ -851,7 +851,8 @@ a:hover.btfichar {
 	margin: 0;
 }
 
-/* Procesos-botones*/
+/* Procesos-botones */
+
 .btnInactAct,
 .editarProceso,
 .addProcesos {
@@ -870,6 +871,28 @@ a:hover.btfichar {
 	color: #ffffff;
 }
 
+.btnActivos {
+	background-color: #2c6b3d;
+	color: #ffffff !important;
+	border: none;
+}
+
+.btnActivos:hover {
+	background-color: #28a745;
+	color: #ffffff;
+}
+
+.btnActivar {
+	background-color: #2c6b3d;
+	color: #ffffff !important;
+	border: none;
+}
+
+.btnActivar:hover {
+	background-color: #28a745;
+	color: #ffffff;
+}
+
 .editarProceso {
 	background-color: #e0a800;
 	;
@@ -883,13 +906,13 @@ a:hover.btfichar {
 }
 
 .addProcesos {
-	background-color: #5c8d5e;
+	background-color: #2c6b3d;
 	color: #ffffff !important;
 	border: none;
 }
 
 .addProcesos:hover {
-	background-color: #2c6b3d !important;
+	background-color: #28a745 !important;
 	color: #ffffff;
 }
 
@@ -899,7 +922,7 @@ a:hover.btfichar {
 	display: contents !Important;
 }
 
-[for="gc-form-para_boton"]{
+[for="gc-form-para_boton"] {
 	display: none;
 }
 

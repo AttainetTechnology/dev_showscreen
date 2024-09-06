@@ -15,11 +15,9 @@
                     <?php if ($estado_proceso == 1): ?>
                         <a href="<?= base_url('procesos/inactivos'); ?>" class="btn btn-light btnInactAct">Desactivados</a>
                     <?php else: ?>
-                        <a href="<?= base_url('procesos'); ?>" class="btn btn-light btnInactAct">Activos</a>
+                        <a href="<?= base_url('procesos'); ?>" class="btn btn-light btnInactAct btnActivos">Activos</a>
                     <?php endif; ?>
                 </div>
-
-
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -37,7 +35,9 @@
                                             <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-9.29 9.29-.706.354a1 1 0 0 1-.262.104l-3 1a1 1 0 0 1-1.26-1.26l1-3a1 1 0 0 1 .104-.262l.354-.706 9.29-9.29zM11.207 3L13 4.793 14.207 3.5 12.5 1.793 11.207 3zm1.586 1.5L10.5 4.707 4.707 10.5 3.5 12.207 1.793 10.5 3 9.293l5.793-5.793L11.5 4.793zm-7.5 7.793L2 13.207l.207-1.793L3.707 11l-1.293 1.293z" />
                                         </svg>
                                     </a>
-                                    <a href="<?= base_url('procesos/cambiaEstado/' . $proceso['id_proceso'] . '/' . $estado_proceso); ?>" class="btn btn-light btnInactAct" onclick="return confirm('¿Estás seguro de cambiar el estado de este proceso?')">
+                                    <a href="<?= base_url('procesos/cambiaEstado/' . $proceso['id_proceso'] . '/' . $estado_proceso); ?>"
+                                        class="btn btn-light <?= $estado_proceso == 1 ? 'btnInactAct' : 'btnActivar' ?>"
+                                        onclick="return confirm('¿Estás seguro de cambiar el estado de este proceso?')">
                                         <?= $estado_proceso == 1 ? 'Desactivar' : 'Activar' ?>
                                     </a>
                                 </td>
