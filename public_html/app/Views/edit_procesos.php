@@ -26,17 +26,23 @@
             </select>
         </div>
         <br>
-        <h3 class="text-center mb-4">Editar Restricciones</h3>
+        <h3 class="text-center mb-4">Restricciones <?= $proceso_principal['nombre_proceso'] ?></h3>
+
+        <!-- Campo de búsqueda -->
+        <div class="form-group">
+            <label for="search-proceso"></label>
+            <input type="text" class="form-control" id="search-proceso" placeholder="Busuca el nombre del proceso">
+        </div>
+
         <?php
         $restricciones_actuales = explode(',', $proceso_principal['restriccion'] ?? '');
         ?>
-        <div class="row">
+        <div class="row" id="proceso-container">
             <?php foreach ($procesos as $proceso): ?>
                 <?php
-                // Verificamos si el proceso actual está en las restricciones
                 $is_restricted = in_array($proceso['id_proceso'], $restricciones_actuales);
                 ?>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3 proceso-item" data-nombre="<?= strtolower($proceso['nombre_proceso']) ?>">
                     <div class="card proceso-box <?= $is_restricted ? 'selected border-primary shadow' : '' ?>" data-id="<?= $proceso['id_proceso'] ?>">
                         <div class="card-body text-center">
                             <h5 class="card-title"><?= $proceso['nombre_proceso'] ?></h5>
@@ -47,6 +53,7 @@
             <?php endforeach; ?>
         </div>
 
+
     </form>
 </div>
 
@@ -55,6 +62,8 @@
         let isDirty = false;
         const form = document.getElementById('edit-form');
         const inputs = form.querySelectorAll('input, select');
+        const searchInput = document.getElementById('search-proceso');
+        const procesoItems = document.querySelectorAll('.proceso-item');
 
         // Detectar cambios en los campos del formulario
         inputs.forEach(function(input) {
@@ -87,8 +96,22 @@
                 isDirty = true; // Marcar el formulario como modificado
             });
         });
+
+        // Filtrar procesos por nombre
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            procesoItems.forEach(function(item) {
+                const nombreProceso = item.getAttribute('data-nombre');
+                if (nombreProceso.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
     });
 </script>
+
 
 <style>
     .proceso-box {
