@@ -32,7 +32,7 @@
                         <!-- Cabecera -->
                         <div class="row">
                             <div id="parte_fila_left">
-                                <img src="<?php echo base_url("public/assets/uploads/logo/") . "/" . $url_logo; ?>" class="logo_partes"><br>
+                                <img src="<?php echo base_url("public/assets/uploads/files") . "/" . $url_logo; ?>" class="logo_partes"><br>
                                 Cliente:
                                 <address>
                                     <strong><? echo $cli->nombre_cliente; ?></strong>
@@ -53,7 +53,7 @@
                                         <strong><? echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
                                     </div>
                                 </div>
-                                <img src="<?php echo base_url("public/assets/uploads/files/"); ?>/<? echo $prod->imagen; ?>" class="imagen_parte" /><br />
+                                <img src="<?php echo base_url("public/assets/uploads/files"); ?>/<? echo $prod->imagen; ?>" class="imagen_parte" /><br />
                             </div>
                             <!-- END Cabecera -->
                         </div><!-- /.row -->
