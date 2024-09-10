@@ -22,4 +22,3 @@ class DbConnections_Model extends Model
     protected $validationMessages = [];
     protected $skipValidation     = false;
 }
-?>

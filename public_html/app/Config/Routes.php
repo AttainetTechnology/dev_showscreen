@@ -55,7 +55,9 @@ $routes->get('Contactos_empresa/add/(:num)'              , 'Contactos_empresa::a
 $routes->get('Contactos_empresa/add/'                    , 'Contactos_empresa::add/*'    );
 
 $routes->add('partes/print/(\d+)', 'Partes_controller::parte_print/$1');
+$routes->add('partes/printproveedor/(\d+)', 'Partes_controller_proveedor::parte_print/$1');
 $routes->add('pedidos/print/(\d+)', 'Pedido_print_controller::pedido_print/$1');
+$routes->add('pedidos_proveedor/print/(\d+)', 'Pedido_print_controller::pedido_print_proveedor/$1');
 $routes->add('pedidos/parte_complejo/(\d+)', 'Parte_complejo::pedido_print/$1');
 $routes->add('informe_detalle/(\d+)', 'Informe_detalle::/$1');
 $routes->add('Submenus/(\d+)', 'Submenus::/$1');
@@ -75,3 +77,7 @@ $routes->get('usuarios/(:num)', 'Usuarios::show/$1');
 $routes->post('procesos_pedidos/actualizarEstadoProcesos', 'Procesos_pedidos::actualizarEstadoProcesos');
 
 $routes->get('presentes', 'Fichar::index');
+
+$routes->get('comparadorproductos/(:num)', 'ComparadorProductos::index/$1');
+
+$routes->get('familiaproveedor', 'Familia_proveedor::index');

@@ -2,12 +2,6 @@
 
 namespace App\Controllers;
 
-
-use CodeIgniter\Model;
-use App\Models\Lineapedidosnew_model;
-use App\Models\ProcesosProductos;
-use App\Models\ProcesosPedido;
-use App\Models\LineaPedido;
 use App\Models\ClienteModel;
 use App\Models\Usuarios2_Model;
 use App\Models\Pedidos_model;
@@ -153,11 +147,6 @@ class Pedidos2 extends BaseControllerGC
 		$crud->callbackAddField('fecha_entrega', array($this, '_saca_fecha_entrega'));
 		$crud->callbackAddField('id_usuario', array($this, 'guarda_usuario'));
 
-		//Redirigimos a la página tras insertar el pedido
-		$crud->callbackAfterInsert(function ($stateParameters) {
-			$redirectResponse = new \GroceryCrud\Core\Redirect\RedirectResponse();
-			return $redirectResponse->setUrl(base_url() . '/Pedidos2/#/edit/' . $stateParameters->insertId);
-		});
 
 		// Callbacks tabla LOG
 		$crud->callbackAfterInsert(function ($stateParameters) {
@@ -237,7 +226,7 @@ class Pedidos2 extends BaseControllerGC
 
 	function guarda_usuario()
 	{
-		$datos = new \App\Models\Usuarios2_Model();
+		$datos = new Usuarios2_Model();
 		$data = usuario_sesion();
 		$id_empresa = $data['id_empresa'];
 		$id_usuario = $data['id_user'];

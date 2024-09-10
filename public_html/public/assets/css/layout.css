@@ -1,14 +1,17 @@
-#container{
+#container {
     display: flex;
     flex-direction: row;
-    gap:4px;
+    gap: 4px;
 }
+
 #menu_lateral {
-    width: 15% ! Important;
+    width: 15% !Important;
     min-width: 200px;
     height: 100vh;
     overflow: auto;
+    margin-top: 23px;
 }
-#contenido{
-		width: 81%!Important;
-	}
+
+#contenido {
+    width: 81% !Important;
+}
