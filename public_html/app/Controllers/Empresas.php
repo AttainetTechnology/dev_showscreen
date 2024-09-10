@@ -64,10 +64,6 @@ public function index()
 						<div class='modal-body'>
 						<iframe src='" . base_url('/Contactos_empresa/add/' . $primaryKeyValue) . "' frameborder='0' width='100%' height='600px'></iframe>
 						</div>
-						<div class='modal-footer'>
-							<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-							<button type='button' class='btn btn-primary'>Save changes</button>
-						</div>
 						</div>
 					</div>
 					</div>
