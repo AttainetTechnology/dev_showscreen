@@ -76,6 +76,8 @@ $routes->get('usuarios/(:num)', 'Usuarios::show/$1');
 
 $routes->post('procesos_pedidos/actualizarEstadoProcesos', 'Procesos_pedidos::actualizarEstadoProcesos');
 
+$routes->get('presentes/(:any)', 'Presentes::index/$1');
+
 $routes->get('presentes', 'Fichar::index');
 
 $routes->get('comparadorproductos/(:num)', 'ComparadorProductos::index/$1');

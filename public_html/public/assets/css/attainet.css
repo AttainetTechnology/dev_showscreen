@@ -939,3 +939,7 @@ a:hover.btfichar {
 #iframe_procesos {
 	height: 100% !important;
 }
+
+[for="gc-form-id_producto"] {
+	display: none;
+}
