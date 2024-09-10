@@ -1,5 +1,3 @@
-<?= $this->extend('layouts/main') ?>
-<?= $this->section('content') ?>
 <style>
     .placeholder {
         user-select: none;
@@ -10,7 +8,6 @@
         list-style-type: none;
     }
 
-    /* Estilo para las cartas */
     .ui-state-default {
         position: relative;
         border: 1px solid #ddd;
@@ -20,23 +17,20 @@
         margin-bottom: 4px;
         box-shadow: 0 2px 1px rgba(0, 0, 0, 0.05);
         cursor: pointer;
-        /* Cambio para mejorar la indicación de que se puede arrastrar */
+
     }
 
-    /* Estilo cuando se arrastra */
     .ui-state-default.ui-sortable-helper {
         box-shadow: 0 4px 2px rgba(0, 0, 0, 0.1);
     }
 
-    /* Estilo para los contenedores conectados */
     .connectedSortable {
         min-height: 50px;
-        /* Asegura que el contenedor siempre es visible y arrastrable */
         padding: 10px;
         border: 1px dashed #ccc;
     }
 
-    /* Estilo para el botón de eliminar */
+
     .remove-process {
         position: absolute;
         right: 10px;
@@ -52,18 +46,133 @@
     .remove-process:hover {
         color: #bd2130;
     }
-</style>
 
+    .modal-body .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch; /* columnas  misma altura */
+    }
+
+    .modal-body .col-md-6 {
+        flex: 0 0 48%;
+        max-width: 48%;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .connectedSortable {
+        flex-grow: 1;
+        min-height: 100px;
+        border: 1px dashed #ccc;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #fafafa;
+    }
+
+
+    .modal-dialog {
+        max-width: 100%;
+    }
+
+
+    .modal-content {
+        border-radius: 10px;
+        font-family: 'Arial', sans-serif;
+        margin: -20px;
+        margin-top: 5px;
+    }
+
+    .modal-title {
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: #333;
+        margin-top: 10px;
+    }
+
+    h6 {
+        font-size: 22px !important;
+        margin: 22px;
+    }
+
+    .btn {
+        border-radius: 5px;
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-left: 20px;
+        margin-top: 9px;
+        padding: 10px 20px !important;
+
+    }
+
+    .btn-primary {
+        background-color: #45a049;;
+        border: none;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background-color: #4CAF50;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #filterInput {
+        border-radius: 5px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        transition: box-shadow 0.3s ease;
+    }
+
+    #filterInput:focus {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-color: #4CAF50;
+    }
+
+    .ui-state-default {
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 5px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .ui-state-default:hover {
+        background-color: #e9ecef;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .modal-body .col-md-6 {
+        flex: 0 0 48%;
+        max-width: 48%;
+    }
+
+
+    .connectedSortable {
+        min-height: 100px;
+        border: 1px dashed #ccc;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #fafafa;
+    }
+
+    .placeholder {
+        color: #888;
+        font-style: italic;
+    }
+</style>
+<link href="<?= base_url('public/assets/css/attainet.css') ?>" rel="stylesheet">
 <div class="modal fade" id="procesosModal" tabindex="-1" role="dialog" aria-labelledby="procesosModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="procesosModalLabel">Producto: <?= $producto->nombre_producto ?></h5>
-                <button type="button" class="btn-close-custom" aria-label="Close" onclick="window.history.back();">
-                    &times;
-                </button>
             </div>
             <div class="modal-body">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary save-button" id="saveOrder">Guardar</button>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <h6>Todos los Procesos</h6>
@@ -84,9 +193,7 @@
                         <?php else : ?>
                             <p>No hay procesos disponibles.</p>
                         <?php endif; ?>
-
                     </div>
-
                     <div class="col-md-6">
                         <h6>Ordenar Procesos</h6>
                         <ul class="connectedSortable" style="border: 1px solid #000; margin: 10px; padding: 10px; min-height: 50px;" id="orderList">
@@ -108,15 +215,9 @@
                 </div>
             </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-button" data-dismiss="modal" onclick="window.location.href='<?= base_url('productos') ?>';">Cerrar</button>
-
-                <button type="button" class="btn btn-primary save-button" id="saveOrder">Guardar Orden</button>
-            </div>
         </div>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -251,5 +352,3 @@
         }
     });
 </script>
-
-<?= $this->endSection() ?>

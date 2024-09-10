@@ -27,27 +27,30 @@ class Productos extends BaseControllerGC
             '1' => 'Activo',
             '0' => 'Inactivo'
         ]);
-
         $crud->callbackEditField('id_producto', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $_SESSION['procesos'] = $fieldValue;
-            $id = $fieldValue; // Aquí se obtiene el id_producto
+            $id_producto = $rowData->id_producto;
 
-            helper('controlacceso');
-            $data = usuario_sesion();
-            $db = db_connect($data['new_db']);
-
-            $builder = $db->table('procesos_productos');
-            $builder->select('*');
-            $builder->where(['id_producto' => $id]);
-            $builder->join('procesos', 'procesos.id_proceso=procesos_productos.id_proceso', 'left');
-            $builder->orderby('nombre_proceso', 'asc');
-            $query = $builder->get();
-
-            // Get the ordered processes
-            $orderedProcesses = $query->getResult();
-
-            return '<input type="hidden" name="id_producto" value="' . $fieldValue . '">' .
-                '<div class="botones_user"><a href="' . base_url('productos/' . $fieldValue) . '" class="btn btn-warning btn-sm"><i class="fa fa-box fa-fw"></i>Procesos del producto</a></div>';
+            return '
+            <input type="hidden" name="id_producto" value="' . $fieldValue . '">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#procesosModal">
+                <i class="fa fa-cogs fa-fw"></i> Ver Procesos
+            </button>
+        
+            <!-- Modal -->
+            <div class="modal fade" id="procesosModal" tabindex="-1" role="dialog" aria-labelledby="procesosModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document" style="max-width: 70%; height: 100%;">
+                    <div class="modal-content" style="height: 90vh;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="procesosModalLabel">Procesos del Producto</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body" style="height: 100%; overflow-y: auto;">
+                           <iframe id="iframe_procesos" src="' . base_url('productos/verProcesos/' . $id_producto) . '" frameborder="0" width="100%" height="100%" style="height: 100%;"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>';
         });
 
         // Callbacks para registrar las acciones realizadas en LOG
@@ -106,7 +109,7 @@ class Productos extends BaseControllerGC
                         unlink($file);
                     }
                 }
-                rmdir($productoFolder); 
+                rmdir($productoFolder);
             }
             return $stateParameters;
         });
@@ -136,19 +139,44 @@ class Productos extends BaseControllerGC
                 $result->uploadResult = $Newname;
 
                 $fullPath = $result->stateParameters->uploadPath . $fileName;
-
                 if (file_exists($fullPath)) {
                     $image = new ImageResize($fullPath);
                     $image->resizeToBestFit(300, 300);
                     $image->save($fullPath);
                 }
             }
-
             return $result;
         });
-
         $output = $crud->render();
         return $this->_GC_output("layouts/main", $output);
+    }
+
+    public function verProcesos($id_producto)
+    {
+        helper('controlacceso');
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+
+        $builderProducto = $db->table('productos');
+        $builderProducto->select('*');
+        $builderProducto->where('id_producto', $id_producto);
+        $producto = $builderProducto->get()->getRow();
+
+        $builderProcesos = $db->table('procesos');
+        $allProcesses = $builderProcesos->get()->getResult();
+
+        $builder = $db->table('procesos_productos');
+        $builder->select('*');
+        $builder->where('id_producto', $id_producto);
+        $builder->join('procesos', 'procesos.id_proceso = procesos_productos.id_proceso', 'left');
+        $builder->orderby('nombre_proceso', 'asc');
+        $query = $builder->get();
+
+        $data['procesos'] = $query->getResult();
+        $data['producto'] = $producto;
+        $data['allProcesses'] = $allProcesses;
+
+        return view('procesos_view', $data);
     }
 
     public function show($id)
@@ -178,8 +206,6 @@ class Productos extends BaseControllerGC
             'allProcesses' => $allProcesses
         ]);
     }
-
-
 
     public function updateOrder()
     {

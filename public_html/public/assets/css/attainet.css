@@ -935,3 +935,7 @@ a:hover.btfichar {
 	margin-left: 4vh;
 	margin-right: 4vh;
 }
+
+#iframe_procesos {
+	height: 100% !important;
+}
