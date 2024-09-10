@@ -4,11 +4,11 @@
             <?php foreach ($clientes as $cli) { ?>
                 <div id="fondo">
                     <?php
-                    if (isset($_GET['pg2'])) {
-                        $volver = $_GET['pg2'];
-                    }
+                    // Verifica si 'pg2' está definido en la URL, si no lo está asigna un valor por defecto
+                    $volver = isset($_GET['pg2']) ? $_GET['pg2'] : 'javascript:window.close();';
                     ?>
-                    <a href="<? echo $volver; ?>" class="btn btn-warning btn-sm">Cerrar</a>
+                    <!-- Si no hay una URL para volver, se usará un enlace para cerrar la ventana -->
+                    <a href="<?php echo $volver; ?>" class="btn btn-warning btn-sm">Cerrar</a>
 
                     <a href="javascript:void(0);" onclick="verificarYMarcarLinea(<?php echo $l->id_lineapedido; ?>, '<?php echo $volver; ?>');" class="btn btn-info btn-sm">Cerrar y marcar línea como recibida</a>
 
@@ -28,7 +28,6 @@
                     </script>
 
                     <input type="button" onclick="printDiv('printableArea')" value="Imprimir Parte" class="btn btn-success btn-sm" />
-
                     <div id="printableArea">
                         <!-- Cabecera -->
                         <div class="row">
