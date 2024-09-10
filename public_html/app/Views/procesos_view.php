@@ -50,7 +50,8 @@
     .modal-body .row {
         display: flex;
         justify-content: space-between;
-        align-items: stretch; /* columnas  misma altura */
+        align-items: stretch;
+        /* columnas  misma altura */
     }
 
     .modal-body .col-md-6 {
@@ -85,28 +86,26 @@
 
     .modal-title {
         font-weight: bold;
-        font-size: 1.5rem;
+        font-size: 20px;
         color: #333;
         margin-top: 10px;
     }
 
     h6 {
-        font-size: 22px !important;
-        margin: 22px;
+        font-size: 14px !important;
+        margin: 17px;
     }
 
     .btn {
         border-radius: 5px;
-        font-size: 1.5rem;
-        font-weight: 800;
-        margin-left: 20px;
-        margin-top: 9px;
+        margin-right: 21px;
         padding: 10px 20px !important;
 
     }
 
     .btn-primary {
-        background-color: #45a049;;
+        background-color: #45a049;
+        ;
         border: none;
         color: #fff;
     }
@@ -161,6 +160,13 @@
         color: #888;
         font-style: italic;
     }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>
+
 </style>
 <link href="<?= base_url('public/assets/css/attainet.css') ?>" rel="stylesheet">
 <div class="modal fade" id="procesosModal" tabindex="-1" role="dialog" aria-labelledby="procesosModalLabel" aria-hidden="true">
@@ -170,7 +176,7 @@
                 <h5 class="modal-title" id="procesosModalLabel">Producto: <?= $producto->nombre_producto ?></h5>
             </div>
             <div class="modal-body">
-                <div class="modal-footer">
+                <div class="modal-footer" >
                     <button type="button" class="btn btn-primary save-button" id="saveOrder">Guardar</button>
                 </div>
                 <div class="row">
