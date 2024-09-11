@@ -176,7 +176,7 @@
                 <h5 class="modal-title" id="procesosModalLabel">Producto: <?= $producto->nombre_producto ?></h5>
             </div>
             <div class="modal-body">
-                <div class="modal-footer" >
+                <div class="modal-footer">
                     <button type="button" class="btn btn-primary save-button" id="saveOrder">Guardar</button>
                 </div>
                 <div class="row">
@@ -340,16 +340,15 @@
                 };
             });
 
-            // Cambiamos la redirección por un mensaje y no salimos del modal
-            $.post('updateOrder', {
+            $.post('<?= base_url('productos/updateOrder') ?>', {
                 data: JSON.stringify(data)
             }).done(function() {
-                // Mostrar un mensaje de éxito sin redirigir
                 alert('Procesos guardados correctamente.');
-                // Puedes agregar algún código adicional aquí si necesitas actualizar la vista del modal
-            }).fail(function() {
+            }).fail(function(xhr) {
+                console.error(xhr.responseText);
                 alert('Ha habido un error al guardar los procesos.');
             });
+
         }
 
 
