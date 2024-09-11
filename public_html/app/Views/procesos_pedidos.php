@@ -611,19 +611,16 @@
         });
 
         selectedMachineId = idMaquina;
-        console.log("Maquina seleccionada:", selectedMachineId);
 
         document.querySelectorAll('#col4 .linea').forEach(row => {
             const estado = row.getAttribute('data-estado');
             const idMaquinaFila = row.getAttribute('data-id-maquina');
             const shouldDisplay = (estado === 'no-guardado' || idMaquinaFila === idMaquina);
             row.style.display = shouldDisplay ? '' : 'none';
-            console.log("Fila:", row, "Visible:", shouldDisplay);
         });
 
         if (sortable) {
             sortable.option("disabled", false); // Habilitar Sortable al seleccionar una máquina
-            console.log("Sortable activado");
         }
         aplicarFiltros(4);
     }
@@ -944,8 +941,6 @@
                 orden: index + 1,
                 id_maquina: fila.getAttribute('data-id-maquina').trim()
             }));
-
-        console.log('Ordenes a enviar:', ordenes);
 
         fetch('<?php echo base_url('procesos_pedidos/actualizarOrdenProcesos'); ?>', {
                 method: 'POST',
