@@ -180,7 +180,7 @@
                             <th class="columna-id">
                                 id
                                 <br>
-                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block"style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
+                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
                             </th>
                             <th>
                                 Cliente
@@ -481,32 +481,85 @@
     });
 
     $(document).ready(function() {
-    // Manejar el clic en el botón "pedido"
-    $('[data-action="pedido"]').click(function() {
-        // Hacemos la petición AJAX para obtener los procesos con estado 4
-        $.ajax({
-            url: '<?= base_url('procesos_pedidos/getProcesosEstado4') ?>',
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                var tabla = '';
-                $.each(response, function(index, proceso) {
-                    tabla += '<tr>';
-                    tabla += '<td>' + proceso.id_linea_pedido + '</td>';
-                    tabla += '<td>' + proceso.nombre_proceso + '</td>';
-                    tabla += '<td>' + proceso.nombre_producto + '</td>';
-                    tabla += '<td><button class="btn btn-warning revertir-estado" data-id-relacion="' + proceso.id_relacion + '">Revertir</button></td>';
-                    tabla += '</tr>';
-                });
-                $('#tablaProcesos').html(tabla);
-                $('#modalProcesos').modal('show');
-            },
-            error: function() {
-                alert('Error al cargar los datos.');
-            }
+        // Manejar el clic en el botón "pedido"
+        $('[data-action="pedido"]').click(function() {
+            // Hacemos la petición AJAX para obtener los procesos con estado 4
+            $.ajax({
+                url: '<?= base_url('procesos_pedidos/getProcesosEstado4') ?>',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    var tabla = '';
+                    $.each(response, function(index, proceso) {
+                        tabla += '<tr>';
+                        tabla += '<td>' + proceso.id_linea_pedido + '</td>';
+                        tabla += '<td>' + proceso.nombre_proceso + '</td>';
+                        tabla += '<td>' + proceso.nombre_producto + '</td>';
+                        tabla += '<td><button class="btn btn-warning revertir-estado" data-id-relacion="' + proceso.id_relacion + '">Revertir</button></td>';
+                        tabla += '</tr>';
+                    });
+                    $('#tablaProcesos').html(tabla);
+                    $('#modalProcesos').modal('show');
+                },
+                error: function() {
+                    alert('Error al cargar los datos.');
+                }
+            });
+        });
+
+        // Reactivar sortable después de ciertas acciones
+        document.querySelectorAll('button[data-action]').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                if (action === 'confirm') {
+                    confirmarProcesos();
+                }
+                inicializarSortable(); 
+            });
         });
     });
 
+    // Función para inicializar Sortable
+    function inicializarSortable() {
+        var el = document.getElementById('sortableTable').getElementsByTagName('tbody')[0];
+        if (sortable) {
+            sortable.destroy(); 
+        }
+        sortable = Sortable.create(el, {
+            animation: 150,
+            onEnd: function(evt) {
+                guardarOrdenEnLocalStorage();
+            }
+        });
+    }
+
+    // Función para manejar el guardado del orden en localStorage
+    function guardarOrdenEnLocalStorage() {
+        const filas = document.querySelectorAll('#sortableTable tbody tr');
+        let orden = Array.from(filas).map(fila => fila.getAttribute('data-id'));
+        localStorage.setItem('ordenProcesos', JSON.stringify(orden));
+    }
+
+    // Cargar el orden desde localStorage
+    function cargarOrdenDesdeLocalStorage() {
+        let orden = localStorage.getItem('ordenProcesos');
+        if (orden) {
+            orden = JSON.parse(orden);
+            const tbody = document.querySelector('#sortableTable tbody');
+            orden.forEach(id => {
+                const fila = document.querySelector(`#sortableTable tbody tr[data-id="${id}"]`);
+                if (fila) {
+                    tbody.appendChild(fila); 
+                }
+            });
+        }
+    }
+
+    // Función que asegura que Sortable se reinicie después de cargar el DOM
+    $(document).ready(function() {
+        cargarOrdenDesdeLocalStorage();
+        inicializarSortable();
+    });
     // Manejar el clic en el botón "Revertir Estado"
     $(document).on('click', '.revertir-estado', function() {
         var idRelacion = $(this).data('id-relacion');
@@ -516,15 +569,15 @@
             type: 'POST',
             success: function(response) {
                 if (response.success) {
-            $('#modalProcesos').modal('hide');
-            location.reload(); 
+                    $('#modalProcesos').modal('hide');
+                    location.reload();
                 } else {
                     alert('Error al revertir el estado del proceso.');
                 }
             },
         });
     });
-});
+
     // Funciones de filtrado
     function aplicarFiltros(columna) {
         const tableRows = document.querySelectorAll(`#col${columna} tbody tr`);
