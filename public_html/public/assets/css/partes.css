@@ -32,11 +32,10 @@ div#fondo_rutas {
     page-break-after: always;
     position: relative;
 }
-
 @media print {
 
     body {
-        font-size: 16px !important;
+        font-size: 22px !important;
     }
 
     .pie_de_parte {
@@ -58,7 +57,6 @@ div#fondo_rutas {
         page-break-after: always;
         position: relative;
     }
-
 
     .table {
         page-break-inside: avoid;
@@ -84,47 +82,59 @@ div#fondo_rutas {
     /* Márgenes para la impresión */
     @page {
         size: A4;
-        margin-left: 25mm;
-        margin-right: 20mm;
-        margin-top: 20mm;
-        margin-bottom: 20mm;
+        margin-left: 15mm;
+        margin-right: 15mm;
+        margin-top: 15mm;
+        margin-bottom: 15mm;
     }
 
-    /* Ajusta el área imprimible */
     #printableArea {
-        padding-left: 25mm;
-        padding-right: 20mm;
+        padding-left: 15mm; 
+        padding-right: 15mm;
         overflow: hidden;
     }
 
-    .logo_partes,
-    .imagenparte {
-        max-width: 90%;
-        overflow: hidden;  /* Evita desbordamientos de imágenes */
+    .row {
+        display: flex;
+        justify-content: space-between; 
+        align-items: flex-start; 
+        margin: 5px !important;
     }
-
-    /* Asegurar que las filas grandes no se corten */
-    .row,
-    .table-responsive {
-        page-break-inside: avoid;
-    }
-
-    /* Evitar que el contenido alineado a la izquierda se salga de los márgenes */
     #parte_fila_left {
-        float: left;
-        width: 50%;
+        flex: 0 1 48%;
+        margin-right: 2%;
+        box-sizing: border-box;
+        margin-left: 15px !important;
+    }
+    #parte_fila_left img {
+        max-width: 100%; 
+        height: auto;
+        display: block;
+    }
+
+    #parte_fila_left address,
+    #parte_fila_left strong {
+        word-wrap: break-word;
         overflow: hidden;
-        margin-left: 5mm;
+        max-width: 100%;
     }
 
     #parte_fila_right {
-        float: right;
-        width: 50%;
-        overflow: hidden;
-        margin-right: 5mm;
+        flex: 0 1 48%; 
+        text-align: right;
+        padding-right: 15px !important;
+    }
+
+    #parte_fila_right .capa-numero-parte,
+    #parte_fila_right h3,
+    #parte_fila_right .parte-fechas {
+        text-align: right !important;
+    }
+    #parte_fila_right img {
+        max-width: 80%;
+        height: auto;
     }
 }
-
 
 div#printableArea {
     padding: 25px 70px;
