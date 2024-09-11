@@ -34,6 +34,33 @@ class Ruta_pedido extends BaseControllerGC
         $crud->columns(array('poblacion', 'lugar', 'recogida_entrega', 'observaciones', 'transportista', 'estado_ruta', 'fecha_ruta'));
         $crud->addFields(['id_cliente', 'poblacion', 'lugar', 'recogida_entrega', 'observaciones', 'transportista', 'id_pedido', 'fecha_ruta']);
 
+        $crud->callbackAddField('recogida_entrega', function () {
+            return '<select name="recogida_entrega" class="form-control">
+						<option value="1" selected>Recogida</option>
+						<option value="2">Entrega</option>
+					</select>';
+        });
+
+        // Valor por defecto para 'fecha_ruta' (fecha actual)
+        $crud->callbackAddField('fecha_ruta', function () {
+            $currentDate = date('Y-m-d');
+            return '<input type="date" name="fecha_ruta" value="' . $currentDate . '" class="form-control">';
+        });
+
+        // Obtener el primer transportista de la lista
+        $transportistas = $this->transportistas();
+        $primer_transportista_id = array_key_first($transportistas); 
+
+        // Valor por defecto para 'transportista'
+        $crud->callbackAddField('transportista', function () use ($primer_transportista_id, $transportistas) {
+            $options = '';
+            foreach ($transportistas as $id => $nombre) {
+                $selected = $id == $primer_transportista_id ? 'selected' : '';
+                $options .= '<option value="' . $id . '" ' . $selected . '>' . $nombre . '</option>';
+            }
+            return '<select name="transportista" class="form-control">' . $options . '</select>';
+        });
+
         $crud->requiredFields(['transportista', 'poblacion']);
         $crud->displayAs('id_cliente', 'Cliente');
         $crud->setTable('rutas');
@@ -89,9 +116,15 @@ class Ruta_pedido extends BaseControllerGC
     function _cambia_color_lineas($estado_ruta)
     {
         $nombre_estado = "";
-        if ($estado_ruta == '1') { $nombre_estado = "0. Pendiente"; }
-        if ($estado_ruta == '2') { $nombre_estado = "1. No preparado"; }
-        if ($estado_ruta == '3') { $nombre_estado = "2. Entregado / recogido"; }
+        if ($estado_ruta == '1') {
+            $nombre_estado = "0. Pendiente";
+        }
+        if ($estado_ruta == '2') {
+            $nombre_estado = "1. No preparado";
+        }
+        if ($estado_ruta == '3') {
+            $nombre_estado = "2. Entregado / recogido";
+        }
         return "<div class='ruta" . (($estado_ruta) ?: 'error') . "'>$nombre_estado</div>";
     }
 
@@ -140,4 +173,3 @@ class Ruta_pedido extends BaseControllerGC
         return $transportistas;
     }
 }
-?>
