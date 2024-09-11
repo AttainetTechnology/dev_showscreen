@@ -34,21 +34,23 @@ div#fondo_rutas {
 }
 
 @media print {
+
     body {
-        font-size: 12px;
+        font-size: 16px !important;
     }
 
     .pie_de_parte {
-        display: block !Important;
+        display: block !important;
+        page-break-inside: avoid;
     }
 
     .pagina2 {
-        padding-top: 0px;
-        display: block !Important;
+        padding-top: 0;
+        display: block !important;
         page-break-before: always;
         position: relative;
         border-bottom: none;
-        margin-bottom: 0px;
+        margin-bottom: 0;
     }
 
     .pagina1 {
@@ -56,7 +58,73 @@ div#fondo_rutas {
         page-break-after: always;
         position: relative;
     }
+
+
+    .table {
+        page-break-inside: avoid;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table tr {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        page-break-inside: avoid;
+    }
+
+    .row,
+    .col-xs-12 {
+        page-break-inside: avoid;
+    }
+
+    /* Márgenes para la impresión */
+    @page {
+        size: A4;
+        margin-left: 25mm;
+        margin-right: 20mm;
+        margin-top: 20mm;
+        margin-bottom: 20mm;
+    }
+
+    /* Ajusta el área imprimible */
+    #printableArea {
+        padding-left: 25mm;
+        padding-right: 20mm;
+        overflow: hidden;
+    }
+
+    .logo_partes,
+    .imagenparte {
+        max-width: 90%;
+        overflow: hidden;  /* Evita desbordamientos de imágenes */
+    }
+
+    /* Asegurar que las filas grandes no se corten */
+    .row,
+    .table-responsive {
+        page-break-inside: avoid;
+    }
+
+    /* Evitar que el contenido alineado a la izquierda se salga de los márgenes */
+    #parte_fila_left {
+        float: left;
+        width: 50%;
+        overflow: hidden;
+        margin-left: 5mm;
+    }
+
+    #parte_fila_right {
+        float: right;
+        width: 50%;
+        overflow: hidden;
+        margin-right: 5mm;
+    }
 }
+
 
 div#printableArea {
     padding: 25px 70px;
@@ -224,7 +292,7 @@ div.total {
     max-width: 165px;
     margin-bottom: 25px;
     margin-top: 30px;
-   margin-left: 20px;
+    margin-left: 20px;
 }
 
 img.logo_partes {
@@ -426,34 +494,37 @@ img.imagen_parte {
     margin-top: 4rem !important;
 }
 
+.navbar-nav .btn {
+    margin-right: 10px;
+}
+
+.navbar-collapse {
+    padding-top: 20px;
+}
+
+@media (max-width: 767.98px) {
     .navbar-nav .btn {
-        margin-right: 10px; 
-    }
-    .navbar-collapse {
-        padding-top: 20px;
-    }
-
-    @media (max-width: 767.98px) {
-        .navbar-nav .btn {
-            margin: 10px 0;
-            margin-bottom: 10px;
-        }
-    }
-
-    #navbarNav{
+        margin: 10px 0;
         margin-bottom: 10px;
     }
-    
+}
+
+#navbarNav {
+    margin-bottom: 10px;
+}
+
 .btn-close-custom {
-	background-color: transparent;
-	border: none;
-	font-size: 2.5rem;
-	color: #000;
-	cursor: pointer;
-	padding: 0;
-	margin-right: 35px;
+    background-color: transparent;
+    border: none;
+    font-size: 2.5rem;
+    color: #000;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 35px;
     margin-top: -10px;
 }
+
 .btn-close-custom:hover {
-	color: #ff0000; /* Cambia el color al pasar el cursor */
+    color: #ff0000;
+    /* Cambia el color al pasar el cursor */
 }
