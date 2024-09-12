@@ -283,6 +283,40 @@
     </div>
 </div>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        ocultarFilasSinFiltro();
+
+        // Evento de cambio en el filtro de máquina
+        document.getElementById('maquinaFilterCol4').addEventListener('change', function() {
+            const selectedMachine = this.value;
+            filtrarProcesosPorMaquina(selectedMachine);
+        });
+
+        // Evento para eliminar filtro de máquina
+        document.getElementById('clearMachineFilter').addEventListener('click', function() {
+            document.getElementById('maquinaFilterCol4').value = '';
+            ocultarFilasSinFiltro();
+        });
+    });
+    // Función para ocultar todas las filas al inicio
+    function ocultarFilasSinFiltro() {
+        document.querySelectorAll('#col4 tbody tr').forEach(function(row) {
+            row.style.display = 'none';
+        });
+    }
+    // Función para filtrar las filas por la máquina seleccionada
+    function filtrarProcesosPorMaquina(machineId) {
+        document.querySelectorAll('#col4 tbody tr').forEach(function(row) {
+            const rowMachineId = row.getAttribute('data-id-maquina');
+            if (rowMachineId === machineId || machineId === '') {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+</script>
+<script>
     function printDiv(divId) {
         // Verificar si hay una máquina seleccionada
         if (!selectedMachineId) {
@@ -514,7 +548,7 @@
                 if (action === 'confirm') {
                     confirmarProcesos();
                 }
-                inicializarSortable(); 
+                inicializarSortable();
             });
         });
     });
@@ -523,7 +557,7 @@
     function inicializarSortable() {
         var el = document.getElementById('sortableTable').getElementsByTagName('tbody')[0];
         if (sortable) {
-            sortable.destroy(); 
+            sortable.destroy();
         }
         sortable = Sortable.create(el, {
             animation: 150,
@@ -549,7 +583,7 @@
             orden.forEach(id => {
                 const fila = document.querySelector(`#sortableTable tbody tr[data-id="${id}"]`);
                 if (fila) {
-                    tbody.appendChild(fila); 
+                    tbody.appendChild(fila);
                 }
             });
         }
@@ -1020,27 +1054,23 @@
 
 
     function eliminarFiltroMaquina() {
-        // Restablecer el valor del select de máquinas a vacío (sin selección)
-        document.getElementById('maquinaFilterCol4').value = '';
-
-        // Eliminar la máquina seleccionada de la variable global
+        $('#maquinaFilterCol4').val('').trigger('change');
         selectedMachineId = null;
-
-        // Mostrar todas las filas en la columna 4
+        $('#clienteFilterCol4').val('').trigger('change');
+        $('#productoFilterCol4').val('').trigger('change');
+        $('#idSearchInputCol4').val('');
         mostrarTodasLasLineas();
-
-        // Deshabilitar el sortable si no hay una máquina seleccionada
         if (sortable) {
             sortable.option("disabled", true);
         }
+        aplicarFiltros(4);
     }
 
     function mostrarTodasLasLineas() {
         document.querySelectorAll('#col4 .linea').forEach(linea => {
-            linea.style.display = ''; // Mostrar todas las líneas
+            linea.style.display = '';
         });
     }
-
 
     function marcarComoTerminado(button) {
         event.stopPropagation();
