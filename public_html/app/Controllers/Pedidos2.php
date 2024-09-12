@@ -395,6 +395,17 @@ class Pedidos2 extends BaseControllerGC
 			return $stateParameters;
 		});
 
+		$crud->callbackAfterUpdate(function ($stateParameters) use ($id_pedido) {
+			$this->logAction('Linea pedido', 'Edita línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
+			$this->actualizarTotalPedido($id_pedido);
+
+			// Llamar a la función para actualizar el estado en procesos_pedidos
+			$nuevo_estado = $stateParameters->data['estado'];
+			$this->actualizarEstadoProceso($id_pedido, $nuevo_estado);
+
+			return $stateParameters;
+		});
+
 		$crud->callbackAfterDelete(function ($stateParameters) use ($id_pedido) {
 			$this->logAction('Linea pedido', 'Elimina línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
 			$this->actualizarTotalPedido($id_pedido);
@@ -511,6 +522,33 @@ class Pedidos2 extends BaseControllerGC
 		return base_url() . "/partes/print/" . $row->id_lineapedido . "?pg2=" . $pg2;
 	}
 
+	private function actualizarEstadoProceso($id_pedido, $nuevo_estado)
+	{
+		// Verificar si hay un estado válido para actualizar
+		if (is_null($nuevo_estado) || $nuevo_estado === '') {
+			// Si no hay estado para actualizar, continuar el flujo sin hacer nada
+			return;
+		}
+
+		// Conectarse a la base de datos
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+
+		$builder = $db->table('linea_pedidos');
+		$builder->select('id_lineapedido');
+		$builder->where('id_pedido', $id_pedido);
+		$query = $builder->get();
+
+		if ($query->getNumRows() > 0) {
+			$id_lineapedido = $query->getRow()->id_lineapedido;
+
+			// Actualizar el estado en la tabla procesos_pedidos solo si existe un id_linea_pedido
+			$builder_procesos = $db->table('procesos_pedidos');
+			$builder_procesos->set('estado', $nuevo_estado);
+			$builder_procesos->where('id_linea_pedido', $id_lineapedido);
+			$builder_procesos->update();
+		}
+	}
 
 	/* Funciones de salida - Vistas */
 
