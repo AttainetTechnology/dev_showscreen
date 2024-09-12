@@ -43,12 +43,13 @@ class Lista_produccion extends BaseControllerGC
         // Definimos las columnas y la tabla
         $crud->setTable('v_linea_pedidos_con_familia');
         $crud->setPrimaryKey('id_lineapedido', 'v_linea_pedidos_con_familia');
-        $crud->columns(['fecha_entrada', 'id_cliente', 'id_producto', 'id_familia', 'id_pedido', 'estado']);
+        $crud->columns(['fecha_entrada', 'id_cliente', 'nom_base',  'id_producto', 'id_familia', 'id_pedido', 'estado']);
         $crud->setRelation('id_cliente', 'clientes', 'nombre_cliente');
         $crud->setRelation('id_familia', 'familia_productos', 'nombre');
         $crud->setRelation('id_producto', 'productos', 'nombre_producto');
         $crud->displayAs('fecha_entrada', 'Fecha de Entrada');
         $crud->displayAs('id_cliente', 'Cliente');
+        $crud->displayAs('nom_base', 'Base');
         $crud->displayAs('id_producto', 'Producto');
         $crud->displayAs('id_familia', 'Familia');
         $crud->displayAs('id_pedido', 'Pedido');

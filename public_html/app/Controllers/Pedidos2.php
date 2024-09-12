@@ -355,7 +355,7 @@ class Pedidos2 extends BaseControllerGC
 		$crud->fieldType('total_linea', 'invisible');
 
 		//VISTAS
-		$crud->columns(['id_lineapedido', 'n_piezas', 'id_producto', 'estado', 'med_inicial', 'med_final', 'total_linea']);
+		$crud->columns(['id_lineapedido', 'n_piezas', 'nom_base','id_producto', 'estado', 'med_inicial', 'med_final', 'total_linea']);
 		$crud->editFields(['id_lineapedido', 'n_piezas', 'precio_venta', 'id_producto', 'nom_base', 'estado', 'fecha_entrada', 'fecha_entrega', 'med_inicial', 'med_final', 'lado', 'distancia', 'observaciones', 'total_linea']);
 		$crud->addFields(['id_pedido', 'n_piezas', 'precio_venta', 'id_producto', 'nom_base', 'fecha_entrada', 'fecha_entrega', 'med_inicial', 'med_final', 'lado', 'distancia', 'observaciones', 'total_linea', 'id_usuario']);
 
@@ -566,14 +566,14 @@ class Pedidos2 extends BaseControllerGC
         if ($query->getNumRows() > 0) {
             $id_pedido = $query->getRow()->id_pedido;
 
-            // Comprobar si todas las líneas del pedido tienen estado = 4
+            // Comprobar si todas las líneas del pedido tienen estado >= 4
             $builder_comprobar = $db->table('linea_pedidos');
             $builder_comprobar->select('estado');
             $builder_comprobar->where('id_pedido', $id_pedido);
-            $builder_comprobar->where('estado !=', '4');
+            $builder_comprobar->where('estado <', '4'); // Verificamos si alguna línea tiene estado menor a 4
             $query_comprobar = $builder_comprobar->get();
 
-            // Si no hay resultados, significa que todas las líneas están en estado = 4
+            // Si no hay resultados, significa que todas las líneas están en estado >= 4
             if ($query_comprobar->getNumRows() == 0) {
                 // Actualizar el estado del pedido a 4
                 $builder_pedido = $db->table('pedidos');
@@ -587,7 +587,7 @@ class Pedidos2 extends BaseControllerGC
                     log_message('error', 'Error al actualizar el estado del pedido para id_pedido: ' . $id_pedido);
                 }
             } else {
-                log_message('debug', 'No todas las líneas de pedido están en estado 4 para id_pedido: ' . $id_pedido);
+                log_message('debug', 'No todas las líneas de pedido están en estado 4 o más para id_pedido: ' . $id_pedido);
             }
         } else {
             log_message('error', 'No se encontró el id_pedido para la línea de pedido: ' . $id_lineapedido);
@@ -596,6 +596,7 @@ class Pedidos2 extends BaseControllerGC
         log_message('error', 'Error al actualizar el estado en procesos_pedidos para id_lineapedido: ' . $id_lineapedido);
     }
 }
+
 
 	/* Funciones de salida - Vistas */
 
