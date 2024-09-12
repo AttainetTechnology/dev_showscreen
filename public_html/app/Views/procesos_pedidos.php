@@ -49,7 +49,7 @@
                         <tr>
                             <th><input type="checkbox" id="selectAllCol2" class="selectAll"></th>
                             <th class="columna-id">
-                                id
+                                ID Linea
                                 <br>
                                 <input type="text" id="idSearchInputCol2" class="form-control d-inline-block" style="width: 90%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol2();">
                             </th>
@@ -178,7 +178,7 @@
                         <tr>
                             <th><input type="checkbox" id="selectAllCol4" class="selectAll"></th>
                             <th class="columna-id">
-                                id
+                            ID Linea
                                 <br>
                                 <input type="text" id="idSearchInputCol4" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
                             </th>
