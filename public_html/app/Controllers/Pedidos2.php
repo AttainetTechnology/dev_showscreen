@@ -39,6 +39,9 @@ class Pedidos2 extends BaseControllerGC
 		//Control de login	
 		helper('controlacceso');
 		$nivel = control_login();
+		$session = session();
+		$session_data = $session->get('logged_in');
+		$nivel_acceso = $session_data['nivel'];
 		//Fin Control de Login
 
 
@@ -89,6 +92,9 @@ class Pedidos2 extends BaseControllerGC
 		//UNSETS
 
 		$crud->unsetRead();
+		if ($nivel_acceso != 9) {
+			$crud->unsetDelete();
+		}
 
 		//CALLBACKS
 
