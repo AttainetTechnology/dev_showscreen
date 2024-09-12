@@ -336,7 +336,7 @@ class Pedidos2 extends BaseControllerGC
 
 		$this->idpedido = $id_pedido;
 		$crud->fieldType('id_pedido', 'hidden', $id_pedido);
-		$crud->requiredFields(['n_piezas', 'id_producto']);
+		$crud->requiredFields(['id_producto']);
 		$crud->fieldType('total_linea', 'invisible');
 
 		//VISTAS
