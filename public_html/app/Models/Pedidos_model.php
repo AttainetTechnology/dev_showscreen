@@ -5,12 +5,10 @@ use CodeIgniter\Model;
 
 class Pedidos_model extends Model
 {
-    protected $table = 'pedidos';
+    protected $table      = 'pedidos';
     protected $primaryKey = 'id_pedido';
-    protected $allowedFields = [
-        'id_cliente', 'referencia', 'id_usuario', 'fecha_entrada', 'fecha_entrega', 'observaciones', 'total_pedido', 'estado'
-    ];
-
+    protected $returnType = 'object';
+    protected $allowedFields = ['id_cliente', 'id_usuario', 'fecha_entrada', 'estado', 'total_pedido', 'fecha_entrega'];
     public function obtener_datos_pedido($id_pedido)
     {
         helper('controlacceso');
@@ -35,4 +33,16 @@ class Pedidos_model extends Model
 
         return $query->getResult();
     }
+
+    public function getPedidoWithRelations($coge_estado, $where_estado)
+    {
+        return $this->select('pedidos.*, clientes.nombre_cliente, users.nombre_usuario')
+                    ->join('clientes', 'clientes.id_cliente = pedidos.id_cliente', 'left')
+                    ->join('users', 'users.id = pedidos.id_usuario', 'left')
+                    ->where($coge_estado . $where_estado)
+                    ->orderBy('pedidos.fecha_entrada', 'desc')
+                    ->orderBy('pedidos.id_pedido', 'desc')
+                    ->findAll();
+    }
+       
 }
