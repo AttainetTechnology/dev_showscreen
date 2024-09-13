@@ -325,7 +325,7 @@ class Procesos_pedidos extends BaseControllerGC
                 continue;
             }
             // Limpiar el nombre del proceso: eliminar espacios y emojis
-            $nombreProcesoLimpio = trim(preg_replace('/\s+/', ' ', preg_replace('/[^\w\s\+\/-]/u', '', $nombreProceso)));
+            $nombreProcesoLimpio = trim(preg_replace('/\s+/', ' ', preg_replace('/[^\w\s\+\-\/\(\)]/u', '', $nombreProceso)));
             $proceso = $procesoModel->where('nombre_proceso', $nombreProcesoLimpio)->first();
             if (!$proceso) {
                 continue;
