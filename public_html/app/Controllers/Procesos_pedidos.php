@@ -589,6 +589,8 @@ class Procesos_pedidos extends BaseControllerGC
             ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
             ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
             ->join('productos', 'productos.id_producto = linea_pedidos.id_producto')
+            ->orderBy('procesos_pedidos.id_relacion', 'DESC')
+            ->limit(15)
             ->where('procesos_pedidos.estado', 4)
             ->findAll();
 

@@ -15,6 +15,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <!-- Iconos Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 <div class="wrapper">
     <div id="organizador">
@@ -137,13 +141,14 @@
             </div>
         </div>
         <div class="column" id="col3">
-            <button data-action="move-left" class="btn btn-md btn-primary"><i class="bi bi-arrow-left"></i></button><br>
-            <button data-action="move-right" class="btn btn-md btn-primary"><i class="bi bi-arrow-right"></i></button><br>
-            <button data-action="confirm" class="btn btn-md btn-info"><i class="bi bi-floppy"></i></button><br>
-            <button data-action="btn-terminado" class="btn btn-md" style="background-color: #50b752; color: white;"><i class="bi bi-clipboard2-check"></i></button><br>
-            <button data-action="btn-imprimir" onclick="printDiv('printableArea')" class="btn btn-secondary btn-md"><i class='bi bi-printer'></i></button><br>
-            <button data-action="cancelar" onclick="window.location.reload();" class="btn btn-md btn-warning"><i class="bi bi-arrow-clockwise"></i></button><br>
-            <button data-action="pedido" class="btn btn-md btn-success"><i class="bi bi-box"></i></button><br>
+
+            <button data-action="cancelar" onclick="window.location.reload();" class="btn btn-md btn-warning" style="background-color: #8B8B8B; border:none; color: white; margin-bottom:40px;" data-bs-toggle="tooltip" title="Recargar"><i class="bi bi-arrow-clockwise"></i></button><br>
+            <button data-action="move-left" class="btn btn-md btn-primary" data-bs-toggle="tooltip" title="Mover a lista para producir"><i class="bi bi-arrow-left"></i></button><br>
+            <button data-action="move-right" class="btn btn-md btn-primary" data-bs-toggle="tooltip" title="Mover a maquinas"><i class="bi bi-arrow-right"></i></button><br>
+            <button data-action="confirm" class="btn btn-md btn-info" style="background-color: #146C43; border:none; color: white;" data-bs-toggle="tooltip" title="Guardar"><i class="bi bi-floppy"></i></button><br>
+            <button data-action="btn-terminado" class="btn btn-md" style="background-color: #59AB5A; color: white;" data-bs-toggle="tooltip" title="Terminar"><i class="bi bi-clipboard2-check"></i></button><br>
+            <button data-action="btn-imprimir" onclick="printDiv('printableArea')" class="btn btn-secondary btn-md" style="background-color: #259CB4; border:none" data-bs-toggle="tooltip" title="Imprimir"><i class='bi bi-printer'></i></button><br>
+            <button data-action="pedido" class="btn btn-md btn-warning" data-bs-toggle="tooltip" title="Revertir"><i class="bi bi-arrow-counterclockwise"></i></button><br>
             <?php echo view('procesosTerminados'); ?>
 
         </div>
@@ -178,7 +183,7 @@
                         <tr>
                             <th><input type="checkbox" id="selectAllCol4" class="selectAll"></th>
                             <th class="columna-id">
-                            ID Linea
+                                ID Linea
                                 <br>
                                 <input type="text" id="idSearchInputCol4" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
                             </th>
@@ -499,6 +504,9 @@
     let idFilterCol4 = '';
 
     let sortable;
+    $(document).ready(function() {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
 
     $(document).ready(function() {
         // Inicializar select2 en el select con id 'searchInput'
