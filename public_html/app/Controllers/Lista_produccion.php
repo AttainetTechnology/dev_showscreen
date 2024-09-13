@@ -43,13 +43,14 @@ class Lista_produccion extends BaseControllerGC
         // Definimos las columnas y la tabla
         $crud->setTable('v_linea_pedidos_con_familia');
         $crud->setPrimaryKey('id_lineapedido', 'v_linea_pedidos_con_familia');
-        $crud->columns(['fecha_entrada', 'id_cliente', 'nom_base',  'id_producto', 'id_familia', 'id_pedido', 'estado']);
+        $crud->columns(['id_lineapedido','fecha_entrada', 'id_cliente', 'nom_base',  'id_producto', 'id_familia', 'id_pedido', 'estado']);
         $crud->setRelation('id_cliente', 'clientes', 'nombre_cliente');
         $crud->setRelation('id_familia', 'familia_productos', 'nombre');
         $crud->setRelation('id_producto', 'productos', 'nombre_producto');
         $crud->displayAs('fecha_entrada', 'Fecha de Entrada');
         $crud->displayAs('id_cliente', 'Cliente');
         $crud->displayAs('nom_base', 'Base');
+        $crud->displayAs('id_lineapedido', 'Linea Pedido');
         $crud->displayAs('id_producto', 'Producto');
         $crud->displayAs('id_familia', 'Familia');
         $crud->displayAs('id_pedido', 'Pedido');
@@ -70,7 +71,7 @@ class Lista_produccion extends BaseControllerGC
                 $uri = current_url(true);
                 $pg2 = urlencode($uri); // Codifica la URL para evitar caracteres no permitidos
                 return base_url('partes/print/' . $row->id_lineapedido) . '?volver=' . $pg2 .  'target="_blank"';
-            }, true); // El último parámetro indica que es un enlace
+            }, true); 
         }
 
 
@@ -135,7 +136,6 @@ class Lista_produccion extends BaseControllerGC
             return "<b><a href=" . base_url() . "Pedidos2/enmarcha#/edit/" . $id_pedido . " target='_blank'>" . $id_pedido . " - " . $cliente . "</a></b>";
         }
     }
-
 
     public function actualiza_linea($id_lineapedido, $estado)
     {
