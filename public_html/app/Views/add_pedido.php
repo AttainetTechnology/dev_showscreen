@@ -7,12 +7,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addPedidoModalLabel">Añadir Pedido</h5>
-                <button type="button" class="btn-close-custom" aria-label="Close" onclick="window.location.href='<?= base_url('pedidos2/enmarcha') ?>'">
+                <button type="button" class="btn-close-custom" aria-label="Close" onclick="window.location.href='<?= base_url('pedidos/enmarcha') ?>'">
                     &times;
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('pedidos2/save') ?>" method="post">
+                <form action="<?= base_url('pedidos/save') ?>" method="post">
                     <div class="form-group">
                         <label for="id_cliente">Empresa:</label>
                         <select id="id_cliente" name="id_cliente" class="form-control">
@@ -63,7 +63,7 @@
         $('#addPedidoModal').modal('show');
 
         $('#addPedidoModal').on('hidden.bs.modal', function(e) {
-            window.location.href = '<?= base_url('pedidos2/enmarcha') ?>';
+            window.location.href = '<?= base_url('pedidos/enmarcha') ?>';
         });
     });
 </script>

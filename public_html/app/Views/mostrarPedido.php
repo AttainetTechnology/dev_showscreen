@@ -2,7 +2,24 @@
 
 <?= $this->section('content') ?>
 <h2>Pedidos</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <a href="https://dev.showscreen.app/pedidos/add" class="btn btn-primary">Añadir Pedido</a>
+    <button id="clear-filters" class="btn btn-secondary">Eliminar Filtros</button>
+</div>
 <br>
+<?php
+// Mapeo de estados
+$estadoMap = [
+    "0" => "Pendiente de material",
+    "2" => "Material recibido",
+    "3" => "En Máquinas",
+    "4" => "Terminado",
+    "5" => "Entregado",
+    "1" => "Falta Material",
+    "6" => "Anulado"
+];
+?>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -16,28 +33,199 @@
             <th>Total</th>
             <th>Acciones</th>
         </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($pedidos as $pedido): ?>
         <tr>
-            <td><?= $pedido->id_pedido ?></td>
-            <td><?= $pedido->fecha_entrada ?></td>
-            <td><?= $pedido->fecha_entrega ?></td>
-            <td><?= $pedido->nombre_cliente ?></td>
-            <td><?= $pedido->referencia ?></td>
-            <td><?= $pedido->estado ?></td>
-            <td><?= $pedido->nombre_usuario ?></td>
-            <td><?= $pedido->total_pedido ?>€</td>
-            <td>
-                <a href="<?= base_url('pedidos/print/' . $pedido->id_pedido) ?>" class="btn btn-info" target="_blank">Imprimir</a>
-                <a href="<?= base_url('pedidos/edit/' . $pedido->id_pedido) ?>" class="btn btn-warning">Editar</a>
-                <?php if ($allow_delete): ?>
-                    <a href="<?= base_url('pedidos/delete/' . $pedido->id_pedido) ?>" class="btn btn-danger">Eliminar</a>
-                <?php endif; ?>
-            </td>
+            <th>
+                <div class="input-group">
+                    <input type="text" id="filter-id" class="form-control" placeholder="Filtrar por ID Pedido">
+                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-id">&times;</button>
+                </div>
+            </th>
+            <th>
+                <div class="input-group">
+                    <input type="text" id="filter-fecha-entrada" class="form-control datepicker" placeholder="Filtrar por Fecha Entrada">
+                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-fecha-entrada">&times;</button>
+                </div>
+            </th>
+            <th>
+                <div class="input-group">
+                    <input type="text" id="filter-fecha-entrega" class="form-control datepicker" placeholder="Filtrar por Fecha Entrega">
+                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-fecha-entrega">&times;</button>
+                </div>
+            </th>
+            <th>
+                <div class="input-group">
+                    <input list="clientes" id="filter-cliente" class="form-control" placeholder="Filtrar por Cliente" oninput="this.value = this.value.toUpperCase()">
+                    <datalist id="clientes">
+                        <?php foreach ($clientes as $cliente): ?>
+                            <option value="<?= strtoupper($cliente['nombre_cliente']) ?>"><?= strtoupper($cliente['nombre_cliente']) ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-cliente">&times;</button>
+                </div>
+            </th>
+            <th>
+                <div class="input-group">
+                    <input type="text" id="filter-referencia" class="form-control" placeholder="Filtrar por Referencia">
+                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-referencia">&times;</button>
+                </div>
+            </th>
+            <th>
+                <div class="input-group">
+                    <select id="filter-estado" class="form-control">
+                        <option value="">Filtrar por Estado</option>
+                        <option value="0">Pendiente de material</option>
+                        <option value="1">Falta Material</option>
+                        <option value="2">Material recibido</option>
+                        <option value="3">En Máquinas</option>
+                        <option value="4">Terminado</option>
+                        <option value="5">Entregado</option>
+                        <option value="6">Anulado</option>
+                    </select>
+                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-estado">&times;</button>
+                </div>
+            </th>
+            <th>
+                <div class="input-group">
+                    <input list="usuarios" id="filter-usuario" class="form-control" placeholder="Filtrar por Usuario" oninput="this.value = this.value.toUpperCase()">
+                    <datalist id="usuarios">
+                        <?php foreach ($usuarios as $usuario): ?>
+                            <option value="<?= strtoupper($usuario['nombre_usuario']) ?>"><?= strtoupper($usuario['nombre_usuario']) ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-usuario">&times;</button>
+                </div>
+            </th>
+            <th>
+                <div class="input-group">
+                    <input type="text" id="filter-total" class="form-control" placeholder="Filtrar por Total">
+                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-total">&times;</button>
+                </div>
+            </th>
+            <th></th>
         </tr>
+    </thead>
+    <tbody id="pedidoTable">
+        <?php foreach ($pedidos as $pedido): ?>
+            <tr>
+                <td><?= $pedido->id_pedido ?></td>
+                <td><?= date('d-m-Y', strtotime($pedido->fecha_entrada)) ?></td>
+                <td><?= date('d-m-Y', strtotime($pedido->fecha_entrega)) ?></td>
+                <td><?= $pedido->nombre_cliente ?></td>
+                <td><?= $pedido->referencia ?></td>
+                <td><?= $estadoMap[$pedido->estado] ?></td>
+                <td><?= $pedido->nombre_usuario ?></td>
+                <td><?= $pedido->total_pedido ?>€</td>
+                <td>
+                    <a href="<?= base_url('pedidos/print/' . $pedido->id_pedido) ?>" class="btn btn-info" target="_blank">Imprimir</a>
+                    <a href="<?= base_url('pedidos/edit/' . $pedido->id_pedido) ?>" class="btn btn-warning">Editar</a>
+                    <?php if ($allow_delete): ?>
+                        <a href="<?= base_url('pedidos/delete/' . $pedido->id_pedido) ?>" class="btn btn-danger">Eliminar</a>
+                    <?php endif; ?>
+                </td>
+            </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 
+<script>
+    $(document).ready(function() {
+        const estadoMap = {
+            "0": "pendiente de material",
+            "1": "falta material",
+            "2": "material recibido",
+            "3": "en máquinas",
+            "4": "terminado",
+            "5": "entregado",
+            "6": "anulado"
+        };
+
+        // Inicializar Datepicker en los campos de fecha con formato día/mes/año
+        $(".datepicker").datepicker({
+            dateFormat: 'dd-mm-yy',
+            onSelect: function() {
+                applyFilters();
+            }
+        });
+
+        const filters = {
+            'filter-id': 0,
+            'filter-fecha-entrada': 1,
+            'filter-fecha-entrega': 2,
+            'filter-cliente': 3,
+            'filter-referencia': 4,
+            'filter-estado': 5,
+            'filter-usuario': 6,
+            'filter-total': 7
+        };
+
+        // Función para aplicar todos los filtros a la vez
+        const applyFilters = () => {
+            const rows = document.querySelectorAll('#pedidoTable tr');
+
+            rows.forEach(row => {
+                let isVisible = true;
+
+                Object.keys(filters).forEach(filterId => {
+                    const columnIndex = filters[filterId];
+                    const element = document.getElementById(filterId);
+                    const filterValue = element.tagName === 'SELECT' ? element.value : element.value.toLowerCase();
+                    const cellValue = row.cells[columnIndex].textContent.toLowerCase();
+
+                    if (filterId === 'filter-estado' && filterValue) {
+                        filterValue = estadoMap[filterValue];
+                    }
+
+                    if (filterValue && !cellValue.includes(filterValue)) {
+                        isVisible = false;
+                    }
+                });
+
+                row.style.display = isVisible ? '' : 'none';
+            });
+        };
+
+        // Asignar eventos a todos los filtros para que apliquen el filtro general
+        Object.keys(filters).forEach(filterId => {
+            const element = document.getElementById(filterId);
+            const eventType = element.tagName === 'INPUT' ? 'input' : 'change';
+
+            element.addEventListener(eventType, applyFilters);
+        });
+
+        // Filtrar por estado usando el valor del select y convertir el valor numérico en texto
+        $('#filter-estado').on('change', function() {
+            applyFilters();
+        });
+
+        // Función para limpiar todos los filtros
+        const clearFilters = () => {
+            Object.keys(filters).forEach(filterId => {
+                const element = document.getElementById(filterId);
+                if (element.tagName === 'SELECT') {
+                    element.selectedIndex = 0;
+                } else {
+                    element.value = '';
+                }
+            });
+            applyFilters(); // Aplicar los filtros nuevamente
+        };
+
+        // Botón para eliminar todos los filtros
+        $('#clear-filters').on('click', clearFilters);
+
+        // Función para eliminar un filtro específico
+        $('.clear-filter').on('click', function() {
+            const filterId = $(this).data('filter');
+            const element = document.getElementById(filterId);
+
+            if (element.tagName === 'SELECT') {
+                element.selectedIndex = 0;
+            } else {
+                element.value = '';
+            }
+
+            applyFilters(); // Reaplicar los filtros después de eliminar uno específico
+        });
+    });
+</script>
 <?= $this->endSection() ?>
