@@ -543,7 +543,6 @@ class Pedidos2 extends BaseControllerGC
 		}
 
 		// Conectarse a la base de datos
-		log_message('debug', 'Conectando a la base de datos para actualizar estado de la línea de pedido: ' . $id_lineapedido);
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 
@@ -566,6 +565,19 @@ class Pedidos2 extends BaseControllerGC
 			if ($query->getNumRows() > 0) {
 				$id_pedido = $query->getRow()->id_pedido;
 
+				// Comprobar si alguna línea del pedido está en un estado menor a 4
+				$builder_verificar = $db->table('linea_pedidos');
+				$builder_verificar->select('estado');
+				$builder_verificar->where('id_pedido', $id_pedido);
+				$builder_verificar->where('estado <', '4');
+				$query_verificar = $builder_verificar->get();
+
+				// Si alguna línea está en estado menor a 4, no cambiar el estado del pedido
+				if ($query_verificar->getNumRows() > 0) {
+					log_message('debug', 'El pedido no puede actualizarse porque al menos una línea está en un estado menor a 4 para id_pedido: ' . $id_pedido);
+					return; 
+				}
+
 				// Comprobar si todas las líneas del pedido están en estado 4 o 5
 				$builder_comprobar = $db->table('linea_pedidos');
 				$builder_comprobar->select('estado');
@@ -575,7 +587,6 @@ class Pedidos2 extends BaseControllerGC
 				$todasEnEstado4 = true;
 				$todasEnEstado5 = true;
 
-				// Iterar por todas las líneas y verificar sus estados
 				foreach ($query_comprobar->getResult() as $linea) {
 					if ($linea->estado != '4') {
 						$todasEnEstado4 = false;
@@ -587,6 +598,7 @@ class Pedidos2 extends BaseControllerGC
 
 				// Determinar el estado del pedido
 				if ($todasEnEstado5) {
+					// Si todas las líneas están en estado 5, actualizar el estado del pedido a 5
 					$builder_pedido = $db->table('pedidos');
 					$builder_pedido->set('estado', '5');
 					$builder_pedido->where('id_pedido', $id_pedido);
@@ -598,6 +610,7 @@ class Pedidos2 extends BaseControllerGC
 						log_message('error', 'Error al actualizar el estado del pedido para id_pedido: ' . $id_pedido);
 					}
 				} elseif ($todasEnEstado4 || !$todasEnEstado5) {
+					// Si todas las líneas están en estado 4 o hay una mezcla de 4 y 5, actualizar el estado del pedido a 4
 					$builder_pedido = $db->table('pedidos');
 					$builder_pedido->set('estado', '4');
 					$builder_pedido->where('id_pedido', $id_pedido);
