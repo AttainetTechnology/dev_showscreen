@@ -951,3 +951,24 @@ input::-webkit-inner-spin-button {
 input[type=number] {
 	-moz-appearance: textfield;
 }
+.botonesEditProcesos {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-orange {
+    background-color: #ffc107;
+    color: white !important;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-orange:hover {
+    background-color: rgb(255, 168, 62);
+}
+
+.btn-success:hover{
+	background-color: #317a57 !important;
+}
+

@@ -11,7 +11,10 @@
 
     <form id="edit-form" action="<?= base_url('procesos/restriccion/' . $proceso_principal['id_proceso']); ?>" method="post">
         <input type="hidden" name="redirect_url" value="<?= current_url(); ?>">
-        <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
+        <div class="botonesEditProcesos">
+            <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
+            <a href="<?= base_url('procesos'); ?>" class="btn btn-orange mt-3 ml-2">Ver Procesos</a>
+        </div>
 
         <h2 class="text-center mb-4"><?= $proceso_principal['nombre_proceso'] ?></h2>
         <div class="form-group">
