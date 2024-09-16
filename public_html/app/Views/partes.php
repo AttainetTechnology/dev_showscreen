@@ -47,13 +47,8 @@
                                     <div class="numero_parte">Id: <strong><? echo $p->id_pedido; ?></strong></div>
                                 </div>
                                 <h3><b><? echo $prod->nombre_producto; ?></b> </h3>
-                                <div class="parte-fechas">
-                                    <div class="f-entrada">Entrada: <? echo date("d-m-Y", strtotime($p->fecha_entrada)); ?> &nbsp; </div>
-                                    <div class="f-entrega"> Entrega:
-                                        <strong><? echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
-                                    </div>
-                                </div>
-                                <img src="<?php echo base_url("public/assets/uploads/files"); ?>/<? echo $prod->imagen; ?>" class="imagen_parte" /><br />
+                                <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong>
+                                    <img src="<?php echo base_url("public/assets/uploads/files"); ?>/<? echo $prod->imagen; ?>" class="imagen_parte" /><br />
                             </div>
                             <!-- END Cabecera -->
                         </div><!-- /.row -->
@@ -101,7 +96,12 @@
                                 $i = '1';
                                 foreach ($procesos as $proc) { ?>
                                     <?php if ($i == '7') { ?><div class="detalles-pie">
-                                            <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong> | User: <strong><?php echo $nombre_usuario; ?> <?php echo $apellidos_usuario; ?></strong> | Impresi&oacute;n: <?php echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
+
+                                            Entrada: <? echo date("d-m-Y", strtotime($p->fecha_entrada)); ?> &nbsp;
+                                            Entrega:
+                                            <strong><? echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
+                                            <br>
+                                            User: <strong><?php echo $nombre_usuario; ?> <?php echo $apellidos_usuario; ?></strong> | Impresi&oacute;n: <?php echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
                                         </div>
                                         <div class="pagina1"></div>
                                         <div class="pagina2"></div>
@@ -125,13 +125,8 @@
                                                     <H2>Hoja 2 &nbsp;</H2>
                                                 </div>
                                                 <h3><b><?php echo $prod->nombre_producto; ?></b> </h3>
-                                                <div class="parte-fechas">
-                                                    <div class="f-entrada">Entrada: <?php echo date("d-m-Y", strtotime($p->fecha_entrada)); ?> &nbsp; </div>
-                                                    <div class="f-entrega"> Entrega:
-                                                        <strong><?php echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
-                                                    </div>
-                                                </div>
-                                                <img src="<?php echo base_url("public/assets/uploads/files/"); ?>/<?php echo $prod->imagen; ?>" class="imagen_parte" /><br />
+                                                <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong>
+                                                    <img src="<?php echo base_url("public/assets/uploads/files/"); ?>/<?php echo $prod->imagen; ?>" class="imagen_parte" /><br />
                                             </div>
                                             <!-- END Cabecera -->
 
@@ -227,7 +222,11 @@
                             </div>
                         <?php } ?>
                         <div class="detalles-pie">
-                            <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong> | User: <strong><?php echo $nombre_usuario; ?> <?php echo $apellidos_usuario; ?></strong> | Impresi&oacute;n: <? echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
+                            Entrada: <? echo date("d-m-Y", strtotime($p->fecha_entrada)); ?> &nbsp;
+                            Entrega:
+                            <strong><? echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
+                            <br>
+                            User: <strong><?php echo $nombre_usuario; ?> <?php echo $apellidos_usuario; ?></strong> | Impresi&oacute;n: <? echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
                         </div>
                     </div>
                     <!-- /#Printable area -->

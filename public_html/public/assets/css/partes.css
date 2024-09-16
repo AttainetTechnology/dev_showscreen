@@ -371,8 +371,13 @@ img.imagen_parte {
 }
 
 #parte_fila_left {
-    padding-right: 40px;
-    width: 60%;
+    padding-right: 30px;
+    width: 56%;
+    padding-left: 20px;
+}
+
+.table-responsive{
+    padding-left: 18px !important;
 }
 
 #parte_fila_right {
