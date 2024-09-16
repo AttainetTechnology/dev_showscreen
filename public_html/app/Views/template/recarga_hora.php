@@ -14,7 +14,21 @@ if ($nif === null) {
 // Recargo la página cada cierto tiempo, añadiendo el NIF en la URL
 echo "<script>
 function redireccionarPaginaHora() {
-    window.location = '" . base_url('presentes/' . $nif) . "';
+    // Comprobamos los fichajes antes de recargar la página
+    fetch('" . base_url('Fichar/CerrarFichajesAbiertos') . "', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Comprobación de fichajes completada:', data);
+        // Después de comprobar los fichajes, recargamos la página
+        window.location = '" . base_url('presentes/' . $nif) . "';
+    })
+    .catch(error => {
+        console.error('Error al comprobar los fichajes:', error);
+        // En caso de error, recargamos la página de todas formas
+        window.location = '" . base_url('presentes/' . $nif) . "';
+    });
 }
 
 // Recarga la página cada 30 minutos (1800000 milisegundos)
