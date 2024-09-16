@@ -20,7 +20,7 @@ $estadoMap = [
     "6" => "Anulado"
 ];
 ?>
-<table class="table table-striped">
+<table class="table table-striped table-pedidos">
     <thead>
         <tr>
             <th>ID Pedido</th>
@@ -36,25 +36,25 @@ $estadoMap = [
         <tr>
             <th>
                 <div class="input-group">
-                    <input type="text" id="filter-id" class="form-control" placeholder="Filtrar por ID Pedido">
+                    <input type="text" id="filter-id" class="form-control" placeholder="">
                     <button class="btn btn-outline-secondary clear-filter" data-filter="filter-id">&times;</button>
                 </div>
             </th>
             <th>
                 <div class="input-group">
-                    <input type="text" id="filter-fecha-entrada" class="form-control datepicker" placeholder="Filtrar por Fecha Entrada">
+                    <input type="text" id="filter-fecha-entrada" class="form-control datepicker" placeholder="">
                     <button class="btn btn-outline-secondary clear-filter" data-filter="filter-fecha-entrada">&times;</button>
                 </div>
             </th>
             <th>
                 <div class="input-group">
-                    <input type="text" id="filter-fecha-entrega" class="form-control datepicker" placeholder="Filtrar por Fecha Entrega">
+                    <input type="text" id="filter-fecha-entrega" class="form-control datepicker" placeholder="">
                     <button class="btn btn-outline-secondary clear-filter" data-filter="filter-fecha-entrega">&times;</button>
                 </div>
             </th>
             <th>
                 <div class="input-group">
-                    <input list="clientes" id="filter-cliente" class="form-control" placeholder="Filtrar por Cliente" oninput="this.value = this.value.toUpperCase()">
+                    <input list="clientes" id="filter-cliente" class="form-control" placeholder="" oninput="this.value = this.value.toUpperCase()">
                     <datalist id="clientes">
                         <?php foreach ($clientes as $cliente): ?>
                             <option value="<?= strtoupper($cliente['nombre_cliente']) ?>"><?= strtoupper($cliente['nombre_cliente']) ?></option>
@@ -65,14 +65,14 @@ $estadoMap = [
             </th>
             <th>
                 <div class="input-group">
-                    <input type="text" id="filter-referencia" class="form-control" placeholder="Filtrar por Referencia">
+                    <input type="text" id="filter-referencia" class="form-control" placeholder="">
                     <button class="btn btn-outline-secondary clear-filter" data-filter="filter-referencia">&times;</button>
                 </div>
             </th>
             <th>
                 <div class="input-group">
                     <select id="filter-estado" class="form-control">
-                        <option value="">Filtrar por Estado</option>
+                        <option value=""></option>
                         <option value="0">Pendiente de material</option>
                         <option value="1">Falta Material</option>
                         <option value="2">Material recibido</option>
@@ -86,7 +86,7 @@ $estadoMap = [
             </th>
             <th>
                 <div class="input-group">
-                    <input list="usuarios" id="filter-usuario" class="form-control" placeholder="Filtrar por Usuario" oninput="this.value = this.value.toUpperCase()">
+                    <input list="usuarios" id="filter-usuario" class="form-control" placeholder="" oninput="this.value = this.value.toUpperCase()">
                     <datalist id="usuarios">
                         <?php foreach ($usuarios as $usuario): ?>
                             <option value="<?= strtoupper($usuario['nombre_usuario']) ?>"><?= strtoupper($usuario['nombre_usuario']) ?></option>
@@ -97,7 +97,7 @@ $estadoMap = [
             </th>
             <th>
                 <div class="input-group">
-                    <input type="text" id="filter-total" class="form-control" placeholder="Filtrar por Total">
+                    <input type="text" id="filter-total" class="form-control" placeholder="">
                     <button class="btn btn-outline-secondary clear-filter" data-filter="filter-total">&times;</button>
                 </div>
             </th>
@@ -168,11 +168,13 @@ $estadoMap = [
                 Object.keys(filters).forEach(filterId => {
                     const columnIndex = filters[filterId];
                     const element = document.getElementById(filterId);
-                    const filterValue = element.tagName === 'SELECT' ? element.value : element.value.toLowerCase();
-                    const cellValue = row.cells[columnIndex].textContent.toLowerCase();
+                    let filterValue = element.tagName === 'SELECT' ? element.value : element.value.toLowerCase();
+                    let cellValue = row.cells[columnIndex].textContent.toLowerCase();
 
+                    // Si es el filtro de estado, convertir el valor del select en su texto correspondiente
                     if (filterId === 'filter-estado' && filterValue) {
-                        filterValue = estadoMap[filterValue];
+                        filterValue = estadoMap[filterValue]; // Mapea el valor numérico al texto
+                        cellValue = cellValue.toLowerCase(); // Asegurarse de que el valor de la celda también esté en minúsculas
                     }
 
                     if (filterValue && !cellValue.includes(filterValue)) {
