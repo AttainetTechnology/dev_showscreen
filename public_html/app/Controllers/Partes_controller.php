@@ -103,9 +103,8 @@ class Partes_controller extends BaseControllerGC
         $builder->select('*');
         $builder->where(array("id_producto" => $elproducto));
         $builder->join('procesos', 'procesos.id_proceso=procesos_productos.id_proceso', 'left');
-        $builder->orderby('nombre_proceso', 'asc');
+        $builder->orderby('procesos_productos.orden', 'asc'); // Cambiado para ordenar por 'orden'
         $query4 = $builder->get();
-
 
         if ($query4->getResultArray() != 0) {
             $procesos = $query4->getResult();
@@ -116,6 +115,7 @@ class Partes_controller extends BaseControllerGC
         } else {
             return false;
         }
+
 
 
         echo view('header_partes');

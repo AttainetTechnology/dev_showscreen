@@ -169,7 +169,7 @@ class Productos extends BaseControllerGC
         $builder->select('*');
         $builder->where('id_producto', $id_producto);
         $builder->join('procesos', 'procesos.id_proceso = procesos_productos.id_proceso', 'left');
-        $builder->orderby('nombre_proceso', 'asc');
+        $builder->orderby('procesos_productos.orden', 'asc');
         $query = $builder->get();
 
         $data['procesos'] = $query->getResult();
