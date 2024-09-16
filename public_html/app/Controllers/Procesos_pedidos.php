@@ -111,20 +111,18 @@ class Procesos_pedidos extends BaseControllerGC
         $procesoModel = new Proceso($db);
         $lineaPedidoModel = new LineaPedido($db);
         $pedidoModel = new Pedido($db);
-
         $data = $this->request->getJSON(true);
 
         if (!isset($data['procesos']) || !is_array($data['procesos'])) {
             return $this->response->setJSON(['error' => 'Datos inválidos']);
         }
-
         foreach ($data['procesos'] as $proceso) {
             if (isset($proceso['nombre_proceso']) && isset($proceso['id_linea_pedido']) && isset($proceso['id_maquina']) && isset($proceso['orden'])) {
-                $procesoEncontrado = $procesoModel->where('nombre_proceso', $proceso['nombre_proceso'])->first();
-
+                $procesoEncontrado = $procesoModel
+                    ->where('nombre_proceso', $this->db->escapeLikeString($proceso['nombre_proceso'])) // Escapando caracteres especiales
+                    ->first();
                 if ($procesoEncontrado) {
                     $idProceso = $procesoEncontrado['id_proceso'];
-
                     // Pasar el orden específico
                     $this->calcularYActualizarOrdenParaMaquina($proceso['id_maquina'], $idProceso, $proceso['id_linea_pedido'], $proceso['orden']);
 
@@ -132,7 +130,6 @@ class Procesos_pedidos extends BaseControllerGC
                     $procesosDeLaLinea = $procesosPedidoModel
                         ->where('id_linea_pedido', $proceso['id_linea_pedido'])
                         ->findAll();
-
                     foreach ($procesosDeLaLinea as $procesoPedido) {
                         if ($procesoPedido['estado'] < 3) {
                             $actualizarLineaPedido = false;
@@ -144,7 +141,6 @@ class Procesos_pedidos extends BaseControllerGC
                             ->where('id_lineapedido', $proceso['id_linea_pedido'])
                             ->set(['estado' => 3])
                             ->update();
-
                         // Obtener el ID del pedido asociado a la línea de pedido actualizada
                         $idPedido = $lineaPedidoModel->where('id_lineapedido', $proceso['id_linea_pedido'])->first()['id_pedido'];
                         // Actualizar el estado del pedido a 3 sin verificar el estado de todas las líneas
@@ -158,8 +154,6 @@ class Procesos_pedidos extends BaseControllerGC
         }
         return $this->response->setJSON(['success' => 'Estados actualizados correctamente.']);
     }
-
-
     private function calcularYActualizarOrdenParaMaquina($idMaquina, $idProceso, $idLineaPedido, $orden)
     {
         $data = usuario_sesion();
@@ -174,7 +168,6 @@ class Procesos_pedidos extends BaseControllerGC
             ->set(['estado' => 3, 'id_maquina' => $idMaquina, 'orden' => $orden])
             ->update();
     }
-
     public function actualizarEstadoLineaPedido()
     {
         $data = usuario_sesion();
@@ -226,7 +219,6 @@ class Procesos_pedidos extends BaseControllerGC
 
         $idsPedidoActualizados = [];
         $idsMaquinaAfectadas = []; // Nuevo array para almacenar los IDs de máquinas afectadas
-
         foreach ($data['procesos'] as $proceso) {
             if (isset($proceso['nombre_proceso']) && isset($proceso['id_linea_pedido'])) {
                 $procesoEncontrado = $procesoModel->where('nombre_proceso', $proceso['nombre_proceso'])->first();
@@ -325,7 +317,7 @@ class Procesos_pedidos extends BaseControllerGC
                 continue;
             }
             // Limpiar el nombre del proceso: eliminar espacios y emojis
-            $nombreProcesoLimpio = trim(preg_replace('/\s+/', ' ', preg_replace('/[^\w\s\+\-\/\(\)]/u', '', $nombreProceso)));
+            $nombreProcesoLimpio = trim(preg_replace('/\s+/', ' ', preg_replace('/[^\w\s\+\-\/\(\)]/u', '', $nombreProceso))); // Ajuste para caracteres especiales
             $proceso = $procesoModel->where('nombre_proceso', $nombreProcesoLimpio)->first();
             if (!$proceso) {
                 continue;
@@ -361,8 +353,6 @@ class Procesos_pedidos extends BaseControllerGC
                 ->set(['estado' => 4])
                 ->update();
 
-            // Registrar en el log la actualización del estado del proceso
-            $this->logAction('Organizador', "El proceso $nombreProcesoLimpio para id $idLineaPedido terminada", $data);
             // Reordenar los procesos en la máquina
             $this->reordenarProcesosParaMaquina($idMaquina);
             // Eliminar id_proceso de las restricciones en otros procesos
@@ -407,8 +397,6 @@ class Procesos_pedidos extends BaseControllerGC
         }
         return $this->response->setJSON(['success' => 'Estados actualizados y líneas eliminadas']);
     }
-
-
 
     private function eliminarRestricciones($idLineaPedido, $idProcesoTerminado)
     {

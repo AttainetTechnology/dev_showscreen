@@ -13,7 +13,6 @@ class Procesos extends BaseControllerGC
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
         $procesos = $procesoModel->where('estado_proceso', 1)->orderBy('nombre_proceso', 'ASC')->findAll();
-
         // Pasar estado_proceso a la vista para mostrar botón correcto
         return view('procesos', ['procesos' => $procesos, 'estado_proceso' => 1]);
     }
@@ -27,12 +26,8 @@ class Procesos extends BaseControllerGC
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
         $nombre_proceso = $this->request->getPost('nombre_proceso');
+        $nombre_proceso = strtoupper($nombre_proceso);
         $estado_proceso = $this->request->getPost('estado_proceso');
-        // Validar que el nombre del proceso no contenga los caracteres prohibidos
-        if (preg_match("/[().']/i", $nombre_proceso)) {
-            // Si el nombre contiene caracteres prohibidos, redirigir con un mensaje de error
-            return redirect()->back()->withInput()->with('error', 'El nombre del proceso no puede contener los caracteres: ( ) . \'');
-        }
         // Insertar el nuevo proceso si la validación es correcta
         $procesoModel->insert([
             'nombre_proceso' => $nombre_proceso,
@@ -66,7 +61,7 @@ class Procesos extends BaseControllerGC
         $previous_proceso_id = $this->getPreviousProceso($primaryKey);
         $next_proceso_id = $this->getNextProceso($primaryKey);
         if ($this->request->is('post')) {
-            $nombre_proceso = $this->request->getPost('nombre_proceso');
+            $nombre_proceso = strtoupper($this->request->getPost('nombre_proceso'));
             $estado_proceso = $this->request->getPost('estado_proceso') ?? '1';
             $restricciones = $this->request->getPost('restricciones');
             $redirect_url = $this->request->getPost('redirect_url');
@@ -94,7 +89,7 @@ class Procesos extends BaseControllerGC
     {
         $data = datos_user();
         $dbClient = db_connect($data['new_db']);
-        // Obtén los productos asociados al proceso modificado
+        // Obtiene los productos asociados al proceso modificado
         $productos = $dbClient->table('procesos_productos')->where('id_proceso', $id_proceso)->get()->getResultArray();
         foreach ($productos as $producto) {
             $id_producto = $producto['id_producto'];
