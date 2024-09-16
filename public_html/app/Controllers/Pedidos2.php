@@ -200,7 +200,7 @@ class Pedidos2 extends BaseControllerGC
 		$data['clientes'] = $clienteModel->findAll();
 		$data['usuario_html'] = $this->guarda_usuario();
 
-		echo view('add_pedido', $data);
+		echo view('add_pedido2', $data);
 	}
 
 	//modal add pedido

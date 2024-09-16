@@ -1,10 +1,23 @@
 <?= $this->extend('layouts/main') ?>
-
 <?= $this->section('content') ?>
 <h2>Pedidos</h2>
 
 <div class="d-flex justify-content-between mb-3">
-    <a href="https://dev.showscreen.app/pedidos/add" class="btn btn-primary">Añadir Pedido</a>
+    <a href="#" id="openModal" class="btn btn-primary">Añadir Pedido</a>
+
+    <div class="modal fade" id="addPedidoModal" tabindex="-1" role="dialog" aria-labelledby="addPedidoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPedidoModalLabel">Añadir Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- cargara el contenido desde la vista add_pedido.php -->
+                </div>
+            </div>
+        </div>
+    </div>
     <button id="clear-filters" class="btn btn-secondary">Eliminar Filtros</button>
 </div>
 <br>
@@ -129,6 +142,32 @@ $estadoMap = [
 
 <script>
     $(document).ready(function() {
+        // Función para abrir el modal y cargar el contenido vía AJAX
+        function abrirModal() {
+            $.ajax({
+                url: '<?= base_url('pedidos/add') ?>',
+                method: 'GET',
+                success: function(response) {
+                    $('#addPedidoModal .modal-body').html(response);
+                    $('#addPedidoModal').modal('show');
+                },
+                error: function() {
+                    alert('Hubo un error al cargar el contenido del modal.');
+                }
+            });
+        }
+        // Detectar el parámetro 'modal=add' en la URL
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('modal') === 'add') {
+            abrirModal();
+        }
+        $('#openModal').click(function(e) {
+            e.preventDefault();
+            abrirModal();
+        });
+    });
+
+    $(document).ready(function() {
         const estadoMap = {
             "0": "pendiente de material",
             "1": "falta material",
@@ -170,18 +209,16 @@ $estadoMap = [
                     const element = document.getElementById(filterId);
                     let filterValue = element.tagName === 'SELECT' ? element.value : element.value.toLowerCase();
                     let cellValue = row.cells[columnIndex].textContent.toLowerCase();
-
                     // Si es el filtro de estado, convertir el valor del select en su texto correspondiente
                     if (filterId === 'filter-estado' && filterValue) {
-                        filterValue = estadoMap[filterValue]; // Mapea el valor numérico al texto
-                        cellValue = cellValue.toLowerCase(); // Asegurarse de que el valor de la celda también esté en minúsculas
+                        filterValue = estadoMap[filterValue];
+                        cellValue = cellValue.toLowerCase();
                     }
 
                     if (filterValue && !cellValue.includes(filterValue)) {
                         isVisible = false;
                     }
                 });
-
                 row.style.display = isVisible ? '' : 'none';
             });
         };
@@ -198,7 +235,6 @@ $estadoMap = [
         $('#filter-estado').on('change', function() {
             applyFilters();
         });
-
         // Función para limpiar todos los filtros
         const clearFilters = () => {
             Object.keys(filters).forEach(filterId => {
@@ -209,9 +245,8 @@ $estadoMap = [
                     element.value = '';
                 }
             });
-            applyFilters(); // Aplicar los filtros nuevamente
+            applyFilters();
         };
-
         // Botón para eliminar todos los filtros
         $('#clear-filters').on('click', clearFilters);
 
