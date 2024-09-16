@@ -49,7 +49,7 @@ class Ruta_pedido extends BaseControllerGC
 
         // Obtener el primer transportista de la lista
         $transportistas = $this->transportistas();
-        $primer_transportista_id = array_key_first($transportistas); 
+        $primer_transportista_id = array_key_first($transportistas);
 
         // Valor por defecto para 'transportista'
         $crud->callbackAddField('transportista', function () use ($primer_transportista_id, $transportistas) {
@@ -71,9 +71,9 @@ class Ruta_pedido extends BaseControllerGC
         $crud->setRelation('id_cliente', 'clientes', 'nombre_cliente');
 
         $crud->fieldType('estado_ruta', 'dropdown_search', [
-            '1' => 'Pendiente de recoger',
-            '2' => 'No preparado',
-            '3' => 'Recogido'
+            '1' => 'No preparado',
+            '0' => 'Pendiente de recoger',
+            '2' => 'Recogido'
         ]);
 
         $crud->fieldType('recogida_entrega', 'dropdown_search', [
@@ -117,12 +117,12 @@ class Ruta_pedido extends BaseControllerGC
     {
         $nombre_estado = "";
         if ($estado_ruta == '1') {
+            $nombre_estado = "1. No preparado";
+        }
+        if ($estado_ruta == '0') {
             $nombre_estado = "0. Pendiente";
         }
         if ($estado_ruta == '2') {
-            $nombre_estado = "1. No preparado";
-        }
-        if ($estado_ruta == '3') {
             $nombre_estado = "2. Entregado / recogido";
         }
         return "<div class='ruta" . (($estado_ruta) ?: 'error') . "'>$nombre_estado</div>";
