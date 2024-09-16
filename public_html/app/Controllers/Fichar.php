@@ -76,7 +76,7 @@ class Fichar extends BaseFichar
 		$presentes = new Presentes($this->db);
 		$fichajes = new Fichajes($this->db);
 		$hoy = date('Y-m-d H:i:s');
-		$limite = (new DateTime($hoy))->modify('-8 hours')->format('Y-m-d H:i:s');
+		$limite = (new DateTime($hoy))->modify('-10 hours')->format('Y-m-d H:i:s');
 
 		// Buscar todos los fichajes que llevan abiertos más de 8 horas
 		$fichajesAbiertos = $presentes
@@ -101,6 +101,7 @@ class Fichar extends BaseFichar
 
 		$this->Compruebalaborable($aviso);
 	}
+
 	/* Comprobamos si ayer fue sábado o domingo */
 	public function Compruebalaborable($aviso)
 	{
