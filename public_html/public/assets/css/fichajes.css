@@ -112,6 +112,7 @@
   .ficha-entrada {
       display: flex;
       align-items: center;
+      width: 50% !important;
   }
   .fichafoto {
       width: 47vw;
@@ -132,6 +133,8 @@
       justify-content: space-evenly;
       align-items: center;
       height: 40vh;
+      width: 50% !important;
+      margin-top: 7%;
   }
   .titulopagina {
       font-size: 1.8rem;
