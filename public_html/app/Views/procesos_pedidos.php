@@ -570,11 +570,12 @@
         sortable = Sortable.create(el, {
             animation: 150,
             onEnd: function(evt) {
+                console.log('onEnd triggered');
                 guardarOrdenEnLocalStorage();
+                actualizarOrdenProcesos();
             }
         });
     }
-
     // Función para manejar el guardado del orden en localStorage
     function guardarOrdenEnLocalStorage() {
         const filas = document.querySelectorAll('#sortableTable tbody tr');
@@ -1050,10 +1051,6 @@
             .then(data => {
                 if (data.success) {
                     console.log('Orden actualizado correctamente.');
-                    console.log('Procesos actualizados:', data.procesos_actualizados);
-                    if (data.procesos_no_encontrados.length > 0) {
-                        console.warn('Algunos procesos no se encontraron:', data.procesos_no_encontrados);
-                    }
                 } else {
                     alert('Error al actualizar el orden: ' + data.error);
                 }
