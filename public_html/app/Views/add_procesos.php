@@ -35,9 +35,16 @@
 <script>
     document.getElementById('addProcessModal').addEventListener('submit', function(event) {
         const nombreProcesoInput = document.getElementById('nombre_proceso');
-        let nombreProceso = nombreProcesoInput.value.toUpperCase(); 
-            nombreProcesoInput.value = nombreProceso;
-        
+        let nombreProceso = nombreProcesoInput.value; 
+        // Verificamos si el nombre del proceso contiene puntos
+        if (nombreProceso.includes('.')) {
+            alert('No se permite el uso de puntos en el nombre del proceso.');
+            event.preventDefault(); // Evita que el formulario se envíe
+            return;
+        }
+        // Convertimos el valor a mayúsculas
+        nombreProceso = nombreProceso.toUpperCase(); 
+        nombreProcesoInput.value = nombreProceso;
     });
     $(document).ready(function() {
         $('#addProcessModal').modal('show');

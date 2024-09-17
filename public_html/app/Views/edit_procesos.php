@@ -67,6 +67,19 @@
         const inputs = form.querySelectorAll('input, select');
         const searchInput = document.getElementById('search-proceso');
         const procesoItems = document.querySelectorAll('.proceso-item');
+        const nombreProcesoInput = document.getElementById('nombre_proceso');
+
+        // Validar que el nombre del proceso no contenga puntos
+        form.addEventListener('submit', function(event) {
+            let nombreProceso = nombreProcesoInput.value;
+
+            if (nombreProceso.includes('.')) {
+                alert('No se permite el uso de puntos en el nombre del proceso.');
+                event.preventDefault(); // Evita que el formulario se envíe
+                return;
+            }
+            nombreProcesoInput.value = nombreProceso.toUpperCase();
+        });
 
         // Detectar cambios en los campos del formulario
         inputs.forEach(function(input) {
@@ -114,6 +127,7 @@
         });
     });
 </script>
+
 
 
 <style>
