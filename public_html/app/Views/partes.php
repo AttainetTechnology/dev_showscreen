@@ -44,12 +44,15 @@
                             </div>
                             <div id="parte_fila_right" class="imagenparte">
                                 <div class="capa-numero-parte">
-                                    <div class="numero_parte">Id: <strong><? echo $p->id_pedido; ?></strong></div>
+                                    <div class="numero_parte">Id: <strong><?php echo $p->id_pedido; ?></strong></div>
                                 </div>
-                                <h3><b><? echo $prod->nombre_producto; ?></b> </h3>
-                                <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong>
-                                    <img src="<?php echo base_url("public/assets/uploads/files"); ?>/<? echo $prod->imagen; ?>" class="imagen_parte" /><br />
+                                <h3><b><?php echo $prod->nombre_producto; ?></b> </h3>
+                                <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong></small><br>
+
+                                <!-- Aquí modificamos la ruta de la imagen para que incluya el id_empresa -->
+                                <img src="<?php echo base_url("public/assets/uploads/files/" . $this->data['id_empresa'] . "/productos/" . $prod->imagen); ?>" class="imagen_parte" /><br />
                             </div>
+
                             <!-- END Cabecera -->
                         </div><!-- /.row -->
                         <!-- Table row -->
@@ -121,12 +124,13 @@
                                             </div>
                                             <div id="parte_fila_right" class="imagenparte">
                                                 <div class="capa-numero-parte">
-                                                    <div class="numero_parte">Parte T. <strong><?php echo $p->id_pedido; ?></strong></div>
-                                                    <H2>Hoja 2 &nbsp;</H2>
+                                                    <div class="numero_parte">Id: <strong><?php echo $p->id_pedido; ?></strong></div>
                                                 </div>
                                                 <h3><b><?php echo $prod->nombre_producto; ?></b> </h3>
-                                                <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong>
-                                                    <img src="<?php echo base_url("public/assets/uploads/files/"); ?>/<?php echo $prod->imagen; ?>" class="imagen_parte" /><br />
+                                                <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong></small><br>
+
+                                                <!-- Aquí modificamos la ruta de la imagen para que incluya el id_empresa -->
+                                                <img src="<?php echo base_url("public/assets/uploads/files/" . $this->data['id_empresa'] . "/productos/" . $prod->imagen); ?>" class="imagen_parte" /><br />
                                             </div>
                                             <!-- END Cabecera -->
 
