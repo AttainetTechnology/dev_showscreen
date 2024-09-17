@@ -69,53 +69,51 @@ class Pedidos extends BaseControllerGC
 
 	public function add()
 	{
-		$data = usuario_sesion();
+		$data = usuario_sesion();  // Esto ya obtiene los datos de la sesión
 		$db = db_connect($data['new_db']);
 		$clienteModel = new ClienteModel($db);
-		$usuarioModel = new Usuarios2_Model($db);
 
+		// Cargar los clientes
 		$data['clientes'] = $clienteModel->findAll();
-		$data['usuario_html'] = $this->guarda_usuario();
 
-		// Si es una solicitud AJAX, devolver solo el contenido del modal
+		// Aquí pasamos los datos del usuario autenticado para que se usen en la vista
+		$data['usuario_sesion'] = [
+			'id_user' => $data['id_user'],
+			'nombre_usuario' => $data['nombre_usuario'],
+			'apellidos_usuario' => $data['apellidos_usuario']
+		];
+
 		if ($this->request->isAJAX()) {
-			echo view('add_pedido', $data); // Solo el contenido del modal
+			return view('add_pedido', $data);  // Retorna la vista del modal
 		} else {
-			// Si no es AJAX, redirigir a la página en marcha con el parámetro para abrir el modal
 			return redirect()->to(base_url('pedidos/enmarcha?modal=add'));
 		}
 	}
+
+
 	function guarda_usuario()
 	{
 		$datos = new Usuarios2_Model();
 		$data = usuario_sesion();
 		$id_empresa = $data['id_empresa'];
 		$id_usuario = $data['id_user'];
-		$array = ['nivel_acceso' => '1', 'id_empresa' => $id_empresa];
-		$usuarios = $datos->where($array)->findAll();
-		$user_ids = array();
-		foreach ($usuarios as $usuario) {
-			$user_ids[] = $usuario['id'];
-		}
 
 		$db_cliente = db_connect($data['new_db']);
 		$builder = $db_cliente->table('users');
 		$builder->select('id, nombre_usuario, apellidos_usuario');
-		$builder->where('id', $id_usuario);
 		$builder->where('user_activo', '1');
 		$query = $builder->get();
 
-		$usuarios = array();
+		$usuarios = [];
 		if ($query->getNumRows() > 0) {
 			foreach ($query->getResult() as $row) {
+				// Construye el array de forma clara con el id como clave y el nombre completo como valor
 				$usuarios[$row->id] = $row->nombre_usuario . ' ' . $row->apellidos_usuario;
 			}
-		} else {
-			$usuarios[$id_usuario] = 'Test';
 		}
-		return '<input type="hidden" name="id_usuario" value="' . $id_usuario . '">
-		<b>' . $usuarios[$id_usuario] . '</b>';
+		return $usuarios;  // Asegúrate de que se retorna un array plano de id => nombre.
 	}
+
 
 	public function save()
 	{
@@ -133,18 +131,14 @@ class Pedidos extends BaseControllerGC
 		];
 
 		if ($pedidoModel->insert($data)) {
-			// Obtener el ID del pedido recién insertado
 			$insertId = $pedidoModel->insertID();
-
-			// Registrar la acción en el log
 			$this->logAction('Pedido', 'Añadir Pedido', $data);
-
-			// Redirigir a la página en marcha
 			return redirect()->to(base_url('pedidos/enmarcha'));
 		} else {
 			return redirect()->back()->with('error', 'No se pudo guardar el pedido');
 		}
 	}
+
 
 	public function edit($id_pedido)
 	{
@@ -153,60 +147,74 @@ class Pedidos extends BaseControllerGC
 		$session = session();
 		$data = datos_user();
 		$db = db_connect($data['new_db']);
-		$session_data = $session->get('logged_in');
-		$nivel_acceso = $session_data['nivel'];
-	
-		// Cargar el modelo de pedidos, clientes, usuarios y estados
+
+		// Cargar el modelo de pedidos, clientes y estados
 		$pedidoModel = new Pedidos_model($db);
 		$clienteModel = new ClienteModel($db);
-		$usuarioModel = new Usuarios2_Model($db);
 		$estadoModel = new EstadoModel($db);
-	
-		// Obtener el pedido actual a editar
-		$pedido = $pedidoModel->find($id_pedido);
-	
+
+		// Obtener el pedido actual a editar, incluyendo el nombre del usuario que lo creó
+		$pedido = $pedidoModel->findPedidoWithUser($id_pedido);
+
 		if (!$pedido) {
 			return redirect()->back()->with('error', 'Pedido no encontrado');
 		}
-	
-		// Obtener la lista de clientes, usuarios y estados
+
+		// Obtener la lista de clientes y estados
 		$data['clientes'] = $clienteModel->findAll();
-		$data['usuarios'] = $usuarioModel->findAll();
-		$data['estados'] = $estadoModel->findAll(); // Obtén todos los estados
+		$data['estados'] = $estadoModel->findAll();
 		$data['pedido'] = $pedido;
-	
+
 		// Cargar la vista completa de edición de pedido
 		return view('editPedido', $data);
 	}
-	
-    // Función para actualizar los datos del pedido en la base de datos
-    public function update($id_pedido)
-    {
-        // Obtener los datos de sesión
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
-        $pedidoModel = new Pedidos_model($db);
 
-        // Obtener los datos enviados desde el formulario
-        $updateData = [
-            'id_cliente' => $this->request->getPost('id_cliente'),
-            'referencia' => $this->request->getPost('referencia'),
-            'id_usuario' => $this->request->getPost('id_usuario'),
-            'fecha_entrada' => $this->request->getPost('fecha_entrada'),
-            'fecha_entrega' => $this->request->getPost('fecha_entrega'),
-            'observaciones' => $this->request->getPost('observaciones'),
-            'estado' => $this->request->getPost('estado'),
-        ];
-        // Validar si el pedido existe
-        if (!$pedidoModel->find($id_pedido)) {
-            return redirect()->back()->with('error', 'Pedido no encontrado');
-        }
-        // Intentar actualizar el pedido
-        if ($pedidoModel->update($id_pedido, $updateData)) {
-            $this->logAction('Pedido', 'Actualizar Pedido', $updateData);
-            return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido actualizado correctamente');
-        } else {
-            return redirect()->back()->with('error', 'No se pudo actualizar el pedido');
-        }
-    }
+	// Función para actualizar los datos del pedido en la base de datos
+	public function update($id_pedido)
+	{
+		// Obtener los datos de sesión
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$pedidoModel = new Pedidos_model($db);
+
+		// Obtener los datos enviados desde el formulario
+		$updateData = [
+			'id_cliente' => $this->request->getPost('id_cliente'),
+			'referencia' => $this->request->getPost('referencia'),
+			'id_usuario' => $this->request->getPost('id_usuario'),
+			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
+			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
+			'observaciones' => $this->request->getPost('observaciones'),
+			'estado' => $this->request->getPost('estado'),
+		];
+		// Validar si el pedido existe
+		if (!$pedidoModel->find($id_pedido)) {
+			return redirect()->back()->with('error', 'Pedido no encontrado');
+		}
+		// Intentar actualizar el pedido
+		if ($pedidoModel->update($id_pedido, $updateData)) {
+			$this->logAction('Pedido', 'Actualizar Pedido', $updateData);
+			return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido actualizado correctamente');
+		} else {
+			return redirect()->back()->with('error', 'No se pudo actualizar el pedido');
+		}
+	}
+
+	public function entregar($id_pedido)
+	{
+
+		$Lineaspedido_model = model('App\Models\Lineaspedido_model');
+		$Lineaspedido_model->entrega_lineas($id_pedido);
+		// TABLA LOG
+		$this->logAction('Pedidos', 'Entrega pedido, ID: ' . $id_pedido, []);
+		return redirect()->to('pedidos/edit/' . $id_pedido);
+	}
+	public function anular($id_pedido)
+	{
+		$Lineaspedido_model = model('App\Models\Lineaspedido_model');
+		$Lineaspedido_model->anular_lineas($id_pedido);
+		// TABLA LOG
+		$this->logAction('Pedidos', 'Anular pedido, ID: ' . $id_pedido, []);
+		return redirect()->to('pedidos/enmarcha');
+	}
 }

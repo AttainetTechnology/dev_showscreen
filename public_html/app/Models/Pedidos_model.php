@@ -44,5 +44,15 @@ class Pedidos_model extends Model
                     ->orderBy('pedidos.id_pedido', 'desc')
                     ->findAll();
     }
+
+    public function findPedidoWithUser($id_pedido)
+{
+    return $this->select('pedidos.*, clientes.nombre_cliente, users.nombre_usuario, users.apellidos_usuario')
+                ->join('clientes', 'clientes.id_cliente = pedidos.id_cliente', 'left')
+                ->join('users', 'users.id = pedidos.id_usuario', 'left')
+                ->where('pedidos.id_pedido', $id_pedido)
+                ->first();  
+}
+
        
 }

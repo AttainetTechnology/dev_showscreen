@@ -32,8 +32,10 @@
         <br>
         <div class="form-group">
             <label for="id_usuario">Hace el pedido:</label>
-            <?= $usuario_html; ?>
+            <input type="hidden" id="id_usuario" name="id_usuario" value="<?= esc($usuario_sesion['id_user']); ?>">
+            <p><b><?= esc($usuario_sesion['nombre_usuario']) . ' ' . esc($usuario_sesion['apellidos_usuario']); ?></b></p>
         </div>
+
         <br>
         <button type="submit" class="btn btn-primary">Guardar Pedido</button>
     </form>
