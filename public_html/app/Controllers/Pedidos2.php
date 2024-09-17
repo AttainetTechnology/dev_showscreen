@@ -398,29 +398,33 @@ class Pedidos2 extends BaseControllerGC
 		$crud->unsetRead();
 
 
-		$crud->callbackAfterInsert(function ($stateParameters) use ($id_pedido) {
-			$this->logAction('Linea pedido', 'Añade línea de pedido', $stateParameters);
-			$this->actualizarTotalPedido($id_pedido);
-			return $stateParameters;
-		});
 		$crud->callbackAfterUpdate(function ($stateParameters) {
 			$this->logAction('Linea pedido', 'Edita línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-			$this->actualizarTotalPedido($stateParameters->primaryKeyValue);
 
-			// Obtener el id_lineapedido desde el array 'data'
-			$id_lineapedido = $stateParameters->data['id_lineapedido'];
+			// Obtener el id_pedido desde el array 'data'
+			$id_pedido = $stateParameters->data['id_pedido'];
 
-			// Actualizar el estado de la línea de pedido
-			$nuevo_estado = $stateParameters->data['estado'];
-			$this->actualizarEstadoProceso($id_lineapedido, $nuevo_estado);
+			// Recalcular el total del pedido
+			$this->actualizarTotalPedido($id_pedido);
 
 			return $stateParameters;
 		});
 
+		$crud->callbackAfterInsert(function ($stateParameters) use ($id_pedido) {
+			$this->logAction('Linea pedido', 'Añade línea de pedido', $stateParameters);
+
+			// Recalcular el total del pedido
+			$this->actualizarTotalPedido($id_pedido);
+
+			return $stateParameters;
+		});
 
 		$crud->callbackAfterDelete(function ($stateParameters) use ($id_pedido) {
 			$this->logAction('Linea pedido', 'Elimina línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
+
+			// Recalcular el total del pedido tras eliminar una línea
 			$this->actualizarTotalPedido($id_pedido);
+
 			return $stateParameters;
 		});
 
@@ -575,7 +579,7 @@ class Pedidos2 extends BaseControllerGC
 				// Si alguna línea está en estado menor a 4, no cambiar el estado del pedido
 				if ($query_verificar->getNumRows() > 0) {
 					log_message('debug', 'El pedido no puede actualizarse porque al menos una línea está en un estado menor a 4 para id_pedido: ' . $id_pedido);
-					return; 
+					return;
 				}
 
 				// Comprobar si todas las líneas del pedido están en estado 4 o 5
