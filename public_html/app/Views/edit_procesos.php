@@ -68,7 +68,6 @@
         const searchInput = document.getElementById('search-proceso');
         const procesoItems = document.querySelectorAll('.proceso-item');
         const nombreProcesoInput = document.getElementById('nombre_proceso');
-
         // Validar que el nombre del proceso no contenga puntos
         form.addEventListener('submit', function(event) {
             let nombreProceso = nombreProcesoInput.value;
@@ -80,14 +79,12 @@
             }
             nombreProcesoInput.value = nombreProceso.toUpperCase();
         });
-
         // Detectar cambios en los campos del formulario
         inputs.forEach(function(input) {
             input.addEventListener('change', function() {
                 isDirty = true;
             });
         });
-
         // Interceptar clicks en las flechas de navegación
         document.getElementById('prev-link').addEventListener('click', function(event) {
             if (isDirty && !confirm('Tienes cambios sin guardar. ¿Estás seguro de que deseas salir sin guardar?')) {
@@ -100,7 +97,6 @@
                 event.preventDefault();
             }
         });
-
         // Detectar clicks en los cuadros de restricción para marcar el formulario como modificado
         document.querySelectorAll('.proceso-box').forEach(function(box) {
             box.addEventListener('click', function() {
@@ -112,7 +108,6 @@
                 isDirty = true; // Marcar el formulario como modificado
             });
         });
-
         // Filtrar procesos por nombre
         searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase();
@@ -127,22 +122,16 @@
         });
     });
 </script>
-
-
-
 <style>
     .proceso-box {
         cursor: pointer;
         transition: all 0.3s ease-in-out;
     }
-
     .proceso-box.selected {
         background-color: #f0f8ff;
     }
-
     .proceso-box:hover {
         box-shadow: 0 0 11px rgba(33, 33, 33, .2);
     }
 </style>
-
 <?= $this->endSection() ?>
