@@ -47,58 +47,42 @@
         <br>
     </div>
     <form action="<?= base_url('pedidos/update/' . $pedido->id_pedido) ?>" method="post">
+    <!-- Empresa -->
+    <div class="form-group">
+        <label for="id_cliente">Empresa:</label>
+        <select id="id_cliente" name="id_cliente" class="form-control" required>
+            <?php foreach ($clientes as $cliente): ?>
+                <option value="<?= $cliente['id_cliente'] ?>" <?= $pedido->id_cliente == $cliente['id_cliente'] ? 'selected' : '' ?>>
+                    <?= $cliente['nombre_cliente'] ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <br>
+    <!-- Referencia -->
+    <div class="form-group">
+        <label for="referencia">Referencia:</label>
+        <input type="text" id="referencia" name="referencia" class="form-control" value="<?= esc($pedido->referencia) ?>">
+    </div>
+    <br>
+    <!-- Fechas -->
+    <div class="form-group">
+        <label for="fecha_entrada">Fecha de Entrada:</label>
+        <input type="date" id="fecha_entrada" name="fecha_entrada" class="form-control" value="<?= esc($pedido->fecha_entrada) ?>" required>
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="fecha_entrega">Fecha de Entrega:</label>
+        <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control" value="<?= esc($pedido->fecha_entrega) ?>" required>
+    </div>
+    <br>
+    <!-- Observaciones -->
+    <div class="form-group">
+        <label for="observaciones">Observaciones:</label>
+        <textarea id="observaciones" name="observaciones" class="form-control" rows="3"><?= esc($pedido->observaciones) ?></textarea>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+</form>
 
-        <!-- Cliente -->
-        <div class="mb-3">
-            <label for="id_cliente" class="form-label">Empresa</label>
-            <select id="id_cliente" name="id_cliente" class="form-select" required>
-                <?php foreach ($clientes as $cliente): ?>
-                    <option value="<?= $cliente['id_cliente']; ?>" <?= $pedido->id_cliente == $cliente['id_cliente'] ? 'selected' : ''; ?>>
-                        <?= $cliente['nombre_cliente']; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <!-- Referencia -->
-        <div class="mb-3">
-            <label for="referencia" class="form-label">Referencia</label>
-            <input type="text" class="form-control" id="referencia" name="referencia" value="Ref123" required>
-        </div>
-
-        <!-- Fecha Entrada -->
-        <div class="mb-3">
-            <label for="fecha_entrada" class="form-label">Fecha de Entrada</label>
-            <input type="date" class="form-control" id="fecha_entrada" name="fecha_entrada" value="2024-09-17" required>
-        </div>
-
-        <!-- Fecha Entrega -->
-        <div class="mb-3">
-            <label for="fecha_entrega" class="form-label">Fecha de Entrega</label>
-            <input type="date" class="form-control" id="fecha_entrega" name="fecha_entrega" value="2024-09-20">
-        </div>
-
-        <!-- Observaciones -->
-        <div class="mb-3">
-            <label for="observaciones" class="form-label">Observaciones</label>
-            <textarea id="observaciones" name="observaciones" class="form-control" rows="3"></textarea>
-        </div>
-
-        <!-- Id Pedido (No editable) -->
-        <div class="mb-3">
-            <label for="id_pedido" class="form-label">Id Pedido</label>
-            <input type="text" class="form-control" id="id_pedido" name="id_pedido" value="12345" readonly>
-        </div>
-        <br>
-        <!-- Usuario -->
-        <div class="mb-3" style="text-align: right;">
-            <label for="id_usuario" class="form-label">Hace el pedido</label>
-            <input type="hidden" name="id_usuario" value="<?= esc($pedido->id_usuario); ?>">
-            <p><b><?= esc($pedido->nombre_usuario) . ' ' . esc($pedido->apellidos_usuario); ?></b></p>
-        </div>
-
-        <!-- Botón de Enviar -->
-        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    </form>
-</div>
 <?= $this->endSection() ?>

@@ -8,7 +8,7 @@ class Pedidos_model extends Model
     protected $table      = 'pedidos';
     protected $primaryKey = 'id_pedido';
     protected $returnType = 'object';
-    protected $allowedFields = ['id_cliente', 'id_usuario', 'fecha_entrada', 'estado', 'total_pedido', 'fecha_entrega'];
+    protected $allowedFields = ['id_cliente', 'id_usuario', 'fecha_entrada', 'estado', 'total_pedido', 'fecha_entrega', 'referencia', 'observaciones', 'pedido_por'];
     public function obtener_datos_pedido($id_pedido)
     {
         helper('controlacceso');

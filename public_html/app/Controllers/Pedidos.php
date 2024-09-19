@@ -69,7 +69,8 @@ class Pedidos extends BaseControllerGC
 
 	public function add()
 	{
-		$data = usuario_sesion();  // Esto ya obtiene los datos de la sesión
+		$session = session();
+		$data = datos_user();
 		$db = db_connect($data['new_db']);
 		$clienteModel = new ClienteModel($db);
 
@@ -89,11 +90,12 @@ class Pedidos extends BaseControllerGC
 			return redirect()->to(base_url('pedidos/enmarcha?modal=add'));
 		}
 	}
-
-
 	function guarda_usuario()
 	{
-		$datos = new Usuarios2_Model();
+		$session = session();
+		$data = datos_user();
+		$db = db_connect($data['new_db']);
+		$datos = new Usuarios2_Model($db);
 		$data = usuario_sesion();
 		$id_empresa = $data['id_empresa'];
 		$id_usuario = $data['id_user'];
@@ -111,16 +113,23 @@ class Pedidos extends BaseControllerGC
 				$usuarios[$row->id] = $row->nombre_usuario . ' ' . $row->apellidos_usuario;
 			}
 		}
-		return $usuarios;  // Asegúrate de que se retorna un array plano de id => nombre.
+		return $usuarios;
 	}
-
-
 	public function save()
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
-
+	
+		// Validación básica de datos
+		if (!$this->validate([
+			'id_cliente' => 'required',
+			'fecha_entrada' => 'required',
+			'fecha_entrega' => 'required',
+		])) {
+			return redirect()->back()->with('error', 'Faltan datos obligatorios');
+		}
+	
 		$data = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
@@ -128,18 +137,16 @@ class Pedidos extends BaseControllerGC
 			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
+			'pedido_por' => $data['nombre_usuario']
 		];
-
+	
 		if ($pedidoModel->insert($data)) {
-			$insertId = $pedidoModel->insertID();
 			$this->logAction('Pedido', 'Añadir Pedido', $data);
-			return redirect()->to(base_url('pedidos/enmarcha'));
+			return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido guardado correctamente');
 		} else {
 			return redirect()->back()->with('error', 'No se pudo guardar el pedido');
 		}
 	}
-
-
 	public function edit($id_pedido)
 	{
 		// Control de login
@@ -169,15 +176,21 @@ class Pedidos extends BaseControllerGC
 		return view('editPedido', $data);
 	}
 
-	// Función para actualizar los datos del pedido en la base de datos
 	public function update($id_pedido)
 	{
-		// Obtener los datos de sesión
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
-
-		// Obtener los datos enviados desde el formulario
+	
+		// Validación básica de datos
+		if (!$this->validate([
+			'id_cliente' => 'required',
+			'fecha_entrada' => 'required',
+			'fecha_entrega' => 'required',
+		])) {
+			return redirect()->back()->with('error', 'Faltan datos obligatorios');
+		}
+	
 		$updateData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
@@ -187,13 +200,8 @@ class Pedidos extends BaseControllerGC
 			'observaciones' => $this->request->getPost('observaciones'),
 			'estado' => $this->request->getPost('estado'),
 		];
-		// Validar si el pedido existe
-		if (!$pedidoModel->find($id_pedido)) {
-			return redirect()->back()->with('error', 'Pedido no encontrado');
-		}
-		// Intentar actualizar el pedido
+	
 		if ($pedidoModel->update($id_pedido, $updateData)) {
-			$this->logAction('Pedido', 'Actualizar Pedido', $updateData);
 			return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido actualizado correctamente');
 		} else {
 			return redirect()->back()->with('error', 'No se pudo actualizar el pedido');
