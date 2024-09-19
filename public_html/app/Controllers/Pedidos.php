@@ -6,6 +6,7 @@ use App\Models\ClienteModel;
 use App\Models\Usuarios2_Model;
 use App\Models\Pedidos_model;
 use App\Models\EstadoModel;
+use App\Models\LineaPedido;
 
 class Pedidos extends BaseControllerGC
 {
@@ -154,28 +155,31 @@ class Pedidos extends BaseControllerGC
 		$session = session();
 		$data = datos_user();
 		$db = db_connect($data['new_db']);
-
-		// Cargar el modelo de pedidos, clientes y estados
+	
+		// Cargar el modelo de pedidos, clientes, estados y líneas de pedido
 		$pedidoModel = new Pedidos_model($db);
 		$clienteModel = new ClienteModel($db);
 		$estadoModel = new EstadoModel($db);
-
-		// Obtener el pedido actual a editar, incluyendo el nombre del usuario que lo creó
+		$lineaspedidoModel = new LineaPedido($db);  // Modelo de líneas de pedido
+	
+		// Obtener el pedido actual a editar
 		$pedido = $pedidoModel->findPedidoWithUser($id_pedido);
-
 		if (!$pedido) {
 			return redirect()->back()->with('error', 'Pedido no encontrado');
 		}
-
+	
+		// Obtener las líneas de pedido asociadas
+		$lineas_pedido = $lineaspedidoModel->where('id_pedido', $id_pedido)->findAll();  // Cargar líneas del pedido
+	
 		// Obtener la lista de clientes y estados
 		$data['clientes'] = $clienteModel->findAll();
 		$data['estados'] = $estadoModel->findAll();
 		$data['pedido'] = $pedido;
-
-		// Cargar la vista completa de edición de pedido
+		$data['lineas_pedido'] = $lineas_pedido;  // Pasar líneas de pedido a la vista
+	
+		// Cargar la vista de edición del pedido
 		return view('editPedido', $data);
 	}
-
 	public function update($id_pedido)
 	{
 		$data = usuario_sesion();
@@ -190,7 +194,6 @@ class Pedidos extends BaseControllerGC
 		])) {
 			return redirect()->back()->with('error', 'Faltan datos obligatorios');
 		}
-	
 		$updateData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
@@ -225,4 +228,46 @@ class Pedidos extends BaseControllerGC
 		$this->logAction('Pedidos', 'Anular pedido, ID: ' . $id_pedido, []);
 		return redirect()->to('pedidos/enmarcha');
 	}
+
+// LOGICA LINEA PEDIDO
+// Mostrar las líneas del pedido
+public function mostrarLineasPedido($id_pedido)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $lineaspedidoModel = new LineaPedido($db);
+    // Obtener todas las líneas de un pedido
+    $lineas_pedido = $lineaspedidoModel->where('id_pedido', $id_pedido)->findAll();
+    return view('mostrarLineasPedido', ['lineas_pedido' => $lineas_pedido, 'pedido_id' => $id_pedido]);
+}
+
+// Actualizar línea de pedido
+public function updateLineaPedido($id_lineapedido)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $lineaspedidoModel = new LineaPedido($db);
+    // Recoge los datos del formulario o usa null si no están presentes
+    $updateData = [
+        'id_producto' => $this->request->getPost('id_producto') ?? null,
+        'n_piezas' => $this->request->getPost('n_piezas') ?? null,
+        'precio_venta' => $this->request->getPost('precio_venta') ?? null,
+        'nom_base' => $this->request->getPost('nom_base') ?? null,
+        'med_inicial' => $this->request->getPost('med_inicial') ?? null,
+        'med_final' => $this->request->getPost('med_final') ?? null,
+        'lado' => $this->request->getPost('lado') ?? null,
+        'distancia' => $this->request->getPost('distancia') ?? null,
+        'estado' => $this->request->getPost('estado') ?? null,
+        'fecha_entrada' => $this->request->getPost('fecha_entrada') ?? null,
+        'fecha_entrega' => $this->request->getPost('fecha_entrega') ?? null,
+        'observaciones' => $this->request->getPost('observaciones') ?? null,
+        'total_linea' => ($this->request->getPost('n_piezas') && $this->request->getPost('precio_venta')) ? $this->request->getPost('n_piezas') * $this->request->getPost('precio_venta') : null,
+    ];
+    // Actualiza la línea de pedido en la base de datos
+    if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
+        return $this->response->setJSON(['success' => 'Línea de pedido actualizada correctamente']);
+    } else {
+        return $this->response->setJSON(['error' => 'No se pudo actualizar la línea de pedido']);
+    }
+}
 }
