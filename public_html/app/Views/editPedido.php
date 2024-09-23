@@ -129,6 +129,7 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>Acciones</th> <!-- Mover la columna de Acciones al principio -->
                     <th>ID Línea</th>
                     <th>Cantidad</th>
                     <th>Base</th>
@@ -137,9 +138,9 @@
                     <th>Medida Inicial</th>
                     <th>Medida Final</th>
                     <th>Total</th>
-                    <th>Acciones</th>
                 </tr>
                 <tr>
+                    <th></th> <!-- No se necesita filtro para las acciones -->
                     <th>
                         <div class="input-group">
                             <input type="text" id="filter-id" class="form-control">
@@ -198,13 +199,27 @@
                             <button class="btn btn-outline-secondary clear-filter" data-filter="filter-total">&times;</button>
                         </div>
                     </th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody id="lineaPedidoTable">
                 <?php if (!empty($lineas_pedido)): ?>
                     <?php foreach ($lineas_pedido as $linea): ?>
                         <tr>
+                            <td> <!-- Columna de Acciones -->
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarLineaModal<?= $linea['id_lineapedido'] ?>">
+                                    Editar
+                                </button>
+                                <?= view('editLineaPedido', ['linea' => $linea]) ?>
+                                <!-- Botón Parte -->
+                                <a href="<?= base_url('pedidos/imprimir_parte/' . $linea['id_lineapedido']) ?>" class="btn btn-info btn-sm">
+                                    Parte
+                                </a>
+
+                                <!-- Botón Eliminar -->
+                                <a href="<?= base_url('pedidos/eliminar_linea/' . $linea['id_lineapedido']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
+                                    Eliminar
+                                </a>
+                            </td>
                             <td><?= esc($linea['id_lineapedido']) ?></td>
                             <td><?= esc($linea['n_piezas']) ?></td>
                             <td><?= esc($linea['nom_base']) ?></td>
@@ -213,12 +228,6 @@
                             <td><?= esc($linea['med_inicial']) ?></td>
                             <td><?= esc($linea['med_final']) ?></td>
                             <td><?= esc($linea['total_linea']) ?> €</td>
-                            <td>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarLineaModal<?= $linea['id_lineapedido'] ?>">
-                                    Editar
-                                </button>
-                                <?= view('editLineaPedido', ['linea' => $linea]) ?>
-                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -228,6 +237,7 @@
                 <?php endif; ?>
             </tbody>
         </table>
+
     </div>
     <script>
         $(document).ready(function() {

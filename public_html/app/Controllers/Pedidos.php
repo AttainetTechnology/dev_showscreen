@@ -206,7 +206,12 @@ class Pedidos extends BaseControllerGC
 	}
 	function imprimir_parte($row)
 	{
-		return base_url() . "/partes/print/" . $row->id_lineapedido;
+		if (is_numeric($row)) {
+			$url = base_url() . "/partes/print/" . $row;
+			return redirect()->to($url);
+		} else {
+			return redirect()->to(base_url('/error_page'))->with('error', 'Valor inválido recibido.');
+		}
 	}
 	public function delete($id_pedido)
 	{
@@ -358,13 +363,13 @@ class Pedidos extends BaseControllerGC
 		$query = $builder->get();
 		$estados = $query->getResultArray();
 		if (empty($estados)) {
-			return; 
+			return;
 		}
 		// Extraer los valores numéricos de los estados
 		$estados_array = array_column($estados, 'estado');
 		// Si todos los estados son iguales, usar ese estado
 		if (count(array_unique($estados_array)) === 1) {
-			$nuevo_estado = $estados_array[0]; 
+			$nuevo_estado = $estados_array[0];
 		} else {
 			// Si los estados son diferentes, tomar el más bajo (numéricamente)
 			$nuevo_estado = min($estados_array);

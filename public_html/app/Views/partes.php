@@ -133,7 +133,6 @@
                                                 <img src="<?php echo base_url("public/assets/uploads/files/" . $this->data['id_empresa'] . "/productos/" . $prod->imagen); ?>" class="imagen_parte" /><br />
                                             </div>
                                             <!-- END Cabecera -->
-
                                             <div class="row"> <!-- DIV ROW-->
                                                 <div class="col-xs-12 table-responsive" id="tabla_tipopieza"> <!-- DIV COL XS 12-->
                                                     <table class="table">

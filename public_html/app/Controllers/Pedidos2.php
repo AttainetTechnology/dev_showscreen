@@ -529,15 +529,17 @@ class Pedidos2 extends BaseControllerGC
 			$pedidoBuilder->update();
 		}
 	}
-
-
-	function imprimir_parte($row)
+	function imprimir_parte($id_lineapedido)
 	{
-		$uri = current_url();
-		$pg2 = $uri;
-		return base_url() . "/partes/print/" . $row->id_lineapedido . "?pg2=" . $pg2;
+		// Comprueba que el ID es un número válido
+		if (is_numeric($id_lineapedido)) {
+			// Devuelve la URL con el ID de la línea de pedido
+			return base_url() . "/partes/print/" . $id_lineapedido;
+		} else {
+			// Maneja el error si el ID no es válido
+			return "Error: ID de línea de pedido inválido.";
+		}
 	}
-
 	private function actualizarEstadoProceso($id_lineapedido, $nuevo_estado)
 	{
 		// Verificar si hay un estado válido para actualizar
