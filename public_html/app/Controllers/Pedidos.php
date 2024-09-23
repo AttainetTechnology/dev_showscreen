@@ -352,6 +352,24 @@ class Pedidos extends BaseControllerGC
 		$data['fecha_entrega'] = $fecha_entrega;
 		return view('addLineaPedido', $data);
 	}
+	public function deleteLinea($id_lineapedido)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$lineaPedidoModel = new LineaPedido($db);
+		$linea = $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)->first();
+		if (!$linea) {
+			return redirect()->back()->with('error', 'Línea no encontrada');
+		}
+		$id_pedido = $linea['id_pedido'];
+		$db->transStart();
+		$lineaPedidoModel->delete($id_lineapedido);
+		$db->transComplete();
+		if ($db->transStatus() === false) {
+			return redirect()->back()->with('error', 'No se pudo eliminar la línea del pedido');
+		}
+		return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea del pedido eliminada correctamente');
+	}
 	public function actualizarEstadoPedido($id_pedido)
 	{
 		$data = usuario_sesion();

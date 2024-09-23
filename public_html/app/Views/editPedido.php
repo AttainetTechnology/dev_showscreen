@@ -216,7 +216,7 @@
                                 </a>
 
                                 <!-- Botón Eliminar -->
-                                <a href="<?= base_url('pedidos/eliminar_linea/' . $linea['id_lineapedido']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
+                                <a href="<?= base_url('pedidos/deleteLinea/' . $linea['id_lineapedido']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
                                     Eliminar
                                 </a>
                             </td>
