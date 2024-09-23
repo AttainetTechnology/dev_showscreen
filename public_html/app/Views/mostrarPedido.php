@@ -132,7 +132,7 @@ $estadoMap = [
                     <a href="<?= base_url('pedidos/print/' . $pedido->id_pedido) ?>" class="btn btn-info" target="_blank">Imprimir</a>
                     <a href="<?= base_url('pedidos/edit/' . $pedido->id_pedido) ?>" class="btn btn-warning">Editar</a>
                     <?php if ($allow_delete): ?>
-                        <a href="<?= base_url('pedidos/delete/' . $pedido->id_pedido) ?>" class="btn btn-danger">Eliminar</a>
+                        <a href="<?= base_url('pedidos/delete/' . $pedido->id_pedido) ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>
                     <?php endif; ?>
                 </td>
             </tr>

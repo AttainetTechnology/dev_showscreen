@@ -163,11 +163,14 @@ class Pedidos extends BaseControllerGC
 		$lineas_pedido = $query->getResultArray();
 		// Obtener la lista de clientes y estados
 		$clientes = $clienteModel->findAll();
-		$estados = $estadoModel->findAll(); 
+		$estados = $estadoModel->findAll();
 		// Pasar los datos a la vista
 		$data['productos'] = $productosModel->findAll();
 		$data['clientes'] = $clienteModel->findAll();
-		$data['estados'] = $estados;
+		$data['estados'] = array_filter($estadoModel->findAll(), function ($estado) {
+			return $estado['id_estado'] != 3; // Filtra el estado con id 3
+		});
+
 		$data['pedido'] = $pedido;
 		$data['lineas_pedido'] = $lineas_pedido;
 		// Cargar la vista de edición del pedido
@@ -200,6 +203,41 @@ class Pedidos extends BaseControllerGC
 		} else {
 			return redirect()->back()->with('error', 'No se pudo actualizar el pedido');
 		}
+	}
+	function imprimir_parte($row)
+	{
+		return base_url() . "/partes/print/" . $row->id_lineapedido;
+	}
+	public function delete($id_pedido)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$pedidoModel = new Pedidos_model($db);
+		$lineaPedidoModel = new LineaPedido($db);
+		$db->transStart();
+		// Eliminar todas las líneas asociadas al pedido
+		$lineaPedidoModel->where('id_pedido', $id_pedido)->delete();
+		// Eliminar el pedido
+		$pedidoModel->delete($id_pedido);
+		$db->transComplete();
+		if ($db->transStatus() === false) {
+			return redirect()->back()->with('error', 'No se pudo eliminar el pedido');
+		}
+		return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido eliminado correctamente');
+	}
+	public function actualizarTotalPedido($id_pedido)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$builder = $db->table('linea_pedidos');
+		$builder->selectSum('total_linea', 'suma_total');
+		$builder->where('id_pedido', $id_pedido);
+		$query = $builder->get();
+		$resultado = $query->getRow();
+		$totalPedido = $resultado->suma_total ?? 0;
+		$pedidoModel = new Pedidos_model($db);
+		$pedidoModel->update($id_pedido, ['total_pedido' => $totalPedido]);
+		return $totalPedido;
 	}
 	public function entregar($id_pedido)
 	{
@@ -238,26 +276,29 @@ class Pedidos extends BaseControllerGC
 		}
 		$fecha_entrada = $this->request->getPost('fecha_entrada') ?: date('Y-m-d');
 		$fecha_entrega = $this->request->getPost('fecha_entrega') ?: date('Y-m-d', strtotime('+14 days'));
+		$n_piezas = $this->request->getPost('n_piezas') ?: 0;
+		$precio_venta = $this->request->getPost('precio_venta') ?: 0;
 		$data = [
 			'id_pedido' => $this->request->getPost('id_pedido'),
 			'id_producto' => $this->request->getPost('id_producto'),
-			'nom_base' => $this->request->getPost('nom_base') ?: null, 
-			'med_inicial' => $this->request->getPost('med_inicial') ?: null, 
-			'med_final' => $this->request->getPost('med_final') ?: null, 
-			'lado' => $this->request->getPost('lado') ?: null, 
+			'nom_base' => $this->request->getPost('nom_base') ?: null,
+			'med_inicial' => $this->request->getPost('med_inicial') ?: null,
+			'med_final' => $this->request->getPost('med_final') ?: null,
+			'lado' => $this->request->getPost('lado') ?: null,
 			'distancia' => $this->request->getPost('distancia') ?: null,
-			'observaciones' => $this->request->getPost('observaciones') ?: null, 
+			'observaciones' => $this->request->getPost('observaciones') ?: null,
 			'fecha_entrada' => $fecha_entrada,
 			'fecha_entrega' => $fecha_entrega,
+			'n_piezas' => $n_piezas,
+			'precio_venta' => $precio_venta,
+			// Calcular el total_linea
+			'total_linea' => $n_piezas * $precio_venta
 		];
-		if (isset($data['n_piezas']) && isset($data['precio_venta'])) {
-			$data['total_linea'] = $data['n_piezas'] * $data['precio_venta'];
-		} else {
-			$data['total_linea'] = 0;
-		}
+
 		// Insertar la nueva línea de pedido en la base de datos
 		if ($lineaspedidoModel->insert($data)) {
 			$this->actualizarTotalPedido($data['id_pedido']);
+			$this->actualizarEstadoPedido($data['id_pedido']);
 			return $this->response->setJSON(['success' => 'Línea de pedido añadida correctamente']);
 		} else {
 			return $this->response->setJSON(['error' => 'No se pudo añadir la línea de pedido']);
@@ -269,7 +310,6 @@ class Pedidos extends BaseControllerGC
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$lineaspedidoModel = new LineaPedido($db);
-		// Recoge los datos del formulario o usa null si no están presentes
 		$updateData = [
 			'id_producto' => $this->request->getPost('id_producto') ?? null,
 			'n_piezas' => $this->request->getPost('n_piezas') ?? null,
@@ -288,7 +328,7 @@ class Pedidos extends BaseControllerGC
 		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
 			$id_pedido = $this->request->getPost('id_pedido');
 			$this->actualizarTotalPedido($id_pedido);
-
+			$this->actualizarEstadoPedido($id_pedido);
 			return $this->response->setJSON(['success' => 'Línea de pedido actualizada correctamente']);
 		} else {
 			return $this->response->setJSON(['error' => 'No se pudo actualizar la línea de pedido']);
@@ -298,7 +338,7 @@ class Pedidos extends BaseControllerGC
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
-		$productosModel = new Productos_model($db); 
+		$productosModel = new Productos_model($db);
 		$data['productos'] = $productosModel->findAll();
 		$data['pedido'] = ['id_pedido' => $id_pedido];
 		$fecha_entrada = date('Y-m-d');
@@ -307,19 +347,31 @@ class Pedidos extends BaseControllerGC
 		$data['fecha_entrega'] = $fecha_entrega;
 		return view('addLineaPedido', $data);
 	}
-
-	public function actualizarTotalPedido($id_pedido)
+	public function actualizarEstadoPedido($id_pedido)
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
+		$lineaPedidoModel = new LineaPedido($db);
 		$builder = $db->table('linea_pedidos');
-		$builder->selectSum('total_linea', 'suma_total'); 
+		$builder->select('estado');
 		$builder->where('id_pedido', $id_pedido);
 		$query = $builder->get();
-		$resultado = $query->getRow();
-		$totalPedido = $resultado->suma_total ?? 0;
+		$estados = $query->getResultArray();
+		if (empty($estados)) {
+			return; 
+		}
+		// Extraer los valores numéricos de los estados
+		$estados_array = array_column($estados, 'estado');
+		// Si todos los estados son iguales, usar ese estado
+		if (count(array_unique($estados_array)) === 1) {
+			$nuevo_estado = $estados_array[0]; 
+		} else {
+			// Si los estados son diferentes, tomar el más bajo (numéricamente)
+			$nuevo_estado = min($estados_array);
+		}
+		// Actualizar el estado del pedido en la tabla 'pedidos'
 		$pedidoModel = new Pedidos_model($db);
-		$pedidoModel->update($id_pedido, ['total_pedido' => $totalPedido]);
-		return $totalPedido;
+		$pedidoModel->update($id_pedido, ['estado' => $nuevo_estado]);
+		return $nuevo_estado;
 	}
 }

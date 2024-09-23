@@ -228,9 +228,7 @@
                 <?php endif; ?>
             </tbody>
         </table>
-
     </div>
-
     <script>
         $(document).ready(function() {
             // Cargar el contenido del modal de forma dinámica
@@ -266,10 +264,8 @@
             // Función para aplicar los filtros a la tabla
             const applyFilters = () => {
                 const rows = document.querySelectorAll('#lineaPedidoTable tr');
-
                 rows.forEach(row => {
                     let isVisible = true;
-
                     // Iterar sobre cada filtro
                     Object.keys(filters).forEach(filterId => {
                         const columnIndex = filters[filterId];
