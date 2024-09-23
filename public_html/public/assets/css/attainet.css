@@ -1041,6 +1041,9 @@ input[type=number] {
 
 /* pedidos */
 .modal-backdrop {
-    background-color: rgba(0, 0, 0, 0.2) !important; /* Fondo negro con 20% de opacidad */
+    background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
+.botoneseditPedido{
+	margin-bottom: -20px;
+}

@@ -139,7 +139,6 @@ $estadoMap = [
         <?php endforeach; ?>
     </tbody>
 </table>
-
 <script>
     $(document).ready(function() {
         // Función para abrir el modal y cargar el contenido vía AJAX
@@ -166,7 +165,6 @@ $estadoMap = [
             abrirModal();
         });
     });
-
     $(document).ready(function() {
         const estadoMap = {
             "0": "pendiente de material",
@@ -177,7 +175,6 @@ $estadoMap = [
             "5": "entregado",
             "6": "anulado"
         };
-
         // Inicializar Datepicker en los campos de fecha con formato día/mes/año
         $(".datepicker").datepicker({
             dateFormat: 'dd-mm-yy',
@@ -185,7 +182,6 @@ $estadoMap = [
                 applyFilters();
             }
         });
-
         const filters = {
             'filter-id': 0,
             'filter-fecha-entrada': 1,
@@ -196,7 +192,6 @@ $estadoMap = [
             'filter-usuario': 6,
             'filter-total': 7
         };
-
         // Función para aplicar todos los filtros a la vez
         const applyFilters = () => {
             const rows = document.querySelectorAll('#pedidoTable tr');
@@ -222,7 +217,6 @@ $estadoMap = [
                 row.style.display = isVisible ? '' : 'none';
             });
         };
-
         // Asignar eventos a todos los filtros para que apliquen el filtro general
         Object.keys(filters).forEach(filterId => {
             const element = document.getElementById(filterId);
@@ -230,7 +224,6 @@ $estadoMap = [
 
             element.addEventListener(eventType, applyFilters);
         });
-
         // Filtrar por estado usando el valor del select y convertir el valor numérico en texto
         $('#filter-estado').on('change', function() {
             applyFilters();
@@ -249,7 +242,6 @@ $estadoMap = [
         };
         // Botón para eliminar todos los filtros
         $('#clear-filters').on('click', clearFilters);
-
         // Función para eliminar un filtro específico
         $('.clear-filter').on('click', function() {
             const filterId = $(this).data('filter');
@@ -260,7 +252,6 @@ $estadoMap = [
             } else {
                 element.value = '';
             }
-
             applyFilters(); // Reaplicar los filtros después de eliminar uno específico
         });
     });

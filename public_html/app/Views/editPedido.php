@@ -3,10 +3,8 @@
 <div class="container mt-5">
     <!-- jQuery debe cargarse primero -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- Luego carga Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
     <h2>Editar Pedido</h2>
     <!-- Botones de Acción -->
     <div class="mb-3">
@@ -91,11 +89,14 @@
     <!-- Líneas del Pedido -->
     <div class="form-group">
         <h3>Líneas del Pedido</h3>
-        <!-- Botón para abrir el modal y cargar contenido dinámico -->
-        <button type="button" class="btn btn-primary" id="openAddLineaPedidoModal" data-id-pedido="<?= $pedido->id_pedido ?>">
-            Añadir Línea de Pedido
-        </button>
-
+        <div class="d-flex justify-content-between botoneseditPedido">
+            <button type="button" class="btn btn-primary" id="openAddLineaPedidoModal" data-id-pedido="<?= $pedido->id_pedido ?>">
+                Añadir Línea de Pedido
+            </button>
+            <button id="clear-filters" class="btn btn-secondary">
+                Eliminar Filtros
+            </button>
+        </div>
         <!-- Modal -->
         <div class="modal fade" id="addLineaPedidoModal" tabindex="-1" aria-labelledby="addLineaPedidoLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -113,21 +114,19 @@
                 </div>
             </div>
         </div>
-
         <br> <br>
-        <table class="table table-bordered">
-            <?php
-            // Array de estados
-            $estados_texto = [
-                "0" => "Pendiente de material",
-                "1" => "Falta Material",
-                "2" => "Material recibido",
-                "4" => "Terminado",
-                "5" => "Entregado",
-                "6" => "Anulado"
-            ];
-            ?>
-
+        <?php
+        // Array de estados
+        $estados_texto = [
+            "0" => "Pendiente de material",
+            "1" => "Falta Material",
+            "2" => "Material recibido",
+            "4" => "Terminado",
+            "5" => "Entregado",
+            "6" => "Anulado"
+        ];
+        ?>
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID Línea</th>
@@ -140,19 +139,77 @@
                     <th>Total</th>
                     <th>Acciones</th>
                 </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <input type="text" id="filter-id" class="form-control">
+                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-id">&times;</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <input type="text" id="filter-cantidad" class="form-control">
+                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-cantidad">&times;</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <input type="text" id="filter-base" class="form-control">
+                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-base">&times;</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <select id="filter-producto" class="form-control">
+                                <option value=""></option>
+                                <?php foreach ($productos as $producto): ?>
+                                    <option value="<?= esc($producto['nombre_producto']) ?>"><?= esc($producto['nombre_producto']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-producto">&times;</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <select id="filter-estado" class="form-control">
+                                <option value=""></option>
+                                <?php foreach ($estados_texto as $key => $estado): ?>
+                                    <option value="<?= esc($estado) ?>"><?= esc($estado) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-estado">&times;</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <input type="text" id="filter-medida-inicial" class="form-control">
+                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-medida-inicial">&times;</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <input type="text" id="filter-medida-final" class="form-control">
+                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-medida-final">&times;</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <input type="text" id="filter-total" class="form-control">
+                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-total">&times;</button>
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
             </thead>
-            <tbody>
+            <tbody id="lineaPedidoTable">
                 <?php if (!empty($lineas_pedido)): ?>
                     <?php foreach ($lineas_pedido as $linea): ?>
                         <tr>
                             <td><?= esc($linea['id_lineapedido']) ?></td>
                             <td><?= esc($linea['n_piezas']) ?></td>
                             <td><?= esc($linea['nom_base']) ?></td>
-                            <td><?= esc($linea['nombre_producto']) ?></td> <!-- Aquí se muestra el nombre del producto -->
-
-                            <!-- Mostrar la descripción del estado -->
+                            <td><?= esc($linea['nombre_producto']) ?></td>
                             <td><?= isset($estados_texto[$linea['estado']]) ? esc($estados_texto[$linea['estado']]) : 'Estado desconocido' ?></td>
-
                             <td><?= esc($linea['med_inicial']) ?></td>
                             <td><?= esc($linea['med_final']) ?></td>
                             <td><?= esc($linea['total_linea']) ?> €</td>
@@ -170,9 +227,8 @@
                     </tr>
                 <?php endif; ?>
             </tbody>
-
-
         </table>
+
     </div>
 
     <script>
@@ -194,5 +250,72 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            // Mapeo de los filtros
+            const filters = {
+                'filter-id': 0,
+                'filter-cantidad': 1,
+                'filter-base': 2,
+                'filter-producto': 3,
+                'filter-estado': 4,
+                'filter-medida-inicial': 5,
+                'filter-medida-final': 6,
+                'filter-total': 7
+            };
+            // Función para aplicar los filtros a la tabla
+            const applyFilters = () => {
+                const rows = document.querySelectorAll('#lineaPedidoTable tr');
 
+                rows.forEach(row => {
+                    let isVisible = true;
+
+                    // Iterar sobre cada filtro
+                    Object.keys(filters).forEach(filterId => {
+                        const columnIndex = filters[filterId];
+                        const element = document.getElementById(filterId);
+                        const filterValue = element.tagName === 'SELECT' ? element.value.toLowerCase() : element.value.toLowerCase();
+                        const cellValue = row.cells[columnIndex].textContent.toLowerCase();
+
+                        if (filterValue && !cellValue.includes(filterValue)) {
+                            isVisible = false;
+                        }
+                    });
+                    row.style.display = isVisible ? '' : 'none';
+                });
+            };
+            // Aplicar filtros al cambiar los valores de los inputs o selects
+            Object.keys(filters).forEach(filterId => {
+                const element = document.getElementById(filterId);
+                const eventType = element.tagName === 'SELECT' ? 'change' : 'input';
+
+                element.addEventListener(eventType, applyFilters);
+            });
+            // Limpiar filtros
+            $('.clear-filter').on('click', function() {
+                const filterId = $(this).data('filter');
+                const element = document.getElementById(filterId);
+
+                if (element.tagName === 'SELECT') {
+                    element.selectedIndex = 0;
+                } else {
+                    element.value = '';
+                }
+
+                applyFilters();
+            });
+            // Limpiar todos los filtros
+            $('#clear-filters').on('click', function() {
+                Object.keys(filters).forEach(filterId => {
+                    const element = document.getElementById(filterId);
+                    if (element.tagName === 'SELECT') {
+                        element.selectedIndex = 0;
+                    } else {
+                        element.value = '';
+                    }
+                });
+                applyFilters();
+            });
+        });
+    </script>
     <?= $this->endSection() ?>

@@ -33,7 +33,6 @@ class Pedidos_model extends Model
 
         return $query->getResult();
     }
-
     public function getPedidoWithRelations($coge_estado, $where_estado)
     {
         return $this->select('pedidos.*, clientes.nombre_cliente, users.nombre_usuario')
