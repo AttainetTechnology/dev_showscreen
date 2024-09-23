@@ -212,7 +212,6 @@
                                 </select>
 
                             </th>
-
                             <th>Nº Piezas</th>
                             <th>Proceso</th>
                             <th>Base</th>
@@ -255,12 +254,11 @@
                                     <tr>
                                         <th>ID Línea Pedido</th>
                                         <th>Cliente</th>
-                                        <th>Medidas</th>
-                                        <th>Fecha Entrega</th>
                                         <th>Producto</th>
                                         <th>Nº Piezas</th>
-                                        <th>Proceso</th>
                                         <th>Base</th>
+                                        <th>Medidas</th>
+                                        <th>Proceso</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -269,12 +267,11 @@
                                             <tr>
                                                 <td><?= esc($linea['id_linea_pedido']); ?></td>
                                                 <td><?= esc($linea['cliente']); ?></td>
-                                                <td><?= esc($linea['medidas']); ?></td>
-                                                <td><?= esc($linea['fecha']); ?></td>
                                                 <td><?= esc($linea['producto']); ?></td>
                                                 <td><?= esc($linea['n_piezas']); ?></td>
-                                                <td><?= esc($linea['proceso']); ?></td>
                                                 <td><?= esc($linea['base']); ?></td>
+                                                <td><?= esc($linea['medidas']); ?></td>
+                                                <td><?= esc($linea['proceso']); ?></td>
                                             </tr>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
@@ -450,12 +447,12 @@
                         <tr>
                             <th>ID Línea Pedido</th>
                             <th>Cliente</th>
-                            <th>Medidas</th>
-                            <th>Fecha Entrega</th>
                             <th>Producto</th>
                             <th>Nº Piezas</th>
-                            <th>Proceso</th>
                             <th>Base</th>
+                            <th>Medidas</th>
+                            <th>Proceso</th>
+                           
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -469,12 +466,12 @@
                         row.innerHTML = `
                             <td>${linea.id_linea_pedido}</td>
                             <td>${linea.cliente}</td>
-                            <td>${linea.medidas}</td>
-                            <td>${linea.fecha}</td>
                             <td>${linea.producto}</td>
                             <td>${linea.n_piezas}</td>
-                            <td>${linea.proceso}</td>
                             <td>${linea.base}</td>
+                            <td>${linea.medidas}</td>                 
+                            <td>${linea.proceso}</td>
+                           
                         `;
                         tbody.appendChild(row);
                     }
