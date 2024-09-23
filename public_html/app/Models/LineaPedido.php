@@ -10,6 +10,7 @@ class LineaPedido extends Model {
     protected $allowedFields = [
         'id_producto', 
         'n_piezas', 
+        'id_pedido',
         'precio_venta', 
         'nom_base', 
         'med_inicial', 
