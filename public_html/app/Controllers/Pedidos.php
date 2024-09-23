@@ -153,32 +153,43 @@ class Pedidos extends BaseControllerGC
 		$session = session();
 		$data = datos_user();
 		$db = db_connect($data['new_db']);
+	
 		// Cargar el modelo de pedidos, clientes, estados y líneas de pedido
 		$pedidoModel = new Pedidos_model($db);
 		$clienteModel = new ClienteModel($db);
 		$estadoModel = new EstadoModel($db);
-		$lineaspedidoModel = new LineaPedido($db);  // Modelo de líneas de pedido
 		$productosModel = new Productos_model($db);
+	
 		// Obtener el pedido actual a editar
 		$pedido = $pedidoModel->findPedidoWithUser($id_pedido);
 		if (!$pedido) {
 			return redirect()->back()->with('error', 'Pedido no encontrado');
 		}
-		// Obtener las líneas de pedido asociadas
-		$lineas_pedido = $lineaspedidoModel->where('id_pedido', $id_pedido)->findAll();
+	
+		// Obtener las líneas de pedido con el nombre del producto
+		$builder = $db->table('linea_pedidos');
+		$builder->select('linea_pedidos.*, productos.nombre_producto');
+		$builder->join('productos', 'productos.id_producto = linea_pedidos.id_producto');
+		$builder->where('linea_pedidos.id_pedido', $id_pedido);
+		$query = $builder->get();
+		$lineas_pedido = $query->getResultArray();
+	
 		// Obtener la lista de clientes y estados
 		$clientes = $clienteModel->findAll();
-		$estados = $estadoModel->findAll();
+		$estados = $estadoModel->findAll();  // Obtener todos los estados desde la tabla 'estados'
+	
 		// Pasar los datos a la vista
-
 		$data['productos'] = $productosModel->findAll();
 		$data['clientes'] = $clienteModel->findAll();
-		$data['estados'] = $estadoModel->findAll();
+		$data['estados'] = $estados; 
 		$data['pedido'] = $pedido;
 		$data['lineas_pedido'] = $lineas_pedido;
+	
 		// Cargar la vista de edición del pedido
 		return view('editPedido', $data);
 	}
+	
+
 	public function update($id_pedido)
 	{
 		$data = usuario_sesion();
@@ -245,35 +256,40 @@ class Pedidos extends BaseControllerGC
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$lineaspedidoModel = new LineaPedido($db); // Modelo de líneas de pedido
-	
+
 		// Validación solo para el campo id_producto
 		if (!$this->validate([
 			'id_producto' => 'required',
 		])) {
 			return redirect()->back()->with('error', 'El producto es obligatorio.');
 		}
-	
+
 		// Generar la fecha actual para "fecha_entrada" y 14 días después para "fecha_entrega" si no se proporcionan en el formulario
 		$fecha_entrada = $this->request->getPost('fecha_entrada') ?: date('Y-m-d');
 		$fecha_entrega = $this->request->getPost('fecha_entrega') ?: date('Y-m-d', strtotime('+14 days'));
-	
-		// Recolectamos los datos del formulario
+
 		$data = [
 			'id_pedido' => $this->request->getPost('id_pedido'),
 			'id_producto' => $this->request->getPost('id_producto'),
-			'n_piezas' => $this->request->getPost('n_piezas') ?: null, // Opcional
-			'precio_venta' => $this->request->getPost('precio_venta') ?: null, // Opcional
 			'nom_base' => $this->request->getPost('nom_base') ?: null, // Opcional
 			'med_inicial' => $this->request->getPost('med_inicial') ?: null, // Opcional
 			'med_final' => $this->request->getPost('med_final') ?: null, // Opcional
 			'lado' => $this->request->getPost('lado') ?: null, // Opcional
 			'distancia' => $this->request->getPost('distancia') ?: null, // Opcional
 			'observaciones' => $this->request->getPost('observaciones') ?: null, // Opcional
-			'fecha_entrada' => $fecha_entrada, // Usamos la fecha actual o la enviada por el formulario
-			'fecha_entrega' => $fecha_entrega, // Usamos la fecha de 14 días después o la enviada por el formulario
-			'total_linea' => ($this->request->getPost('n_piezas') && $this->request->getPost('precio_venta')) ? $this->request->getPost('n_piezas') * $this->request->getPost('precio_venta') : null,
+			'fecha_entrada' => $fecha_entrada,
+			'fecha_entrega' => $fecha_entrega,
 		];
-	
+
+
+		// Solo calcular total_linea si ambos valores están presentes
+		if (isset($data['n_piezas']) && isset($data['precio_venta'])) {
+			$data['total_linea'] = $data['n_piezas'] * $data['precio_venta'];
+		} else {
+			// Asignar un valor por defecto (por ejemplo, 0) si falta alguno de los valores
+			$data['total_linea'] = 0;
+		}
+
 		// Insertar la nueva línea de pedido en la base de datos
 		if ($lineaspedidoModel->insert($data)) {
 			return $this->response->setJSON(['success' => 'Línea de pedido añadida correctamente']);
@@ -281,7 +297,9 @@ class Pedidos extends BaseControllerGC
 			return $this->response->setJSON(['error' => 'No se pudo añadir la línea de pedido']);
 		}
 	}
-	
+
+
+
 	// Actualizar línea de pedido
 	public function updateLineaPedido($id_lineapedido)
 	{
@@ -310,5 +328,27 @@ class Pedidos extends BaseControllerGC
 		} else {
 			return $this->response->setJSON(['error' => 'No se pudo actualizar la línea de pedido']);
 		}
+	}
+	public function mostrarFormularioAddLineaPedido($id_pedido)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$productosModel = new Productos_model($db); // Modelo de productos
+
+		// Cargar los productos para el formulario
+		$data['productos'] = $productosModel->findAll();
+		$data['pedido'] = ['id_pedido' => $id_pedido];
+
+		// Obtener la fecha actual
+		$fecha_entrada = date('Y-m-d');
+		// Obtener la fecha 14 días después
+		$fecha_entrega = date('Y-m-d', strtotime('+14 days'));
+
+		// Pasar las fechas calculadas a la vista
+		$data['fecha_entrada'] = $fecha_entrada;
+		$data['fecha_entrega'] = $fecha_entrega;
+
+		// Cargar la vista que contiene el modal y el formulario
+		return view('addLineaPedido', $data);
 	}
 }

@@ -1038,3 +1038,9 @@ input[type=number] {
 .table-pedidos td:nth-child(9) {
 	width: 10vw;
 }
+
+/* pedidos */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.2) !important; /* Fondo negro con 20% de opacidad */
+}
+

@@ -10,10 +10,15 @@
                 <!-- Formulario para editar la línea del pedido -->
                 <form class="editLineaForm" action="<?= base_url('pedidos/updateLineaPedido/' . $linea['id_lineapedido']) ?>" method="post" data-linea-id="<?= $linea['id_lineapedido'] ?>">
                     <input type="hidden" name="id_pedido" value="<?= esc($pedido->id_pedido) ?>">
-
                     <div class="form-group">
                         <label for="id_producto">Producto:</label>
-                        <input type="text" name="id_producto" class="form-control" value="<?= esc($linea['id_producto']) ?>" required>
+                        <select name="id_producto" class="form-control" required>
+                            <?php foreach ($productos as $producto): ?>
+                                <option value="<?= esc($producto['id_producto']) ?>" <?= ($producto['id_producto'] == $linea['id_producto']) ? 'selected' : '' ?>>
+                                    <?= esc($producto['nombre_producto']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="n_piezas">Cantidad:</label>
@@ -49,7 +54,13 @@
                     </div>
                     <div class="form-group">
                         <label for="estado">Estado:</label>
-                        <input type="text" name="estado" class="form-control" value="<?= esc($linea['estado']) ?>" required>
+                        <select name="estado" class="form-control" required>
+                            <?php foreach ($estados as $estado): ?>
+                                <option value="<?= esc($estado['id_estado']) ?>" <?= ($estado['id_estado'] == $linea['estado']) ? 'selected' : '' ?>>
+                                    <?= esc($estado['nombre_estado']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="fecha_entrada">Fecha de Entrada:</label>

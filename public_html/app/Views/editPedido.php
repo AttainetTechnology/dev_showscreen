@@ -1,6 +1,12 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <div class="container mt-5">
+    <!-- jQuery debe cargarse primero -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Luego carga Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <h2>Editar Pedido</h2>
     <!-- Botones de Acción -->
     <div class="mb-3">
@@ -77,13 +83,51 @@
             <textarea id="observaciones" name="observaciones" class="form-control" rows="3"><?= esc($pedido->observaciones) ?></textarea>
         </div>
         <br>
-        <button type="submit" class="btn btn-primary">Guardar Pedido</button>
-        <br> <br>
+        <div class="button-container" style=" text-align: right;">
+            <button type="submit" class="btn btn-primary">Guardar Pedido</button>
+        </div>
+        <br>
     </form>
     <!-- Líneas del Pedido -->
     <div class="form-group">
         <h3>Líneas del Pedido</h3>
+        <!-- Botón para abrir el modal y cargar contenido dinámico -->
+        <button type="button" class="btn btn-primary" id="openAddLineaPedidoModal" data-id-pedido="<?= $pedido->id_pedido ?>">
+            Añadir Línea de Pedido
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addLineaPedidoModal" tabindex="-1" aria-labelledby="addLineaPedidoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addLineaPedidoLabel">Añadir Línea de Pedido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalBodyAddLineaPedido">
+                        <!-- El contenido se cargará aquí mediante AJAX -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br> <br>
         <table class="table table-bordered">
+            <?php
+            // Array de estados
+            $estados_texto = [
+                "0" => "Pendiente de material",
+                "1" => "Falta Material",
+                "2" => "Material recibido",
+                "4" => "Terminado",
+                "5" => "Entregado",
+                "6" => "Anulado"
+            ];
+            ?>
+
             <thead>
                 <tr>
                     <th>ID Línea</th>
@@ -104,17 +148,18 @@
                             <td><?= esc($linea['id_lineapedido']) ?></td>
                             <td><?= esc($linea['n_piezas']) ?></td>
                             <td><?= esc($linea['nom_base']) ?></td>
-                            <td><?= esc($linea['id_producto']) ?></td>
-                            <td><?= esc($linea['estado']) ?></td>
+                            <td><?= esc($linea['nombre_producto']) ?></td> <!-- Aquí se muestra el nombre del producto -->
+
+                            <!-- Mostrar la descripción del estado -->
+                            <td><?= isset($estados_texto[$linea['estado']]) ? esc($estados_texto[$linea['estado']]) : 'Estado desconocido' ?></td>
+
                             <td><?= esc($linea['med_inicial']) ?></td>
                             <td><?= esc($linea['med_final']) ?></td>
                             <td><?= esc($linea['total_linea']) ?> €</td>
                             <td>
-                                <!-- Botón para abrir el modal de edición de la línea de pedido -->
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarLineaModal<?= $linea['id_lineapedido'] ?>">
                                     Editar
                                 </button>
-                                <!-- Aquí cargamos el modal desde otra vista -->
                                 <?= view('editLineaPedido', ['linea' => $linea]) ?>
                             </td>
                         </tr>
@@ -125,6 +170,29 @@
                     </tr>
                 <?php endif; ?>
             </tbody>
+
+
         </table>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Cargar el contenido del modal de forma dinámica
+            $('#openAddLineaPedidoModal').click(function() {
+                var id_pedido = $(this).data('id-pedido');
+                $.ajax({
+                    url: '<?= base_url('pedidos/mostrarFormularioAddLineaPedido') ?>/' + id_pedido,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#modalBodyAddLineaPedido').html(response);
+                        $('#addLineaPedidoModal').modal('show'); // Mostrar el modal
+                    },
+                    error: function() {
+                        alert('No se pudo cargar el formulario.');
+                    }
+                });
+            });
+        });
+    </script>
+
     <?= $this->endSection() ?>
