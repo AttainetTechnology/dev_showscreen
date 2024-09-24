@@ -20,7 +20,7 @@ class Pedidos extends BaseControllerGC
 	}
 	public function index()
 	{
-		$this->todos('estado!=', '8');
+		$this->todos('estado<=', '6');
 	}
 	public function enmarcha()
 	{
@@ -35,40 +35,36 @@ class Pedidos extends BaseControllerGC
 		$this->todos('estado=', '5');
 	}
 
-	//CREAMOS LA PAGINA DE PEDIDOS
-
+	//CREAMOS LA PAGINA DE PEDIDOs
+	
 	public function todos($coge_estado, $where_estado)
-	{
-		// Control de login
-		helper('controlacceso');
-		$session = session();
-		$data = datos_user();
-		$db = db_connect($data['new_db']);
-		$session_data = $session->get('logged_in');
-		$nivel_acceso = $session_data['nivel'];
+{
+    helper('controlacceso');
+    $session = session();
+    $data = datos_user();
+    $db = db_connect($data['new_db']);
+    $session_data = $session->get('logged_in');
+    $nivel_acceso = $session_data['nivel'];
 
-		// Cargar el modelo de pedidos, clientes y usuarios
-		$pedidoModel = new Pedidos_model($db);
-		$clienteModel = new ClienteModel($db);
-		$usuarioModel = new Usuarios2_Model($db);
+    // Cargar el modelo de pedidos, clientes y usuarios
+    $pedidoModel = new Pedidos_model($db);
+    $clienteModel = new ClienteModel($db);
+    $usuarioModel = new Usuarios2_Model($db);
 
-		// Obtener los pedidos con relaciones
-		$data['pedidos'] = $pedidoModel->getPedidoWithRelations($coge_estado, $where_estado);
+    // Obtener todos los pedidos
+    $data['pedidos'] = $pedidoModel->getPedidoWithRelations($coge_estado, $where_estado);
 
-		// Obtener la lista de clientes y usuarios para los filtros
-		$data['clientes'] = $clienteModel->findAll();
-		$data['usuarios'] = $usuarioModel->findAll();
+    // Obtener la lista de clientes y usuarios para los filtros
+    $data['clientes'] = $clienteModel->findAll();
+    $data['usuarios'] = $usuarioModel->findAll();
 
-		// Verificar el nivel de acceso para permitir la eliminación
-		if ($nivel_acceso != 9) {
-			$data['allow_delete'] = false;
-		} else {
-			$data['allow_delete'] = true;
-		}
+    // Verificar el nivel de acceso para permitir la eliminación
+    $data['allow_delete'] = ($nivel_acceso == 9);
 
-		// Cargar la vista pasando los datos
-		echo view('mostrarPedido', $data);
-	}
+    // Cargar la vista pasando los datos
+    echo view('mostrarPedido', $data);
+}
+
 
 	public function add()
 	{
@@ -315,6 +311,7 @@ class Pedidos extends BaseControllerGC
 		$this->logAction('Pedidos', 'Anular pedido, ID: ' . $id_pedido, []);
 		return redirect()->to('pedidos/enmarcha');
 	}
+
 
 	// LOGICA LINEA PEDIDO
 	public function mostrarLineasPedido($id_pedido)
