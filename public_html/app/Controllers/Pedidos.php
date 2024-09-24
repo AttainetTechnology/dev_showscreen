@@ -312,7 +312,6 @@ class Pedidos extends BaseControllerGC
 		return redirect()->to('pedidos/enmarcha');
 	}
 
-
 	// LOGICA LINEA PEDIDO
 	public function mostrarLineasPedido($id_pedido)
 	{
@@ -340,12 +339,12 @@ class Pedidos extends BaseControllerGC
 		$data = [
 			'id_pedido' => $this->request->getPost('id_pedido'),
 			'id_producto' => $this->request->getPost('id_producto'),
-			'nom_base' => $this->request->getPost('nom_base') ?: null,
-			'med_inicial' => $this->request->getPost('med_inicial') ?: null,
-			'med_final' => $this->request->getPost('med_final') ?: null,
-			'lado' => $this->request->getPost('lado') ?: null,
-			'distancia' => $this->request->getPost('distancia') ?: null,
-			'observaciones' => $this->request->getPost('observaciones') ?: null,
+			'nom_base' => $this->request->getPost('nom_base') ?: '',
+			'med_inicial' => $this->request->getPost('med_inicial') ?: '',
+			'med_final' => $this->request->getPost('med_final') ?: '',
+			'lado' => $this->request->getPost('lado') ?: '',
+			'distancia' => $this->request->getPost('distancia') ?: '',
+			'observaciones' => $this->request->getPost('observaciones') ?: '',
 			'fecha_entrada' => $fecha_entrada,
 			'fecha_entrega' => $fecha_entrega,
 			'n_piezas' => $n_piezas,
@@ -353,7 +352,6 @@ class Pedidos extends BaseControllerGC
 			// Calcular el total_linea
 			'total_linea' => $n_piezas * $precio_venta
 		];
-
 		// Insertar la nueva línea de pedido en la base de datos
 		if ($lineaspedidoModel->insert($data)) {
 			$this->actualizarTotalPedido($data['id_pedido']);
