@@ -200,7 +200,7 @@ class Pedidos2 extends BaseControllerGC
 		$data['clientes'] = $clienteModel->findAll();
 		$data['usuario_html'] = $this->guarda_usuario();
 
-		echo view('add_pedido2', $data);
+		echo view('add_pedido', $data);
 	}
 
 	//modal add pedido
@@ -271,7 +271,6 @@ class Pedidos2 extends BaseControllerGC
 		return '<input type="hidden" name="id_usuario" value="' . $id_usuario . '">
 		<b>' . $usuarios[$id_usuario] . '</b>';
 	}
-
 
 	public function entregar($id_pedido)
 	{
@@ -428,7 +427,6 @@ class Pedidos2 extends BaseControllerGC
 			return $stateParameters;
 		});
 
-
 		$output = $crud->render();
 
 		if ($output->isJSONResponse) {
@@ -529,17 +527,15 @@ class Pedidos2 extends BaseControllerGC
 			$pedidoBuilder->update();
 		}
 	}
-	function imprimir_parte($id_lineapedido)
+
+
+	function imprimir_parte($row)
 	{
-		// Comprueba que el ID es un número válido
-		if (is_numeric($id_lineapedido)) {
-			// Devuelve la URL con el ID de la línea de pedido
-			return base_url() . "/partes/print/" . $id_lineapedido;
-		} else {
-			// Maneja el error si el ID no es válido
-			return "Error: ID de línea de pedido inválido.";
-		}
+		$uri = current_url();
+		$pg2 = $uri;
+		return base_url() . "/partes/print/" . $row->id_lineapedido . "?pg2=" . $pg2;
 	}
+
 	private function actualizarEstadoProceso($id_lineapedido, $nuevo_estado)
 	{
 		// Verificar si hay un estado válido para actualizar

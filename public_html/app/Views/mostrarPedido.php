@@ -134,6 +134,7 @@ $estadoMap = [
                     <?php if ($allow_delete): ?>
                         <a href="<?= base_url('pedidos/delete/' . $pedido->id_pedido) ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>
                     <?php endif; ?>
+
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -4,29 +4,26 @@
             <?php foreach ($clientes as $cli) { ?>
                 <div id="fondo">
                     <?php
-                    // Verifica si 'pg2' está definido en la URL, si no lo está asigna un valor por defecto
                     $volver = isset($_GET['pg2']) ? $_GET['pg2'] : 'javascript:window.close();';
                     ?>
-                    <!-- Si no hay una URL para volver, se usará un enlace para cerrar la ventana -->
-                    <a href="<?php echo $volver; ?>" class="btn btn-warning btn-sm">Cerrar</a>
-
-                    <a href="javascript:void(0);" onclick="verificarYMarcarLinea(<?php echo $l->id_lineapedido; ?>, '<?php echo $volver; ?>');" class="btn btn-info btn-sm">Cerrar y marcar línea como recibida</a>
-
+                    <a href="javascript:void(0);" class="btn btn-warning btn-sm" onclick="window.close();">Cerrar</a>
+                    <a href="javascript:void(0);" onclick="verificarYMarcarLinea(<?php echo $l->id_lineapedido; ?>);" class="btn btn-info btn-sm">
+                        Cerrar y marcar línea como recibida
+                    </a>
                     <script>
-                        function verificarYMarcarLinea(id_lineapedido, volver) {
+                        function verificarYMarcarLinea(id_lineapedido) {
                             fetch('<?php echo base_url(); ?>/Partes_controller/verificarEstadoProcesos/' + id_lineapedido)
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.status === 'error') {
                                         alert(data.message);
                                     } else {
-                                        window.location.href = '<?php echo base_url(); ?>/Partes_controller/CambiaEstado/' + id_lineapedido + '?volver=' + volver;
+                                        window.location.href = '<?php echo base_url(); ?>/Partes_controller/CambiaEstado/' + id_lineapedido;
                                     }
                                 })
                                 .catch(error => console.error('Error:', error));
                         }
                     </script>
-
                     <input type="button" onclick="printDiv('printableArea')" value="Imprimir Parte" class="btn btn-success btn-sm" />
                     <div id="printableArea">
                         <!-- Cabecera -->

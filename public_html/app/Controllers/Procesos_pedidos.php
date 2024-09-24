@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\LineaPedido;
-use App\Models\Pedido;
+use App\Models\Pedidos_model;
 use App\Models\Producto;
-use App\Models\Cliente;
+use App\Models\ClienteModel;
 use App\Models\ProcesoProducto;
 use App\Models\Proceso;
 use App\Models\Maquinas;
@@ -19,9 +19,9 @@ class Procesos_pedidos extends BaseControllerGC
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $lineaPedidoModel = new LineaPedido($db);
-        $pedidoModel = new Pedido($db);
+        $pedidoModel = new Pedidos_model($db);
         $productoModel = new Producto($db);
-        $clienteModel = new Cliente($db);
+        $clienteModel = new ClienteModel($db);
         $procesoProducto = new ProcesoProducto($db);
         $procesoModel = new Proceso($db);
         $maquinasModel = new Maquinas($db);
@@ -37,9 +37,8 @@ class Procesos_pedidos extends BaseControllerGC
         foreach ($lineas as $linea) {
             foreach ($procesosPedido as $procesoPedido) {
                 if ($linea['id_lineapedido'] == $procesoPedido['id_linea_pedido']) {
-
                     $pedido = $pedidoModel->find($linea['id_pedido']);
-                    $cliente = $clienteModel->find($pedido['id_cliente']);
+                    $cliente = $clienteModel->find($pedido->id_cliente);
                     $producto = $productoModel->find($linea['id_producto']);
                     $proceso = $procesoModel->find($procesoPedido['id_proceso']);
 
@@ -66,7 +65,7 @@ class Procesos_pedidos extends BaseControllerGC
         foreach ($lineasEstado3 as $lineaEstado3) {
             $lineaPedido = $lineaPedidoModel->find($lineaEstado3['id_linea_pedido']);
             $pedido = $pedidoModel->find($lineaPedido['id_pedido']);
-            $cliente = $clienteModel->find($pedido['id_cliente']);
+            $cliente = $clienteModel->find($pedido->id_cliente);
             $producto = $productoModel->find($lineaPedido['id_producto']);
             $proceso = $procesoModel->find($lineaEstado3['id_proceso']);
 
@@ -110,7 +109,7 @@ class Procesos_pedidos extends BaseControllerGC
         $procesosPedidoModel = new ProcesosPedido($db);
         $procesoModel = new Proceso($db);
         $lineaPedidoModel = new LineaPedido($db);
-        $pedidoModel = new Pedido($db);
+        $pedidoModel = new Pedidos_model($db);
         $data = $this->request->getJSON(true);
 
         if (!isset($data['procesos']) || !is_array($data['procesos'])) {
@@ -174,7 +173,7 @@ class Procesos_pedidos extends BaseControllerGC
         $db = db_connect($data['new_db']);
         $lineaPedidoModel = new LineaPedido($db);
         $procesosPedidoModel = new ProcesosPedido($db);
-        $pedidoModel = new Pedido($db); // Asumiendo que existe un modelo Pedido para la tabla pedidos
+        $pedidoModel = new Pedidos_model($db); // Asumiendo que existe un modelo Pedido para la tabla pedidos
 
         // Obtener todos los id_linea_pedido únicos de procesos_pedidos
         $procesosPedido = $procesosPedidoModel->select('id_linea_pedido')->distinct()->findAll();
@@ -209,7 +208,7 @@ class Procesos_pedidos extends BaseControllerGC
         $procesosPedidoModel = new ProcesosPedido($db);
         $procesoModel = new Proceso($db);
         $lineaPedidoModel = new LineaPedido($db);
-        $pedidoModel = new Pedido($db);
+        $pedidoModel = new Pedidos_model($db);
 
         $data = $this->request->getJSON(true);
 
@@ -303,7 +302,7 @@ class Procesos_pedidos extends BaseControllerGC
         $db = db_connect($data['new_db']);
         $procesosPedidoModel = new ProcesosPedido($db);
         $lineaPedidoModel = new LineaPedido($db);
-        $pedidoModel = new Pedido($db);
+        $pedidoModel = new Pedidos_model($db);
         $procesoModel = new Proceso($db);
         $data = $this->request->getJSON(true);
         if (!isset($data['lineItems']) || !is_array($data['lineItems'])) {
@@ -510,7 +509,7 @@ class Procesos_pedidos extends BaseControllerGC
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $modeloCliente = new Cliente($db);
+        $modeloCliente = new ClienteModel($db);
         $clientes = $modeloCliente->obtenerClientes();
 
         // Pasar la lista de clientes a la vista

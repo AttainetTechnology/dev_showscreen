@@ -71,23 +71,46 @@ class Pedidos extends BaseControllerGC
 
 	public function add()
 	{
-		$session = session();
-		$data = datos_user();
-		$db = db_connect($data['new_db']);
+		$data = datos_user();  // Obtener los datos de la sesión del usuario
+		$db = db_connect($data['new_db']);  // Conectar a la base de datos del cliente
+	
 		$clienteModel = new ClienteModel($db);
 		$data['clientes'] = $clienteModel->findAll();
-		//pasamos los datos del usuario autenticado para que se usen en la vista
-		$data['usuario_sesion'] = [
-			'id_user' => $data['id_user'],
-			'nombre_usuario' => $data['nombre_usuario'],
-			'apellidos_usuario' => $data['apellidos_usuario']
-		];
+	
+		// Obtener el ID del usuario autenticado
+		$id_usuario = $data['id_user'];
+	
+		// Consulta para obtener el nombre y apellidos desde la tabla 'users' de la BBDD del cliente
+		$builder = $db->table('users');
+		$builder->select('nombre_usuario, apellidos_usuario');
+		$builder->where('id', $id_usuario);
+		$builder->where('user_activo', '1');
+		$query = $builder->get();
+		$usuario = $query->getRow();  // Obtener el primer resultado
+	
+		// Verificar si se encontró el usuario
+		if ($usuario) {
+			$data['usuario_sesion'] = [
+				'id_user' => $id_usuario,
+				'nombre_usuario' => $usuario->nombre_usuario,
+				'apellidos_usuario' => $usuario->apellidos_usuario
+			];
+		} else {
+			// Manejar el caso en que no se encuentre el usuario
+			$data['usuario_sesion'] = [
+				'id_user' => $id_usuario,
+				'nombre_usuario' => 'Usuario desconocido',
+				'apellidos_usuario' => ''
+			];
+		}
+	
 		if ($this->request->isAJAX()) {
 			return view('add_pedido', $data);  // Retorna la vista del modal
 		} else {
 			return redirect()->to(base_url('pedidos/enmarcha?modal=add'));
 		}
 	}
+	
 	function guarda_usuario()
 	{
 		$session = session();
@@ -112,9 +135,11 @@ class Pedidos extends BaseControllerGC
 	}
 	public function save()
 	{
+		// Obtener los datos del usuario autenticado desde la sesión
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
+	
 		// Validación básica de datos
 		if (!$this->validate([
 			'id_cliente' => 'required',
@@ -123,6 +148,23 @@ class Pedidos extends BaseControllerGC
 		])) {
 			return redirect()->back()->with('error', 'Faltan datos obligatorios');
 		}
+	
+		// Obtener el nombre del usuario desde la tabla 'users' en la base de datos
+		$builder = $db->table('users');
+		$builder->select('nombre_usuario, apellidos_usuario');
+		$builder->where('id', $data['id_user']);
+		$builder->where('user_activo', '1');
+		$query = $builder->get();
+		$usuario = $query->getRow();
+	
+		// Verificar si se encontró el usuario
+		if ($usuario) {
+			$nombre_usuario = $usuario->nombre_usuario . ' ' . $usuario->apellidos_usuario;
+		} else {
+			$nombre_usuario = 'test';
+		}
+	
+		// Preparar los datos para insertar el pedido
 		$data = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
@@ -130,8 +172,10 @@ class Pedidos extends BaseControllerGC
 			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
-			'pedido_por' => $data['nombre_usuario']
+			'pedido_por' => $nombre_usuario  // Usar el nombre completo del usuario aquí
 		];
+	
+		// Insertar el pedido
 		if ($pedidoModel->insert($data)) {
 			$this->logAction('Pedido', 'Añadir Pedido', $data);
 			return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido guardado correctamente');
@@ -139,6 +183,7 @@ class Pedidos extends BaseControllerGC
 			return redirect()->back()->with('error', 'No se pudo guardar el pedido');
 		}
 	}
+	
 	public function edit($id_pedido)
 	{
 		helper('controlacceso');
@@ -215,19 +260,35 @@ class Pedidos extends BaseControllerGC
 	}
 	public function delete($id_pedido)
 	{
+		// Obtener datos de la sesión
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
+		$session = session();
+		$session_data = $session->get('logged_in');
+		$nivel_acceso = $session_data['nivel'];
+
+		// Verificar si el nivel de acceso es 9
+		if ($nivel_acceso != 9) {
+			return redirect()->back()->with('error', 'No tienes permiso para eliminar este pedido');
+		}
+
+		// Proceder con la eliminación del pedido si el nivel de acceso es 9
 		$pedidoModel = new Pedidos_model($db);
 		$lineaPedidoModel = new LineaPedido($db);
 		$db->transStart();
+
 		// Eliminar todas las líneas asociadas al pedido
 		$lineaPedidoModel->where('id_pedido', $id_pedido)->delete();
+
 		// Eliminar el pedido
 		$pedidoModel->delete($id_pedido);
 		$db->transComplete();
+
+		// Verificar si la transacción fue exitosa
 		if ($db->transStatus() === false) {
 			return redirect()->back()->with('error', 'No se pudo eliminar el pedido');
 		}
+		// Redirigir al listado de pedidos con un mensaje de éxito
 		return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido eliminado correctamente');
 	}
 	public function actualizarTotalPedido($id_pedido)

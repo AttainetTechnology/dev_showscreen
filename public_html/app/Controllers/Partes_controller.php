@@ -139,6 +139,7 @@ class Partes_controller extends BaseControllerGC
     //Cambio el estado de la linea de pedido a "material recibido" cuando sacamos el parte.
     public function CambiaEstado($id_lineapedido)
     {
+        // Cambiar el estado de la línea de pedido
         $data2 = array('estado' => '2');
         helper('controlacceso');
         $data = datos_user();
@@ -147,20 +148,17 @@ class Partes_controller extends BaseControllerGC
         $builder->set($data2);
         $builder->where('id_lineapedido', $id_lineapedido);
         $builder->update();
-
-        //Reviso si todas las lineas han cambiado de estado y le cambio el estado al pedido
-
+    
+        // Revisar si todas las líneas han cambiado de estado y actualizar el estado del pedido
         $Lineaspedido_model = model('App\Models\Lineaspedido_model');
         $Lineaspedido_model->actualiza_estado_lineas($id_lineapedido);
-
-        if (isset($_GET['volver'])) {
-            $volver = $_GET['volver'];
-        }
         $this->obtenerLineasPedidoConEstado2YCrearProcesos();
-        helper('url');
-        return redirect()->to($volver);
+    
+        // Enviar respuesta para cerrar la pestaña actual
+        echo "<script>window.close();</script>";
+        exit;
     }
-
+    
 
     public function verificarEstadoProcesos($id_lineapedido)
     {
