@@ -8,6 +8,7 @@ use App\Models\Pedidos_model;
 use App\Models\EstadoModel;
 use App\Models\LineaPedido;
 use App\Models\Productos_model;
+use App\Models\ProcesosPedido;
 
 class Pedidos extends BaseControllerGC
 {
@@ -73,13 +74,13 @@ class Pedidos extends BaseControllerGC
 	{
 		$data = datos_user();  // Obtener los datos de la sesión del usuario
 		$db = db_connect($data['new_db']);  // Conectar a la base de datos del cliente
-	
+
 		$clienteModel = new ClienteModel($db);
 		$data['clientes'] = $clienteModel->findAll();
-	
+
 		// Obtener el ID del usuario autenticado
 		$id_usuario = $data['id_user'];
-	
+
 		// Consulta para obtener el nombre y apellidos desde la tabla 'users' de la BBDD del cliente
 		$builder = $db->table('users');
 		$builder->select('nombre_usuario, apellidos_usuario');
@@ -87,7 +88,7 @@ class Pedidos extends BaseControllerGC
 		$builder->where('user_activo', '1');
 		$query = $builder->get();
 		$usuario = $query->getRow();  // Obtener el primer resultado
-	
+
 		// Verificar si se encontró el usuario
 		if ($usuario) {
 			$data['usuario_sesion'] = [
@@ -103,14 +104,14 @@ class Pedidos extends BaseControllerGC
 				'apellidos_usuario' => ''
 			];
 		}
-	
+
 		if ($this->request->isAJAX()) {
 			return view('add_pedido', $data);  // Retorna la vista del modal
 		} else {
 			return redirect()->to(base_url('pedidos/enmarcha?modal=add'));
 		}
 	}
-	
+
 	function guarda_usuario()
 	{
 		$session = session();
@@ -139,7 +140,7 @@ class Pedidos extends BaseControllerGC
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
-	
+
 		// Validación básica de datos
 		if (!$this->validate([
 			'id_cliente' => 'required',
@@ -148,7 +149,7 @@ class Pedidos extends BaseControllerGC
 		])) {
 			return redirect()->back()->with('error', 'Faltan datos obligatorios');
 		}
-	
+
 		// Obtener el nombre del usuario desde la tabla 'users' en la base de datos
 		$builder = $db->table('users');
 		$builder->select('nombre_usuario, apellidos_usuario');
@@ -156,14 +157,14 @@ class Pedidos extends BaseControllerGC
 		$builder->where('user_activo', '1');
 		$query = $builder->get();
 		$usuario = $query->getRow();
-	
+
 		// Verificar si se encontró el usuario
 		if ($usuario) {
 			$nombre_usuario = $usuario->nombre_usuario . ' ' . $usuario->apellidos_usuario;
 		} else {
 			$nombre_usuario = 'test';
 		}
-	
+
 		// Preparar los datos para insertar el pedido
 		$data = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
@@ -174,7 +175,7 @@ class Pedidos extends BaseControllerGC
 			'observaciones' => $this->request->getPost('observaciones'),
 			'pedido_por' => $nombre_usuario  // Usar el nombre completo del usuario aquí
 		];
-	
+
 		// Insertar el pedido
 		if ($pedidoModel->insert($data)) {
 			$this->logAction('Pedido', 'Añadir Pedido', $data);
@@ -183,7 +184,7 @@ class Pedidos extends BaseControllerGC
 			return redirect()->back()->with('error', 'No se pudo guardar el pedido');
 		}
 	}
-	
+
 	public function edit($id_pedido)
 	{
 		helper('controlacceso');
@@ -266,31 +267,26 @@ class Pedidos extends BaseControllerGC
 		$session = session();
 		$session_data = $session->get('logged_in');
 		$nivel_acceso = $session_data['nivel'];
-
-		// Verificar si el nivel de acceso es 9
 		if ($nivel_acceso != 9) {
 			return redirect()->back()->with('error', 'No tienes permiso para eliminar este pedido');
 		}
-
-		// Proceder con la eliminación del pedido si el nivel de acceso es 9
 		$pedidoModel = new Pedidos_model($db);
 		$lineaPedidoModel = new LineaPedido($db);
+		$procesosPedidoModel = new ProcesosPedido($db);
 		$db->transStart();
-
-		// Eliminar todas las líneas asociadas al pedido
+		$lineasPedido = $lineaPedidoModel->where('id_pedido', $id_pedido)->findAll();
+		foreach ($lineasPedido as $linea) {
+			$procesosPedidoModel->where('id_linea_pedido', $linea['id_lineapedido'])->delete();
+		}
 		$lineaPedidoModel->where('id_pedido', $id_pedido)->delete();
-
-		// Eliminar el pedido
 		$pedidoModel->delete($id_pedido);
 		$db->transComplete();
-
-		// Verificar si la transacción fue exitosa
 		if ($db->transStatus() === false) {
 			return redirect()->back()->with('error', 'No se pudo eliminar el pedido');
 		}
-		// Redirigir al listado de pedidos con un mensaje de éxito
-		return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido eliminado correctamente');
+		return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido y sus líneas asociadas eliminados correctamente');
 	}
+
 	public function actualizarTotalPedido($id_pedido)
 	{
 		$data = usuario_sesion();
@@ -370,12 +366,14 @@ class Pedidos extends BaseControllerGC
 			return $this->response->setJSON(['error' => 'No se pudo añadir la línea de pedido']);
 		}
 	}
-	// Actualizar línea de pedido
+	// Actualizar línea de pedido// Actualizar línea de pedido
 	public function updateLineaPedido($id_lineapedido)
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$lineaspedidoModel = new LineaPedido($db);
+		$procesosPedidoModel = new ProcesosPedido($db);
+		// Datos a actualizar en linea_pedidos
 		$updateData = [
 			'id_producto' => $this->request->getPost('id_producto') ?? null,
 			'n_piezas' => $this->request->getPost('n_piezas') ?? null,
@@ -393,9 +391,15 @@ class Pedidos extends BaseControllerGC
 		];
 		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
 			$id_pedido = $this->request->getPost('id_pedido');
+			// Actualizar el estado en la tabla procesos_pedidos
+			if (isset($updateData['estado'])) {
+				$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)
+					->set('estado', $updateData['estado'])
+					->update();
+			}
 			$this->actualizarTotalPedido($id_pedido);
 			$this->actualizarEstadoPedido($id_pedido);
-			return $this->response->setJSON(['success' => 'Línea de pedido actualizada correctamente']);
+			return $this->response->setJSON(['success' => 'Línea de pedido actualizada correctamente y estado de procesos asociados actualizado']);
 		} else {
 			return $this->response->setJSON(['error' => 'No se pudo actualizar la línea de pedido']);
 		}
@@ -418,24 +422,26 @@ class Pedidos extends BaseControllerGC
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$lineaPedidoModel = new LineaPedido($db);
+		$procesosPedidoModel = new ProcesosPedido($db);
 		$linea = $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)->first();
 		if (!$linea) {
 			return redirect()->back()->with('error', 'Línea no encontrada');
 		}
 		$id_pedido = $linea['id_pedido'];
 		$db->transStart();
+		$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)->delete();
 		$lineaPedidoModel->delete($id_lineapedido);
 		$db->transComplete();
 		if ($db->transStatus() === false) {
 			return redirect()->back()->with('error', 'No se pudo eliminar la línea del pedido');
 		}
-		return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea del pedido eliminada correctamente');
+		return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea del pedido y procesos asociados eliminados correctamente');
 	}
+
 	public function actualizarEstadoPedido($id_pedido)
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
-		$lineaPedidoModel = new LineaPedido($db);
 		$builder = $db->table('linea_pedidos');
 		$builder->select('estado');
 		$builder->where('id_pedido', $id_pedido);
