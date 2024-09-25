@@ -1,10 +1,19 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+    .ag-icon-filter{
+    display: none!important;
+    }
+    .acciones-col{
+        width: 240px!important;
+
+    }
+</style>
+<!-- Importar estilos y scripts de AG Grid -->
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+
 <h2>Pedidos</h2>
 <div class="d-flex justify-content-between mb-3">
     <a href="#" id="openModal" class="btn btn-primary">Añadir Pedido</a>
@@ -17,7 +26,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- cargara el contenido desde la vista add_pedido.php -->
+                    <!-- cargará el contenido desde la vista add_pedido.php -->
                 </div>
             </div>
         </div>
@@ -25,6 +34,7 @@
     <button id="clear-filters" class="btn btn-secondary">Eliminar Filtros</button>
 </div>
 <br>
+
 <?php
 // Mapeo de estados
 $estadoMap = [
@@ -37,134 +47,93 @@ $estadoMap = [
     "6" => "Anulado"
 ];
 ?>
-<table id="pedidoTable" class="table table-striped table-pedidos">
-    <thead>
-        <tr>
-            <th>ID Pedido</th>
-            <th>Fecha Entrada</th>
-            <th>Fecha Entrega</th>
-            <th>Cliente</th>
-            <th>Referencia</th>
-            <th>Estado</th>
-            <th>Usuario</th>
-            <th>Total</th>
-            <th>Acciones</th>
-        </tr>
-        <tr>
-            <th>
-                <div class="input-group">
-                    <input type="text" id="filter-id" class="form-control" placeholder="">
-                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-id">&times;</button>
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
-                    <input type="text" id="filter-fecha-entrada" class="form-control datepicker" placeholder="">
-                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-fecha-entrada">&times;</button>
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
-                    <input type="text" id="filter-fecha-entrega" class="form-control datepicker" placeholder="">
-                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-fecha-entrega">&times;</button>
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
-                    <input list="clientes" id="filter-cliente" class="form-control" placeholder="" oninput="this.value = this.value.toUpperCase()">
-                    <datalist id="clientes">
-                        <?php foreach ($clientes as $cliente): ?>
-                            <option value="<?= strtoupper($cliente['nombre_cliente']) ?>"><?= strtoupper($cliente['nombre_cliente']) ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
-                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-cliente">&times;</button>
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
-                    <input type="text" id="filter-referencia" class="form-control" placeholder="">
-                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-referencia">&times;</button>
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
-                    <select id="filter-estado" class="form-control">
-                        <option value=""></option>
-                        <option value="0">Pendiente de material</option>
-                        <option value="1">Falta Material</option>
-                        <option value="2">Material recibido</option>
-                        <option value="3">En Máquinas</option>
-                        <option value="4">Terminado</option>
-                        <option value="5">Entregado</option>
-                        <option value="6">Anulado</option>
-                    </select>
-                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-estado">&times;</button>
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
-                    <input list="usuarios" id="filter-usuario" class="form-control" placeholder="" oninput="this.value = this.value.toUpperCase()">
-                    <datalist id="usuarios">
-                        <?php foreach ($usuarios as $usuario): ?>
-                            <option value="<?= strtoupper($usuario['nombre_usuario']) ?>"><?= strtoupper($usuario['nombre_usuario']) ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
-                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-usuario">&times;</button>
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
-                    <input type="text" id="filter-total" class="form-control" placeholder="">
-                    <button class="btn btn-outline-secondary clear-filter" data-filter="filter-total">&times;</button>
-                </div>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="pedidoTable">
-        <?php foreach ($pedidos as $pedido): ?>
-            <tr>
-                <td><?= $pedido->id_pedido ?></td>
-                <td><?= date('d-m-Y', strtotime($pedido->fecha_entrada)) ?></td>
-                <td><?= date('d-m-Y', strtotime($pedido->fecha_entrega)) ?></td>
-                <td><?= $pedido->nombre_cliente ?></td>
-                <td><?= $pedido->referencia ?></td>
-                <td><?= $estadoMap[$pedido->estado] ?></td>
-                <td><?= $pedido->nombre_usuario ?></td>
-                <td><?= $pedido->total_pedido ?>€</td>
-                <td>
-                    <a href="<?= base_url('pedidos/print/' . $pedido->id_pedido) ?>" class="btn btn-info" target="_blank">Imprimir</a>
-                    <a href="<?= base_url('pedidos/edit/' . $pedido->id_pedido) ?>" class="btn btn-warning">Editar</a>
-                    <?php if ($allow_delete): ?>
-                        <a href="<?= base_url('pedidos/delete/' . $pedido->id_pedido) ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>
-                    <?php endif; ?>
-
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+<div id="pedidoTable" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
 <script>
-    $(document).ready(function() {
-        $('#pedidoTable').DataTable({
-            "processing": true, // Muestra un indicador de carga
-            "serverSide": true, // Activar paginación del lado del servidor
-            "ajax": {
-                "url": "<?= base_url('pedidos/getPedidosAjax') ?>", // Endpoint que devolverá los datos paginados
-                "type": "POST"
+  document.addEventListener('DOMContentLoaded', function () {
+    // Definición de columnas con filtros de texto
+    var columnDefs = [
+        { headerName: "ID Pedido", field: "id_pedido", filter: 'agTextColumnFilter' },  // Filtro de texto simple
+        { headerName: "Fecha Entrada", field: "fecha_entrada", filter: 'agDateColumnFilter' },  // Filtro de texto simple
+        { headerName: "Fecha Entrega", field: "fecha_entrega", filter: 'agDateColumnFilter' },  // Filtro de texto simple
+        { headerName: "Cliente", field: "cliente", filter: 'agTextColumnFilter' },  // Filtro de texto simple
+        { headerName: "Referencia", field: "referencia", filter: 'agTextColumnFilter' },  // Filtro de texto simple
+        { headerName: "Estado", field: "estado", 
+          filter: 'agTextColumnFilter',  // Filtro de texto simple
+          cellRenderer: function(params) {
+            var estadoMap = {
+                "0": "Pendiente de material",
+                "1": "Falta Material",
+                "2": "Material recibido",
+                "3": "En Máquinas",
+                "4": "Terminado",
+                "5": "Entregado",
+                "6": "Anulado"
+            };
+            // Verifica si el estado existe en el mapa, si no, devuelve el valor original
+            return estadoMap[params.value] || params.value;
+          }
+        },
+        { headerName: "Usuario", field: "usuario", filter: 'agTextColumnFilter' },  // Filtro de texto simple
+        { headerName: "Total", field: "total", filter: 'agTextColumnFilter' },  // Filtro de texto simple
+        {
+            headerName: "Acciones", field: "acciones", 
+            cellRenderer: function (params) {
+                var editBtn = `<a href="<?= base_url('pedidos/edit/') ?>${params.data.id_pedido}" class="btn btn-warning">Editar</a>`;
+                var deleteBtn = `<a href="<?= base_url('pedidos/delete/') ?>${params.data.id_pedido}" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>`;
+                var printBtn = `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" class="btn btn-info" target="_blank">Imp
+                imir</a>`;
+                return `${editBtn} ${deleteBtn} ${printBtn}`;
             },
-            "paging": true, // Habilitar la paginación
-            "lengthChange": true, // Permitir cambiar el número de registros por página
-            "searching": true, // Habilitar barra de búsqueda
-            "ordering": true, // Habilitar ordenamiento de columnas
-            "info": true, // Mostrar información sobre el número de registros
-            "autoWidth": false, // Ajustar el ancho automáticamente
-            "pageLength": 10, // Número de registros por página
-        });
-    });
+            cellClass: 'acciones-col' 
+        }
+    ];
 
+    // Datos de ejemplo (cargar dinámicamente desde el backend)
+    var rowData = [
+        <?php foreach ($pedidos as $pedido): ?>
+            {
+                id_pedido: "<?= $pedido->id_pedido ?>",
+                fecha_entrada: "<?= date('d-m-Y', strtotime($pedido->fecha_entrada)) ?>",
+                fecha_entrega: "<?= date('d-m-Y', strtotime($pedido->fecha_entrega)) ?>",
+                cliente: "<?= $pedido->nombre_cliente ?>",
+                referencia: "<?= $pedido->referencia ?>",
+                estado: "<?= $pedido->estado ?>",  // Asegúrate de que este valor sea un número válido del estadoMap
+                usuario: "<?= $pedido->nombre_usuario ?>",
+                total: "<?= $pedido->total_pedido ?>€"
+            },
+        <?php endforeach; ?>
+    ];
+
+    // Inicialización de AG Grid con filtros simples en cada columna
+    var gridOptions = {
+        columnDefs: columnDefs,
+        rowData: rowData,
+        pagination: true,
+        paginationPageSize: 10,
+        defaultColDef: {
+            sortable: true,
+            filter: true,  // Activar filtro por columna
+            floatingFilter: true  // Mostrar barra de búsqueda debajo de cada columna
+        },
+        domLayout: 'autoHeight',
+        onGridReady: function() {
+            document.getElementById('pedidoTable').style.display = 'block';
+        }
+    };
+
+    // Crear la tabla en el contenedor
+    var eGridDiv = document.querySelector('#pedidoTable');
+    new agGrid.Grid(eGridDiv, gridOptions);
+
+    // Botón para eliminar filtros
+    document.getElementById('clear-filters').addEventListener('click', function() {
+        gridOptions.api.setFilterModel(null);  // Limpiar todos los filtros
+        gridOptions.api.onFilterChanged();     // Aplicar el cambio
+    });
+  });
+
+    // Función para abrir el modal de añadir pedido
     $(document).ready(function() {
-        // Función para abrir el modal y cargar el contenido vía AJAX
         function abrirModal() {
             $.ajax({
                 url: '<?= base_url('pedidos/add') ?>',
@@ -178,105 +147,12 @@ $estadoMap = [
                 }
             });
         }
-        // Detectar el parámetro 'modal=add' en la URL
-        var urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('modal') === 'add') {
-            abrirModal();
-        }
+
         $('#openModal').click(function(e) {
             e.preventDefault();
             abrirModal();
         });
     });
-    $(document).ready(function() {
-        const estadoMap = {
-            "0": "pendiente de material",
-            "1": "falta material",
-            "2": "material recibido",
-            "3": "en máquinas",
-            "4": "terminado",
-            "5": "entregado",
-            "6": "anulado"
-        };
-        // Inicializar Datepicker en los campos de fecha con formato día/mes/año
-        $(".datepicker").datepicker({
-            dateFormat: 'dd-mm-yy',
-            onSelect: function() {
-                applyFilters();
-            }
-        });
-        const filters = {
-            'filter-id': 0,
-            'filter-fecha-entrada': 1,
-            'filter-fecha-entrega': 2,
-            'filter-cliente': 3,
-            'filter-referencia': 4,
-            'filter-estado': 5,
-            'filter-usuario': 6,
-            'filter-total': 7
-        };
-        // Función para aplicar todos los filtros a la vez
-        const applyFilters = () => {
-            const rows = document.querySelectorAll('#pedidoTable tr');
-
-            rows.forEach(row => {
-                let isVisible = true;
-
-                Object.keys(filters).forEach(filterId => {
-                    const columnIndex = filters[filterId];
-                    const element = document.getElementById(filterId);
-                    let filterValue = element.tagName === 'SELECT' ? element.value : element.value.toLowerCase();
-                    let cellValue = row.cells[columnIndex].textContent.toLowerCase();
-                    // Si es el filtro de estado, convertir el valor del select en su texto correspondiente
-                    if (filterId === 'filter-estado' && filterValue) {
-                        filterValue = estadoMap[filterValue];
-                        cellValue = cellValue.toLowerCase();
-                    }
-
-                    if (filterValue && !cellValue.includes(filterValue)) {
-                        isVisible = false;
-                    }
-                });
-                row.style.display = isVisible ? '' : 'none';
-            });
-        };
-        // Asignar eventos a todos los filtros para que apliquen el filtro general
-        Object.keys(filters).forEach(filterId => {
-            const element = document.getElementById(filterId);
-            const eventType = element.tagName === 'INPUT' ? 'input' : 'change';
-
-            element.addEventListener(eventType, applyFilters);
-        });
-        // Filtrar por estado usando el valor del select y convertir el valor numérico en texto
-        $('#filter-estado').on('change', function() {
-            applyFilters();
-        });
-        // Función para limpiar todos los filtros
-        const clearFilters = () => {
-            Object.keys(filters).forEach(filterId => {
-                const element = document.getElementById(filterId);
-                if (element.tagName === 'SELECT') {
-                    element.selectedIndex = 0;
-                } else {
-                    element.value = '';
-                }
-            });
-            applyFilters();
-        };
-        // Botón para eliminar todos los filtros
-        $('#clear-filters').on('click', clearFilters);
-        // Función para eliminar un filtro específico
-        $('.clear-filter').on('click', function() {
-            const filterId = $(this).data('filter');
-            const element = document.getElementById(filterId);
-
-            if (element.tagName === 'SELECT') {
-                element.selectedIndex = 0;
-            } else {
-                element.value = '';
-            }
-            applyFilters(); // Reaplicar los filtros después de eliminar uno específico
-        });
-    });
 </script>
+
 <?= $this->endSection() ?>
