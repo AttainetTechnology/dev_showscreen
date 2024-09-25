@@ -1,11 +1,12 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <style>
-    .ag-icon-filter{
-    display: none!important;
+    .ag-icon-filter {
+        display: none !important;
     }
-    .acciones-col{
-        width: 240px!important;
+
+    .acciones-col {
+        width: 240px !important;
 
     }
 </style>
@@ -49,88 +50,117 @@ $estadoMap = [
 ?>
 <div id="pedidoTable" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Definición de columnas con filtros de texto
-    var columnDefs = [
-        { headerName: "ID Pedido", field: "id_pedido", filter: 'agTextColumnFilter' },  // Filtro de texto simple
-        { headerName: "Fecha Entrada", field: "fecha_entrada", filter: 'agDateColumnFilter' },  // Filtro de texto simple
-        { headerName: "Fecha Entrega", field: "fecha_entrega", filter: 'agDateColumnFilter' },  // Filtro de texto simple
-        { headerName: "Cliente", field: "cliente", filter: 'agTextColumnFilter' },  // Filtro de texto simple
-        { headerName: "Referencia", field: "referencia", filter: 'agTextColumnFilter' },  // Filtro de texto simple
-        { headerName: "Estado", field: "estado", 
-          filter: 'agTextColumnFilter',  // Filtro de texto simple
-          cellRenderer: function(params) {
-            var estadoMap = {
-                "0": "Pendiente de material",
-                "1": "Falta Material",
-                "2": "Material recibido",
-                "3": "En Máquinas",
-                "4": "Terminado",
-                "5": "Entregado",
-                "6": "Anulado"
-            };
-            // Verifica si el estado existe en el mapa, si no, devuelve el valor original
-            return estadoMap[params.value] || params.value;
-          }
-        },
-        { headerName: "Usuario", field: "usuario", filter: 'agTextColumnFilter' },  // Filtro de texto simple
-        { headerName: "Total", field: "total", filter: 'agTextColumnFilter' },  // Filtro de texto simple
-        {
-            headerName: "Acciones", field: "acciones", 
-            cellRenderer: function (params) {
-                var editBtn = `<a href="<?= base_url('pedidos/edit/') ?>${params.data.id_pedido}" class="btn btn-warning">Editar</a>`;
-                var deleteBtn = `<a href="<?= base_url('pedidos/delete/') ?>${params.data.id_pedido}" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>`;
-                var printBtn = `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" class="btn btn-info" target="_blank">Imp
-                imir</a>`;
-                return `${editBtn} ${deleteBtn} ${printBtn}`;
-            },
-            cellClass: 'acciones-col' 
-        }
-    ];
-
-    // Datos de ejemplo (cargar dinámicamente desde el backend)
-    var rowData = [
-        <?php foreach ($pedidos as $pedido): ?>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Definición de columnas con filtros de texto
+        var columnDefs = [{
+                headerName: "ID Pedido",
+                field: "id_pedido",
+                filter: 'agTextColumnFilter'
+            }, // Filtro de texto simple
             {
-                id_pedido: "<?= $pedido->id_pedido ?>",
-                fecha_entrada: "<?= date('d-m-Y', strtotime($pedido->fecha_entrada)) ?>",
-                fecha_entrega: "<?= date('d-m-Y', strtotime($pedido->fecha_entrega)) ?>",
-                cliente: "<?= $pedido->nombre_cliente ?>",
-                referencia: "<?= $pedido->referencia ?>",
-                estado: "<?= $pedido->estado ?>",  // Asegúrate de que este valor sea un número válido del estadoMap
-                usuario: "<?= $pedido->nombre_usuario ?>",
-                total: "<?= $pedido->total_pedido ?>€"
+                headerName: "Fecha Entrada",
+                field: "fecha_entrada",
+                filter: 'agDateColumnFilter'
+            }, // Filtro de texto simple
+            {
+                headerName: "Fecha Entrega",
+                field: "fecha_entrega",
+                filter: 'agDateColumnFilter'
+            }, // Filtro de texto simple
+            {
+                headerName: "Cliente",
+                field: "cliente",
+                filter: 'agTextColumnFilter'
+            }, // Filtro de texto simple
+            {
+                headerName: "Referencia",
+                field: "referencia",
+                filter: 'agTextColumnFilter'
+            }, // Filtro de texto simple
+            {
+                headerName: "Estado",
+                field: "estado",
+                filter: 'agTextColumnFilter',
+                cellRenderer: function(params) {
+                    var estadoMap = {
+                        "0": "Pendiente de material",
+                        "1": "Falta Material",
+                        "2": "Material recibido",
+                        "3": "En Máquinas",
+                        "4": "Terminado",
+                        "5": "Entregado",
+                        "6": "Anulado"
+                    };
+                    // Verifica si el estado existe en el mapa, si no, devuelve el valor original
+                    return estadoMap[params.value] || params.value;
+                }
             },
-        <?php endforeach; ?>
-    ];
+            {
+                headerName: "Usuario",
+                field: "usuario",
+                filter: 'agTextColumnFilter'
+            }, // Filtro de texto simple
+            {
+                headerName: "Total",
+                field: "total",
+                filter: 'agTextColumnFilter'
+            }, // Filtro de texto simple
+            {
+                headerName: "Acciones",
+                field: "acciones",
+                cellRenderer: function(params) {
+                    var editBtn = `<a href="<?= base_url('pedidos/edit/') ?>${params.data.id_pedido}" class="btn btn-warning">Editar</a>`;
+                    var deleteBtn = `<a href="<?= base_url('pedidos/delete/') ?>${params.data.id_pedido}" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>`;
+                    var printBtn = `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" class="btn btn-info" target="_blank">Imp
+                imir</a>`;
+                    return `${editBtn} ${deleteBtn} ${printBtn}`;
+                },
+                cellClass: 'acciones-col'
+            }
+        ];
 
-    // Inicialización de AG Grid con filtros simples en cada columna
-    var gridOptions = {
-        columnDefs: columnDefs,
-        rowData: rowData,
-        pagination: true,
-        paginationPageSize: 10,
-        defaultColDef: {
-            sortable: true,
-            filter: true,  // Activar filtro por columna
-            floatingFilter: true  // Mostrar barra de búsqueda debajo de cada columna
-        },
-        domLayout: 'autoHeight',
-        onGridReady: function() {
-            document.getElementById('pedidoTable').style.display = 'block';
-        }
-    };
+        // Datos de ejemplo (cargar dinámicamente desde el backend)
+        var rowData = [
+            <?php foreach ($pedidos as $pedido): ?> {
+                    id_pedido: "<?= $pedido->id_pedido ?>",
+                    fecha_entrada: "<?= date('d-m-Y', strtotime($pedido->fecha_entrada)) ?>",
+                    fecha_entrega: "<?= date('d-m-Y', strtotime($pedido->fecha_entrega)) ?>",
+                    cliente: "<?= $pedido->nombre_cliente ?>",
+                    referencia: "<?= $pedido->referencia ?>",
+                    estado: "<?= $pedido->estado ?>", // Asegúrate de que este valor sea un número válido del estadoMap
+                    usuario: "<?= $pedido->nombre_usuario ?>",
+                    total: "<?= $pedido->total_pedido ?>€"
+                },
+            <?php endforeach; ?>
+        ];
 
-    // Crear la tabla en el contenedor
-    var eGridDiv = document.querySelector('#pedidoTable');
-    new agGrid.Grid(eGridDiv, gridOptions);
+        // Inicialización de AG Grid con filtros simples en cada columna
+        var gridOptions = {
+            columnDefs: columnDefs,
+            rowData: rowData,
+            pagination: true,
+            paginationPageSize: 10,
+            defaultColDef: {
+                sortable: true,
+                filter: true, // Activar filtro por columna
+                floatingFilter: true // Mostrar barra de búsqueda debajo de cada columna
+            },
+            domLayout: 'autoHeight',
+            onGridReady: function() {
+                document.getElementById('pedidoTable').style.display = 'block';
+            }
+        };
 
-    // Botón para eliminar filtros
-    document.getElementById('clear-filters').addEventListener('click', function() {
-        gridOptions.api.setFilterModel(null);  // Limpiar todos los filtros
-        gridOptions.api.onFilterChanged();     // Aplicar el cambio
+        // Crear la tabla en el contenedor
+        var eGridDiv = document.querySelector('#pedidoTable');
+        const gridApi = agGrid.createGrid(eGridDiv, gridOptions);
+
+        // Botón para eliminar filtros
+        document.getElementById('clear-filters').addEventListener('click', function() {
+            gridOptions.api.setFilterModel(null); // Limpiar todos los filtros
+            gridOptions.api.onFilterChanged(); // Aplicar el cambio
+        });
     });
-  });
 
     // Función para abrir el modal de añadir pedido
     $(document).ready(function() {

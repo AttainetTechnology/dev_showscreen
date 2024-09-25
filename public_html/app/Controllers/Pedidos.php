@@ -38,35 +38,34 @@ class Pedidos extends BaseControllerGC
 	//CREAMOS LA PAGINA DE PEDIDOs
 
 	public function todos($coge_estado, $where_estado)
-{
-    helper('controlacceso');
-    $session = session();
-    $data = datos_user();
-    $db = db_connect($data['new_db']);
-    $session_data = $session->get('logged_in');
-    $nivel_acceso = $session_data['nivel'];
+	{
+		helper('controlacceso');
+		$session = session();
+		$data = datos_user();
+		$db = db_connect($data['new_db']);
+		$session_data = $session->get('logged_in');
+		$nivel_acceso = $session_data['nivel'];
 
-    // Cargar el modelo de pedidos, clientes y usuarios
-    $pedidoModel = new Pedidos_model($db);
-    $clienteModel = new ClienteModel($db);
-    $usuarioModel = new Usuarios2_Model($db);
+		// Cargar el modelo de pedidos, clientes y usuarios
+		$pedidoModel = new Pedidos_model($db);
+		$clienteModel = new ClienteModel($db);
+		$usuarioModel = new Usuarios2_Model($db);
 
-    // Obtener todos los pedidos
-    $data['pedidos'] = $pedidoModel->getPedidoWithRelations($coge_estado, $where_estado);
+		// Obtener todos los pedidos
+		$data['pedidos'] = $pedidoModel->getPedidoWithRelations($coge_estado, $where_estado);
 
-    // Obtener la lista de clientes, usuarios y estados para los filtros
-    $data['clientes'] = $clienteModel->findAll();
-    $data['usuarios'] = $usuarioModel->findAll();
-    $estadoModel = new EstadoModel($db);  // Añadir la carga de estados
-    $data['estados'] = $estadoModel->findAll();
+		// Obtener la lista de clientes, usuarios y estados para los filtros
+		$data['clientes'] = $clienteModel->findAll();
+		$data['usuarios'] = $usuarioModel->findAll();
+		$estadoModel = new EstadoModel($db);  // Añadir la carga de estados
+		$data['estados'] = $estadoModel->findAll();
 
-    // Verificar el nivel de acceso para permitir la eliminación
-    $data['allow_delete'] = ($nivel_acceso == 9);
+		// Verificar el nivel de acceso para permitir la eliminación
+		$data['allow_delete'] = ($nivel_acceso == 9);
 
-    // Cargar la vista pasando los datos
-    echo view('mostrarPedido', $data);
-}
-
+		// Cargar la vista pasando los datos
+		echo view('mostrarPedido', $data);
+	}
 	public function add()
 	{
 		$data = datos_user();  // Obtener los datos de la sesión del usuario

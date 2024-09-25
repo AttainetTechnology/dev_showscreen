@@ -52,4 +52,8 @@ class Pedidos_model extends Model
             ->where('pedidos.id_pedido', $id_pedido)
             ->first();
     }
+    public function countPedidos($coge_estado, $where_estado)
+    {
+        return $this->where($coge_estado, $where_estado)->countAllResults();
+    }
 }
