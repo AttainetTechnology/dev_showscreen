@@ -38,34 +38,88 @@ class Pedidos extends BaseControllerGC
 	//CREAMOS LA PAGINA DE PEDIDOs
 	
 	public function todos($coge_estado, $where_estado)
-{
-    helper('controlacceso');
-    $session = session();
-    $data = datos_user();
-    $db = db_connect($data['new_db']);
-    $session_data = $session->get('logged_in');
-    $nivel_acceso = $session_data['nivel'];
+	{
+		helper('controlacceso');
+		$session = session();
+		$data = datos_user();
+		$db = db_connect($data['new_db']);
+		$session_data = $session->get('logged_in');
+		$nivel_acceso = $session_data['nivel'];
+	
+		// Cargar el modelo de pedidos, clientes y usuarios
+		$pedidoModel = new Pedidos_model($db);
+		$clienteModel = new ClienteModel($db);
+		$usuarioModel = new Usuarios2_Model($db);
+	
+		// Obtener los pedidos filtrados según el estado
+		$data['pedidos'] = []; // No cargar pedidos aquí, solo se cargan mediante AJAX
 
-    // Cargar el modelo de pedidos, clientes y usuarios
-    $pedidoModel = new Pedidos_model($db);
-    $clienteModel = new ClienteModel($db);
-    $usuarioModel = new Usuarios2_Model($db);
-
-    // Obtener todos los pedidos
-    $data['pedidos'] = $pedidoModel->getPedidoWithRelations($coge_estado, $where_estado);
-
-    // Obtener la lista de clientes y usuarios para los filtros
-    $data['clientes'] = $clienteModel->findAll();
-    $data['usuarios'] = $usuarioModel->findAll();
-
-    // Verificar el nivel de acceso para permitir la eliminación
-    $data['allow_delete'] = ($nivel_acceso == 9);
-
-    // Cargar la vista pasando los datos
-    echo view('mostrarPedido', $data);
-}
-
-
+	
+		// Obtener la lista de clientes y usuarios para los filtros
+		$data['clientes'] = $clienteModel->findAll();
+		$data['usuarios'] = $usuarioModel->findAll();
+	
+		// Verificar el nivel de acceso para permitir la eliminación
+		$data['allow_delete'] = ($nivel_acceso == 9);
+	
+		// Cargar la vista pasando los datos
+		echo view('mostrarPedido', $data);
+	}	
+	public function getPedidosAjax()
+	{
+		helper('controlacceso');
+		$data = datos_user();
+		$db = db_connect($data['new_db']);
+		$pedidoModel = new Pedidos_model($db);
+		// Obtener los parámetros de paginación enviados por DataTables
+		$start = $this->request->getPost('start');
+		$length = $this->request->getPost('length');
+		$searchValue = $this->request->getPost('search')['value'];
+		$orderColumn = $this->request->getPost('order')[0]['column'];
+		$orderDir = $this->request->getPost('order')[0]['dir'];
+		// Definir las columnas para el ordenamiento
+		$columns = [
+			0 => 'id_pedido',
+			1 => 'fecha_entrada',
+			2 => 'fecha_entrega',
+			3 => 'nombre_cliente',
+			4 => 'referencia',
+			5 => 'estado',
+			6 => 'nombre_usuario',
+			7 => 'total_pedido'
+		];
+		// Obtener los pedidos paginados y filtrados
+		$pedidos = $pedidoModel->getFilteredPedidos($start, $length, $searchValue, $columns[$orderColumn], $orderDir);
+		// Contar el total de pedidos filtrados
+		$totalFiltered = $pedidoModel->countFilteredPedidos($searchValue);
+		// Contar el total de pedidos sin filtrar
+		$totalPedidos = $pedidoModel->countAllPedidos();
+		// Formatear la respuesta para DataTables
+		$data = [];
+		foreach ($pedidos as $pedido) {
+			$data[] = [
+				$pedido->id_pedido,
+				date('d-m-Y', strtotime($pedido->fecha_entrada)),
+				date('d-m-Y', strtotime($pedido->fecha_entrega)),
+				$pedido->nombre_cliente,
+				$pedido->referencia,
+				$pedido->estado, // Puedes aplicar el mapeo de estado aquí
+				$pedido->nombre_usuario,
+				$pedido->total_pedido . '€',
+				'<a href="' . base_url('pedidos/print/' . $pedido->id_pedido) . '" class="btn btn-info" target="_blank">Imprimir</a>
+				 <a href="' . base_url('pedidos/edit/' . $pedido->id_pedido) . '" class="btn btn-warning">Editar</a>
+				 <a href="' . base_url('pedidos/delete/' . $pedido->id_pedido) . '" class="btn btn-danger" onclick="return confirm(\'¿Estás seguro de que deseas eliminar este pedido?\');">Eliminar</a>'
+			];
+		}
+	
+		// Devolver la respuesta en formato JSON
+		return $this->response->setJSON([
+			"draw" => intval($this->request->getPost('draw')),
+			"recordsTotal" => $totalPedidos,
+			"recordsFiltered" => $totalFiltered,
+			"data" => $data
+		]);
+	}
 	public function add()
 	{
 		$data = datos_user();  // Obtener los datos de la sesión del usuario

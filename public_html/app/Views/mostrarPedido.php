@@ -6,7 +6,6 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <h2>Pedidos</h2>
-
 <div class="d-flex justify-content-between mb-3">
     <a href="#" id="openModal" class="btn btn-primary">Añadir Pedido</a>
 
@@ -38,7 +37,7 @@ $estadoMap = [
     "6" => "Anulado"
 ];
 ?>
-<table id="pedidoTable" class="table table-striped table-pedidos" style="display: none;">
+<table id="pedidoTable" class="table table-striped table-pedidos">
     <thead>
         <tr>
             <th>ID Pedido</th>
@@ -146,20 +145,23 @@ $estadoMap = [
     </tbody>
 </table>
 <script>
-  $(document).ready(function() {
-    $('#pedidoTable').DataTable({
-        "paging": true,             // Habilitar paginación
-        "lengthChange": true,       // Permitir cambiar el número de registros por página
-        "searching": true,          // Habilitar barra de búsqueda
-        "ordering": true,           // Habilitar ordenamiento de columnas
-        "info": true,               // Mostrar información sobre el número de registros
-        "autoWidth": false,         // Ajustar el ancho automáticamente
-        "pageLength": 25,           // Número de registros por página
-        "initComplete": function(settings, json) {
-            $('#pedidoTable').fadeIn();  // Mostrar la tabla después de la inicialización
-        }
+    $(document).ready(function() {
+        $('#pedidoTable').DataTable({
+            "processing": true, // Muestra un indicador de carga
+            "serverSide": true, // Activar paginación del lado del servidor
+            "ajax": {
+                "url": "<?= base_url('pedidos/getPedidosAjax') ?>", // Endpoint que devolverá los datos paginados
+                "type": "POST"
+            },
+            "paging": true, // Habilitar la paginación
+            "lengthChange": true, // Permitir cambiar el número de registros por página
+            "searching": true, // Habilitar barra de búsqueda
+            "ordering": true, // Habilitar ordenamiento de columnas
+            "info": true, // Mostrar información sobre el número de registros
+            "autoWidth": false, // Ajustar el ancho automáticamente
+            "pageLength": 10, // Número de registros por página
+        });
     });
-});
 
     $(document).ready(function() {
         // Función para abrir el modal y cargar el contenido vía AJAX
