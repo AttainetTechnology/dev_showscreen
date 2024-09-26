@@ -9,6 +9,7 @@ use \Gumlet\ImageResize;
 
 class Productos_necesidad extends BaseControllerGC
 {
+
     public function index()
     {
         $crud = $this->_getClientDatabase();
@@ -16,7 +17,7 @@ class Productos_necesidad extends BaseControllerGC
         $crud->setTable('productos_necesidad');
         // Fields
         $crud->addFields(['nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
-        $crud->editFields(['para_boton', 'nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
+        $crud->editFields(['para_boton', 'nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto', 'id_producto_venta']);
         $crud->columns(['nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
         $crud->setRelation('id_familia', 'familia_proveedor', 'nombre');
         // Display As
@@ -25,17 +26,23 @@ class Productos_necesidad extends BaseControllerGC
         $crud->displayAs('imagen', 'Imagen');
         $crud->displayAs('unidad', 'Unidad');
         $crud->displayAs('estado_producto', 'Estado');
+        $crud->displayAs('id_producto_venta', 'Producto que vendemos');
         $crud->setLangString('modal_save', 'Guardar Producto');
+
         // ACCIONES
         $crud->setActionButton('Precio', 'fa fa-euro-sign', function ($row) {
             $link = base_url('comparadorproductos/' . $row->id_producto);
             return $link;
         }, false);
 
-        // Personalizar el campo id_producto para incluir el botón
         $crud->callbackEditField('para_boton', function ($fieldValue, $primaryKeyValue, $rowData) {
             $button = "<a href='" . base_url("productos_necesidad/verProductos/{$primaryKeyValue}") . "' class='btn btn-warning btn-sm botonProductos' data-toggle='modal' data-target='#productoModal'><i class='fa fa-box fa-fw'></i> ¿Vendemos este producto?</a>";
             return $button . "<input type='hidden' name='id_producto' value='{$fieldValue}'>";
+        });
+
+        $crud->callbackEditField('id_producto_venta', function ($fieldValue, $primaryKeyValue, $rowData) {
+            $nombre_producto_venta = $this->obtenerNombreProductoVenta($primaryKeyValue);
+            return "<div>{$nombre_producto_venta}</div>";
         });
 
         // Define paths and upload settings for images
@@ -110,7 +117,6 @@ class Productos_necesidad extends BaseControllerGC
         $output = $crud->render();
         return $this->_GC_output("layouts/main", $output);
     }
-
     public function getProductos()
     {
         $data = usuario_sesion();
@@ -178,5 +184,33 @@ class Productos_necesidad extends BaseControllerGC
 
         // Devolver una respuesta JSON
         return $this->response->setJSON(['success' => true]);
+    }
+
+    private function obtenerNombreProductoVenta($id_producto_necesidad)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        // Obtener el id_producto_venta asociado
+        $builder = $db->table('productos_necesidad');
+        $builder->select('id_producto_venta');
+        $builder->where('id_producto', $id_producto_necesidad);
+        $query = $builder->get();
+
+        if ($query->getNumRows() > 0) {
+            $id_producto_venta = $query->getRow()->id_producto_venta;
+
+            if ($id_producto_venta) {
+                // Obtener el nombre del producto de la tabla productos
+                $builder_productos = $db->table('productos');
+                $builder_productos->select('nombre_producto');
+                $builder_productos->where('id_producto', $id_producto_venta);
+                $query_productos = $builder_productos->get();
+
+                if ($query_productos->getNumRows() > 0) {
+                    return $query_productos->getRow()->nombre_producto;
+                }
+            }
+        }
+        return 'No hay producto de venta seleccionado';
     }
 }

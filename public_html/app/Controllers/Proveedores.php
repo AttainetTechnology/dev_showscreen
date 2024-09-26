@@ -134,6 +134,7 @@ class Proveedores extends BaseControllerGC
 
         return redirect()->back()->with('message', 'Producto eliminado con éxito.');
     }
+
     public function actualizarProducto()
     {
         $data = usuario_sesion();
@@ -148,14 +149,17 @@ class Proveedores extends BaseControllerGC
         if (empty($precio) || empty($refProducto)) {
             return $this->response->setJSON(['success' => false, 'message' => 'Los campos de precio y referencia son obligatorios.']);
         }
+
         // Actualizar el producto
         $model->where('id_proveedor', $idProveedor)
             ->where('id_producto_necesidad', $idProductoNecesidad)
+            ->where('ref_producto', $refProducto)
             ->set([
                 'ref_producto' => $refProducto,
                 'precio' => $precio
             ])
             ->update();
+
         // Log de actualización de producto
         $log = "Producto actualizado para el proveedor ID: " . $idProveedor;
         $seccion = "Productos de proveedor";
