@@ -109,11 +109,11 @@ tr:has(.ruta0) {
 }
 
 tr:has(.ruta1) {
-	background-color: var(--amarilloclaro);
+	background-color:  #ffdbb6 !Important;
 }
 
 tr:has(.ruta2) {
-	background-color: var(--verdeclaro);
+	background-color:#dff0d8 !Important;
 }
 
 .estado,
@@ -140,9 +140,8 @@ tr:has(.estado2) {
 }
 
 tr:has(.estado3) {
-	background-color: #d9edf7 !Important;
+	background-color: #fcebfa !Important;
 }
-
 tr:has(.estado4) {
 	background-color: #dff0d8 !Important;
 }
@@ -163,7 +162,8 @@ tr:has(.estado5) a {
 }
 
 tr:has(.estado6) {
-	background-color: var(--rojo) !Important;
+	
+	background-color: #ff6c6ccc !Important;
 	color: #ffffff !Important;
 }
 
