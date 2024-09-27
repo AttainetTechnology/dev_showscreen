@@ -34,16 +34,17 @@ class Pedidos_model extends Model
 
         return $query->getResult();
     }
-    public function getPedidoWithRelations($coge_estado, $where_estado)
-    {
-        return $this->select('pedidos.*, clientes.nombre_cliente, users.nombre_usuario')
-            ->join('clientes', 'clientes.id_cliente = pedidos.id_cliente', 'left')
-            ->join('users', 'users.id = pedidos.id_usuario', 'left')
-            ->where($coge_estado . $where_estado)
-            ->orderBy('pedidos.fecha_entrada', 'desc')
-            ->orderBy('pedidos.id_pedido', 'desc')
-            ->findAll();
-    }
+public function getPedidoWithRelations($coge_estado, $where_estado)
+{
+    return $this->select('pedidos.*, clientes.nombre_cliente, users.nombre_usuario, users.apellidos_usuario')
+        ->join('clientes', 'clientes.id_cliente = pedidos.id_cliente', 'left')
+        ->join('users', 'users.id = pedidos.id_usuario', 'left')
+        ->where($coge_estado . $where_estado)
+        ->orderBy('pedidos.fecha_entrada', 'desc')
+        ->orderBy('pedidos.id_pedido', 'desc')
+        ->findAll();
+}
+
     public function findPedidoWithUser($id_pedido)
     {
         return $this->select('pedidos.*, clientes.nombre_cliente, users.nombre_usuario, users.apellidos_usuario')

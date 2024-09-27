@@ -56,7 +56,7 @@ class Pedidos extends BaseControllerGC
 
 		// Obtener la lista de clientes, usuarios y estados para los filtros
 		$data['clientes'] = $clienteModel->findAll();
-		$data['usuarios'] = $usuarioModel->findAll();
+		$data['users'] = $usuarioModel->findAll();
 		$estadoModel = new EstadoModel($db);  // Añadir la carga de estados
 		$data['estados'] = $estadoModel->findAll();
 
@@ -190,6 +190,7 @@ class Pedidos extends BaseControllerGC
 		$clienteModel = new ClienteModel($db);
 		$estadoModel = new EstadoModel($db);
 		$productosModel = new Productos_model($db);
+		$usuarioModel = new Usuarios2_Model($db);
 		// Obtener el pedido actual a editar
 		$pedido = $pedidoModel->findPedidoWithUser($id_pedido);
 		if (!$pedido) {
@@ -202,11 +203,10 @@ class Pedidos extends BaseControllerGC
 		$builder->where('linea_pedidos.id_pedido', $id_pedido);
 		$query = $builder->get();
 		$lineas_pedido = $query->getResultArray();
-		// Obtener la lista de clientes y estados
-		$clientes = $clienteModel->findAll();
-		$estados = $estadoModel->findAll();
+
 		// Pasar los datos a la vista
 		$data['productos'] = $productosModel->findAll();
+		$data['users'] = $usuarioModel->findAll();
 		$data['clientes'] = $clienteModel->findAll();
 		$data['estados'] = array_filter($estadoModel->findAll(), function ($estado) {
 			return $estado['id_estado'] != 3; // Filtra el estado con id 3

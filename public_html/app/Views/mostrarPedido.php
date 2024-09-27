@@ -83,7 +83,7 @@ $estadoMap = [
             },
             {
                 headerName: "Usuario",
-                field: "usuario",
+                field: "nombre_usuario",
                 filter: 'agTextColumnFilter'
             }, 
             {
@@ -100,7 +100,8 @@ $estadoMap = [
                     var printBtn = `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" class="btn btn-info" target="_blank">Imprimir</a>`;
                     return `${editBtn} ${deleteBtn} ${printBtn}`;
                 },
-                cellClass: 'acciones-col'
+                cellClass: 'acciones-col',
+                filter: false 
             }
         ];
         // Datos de ejemplo (cargar dinámicamente desde el backend)
@@ -112,6 +113,7 @@ $estadoMap = [
                     cliente: "<?= $pedido->nombre_cliente ?>",
                     referencia: "<?= $pedido->referencia ?>",
                     estado: "<?= $estadoMap[$pedido->estado] ?>", 
+                    nombre_usuario: "<?= $pedido->nombre_usuario ?>",
                     total: "<?= $pedido->total_pedido ?>€"
                 },
             <?php endforeach; ?>
@@ -162,6 +164,25 @@ $estadoMap = [
             abrirModal();
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Detectar si el parámetro "modal=add" está en la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const showModal = urlParams.get('modal');
+
+        if (showModal === 'add') {
+            // Si el parámetro está presente, abre el modal
+            $('#addPedidoModal').modal('show');
+        }
+
+        // Aquí está el código original para abrir el modal con el botón
+        $('#openModal').click(function(e) {
+            e.preventDefault();
+            $('#addPedidoModal').modal('show');
+        });
+    });
+
+
 </script>
 
 <?= $this->endSection() ?>
