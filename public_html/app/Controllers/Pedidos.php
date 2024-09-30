@@ -73,18 +73,15 @@ class Pedidos extends BaseControllerGC
 
 		$clienteModel = new ClienteModel($db);
 		$data['clientes'] = $clienteModel->findAll();
-
 		// Obtener el ID del usuario autenticado
 		$id_usuario = $data['id_user'];
-
 		// Consulta para obtener el nombre y apellidos desde la tabla 'users' de la BBDD del cliente
 		$builder = $db->table('users');
 		$builder->select('nombre_usuario, apellidos_usuario');
 		$builder->where('id', $id_usuario);
 		$builder->where('user_activo', '1');
 		$query = $builder->get();
-		$usuario = $query->getRow();  // Obtener el primer resultado
-
+		$usuario = $query->getRow();  
 		// Verificar si se encontró el usuario
 		if ($usuario) {
 			$data['usuario_sesion'] = [
@@ -93,18 +90,18 @@ class Pedidos extends BaseControllerGC
 				'apellidos_usuario' => $usuario->apellidos_usuario
 			];
 		} else {
-			// Manejar el caso en que no se encuentre el usuario
 			$data['usuario_sesion'] = [
 				'id_user' => $id_usuario,
 				'nombre_usuario' => 'Usuario desconocido',
 				'apellidos_usuario' => ''
 			];
 		}
-
 		if ($this->request->isAJAX()) {
-			return view('add_pedido', $data);  // Retorna la vista del modal
+			// Retornar solo la vista del formulario si es una petición AJAX (al abrir el modal)
+			return view('add_pedido', $data);
 		} else {
-			return redirect()->to(base_url('pedidos/enmarcha?modal=add'));
+			// Si no es una petición AJAX, redirigir con el parámetro de modal para que se abra automáticamente
+			return redirect()->to(base_url('pedidos?modal=add'));
 		}
 	}
 	function guarda_usuario()
@@ -179,7 +176,6 @@ class Pedidos extends BaseControllerGC
 			return redirect()->back()->with('error', 'No se pudo guardar el pedido');
 		}
 	}
-
 	public function edit($id_pedido)
 	{
 		helper('controlacceso');

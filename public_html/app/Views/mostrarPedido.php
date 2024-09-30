@@ -55,27 +55,27 @@ $estadoMap = [
                 headerName: "ID Pedido",
                 field: "id_pedido",
                 filter: 'agTextColumnFilter'
-            }, 
+            },
             {
                 headerName: "Fecha Entrada",
                 field: "fecha_entrada",
                 filter: 'agDateColumnFilter'
-            }, 
+            },
             {
                 headerName: "Fecha Entrega",
                 field: "fecha_entrega",
                 filter: 'agDateColumnFilter'
-            }, 
+            },
             {
                 headerName: "Cliente",
                 field: "cliente",
                 filter: 'agTextColumnFilter'
-            }, 
+            },
             {
                 headerName: "Referencia",
                 field: "referencia",
                 filter: 'agTextColumnFilter'
-            }, 
+            },
             {
                 headerName: "Estado",
                 field: "estado",
@@ -85,12 +85,12 @@ $estadoMap = [
                 headerName: "Usuario",
                 field: "nombre_usuario",
                 filter: 'agTextColumnFilter'
-            }, 
+            },
             {
                 headerName: "Total",
                 field: "total",
                 filter: 'agTextColumnFilter'
-            }, 
+            },
             {
                 headerName: "Acciones",
                 field: "acciones",
@@ -101,7 +101,7 @@ $estadoMap = [
                     return `${editBtn} ${deleteBtn} ${printBtn}`;
                 },
                 cellClass: 'acciones-col',
-                filter: false 
+                filter: false
             }
         ];
         // Datos de ejemplo (cargar dinámicamente desde el backend)
@@ -112,7 +112,7 @@ $estadoMap = [
                     fecha_entrega: "<?= date('d-m-Y', strtotime($pedido->fecha_entrega)) ?>",
                     cliente: "<?= $pedido->nombre_cliente ?>",
                     referencia: "<?= $pedido->referencia ?>",
-                    estado: "<?= $estadoMap[$pedido->estado] ?>", 
+                    estado: "<?= $estadoMap[$pedido->estado] ?>",
                     nombre_usuario: "<?= $pedido->nombre_usuario ?>",
                     total: "<?= $pedido->total_pedido ?>€"
                 },
@@ -126,8 +126,8 @@ $estadoMap = [
             paginationPageSize: 10,
             defaultColDef: {
                 sortable: true,
-                filter: true, 
-                floatingFilter: true 
+                filter: true,
+                floatingFilter: true
             },
             domLayout: 'autoHeight',
             onGridReady: function() {
@@ -141,11 +141,12 @@ $estadoMap = [
         // Botón para eliminar filtros
         document.getElementById('clear-filters').addEventListener('click', function() {
             gridOptions.api.setFilterModel(null);
-            gridOptions.api.onFilterChanged(); 
+            gridOptions.api.onFilterChanged();
         });
     });
     // Función para abrir el modal de añadir pedido
     $(document).ready(function() {
+        // Función para abrir el modal de añadir pedido
         function abrirModal() {
             $.ajax({
                 url: '<?= base_url('pedidos/add') ?>',
@@ -159,6 +160,13 @@ $estadoMap = [
                 }
             });
         }
+        // Detectar si el parámetro "modal=add" está en la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const showModal = urlParams.get('modal');
+        if (showModal === 'add') {
+            abrirModal();
+        }
+        // También abrir el modal cuando se haga clic en el botón "Añadir Pedido"
         $('#openModal').click(function(e) {
             e.preventDefault();
             abrirModal();
@@ -181,8 +189,6 @@ $estadoMap = [
             $('#addPedidoModal').modal('show');
         });
     });
-
-
 </script>
 
 <?= $this->endSection() ?>
