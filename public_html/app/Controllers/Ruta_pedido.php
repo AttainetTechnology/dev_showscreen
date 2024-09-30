@@ -134,42 +134,50 @@ class Ruta_pedido extends BaseControllerGC
         return $post_array;
     }
 
-    function transportistas()
-    {
-        // Crea una nueva instancia del modelo Usuarios2_Model
-        $datos = new \App\Models\Usuarios2_Model();
-        $data = usuario_sesion();
-        $id_empresa = $data['id_empresa'];
+function transportistas()
+{
+    // Crea una nueva instancia del modelo Usuarios2_Model
+    $datos = new \App\Models\Usuarios2_Model();
+    $data = usuario_sesion();
+    $id_empresa = $data['id_empresa'];
 
-        // Define los criterios para la consulta a la base de datos
-        $array = ['nivel_acceso' => '1', 'id_empresa' => $id_empresa];
-        $usuarios = $datos->where($array)->findAll();
-        $user_ids = array();
-        foreach ($usuarios as $usuario) {
-            $user_ids[] = $usuario['id'];
-        }
+    // Define los criterios para la consulta a la base de datos
+    $array = ['nivel_acceso' => '1', 'id_empresa' => $id_empresa];
+    $usuarios = $datos->where($array)->findAll();
+    $user_ids = array();
 
-        // Conéctate a la base de datos del cliente
-        $db_cliente = db_connect($data['new_db']);
-        $builder = $db_cliente->table('users');
-        $builder->select('id, nombre_usuario, apellidos_usuario');
-        $builder->whereIn('id', $user_ids);
-        $builder->where('user_activo', '1');
-        $query = $builder->get();
-
-        $transportistas = array();
-        if ($query && $query->getNumRows() > 0) {
-            foreach ($query->getResult() as $row) {
-                $transportistas[$row->id] = $row->nombre_usuario . ' ' . $row->apellidos_usuario;
-            }
-        } else {
-            if ($db_cliente->error()['code'] !== 0) {
-                log_message('error', 'Database error: ' . json_encode($db_cliente->error()));
-            } else {
-                log_message('error', 'No rows found or query returned false.');
-            }
-        }
-
-        return $transportistas;
+    // Almacena los IDs de los usuarios en el array
+    foreach ($usuarios as $usuario) {
+        $user_ids[] = $usuario['id'];
     }
+
+    // Verificar si hay IDs antes de hacer la consulta
+    if (empty($user_ids)) {
+        // Si no hay transportistas, devolver un array vacío
+        log_message('info', 'No se encontraron transportistas para la empresa con ID: ' . $id_empresa);
+        return [];
+    }
+
+    // Conéctate a la base de datos del cliente
+    $db_cliente = db_connect($data['new_db']);
+    $builder = $db_cliente->table('users');
+    $builder->select('id, nombre_usuario, apellidos_usuario');
+    $builder->whereIn('id', $user_ids); // Ejecutar solo si hay IDs
+    $builder->where('user_activo', '1');
+    $query = $builder->get();
+
+    $transportistas = array();
+    
+    // Verificar si la consulta fue exitosa y si hay resultados
+    if ($query && $query->getNumRows() > 0) {
+        foreach ($query->getResult() as $row) {
+            $transportistas[$row->id] = $row->nombre_usuario . ' ' . $row->apellidos_usuario;
+        }
+    } else {
+        log_message('info', 'No se encontraron transportistas activos o la consulta no devolvió resultados.');
+    }
+
+    return $transportistas;
+}
+
 }
