@@ -1,0 +1,111 @@
+.ag-icon-filter {
+    display: none !important;
+}
+
+.acciones-col {
+    width: 240px !important;
+}
+
+.btnEliminarfiltros:hover {
+    background-color: #C7C8CC;
+    color: #F5F5F7;
+}
+
+.btnEliminarfiltros {
+    background-color: #B7B7B7;
+    color: #F5F5F7 !important;
+    height: 30px;
+}
+
+.btnAddPedido {
+    background-color: #e4eff7;
+    color: #1d9dd5;
+    margin-top: 10px;
+}
+
+.btnAddPedido:hover {
+    background-color: #337ab7;
+    color: #e4eff7 !important;
+}
+
+.titlepedidos {
+    margin-top: 50px;
+}
+
+.btnEditar {
+    background-color: #337ab7;
+    color: white !important;
+}
+
+.btnEditar:hover {
+    background-color: #0B2F9F;
+    color: white;
+}
+
+.btnEliminar {
+    background-color: #d9534f;
+    color: white !important;
+}
+
+.btnEliminar:hover {
+    background-color: #A0153E;
+    color: white !important;
+}
+
+.btnImprimir {
+    background-color: #e4eff7;
+    color: 1d9dd5 !important;
+}
+
+.btnImprimir:hover {
+    background-color: #337ab7;
+    color: #e4eff7 !important;
+}
+
+
+.ag-header-cell-text {
+    font-size: 20px;
+
+}
+
+.ag-header-cell {
+    border-right: 1px solid #ddd;
+    padding: 10px;
+    border: none;
+}
+
+.ag-floating-filter-input {
+    border-radius: 4px;
+    width: 100%;
+}
+
+.ag-icon {
+    color: #1d9dd5;
+}
+
+input[class^=ag-] {
+    margin: 5px;
+    background-color: var(--ag-background-color);
+    height: 35px !important;
+}
+
+.ag-theme-alpine .ag-cell {
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+.ag-theme-alpine .ag-cell.acciones-col {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+#pedidoTable {
+    margin-right: 20px;
+    padding-left: 10px;
+}
+
+.ag-body-viewport {
+    padding-right: 20px;
+    padding-left: 10px;
+}
