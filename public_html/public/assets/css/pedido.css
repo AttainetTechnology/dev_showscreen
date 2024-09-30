@@ -7,20 +7,26 @@
 }
 
 .btnEliminarfiltros:hover {
-    background-color: #C7C8CC;
-    color: #F5F5F7;
+    background-color: #C7C8CC !important;
+    color: #F5F5F7 !important;
 }
 
 .btnEliminarfiltros {
-    background-color: #B7B7B7;
+    background-color: #B7B7B7 !important;
     color: #F5F5F7 !important;
-    height: 30px;
+    height: 35px;
+    font-size: 16px !important;
 }
 
 .btnAddPedido {
     background-color: #e4eff7;
     color: #1d9dd5;
     margin-top: 10px;
+    font-size: 16px !important;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btnAddPedido:hover {
@@ -109,3 +115,56 @@ input[class^=ag-] {
     padding-right: 20px;
     padding-left: 10px;
 }
+
+/* EDIT PEDIDO */
+
+form label {
+    font-size: 1.2rem; 
+}
+
+form .form-control {
+    height: 40px; 
+    font-size: 1rem; 
+
+}
+form .form-control {
+    font-size: 16px !important ;
+}
+
+form select.form-control {
+    font-size: 17px !important;
+}
+
+.btnGuardar{
+    height: 35px;
+    font-size: 16px !important;
+}
+
+
+/* LINEA DE PEDIDO */
+
+.btnAddLinea {
+    background-color: #e4eff7 !important;
+    color: #1d9dd5 !important;
+    margin-top: 10px;
+    font-size: 16px !important;
+    height: 35px;
+}
+
+.btnAddLinea:hover {
+    background-color: #337ab7 !important;
+    color: #e4eff7 !important;
+}
+
+.btnrecarga {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    height: 35px;
+    font-size: 16px !important;
+}
+
+.btnrecarga:hover {
+    background-color: #ffc107a8 !important;
+    color: #e4eff7 !important;
+}
+

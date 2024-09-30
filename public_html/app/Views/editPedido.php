@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
 <div class="container mt-5">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -85,7 +86,7 @@
         </div>
         <br>
         <div class="button-container" style=" text-align: right;">
-            <button type="submit" class="btn btn-primary">Guardar Pedido</button>
+            <button type="submit" class="btn btn-primary btnGuardar">Guardar Pedido</button>
         </div>
         <br>
     </form>
@@ -93,14 +94,14 @@
     <div class="form-group">
         <h3>Líneas del Pedido</h3>
         <div class="d-flex justify-content-between botoneseditPedido">
-            <button type="button" class="btn btn-primary" id="openAddLineaPedidoModal" data-id-pedido="<?= $pedido->id_pedido ?>">
-                Añadir Línea de Pedido
+            <button type="button" class="btn btnAddLinea" id="openAddLineaPedidoModal" data-id-pedido="<?= $pedido->id_pedido ?>">
+               + Añadir Línea de Pedido
             </button>
             <div>
-                <button id="clear-filters" class="btn btn-secondary">
+                <button id="clear-filters" class="btn btnEliminarfiltros">
                     Eliminar Filtros
                 </button>
-                <button id="reload-page" class="btn btn-secondary ml-2">
+                <button id="reload-page" class="btn btnrecarga ml-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
                         <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
@@ -143,7 +144,7 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Acciones</th> <!-- Mover la columna de Acciones al principio -->
+                    <th>Acciones</th>
                     <th>ID Línea</th>
                     <th>Cantidad</th>
                     <th>Base</th>
@@ -219,7 +220,7 @@
                 <?php if (!empty($lineas_pedido)): ?>
                     <?php foreach ($lineas_pedido as $linea): ?>
                         <tr>
-                            <td> <!-- Columna de Acciones -->
+                            <td style="width:18vh" > <!-- Columna de Acciones -->
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarLineaModal<?= $linea['id_lineapedido'] ?>">
                                     Editar
                                 </button>
