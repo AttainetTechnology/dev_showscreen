@@ -1,10 +1,13 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <div class="container mt-5">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery debe cargarse primero -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Luego carga Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <h2>Editar Pedido</h2>
     <!-- Botones de Acción -->
     <div class="mb-3">
@@ -106,6 +109,7 @@
             </div>
         </div>
         <!-- Modal -->
+        <!-- Modal para añadir una nueva línea de pedido -->
         <div class="modal fade" id="addLineaPedidoModal" tabindex="-1" aria-labelledby="addLineaPedidoLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -114,7 +118,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modalBodyAddLineaPedido">
-                        <!-- El contenido se cargará aquí mediante AJAX -->
+                        <!-- El contenido del formulario se cargará aquí mediante AJAX -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -122,6 +126,7 @@
                 </div>
             </div>
         </div>
+
         <br> <br>
         <?php
         // Array de estados
@@ -249,60 +254,43 @@
 
     </div>
     <script>
-        // Acción para recargar la página al hacer clic en el botón de recargar
-        document.getElementById('reload-page').addEventListener('click', function() {
-            location.reload();
-        });
-        $(document).ready(function() {
-            // Cargar el contenido del modal de forma dinámica
-            $('#openAddLineaPedidoModal').click(function() {
-                var id_pedido = $(this).data('id-pedido');
-                $.ajax({
-                    url: '<?= base_url('pedidos/mostrarFormularioAddLineaPedido') ?>/' + id_pedido,
-                    type: 'GET',
-                    success: function(response) {
-                        $('#modalBodyAddLineaPedido').html(response);
-                        $('#addLineaPedidoModal').modal('show'); // Mostrar el modal
-                    },
-                    error: function() {
-                        alert('No se pudo cargar el formulario.');
-                    }
-                });
-            });
-        });
-    </script>
-    <script>
         $(document).ready(function() {
             // Mapeo de los filtros
             const filters = {
-                'filter-id': 0,
-                'filter-cantidad': 1,
-                'filter-base': 2,
-                'filter-producto': 3,
-                'filter-estado': 4,
-                'filter-medida-inicial': 5,
-                'filter-medida-final': 6,
-                'filter-total': 7
+                'filter-id': 1,
+                'filter-cantidad': 2,
+                'filter-base': 3,
+                'filter-producto': 4,
+                'filter-estado': 5,
+                'filter-medida-inicial': 6,
+                'filter-medida-final': 7,
+                'filter-total': 8
             };
+
             // Función para aplicar los filtros a la tabla
             const applyFilters = () => {
                 const rows = document.querySelectorAll('#lineaPedidoTable tr');
                 rows.forEach(row => {
                     let isVisible = true;
+
                     // Iterar sobre cada filtro
                     Object.keys(filters).forEach(filterId => {
                         const columnIndex = filters[filterId];
                         const element = document.getElementById(filterId);
                         const filterValue = element.tagName === 'SELECT' ? element.value.toLowerCase() : element.value.toLowerCase();
-                        const cellValue = row.cells[columnIndex].textContent.toLowerCase();
+                        const cellValue = row.cells[columnIndex]?.textContent.toLowerCase() || '';
 
+                        // Si el filtro tiene valor y no coincide, ocultar la fila
                         if (filterValue && !cellValue.includes(filterValue)) {
                             isVisible = false;
                         }
                     });
+
+                    // Mostrar u ocultar la fila según el resultado de los filtros
                     row.style.display = isVisible ? '' : 'none';
                 });
             };
+
             // Aplicar filtros al cambiar los valores de los inputs o selects
             Object.keys(filters).forEach(filterId => {
                 const element = document.getElementById(filterId);
@@ -310,7 +298,8 @@
 
                 element.addEventListener(eventType, applyFilters);
             });
-            // Limpiar filtros
+
+            // Limpiar filtros individuales
             $('.clear-filter').on('click', function() {
                 const filterId = $(this).data('filter');
                 const element = document.getElementById(filterId);
@@ -323,6 +312,7 @@
 
                 applyFilters();
             });
+
             // Limpiar todos los filtros
             $('#clear-filters').on('click', function() {
                 Object.keys(filters).forEach(filterId => {
@@ -333,8 +323,45 @@
                         element.value = '';
                     }
                 });
+
                 applyFilters();
             });
         });
+        $(document).ready(function() {
+            // Al hacer clic en el botón para abrir el modal "Añadir Línea de Pedido"
+            $('#openAddLineaPedidoModal').click(function() {
+                var idPedido = $(this).data('id-pedido');
+                // Hacer la solicitud AJAX para cargar el contenido del modal
+                $.ajax({
+                    url: '<?= base_url("pedidos/mostrarFormularioAddLineaPedido") ?>/' + idPedido,
+                    method: 'GET',
+                    success: function(response) {
+                        $('#modalBodyAddLineaPedido').html(response);
+                        $('#addLineaPedidoModal').modal('show');
+                    },
+                    error: function() {
+                        alert('Hubo un error al cargar el formulario. Por favor, intenta de nuevo.');
+                    }
+                });
+            });
+            // Gestión del envío del formulario
+            $(document).on('submit', '#addLineaPedidoForm', function(e) {
+                e.preventDefault(); 
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // alert('Línea de pedido añadida correctamente.');
+                        location.reload(); 
+                    },
+                    error: function() {
+                        alert('No se pudo guardar la línea de pedido.');
+                    }
+                });
+            });
+        });
     </script>
+
     <?= $this->endSection() ?>
