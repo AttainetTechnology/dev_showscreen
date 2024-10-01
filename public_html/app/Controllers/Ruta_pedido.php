@@ -2,182 +2,92 @@
 
 namespace App\Controllers;
 
-class Ruta_pedido extends BaseControllerGC
+use App\Models\Rutas_model; // Modelo para la tabla rutas
+use App\Models\Usuarios2_Model;
+
+class Ruta_pedido extends BaseController
 {
     public $npedido = 0;
     public $idcliente;
 
-    public function index()
-    {
-        //
-    }
-
-    /* Funciones de salida - Vistas */
-    function _output_sencillo($output = null)
-    {
-        echo view('sencillo', (array)$output);
-    }
-
     public function Rutas($pedido, $id_cliente)
     {
+        // Obtener los datos del usuario en sesión
+        $data = usuario_sesion();
+        // Intentar conectar a la base de datos del cliente
+        $db = db_connect($data['new_db']);
+        if (!$db) {
+            log_message('error', 'No se pudo conectar a la base de datos del cliente');
+            return; // Detener si no hay conexión
+        }
+
         $this->npedido = $pedido;
         $this->idcliente = $id_cliente;
-        //Cargo los datos de acceso del usuario
-        //Control de login
-        helper('controlacceso');
-        $nivel = control_login();
-        //Fin Control de Login
-        $crud = $this->_getClientDatabase();
 
-        $crud->setSubject('Ruta', 'Rutas del pedido ' . $pedido);
-        $crud->where('id_pedido=' . $pedido);
-        $crud->columns(array('poblacion', 'lugar', 'recogida_entrega', 'observaciones', 'transportista', 'estado_ruta', 'fecha_ruta'));
-        $crud->addFields(['id_cliente', 'poblacion', 'lugar', 'recogida_entrega', 'observaciones', 'transportista', 'id_pedido', 'fecha_ruta']);
+        // Cargar las rutas del pedido desde el modelo
+        $rutasModel = new Rutas_model($db);
+        try {
+            $rutas = $rutasModel->where('id_pedido', $pedido)->findAll();
+        } catch (\Exception $e) {
+            log_message('error', 'Error al obtener las rutas: ' . $e->getMessage());
+            $rutas = [];
+        }
 
-        $crud->callbackAddField('recogida_entrega', function () {
-            return '<select name="recogida_entrega" class="form-control">
-						<option value="1" selected>Recogida</option>
-						<option value="2">Entrega</option>
-					</select>';
-        });
-
-        // Valor por defecto para 'fecha_ruta' (fecha actual)
-        $crud->callbackAddField('fecha_ruta', function () {
-            $currentDate = date('Y-m-d');
-            return '<input type="date" name="fecha_ruta" value="' . $currentDate . '" class="form-control">';
-        });
-
-        // Obtener el primer transportista de la lista
+        // Obtener lista de transportistas
         $transportistas = $this->transportistas();
-        $primer_transportista_id = array_key_first($transportistas);
 
-        // Valor por defecto para 'transportista'
-        $crud->callbackAddField('transportista', function () use ($primer_transportista_id, $transportistas) {
-            $options = '';
-            foreach ($transportistas as $id => $nombre) {
-                $selected = $id == $primer_transportista_id ? 'selected' : '';
-                $options .= '<option value="' . $id . '" ' . $selected . '>' . $nombre . '</option>';
-            }
-            return '<select name="transportista" class="form-control">' . $options . '</select>';
-        });
-
-        $crud->requiredFields(['transportista', 'poblacion']);
-        $crud->displayAs('id_cliente', 'Cliente');
-        $crud->setTable('rutas');
-        $crud->defaultOrdering('poblacion', 'asc');
-
-        $crud->fieldType('transportista', 'dropdown_search', $this->transportistas());
-        $crud->setRelation('poblacion', 'poblaciones_rutas', 'poblacion');
-        $crud->setRelation('id_cliente', 'clientes', 'nombre_cliente');
-
-        $crud->fieldType('estado_ruta', 'dropdown_search', [
-            '1' => 'No preparado',
-            '0' => 'Pendiente de recoger',
-            '2' => 'Recogido'
+        // Pasar los datos a la vista
+        return view('RutasModalPedido', [
+            'rutas' => $rutas,
+            'id_pedido' => $pedido,
+            'id_cliente' => $id_cliente,
+            'transportistas' => $transportistas,
         ]);
-
-        $crud->fieldType('recogida_entrega', 'dropdown_search', [
-            '1' => 'Recogida',
-            '2' => 'Entrega'
-        ]);
-
-        $crud->fieldType('id_pedido', 'hidden');
-        $crud->fieldType('id_cliente', 'hidden');
-        //$crud->callbackColumn('estado_ruta',array($this,'_cambia_color_lineas'));
-
-        $crud->callbackAddForm(function ($data) {
-            $data['id_pedido'] = $this->npedido;
-            $data['id_cliente'] = $this->idcliente;
-            return $data;
-        });
-
-        $crud->callbackAfterInsert(function ($stateParameters) {
-            $id_pedido = $stateParameters->data['id_pedido'] ?? 'unknown';
-            $this->logAction('Pedidos', 'Añade ruta, ID pedido: ' . $id_pedido, $stateParameters);
-            return $stateParameters;
-        });
-
-        $output = $crud->render();
-        if ($output->isJSONResponse) {
-            header('Content-Type: application/json; charset=utf-8');
-            echo $output->output;
-            exit;
-        }
-
-        $this->_output_sencillo($output);
     }
 
-    public function _saca_fecha_entrada()
+    function transportistas()
     {
-        $entrada = date('d/m/y');
-        return "<input id='field-fecha-entrada' type='text' name='fecha_ruta' value=" . $entrada . " class='datepicker-input form-control hasDatepicker'>";
-    }
-
-    function _cambia_color_lineas($estado_ruta)
-    {
-        $nombre_estado = "";
-        if ($estado_ruta == '1') {
-            $nombre_estado = "1. No preparado";
-        }
-        if ($estado_ruta == '0') {
-            $nombre_estado = "0. Pendiente";
-        }
-        if ($estado_ruta == '2') {
-            $nombre_estado = "2. Entregado / recogido";
-        }
-        return "<div class='ruta" . (($estado_ruta) ?: 'error') . "'>$nombre_estado</div>";
-    }
-
-    function paso_id_pedido($post_array, $pedido)
-    {
-        $post_array['data']['id_pedido'] = $pedido;
-        return $post_array;
-    }
-
-function transportistas()
-{
-    // Crea una nueva instancia del modelo Usuarios2_Model
-    $datos = new \App\Models\Usuarios2_Model();
-    $data = usuario_sesion();
-    $id_empresa = $data['id_empresa'];
-
-    // Define los criterios para la consulta a la base de datos
-    $array = ['nivel_acceso' => '1', 'id_empresa' => $id_empresa];
-    $usuarios = $datos->where($array)->findAll();
-    $user_ids = array();
-
-    // Almacena los IDs de los usuarios en el array
-    foreach ($usuarios as $usuario) {
-        $user_ids[] = $usuario['id'];
-    }
-
-    // Verificar si hay IDs antes de hacer la consulta
-    if (empty($user_ids)) {
-        // Si no hay transportistas, devolver un array vacío
-        log_message('info', 'No se encontraron transportistas para la empresa con ID: ' . $id_empresa);
-        return [];
-    }
-
-    // Conéctate a la base de datos del cliente
-    $db_cliente = db_connect($data['new_db']);
-    $builder = $db_cliente->table('users');
-    $builder->select('id, nombre_usuario, apellidos_usuario');
-    $builder->whereIn('id', $user_ids); // Ejecutar solo si hay IDs
-    $builder->where('user_activo', '1');
-    $query = $builder->get();
-
-    $transportistas = array();
+        // Crea una nueva instancia del modelo Usuarios2_Model
+        $datos = new \App\Models\Usuarios2_Model();
+        $data = usuario_sesion();
+        $id_empresa = $data['id_empresa'];
     
-    // Verificar si la consulta fue exitosa y si hay resultados
-    if ($query && $query->getNumRows() > 0) {
-        foreach ($query->getResult() as $row) {
-            $transportistas[$row->id] = $row->nombre_usuario . ' ' . $row->apellidos_usuario;
+        // Define los criterios para la consulta a la base de datos
+        $array = ['nivel_acceso' => '1', 'id_empresa' => $id_empresa];
+        $usuarios = $datos->where($array)->findAll();
+        $user_ids = array();
+    
+        // Almacena los IDs de los usuarios en el array
+        foreach ($usuarios as $usuario) {
+            $user_ids[] = $usuario['id'];
         }
-    } else {
-        log_message('info', 'No se encontraron transportistas activos o la consulta no devolvió resultados.');
+    
+        // Verificar si hay IDs antes de hacer la consulta
+        if (empty($user_ids)) {
+            // Si no hay transportistas, devolver un array vacío
+            log_message('info', 'No se encontraron transportistas para la empresa con ID: ' . $id_empresa);
+            return [];
+        }
+    
+        // Conéctate a la base de datos del cliente
+        $db_cliente = db_connect($data['new_db']);
+        $builder = $db_cliente->table('users');
+        $builder->select('id, nombre_usuario, apellidos_usuario');
+        $builder->whereIn('id', $user_ids); // Ejecutar solo si hay IDs
+        $builder->where('user_activo', '1');
+        $query = $builder->get();
+    
+        $transportistas = array();
+        
+        // Verificar si la consulta fue exitosa y si hay resultados
+        if ($query && $query->getNumRows() > 0) {
+            foreach ($query->getResult() as $row) {
+                $transportistas[$row->id] = $row->nombre_usuario . ' ' . $row->apellidos_usuario;
+            }
+        } else {
+            log_message('info', 'No se encontraron transportistas activos o la consulta no devolvió resultados.');
+        }
+    
+        return $transportistas;
     }
-
-    return $transportistas;
-}
-
 }
