@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <h2 class="titlepedidos">Pedidos</h2>
 <div class="d-flex justify-content-between mb-3">
@@ -38,14 +39,48 @@ $estadoMap = [
 ];
 ?>
 <div id="pedidoTable" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Definición de columnas con filtros de texto
         var columnDefs = [{
+                headerName: "Acciones",
+                field: "acciones",
+                cellRenderer: function(params) {
+                    var editBtn = `<a href="<?= base_url('pedidos/edit/') ?>${params.data.id_pedido}" class="btn btnEditar">
+                    <span class="material-symbols-outlined icono">edit</span>Editar</a>`;
+                    var printBtn = `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" class="btn btnImprimir" target="_blank">
+                    <span class="material-symbols-outlined icono">print</span> Imprimir</a>`;
+                    var deleteBtn = `<a href="<?= base_url('pedidos/delete/') ?>${params.data.id_pedido}" class="btn btnEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">
+                    <span class="material-symbols-outlined icono"> delete </span>Eliminar</a>`;
+
+                    return `${editBtn} ${printBtn} ${deleteBtn} `;
+                },
+                cellClass: 'acciones-col',
+                minWidth: 250,
+                filter: false
+            },
+            {
                 headerName: "ID Pedido",
                 field: "id_pedido",
+                flex: 1,
+                filter: 'agTextColumnFilter'
+            },
+
+            {
+                headerName: "Cliente",
+                field: "cliente",
+                flex: 2,
+                filter: 'agTextColumnFilter'
+            },
+            {
+                headerName: "Referencia",
+                field: "referencia",
+                flex: 1,
+                filter: 'agTextColumnFilter'
+            },
+            {
+                headerName: "Estado",
+                field: "estado",
                 flex: 1,
                 filter: 'agTextColumnFilter'
             },
@@ -100,24 +135,6 @@ $estadoMap = [
                 }
             },
             {
-                headerName: "Cliente",
-                field: "cliente",
-                flex: 2,
-                filter: 'agTextColumnFilter'
-            },
-            {
-                headerName: "Referencia",
-                field: "referencia",
-                flex: 1,
-                filter: 'agTextColumnFilter'
-            },
-            {
-                headerName: "Estado",
-                field: "estado",
-                flex: 1,
-                filter: 'agTextColumnFilter'
-            },
-            {
                 headerName: "Usuario",
                 field: "nombre_usuario",
                 flex: 1,
@@ -128,18 +145,6 @@ $estadoMap = [
                 field: "total",
                 flex: 1,
                 filter: 'agTextColumnFilter'
-            },
-            {
-                headerName: "Acciones",
-                field: "acciones",
-                cellRenderer: function(params) {
-                    var editBtn = `<a href="<?= base_url('pedidos/edit/') ?>${params.data.id_pedido}" class="btn btnEditar">Editar</a>`;
-                    var deleteBtn = `<a href="<?= base_url('pedidos/delete/') ?>${params.data.id_pedido}" class="btn btnEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>`;
-                    var printBtn = `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" class="btn btnImprimir" target="_blank">Imprimir</a>`;
-                    return `${editBtn} ${deleteBtn} ${printBtn}`;
-                },
-                cellClass: 'acciones-col',
-                filter: false
             }
         ];
 
@@ -218,8 +223,7 @@ $estadoMap = [
             return `
                 <a href="<?= base_url('pedidos/edit/') ?>${id}" class="btn btnEditar">Editar</a>
                 <a href="<?= base_url('pedidos/delete/') ?>${id}" class="btn btnEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>
-                <a href="<?= base_url('pedidos/print/') ?>${id}" class="btn btnImprimir" target="_blank">Imprimir</a>
-            `;
+                <a href="<?= base_url('pedidos/print/') ?>${id}" class="btn btnImprimir" target="_blank">Imprimir</a>`;
         }
     });
 

@@ -92,7 +92,10 @@
     </form>
     <!-- Líneas del Pedido -->
     <div class="form-group">
-        <h3>Líneas del Pedido</h3>
+        <br>
+        <h3 style="margin-left: 5px;">Líneas del Pedido</h3>
+        <hr style="border: 5px solid #FFCC32; margin-top: 10px; margin-bottom: 20px;">
+        <br>
         <div class="d-flex justify-content-between botoneseditPedido">
             <button type="button" class="btn btnAddLinea" id="openAddLineaPedidoModal" data-id-pedido="<?= $pedido->id_pedido ?>">
                + Añadir Línea de Pedido
@@ -221,17 +224,17 @@
                     <?php foreach ($lineas_pedido as $linea): ?>
                         <tr>
                             <td style="width:18vh" > <!-- Columna de Acciones -->
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarLineaModal<?= $linea['id_lineapedido'] ?>">
+                                <button type="button" class="btn btnEditar btn-sm" data-bs-toggle="modal" data-bs-target="#editarLineaModal<?= $linea['id_lineapedido'] ?>">
                                     Editar
                                 </button>
                                 <?= view('editLineaPedido', ['linea' => $linea]) ?>
                                 <!-- Botón Parte -->
-                                <a href="<?= base_url('pedidos/imprimir_parte/' . $linea['id_lineapedido']) ?>" class="btn btn-info btn-sm" target="_blank">
+                                <a href="<?= base_url('pedidos/imprimir_parte/' . $linea['id_lineapedido']) ?>" class="btn btnImprimir btn-sm" target="_blank">
                                     Parte
                                 </a>
 
                                 <!-- Botón Eliminar -->
-                                <a href="<?= base_url('pedidos/deleteLinea/' . $linea['id_lineapedido']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
+                                <a href="<?= base_url('pedidos/deleteLinea/' . $linea['id_lineapedido']) ?>" class="btn btnEliminar btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
                                     Eliminar
                                 </a>
                             </td>
@@ -280,7 +283,6 @@
                         const element = document.getElementById(filterId);
                         const filterValue = element.tagName === 'SELECT' ? element.value.toLowerCase() : element.value.toLowerCase();
                         const cellValue = row.cells[columnIndex]?.textContent.toLowerCase() || '';
-
                         // Si el filtro tiene valor y no coincide, ocultar la fila
                         if (filterValue && !cellValue.includes(filterValue)) {
                             isVisible = false;

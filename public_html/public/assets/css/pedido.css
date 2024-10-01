@@ -39,32 +39,35 @@
 }
 
 .btnEditar {
-    background-color: #337ab7;
+    background-color: #337ab7 !important;
     color: white !important;
+    width: 65px;
 }
 
 .btnEditar:hover {
-    background-color: #0B2F9F;
+    background-color: #0B2F9F !important;
     color: white;
 }
 
 .btnEliminar {
-    background-color: #d9534f;
+    background-color: #d9534f !important;
     color: white !important;
+    width: 72px;
 }
 
 .btnEliminar:hover {
-    background-color: #A0153E;
+    background-color: #0B2F9F !important;
     color: white !important;
 }
 
 .btnImprimir {
-    background-color: #e4eff7;
+    background-color: #e4eff7 !important;
     color: 1d9dd5 !important;
+    width: 78px;
 }
 
 .btnImprimir:hover {
-    background-color: #337ab7;
+    background-color: #0B2F9F !important;
     color: #e4eff7 !important;
 }
 
@@ -168,3 +171,9 @@ form select.form-control {
     color: #e4eff7 !important;
 }
 
+
+.icono {
+    font-size: 16px !important; /* Tamaño del ícono más pequeño */
+    vertical-align: middle; /* Alinea el ícono con el texto */
+    margin-left: -5px;
+}
