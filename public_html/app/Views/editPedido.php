@@ -1,5 +1,9 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
 <div class="container mt-5">
     <!-- Bootstrap CSS -->
@@ -8,6 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Luego carga Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
     <h2>Editar Pedido</h2>
     <!-- Botones de Acción -->
@@ -92,18 +97,28 @@
     </form>
     <!-- Líneas del Pedido -->
     <div class="form-group">
+        <?php
+        $estados_texto = [
+            "0" => "Pendiente de material",
+            "1" => "Falta Material",
+            "2" => "Material recibido",
+            "3" => "En proceso",
+            "4" => "Terminado",
+            "5" => "Entregado",
+            "6" => "Anulado"
+        ];
+        ?>
+
         <br>
         <h3 style="margin-left: 5px;">Líneas del Pedido</h3>
         <hr style="border: 5px solid #FFCC32; margin-top: 10px; margin-bottom: 20px;">
         <br>
         <div class="d-flex justify-content-between botoneseditPedido">
             <button type="button" class="btn btnAddLinea" id="openAddLineaPedidoModal" data-id-pedido="<?= $pedido->id_pedido ?>">
-               + Añadir Línea de Pedido
+                + Añadir Línea de Pedido
             </button>
             <div>
-                <button id="clear-filters" class="btn btnEliminarfiltros">
-                    Eliminar Filtros
-                </button>
+                <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>
                 <button id="reload-page" class="btn btnrecarga ml-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
@@ -112,7 +127,7 @@
                 </button>
             </div>
         </div>
-        <!-- Modal -->
+
         <!-- Modal para añadir una nueva línea de pedido -->
         <div class="modal fade" id="addLineaPedidoModal" tabindex="-1" aria-labelledby="addLineaPedidoLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -124,183 +139,171 @@
                     <div class="modal-body" id="modalBodyAddLineaPedido">
                         <!-- El contenido del formulario se cargará aquí mediante AJAX -->
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <br> <br>
-        <?php
-        // Array de estados
-        $estados_texto = [
-            "0" => "Pendiente de material",
-            "1" => "Falta Material",
-            "2" => "Material recibido",
-            "3" => "En proceso",
-            "4" => "Terminado",
-            "5" => "Entregado",
-            "6" => "Anulado"
-        ];
-        ?>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Acciones</th>
-                    <th>ID Línea</th>
-                    <th>Cantidad</th>
-                    <th>Base</th>
-                    <th>Producto</th>
-                    <th>Estado</th>
-                    <th>Medida Inicial</th>
-                    <th>Medida Final</th>
-                    <th>Total</th>
-                </tr>
-                <tr>
-                    <th></th> <!-- No se necesita filtro para las acciones -->
-                    <th>
-                        <div class="input-group">
-                            <input type="text" id="filter-id" class="form-control">
-                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-id">&times;</button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <input type="text" id="filter-cantidad" class="form-control">
-                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-cantidad">&times;</button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <input type="text" id="filter-base" class="form-control">
-                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-base">&times;</button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <select id="filter-producto" class="form-control">
-                                <option value=""></option>
-                                <?php foreach ($productos as $producto): ?>
-                                    <option value="<?= esc($producto['nombre_producto']) ?>"><?= esc($producto['nombre_producto']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-producto">&times;</button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <select id="filter-estado" class="form-control">
-                                <option value=""></option>
-                                <?php foreach ($estados_texto as $key => $estado): ?>
-                                    <option value="<?= esc($estado) ?>"><?= esc($estado) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-estado">&times;</button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <input type="text" id="filter-medida-inicial" class="form-control">
-                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-medida-inicial">&times;</button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <input type="text" id="filter-medida-final" class="form-control">
-                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-medida-final">&times;</button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <input type="text" id="filter-total" class="form-control">
-                            <button class="btn btn-outline-secondary clear-filter" data-filter="filter-total">&times;</button>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="lineaPedidoTable">
-                <?php if (!empty($lineas_pedido)): ?>
-                    <?php foreach ($lineas_pedido as $linea): ?>
-                        <tr>
-                            <td style="width:18vh" > <!-- Columna de Acciones -->
-                                <button type="button" class="btn btnEditar btn-sm" data-bs-toggle="modal" data-bs-target="#editarLineaModal<?= $linea['id_lineapedido'] ?>">
-                                    Editar
-                                </button>
-                                <?= view('editLineaPedido', ['linea' => $linea]) ?>
-                                <!-- Botón Parte -->
-                                <a href="<?= base_url('pedidos/imprimir_parte/' . $linea['id_lineapedido']) ?>" class="btn btnImprimir btn-sm" target="_blank">
-                                    Parte
-                                </a>
+        <br><br>
 
-                                <!-- Botón Eliminar -->
-                                <a href="<?= base_url('pedidos/deleteLinea/' . $linea['id_lineapedido']) ?>" class="btn btnEliminar btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
-                                    Eliminar
-                                </a>
-                            </td>
-                            <td><?= esc($linea['id_lineapedido']) ?></td>
-                            <td><?= esc($linea['n_piezas']) ?></td>
-                            <td><?= esc($linea['nom_base']) ?></td>
-                            <td><?= esc($linea['nombre_producto']) ?></td>
-                            <td><?= isset($estados_texto[$linea['estado']]) ? esc($estados_texto[$linea['estado']]) : 'Estado desconocido' ?></td>
-                            <td><?= esc($linea['med_inicial']) ?></td>
-                            <td><?= esc($linea['med_final']) ?></td>
-                            <td><?= esc($linea['total_linea']) ?> €</td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="9">No se encontraron líneas de pedido.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+        <div id="lineasPedidoGrid" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Array de estados desde PHP
+    const estadosTexto = <?= json_encode($estados_texto) ?>;
 
+    // Definición de columnas para ag-Grid
+    const columnDefs = [
+        {
+            headerName: 'Acciones',
+            field: 'acciones',
+            cellRenderer: renderActions,
+            cellClass: 'acciones-col',
+            minWidth: 250,
+            filter: false,
+        },
+        {
+            headerName: 'ID Línea',
+            field: 'id_lineapedido',
+            flex: 1,
+            filter: 'agTextColumnFilter',
+            floatingFilter: true,
+        },
+        {
+            headerName: 'Uds.',
+            field: 'n_piezas',
+            flex: 1,
+            filter: 'agTextColumnFilter',
+            floatingFilter: true,
+        },
+        {
+            headerName: 'Base',
+            field: 'nom_base',
+            flex: 1,
+            filter: 'agTextColumnFilter',
+            floatingFilter: true,
+        },
+        {
+            headerName: 'Producto',
+            field: 'nombre_producto',
+            flex: 1,
+            filter: 'agTextColumnFilter',
+            floatingFilter: true,
+        },
+        {
+            headerName: 'Estado',
+            field: 'estado',
+            flex: 1,
+            filter: 'agTextColumnFilter',
+            floatingFilter: true,
+            valueGetter: function(params) {
+                return estadosTexto[params.data.estado] || 'Estado desconocido';
+            },
+            valueFormatter: function(params) {
+                return estadosTexto[params.data.estado] || 'Estado desconocido';
+            }
+        },
+        {
+            headerName: 'Med. Inicial',
+            field: 'med_inicial',
+            flex: 1,
+            minWidth:130,
+            filter: 'agTextColumnFilter',
+            floatingFilter: true,
+        },
+        {
+            headerName: 'Med. Final',
+            field: 'med_final',
+            flex: 1,
+            filter: 'agTextColumnFilter',
+            floatingFilter: true,
+        },
+        {
+            headerName: 'Total',
+            field: 'total_linea',
+            flex: 1,
+            filter: 'agTextColumnFilter',
+            floatingFilter: true,
+            valueFormatter: params => `${params.value} €`,
+        },
+    ];
+
+    // Datos desde PHP
+    const rowData = <?= json_encode($lineas_pedido) ?>;
+
+    // Función para renderizar acciones en cada fila
+    function renderActions(params) {
+        const id = params.data.id_lineapedido;
+        return `
+            <button class="btn btnEditar btn-sm" data-id="${id}" data-bs-toggle="modal" data-bs-target="#editarLineaModal">
+            <span class="material-symbols-outlined icono">edit</span>Editar</button>
+            <a href="<?= base_url('pedidos/imprimir_parte/') ?>${id}" class="btn btnImprimirParte btn-sm" target="_blank">
+               <span class="material-symbols-outlined icono">print</span>Parte</a>
+            <a href="<?= base_url('pedidos/deleteLinea/') ?>${id}" class="btn btnEliminar btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
+             <span class="material-symbols-outlined icono"> delete </span>Eliminar</a>
+        `;
+    }
+
+    // Opciones de la tabla ag-Grid
+    const gridOptions = {
+        columnDefs: columnDefs,
+        rowData: rowData,
+        pagination: true,
+        paginationPageSize: 10,
+        defaultColDef: {
+            sortable: true,
+            filter: true,
+            floatingFilter: true,
+            resizable: true,
+        },
+        domLayout: 'autoHeight',
+        rowHeight: 70,
+        onGridReady: function(params) {
+            // Ajusta el tamaño de las columnas al tamaño del contenedor
+            params.api.sizeColumnsToFit();
+            // Guardamos el gridApi para usarlo más tarde
+            window.gridApi = params.api;
+        },
+    };
+    // Inicializar la tabla ag-Grid
+    const eGridDiv = document.querySelector('#lineasPedidoGrid');
+    new agGrid.Grid(eGridDiv, gridOptions);
+
+    // Botón para eliminar filtros
+    document.querySelector('#clear-filters').addEventListener('click', function() {
+        if (window.gridApi) {
+            window.gridApi.setFilterModel(null); // Eliminar todos los filtros
+            window.gridApi.onFilterChanged(); // Forzar la actualización de los datos
+        }
+    });
+
+    // Botón para recargar la página
+    document.querySelector('#reload-page').addEventListener('click', function() {
+        location.reload();
+    });
+
+    // Ajustar las columnas al redimensionar la ventana
+    window.addEventListener('resize', function() {
+        if (window.gridApi) {
+            window.gridApi.sizeColumnsToFit();
+        }
+    });
+});
+
+        </script>
+        <!-- Modal HTML (Definido una sola vez en la página) -->
+        <div class="modal fade" id="editarLineaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body" id="modalBodyEditarLineaPedido">
+                        <!-- El contenido del formulario se cargará aquí mediante AJAX -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <script>
         $(document).ready(function() {
-            // Mapeo de los filtros
-            const filters = {
-                'filter-id': 1,
-                'filter-cantidad': 2,
-                'filter-base': 3,
-                'filter-producto': 4,
-                'filter-estado': 5,
-                'filter-medida-inicial': 6,
-                'filter-medida-final': 7,
-                'filter-total': 8
-            };
-
-            // Función para aplicar los filtros a la tabla
-            const applyFilters = () => {
-                const rows = document.querySelectorAll('#lineaPedidoTable tr');
-                rows.forEach(row => {
-                    let isVisible = true;
-
-                    // Iterar sobre cada filtro
-                    Object.keys(filters).forEach(filterId => {
-                        const columnIndex = filters[filterId];
-                        const element = document.getElementById(filterId);
-                        const filterValue = element.tagName === 'SELECT' ? element.value.toLowerCase() : element.value.toLowerCase();
-                        const cellValue = row.cells[columnIndex]?.textContent.toLowerCase() || '';
-                        // Si el filtro tiene valor y no coincide, ocultar la fila
-                        if (filterValue && !cellValue.includes(filterValue)) {
-                            isVisible = false;
-                        }
-                    });
-
-                    // Mostrar u ocultar la fila según el resultado de los filtros
-                    row.style.display = isVisible ? '' : 'none';
-                });
-            };
-
-            // Aplicar filtros al cambiar los valores de los inputs o selects
-            Object.keys(filters).forEach(filterId => {
-                const element = document.getElementById(filterId);
-                const eventType = element.tagName === 'SELECT' ? 'change' : 'input';
-
-                element.addEventListener(eventType, applyFilters);
-            });
 
             // Limpiar filtros individuales
             $('.clear-filter').on('click', function() {
@@ -330,6 +333,26 @@
                 applyFilters();
             });
         });
+        $(document).on('click', '.btnEditar', function() {
+            var lineaId = $(this).data('id'); // Obtener el ID de la línea de pedido
+
+            // Hacer la solicitud AJAX para cargar el formulario de edición
+            $.ajax({
+                url: '<?= base_url("pedidos/mostrarFormularioEditarLineaPedido") ?>/' + lineaId,
+                method: 'GET',
+                success: function(response) {
+                    // Cargar el contenido del formulario dentro del modal
+                    $('#modalBodyEditarLineaPedido').html(response); // Asegúrate de que la respuesta contiene la vista correcta
+                    $('#editarLineaModal').modal('show'); // Mostrar el modal
+                },
+                error: function() {
+                    alert('Hubo un error al cargar el formulario. Por favor, intenta de nuevo.');
+                }
+            });
+        });
+
+
+
         $(document).ready(function() {
             // Al hacer clic en el botón para abrir el modal "Añadir Línea de Pedido"
             $('#openAddLineaPedidoModal').click(function() {
@@ -349,7 +372,7 @@
             });
             // Gestión del envío del formulario
             $(document).on('submit', '#addLineaPedidoForm', function(e) {
-                e.preventDefault(); 
+                e.preventDefault();
                 var formData = $(this).serialize();
                 $.ajax({
                     url: $(this).attr('action'),
@@ -357,7 +380,7 @@
                     data: formData,
                     success: function(response) {
                         // alert('Línea de pedido añadida correctamente.');
-                        location.reload(); 
+                        location.reload();
                     },
                     error: function() {
                         alert('No se pudo guardar la línea de pedido.');

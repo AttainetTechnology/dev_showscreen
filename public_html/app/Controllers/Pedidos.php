@@ -81,7 +81,7 @@ class Pedidos extends BaseControllerGC
 		$builder->where('id', $id_usuario);
 		$builder->where('user_activo', '1');
 		$query = $builder->get();
-		$usuario = $query->getRow();  
+		$usuario = $query->getRow();
 		// Verificar si se encontró el usuario
 		if ($usuario) {
 			$data['usuario_sesion'] = [
@@ -358,40 +358,79 @@ class Pedidos extends BaseControllerGC
 	}
 	// Actualizar línea de pedido// Actualizar línea de pedido
 	public function updateLineaPedido($id_lineapedido)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $lineaspedidoModel = new LineaPedido($db);
+    $procesosPedidoModel = new ProcesosPedido($db);
+
+    // Datos a actualizar en linea_pedidos
+    $updateData = [
+        'id_producto' => $this->request->getPost('id_producto') ?? null,
+        'n_piezas' => $this->request->getPost('n_piezas') ?? null,
+        'precio_venta' => $this->request->getPost('precio_venta') ?? null,
+        'nom_base' => $this->request->getPost('nom_base') ?? null,
+        'med_inicial' => $this->request->getPost('med_inicial') ?? null,
+        'med_final' => $this->request->getPost('med_final') ?? null,
+        'lado' => $this->request->getPost('lado') ?? null,
+        'distancia' => $this->request->getPost('distancia') ?? null,
+        'estado' => $this->request->getPost('estado') ?? null,
+        'fecha_entrada' => $this->request->getPost('fecha_entrada') ?? null,
+        'fecha_entrega' => $this->request->getPost('fecha_entrega') ?? null,
+        'observaciones' => $this->request->getPost('observaciones') ?? null,
+        'total_linea' => ($this->request->getPost('n_piezas') && $this->request->getPost('precio_venta')) ? $this->request->getPost('n_piezas') * $this->request->getPost('precio_venta') : null,
+    ];
+
+    // Actualizar la línea de pedido
+    if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
+        $id_pedido = $this->request->getPost('id_pedido');
+
+        // Actualizar el estado en la tabla procesos_pedidos
+        if (isset($updateData['estado'])) {
+            $procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)
+                ->set('estado', $updateData['estado'])
+                ->update();
+        }
+
+        // Actualizar totales y estado del pedido
+        $this->actualizarTotalPedido($id_pedido);
+        $this->actualizarEstadoPedido($id_pedido);
+
+        // Comprobar si es una petición AJAX
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON(['success' => true, 'message' => 'Línea de pedido actualizada correctamente']);
+        } else {
+            // Redirigir al usuario si no es AJAX
+            return redirect()->to(base_url("pedidos/edit/$id_pedido"));
+        }
+    } else {
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON(['success' => false, 'error' => 'No se pudo actualizar la línea de pedido.']);
+        } else {
+            return redirect()->back()->with('error', 'No se pudo actualizar la línea de pedido.');
+        }
+    }
+}
+
+	public function mostrarFormularioEditarLineaPedido($id_lineapedido)
 	{
-		$data = usuario_sesion();
-		$db = db_connect($data['new_db']);
-		$lineaspedidoModel = new LineaPedido($db);
-		$procesosPedidoModel = new ProcesosPedido($db);
-		// Datos a actualizar en linea_pedidos
-		$updateData = [
-			'id_producto' => $this->request->getPost('id_producto') ?? null,
-			'n_piezas' => $this->request->getPost('n_piezas') ?? null,
-			'precio_venta' => $this->request->getPost('precio_venta') ?? null,
-			'nom_base' => $this->request->getPost('nom_base') ?? null,
-			'med_inicial' => $this->request->getPost('med_inicial') ?? null,
-			'med_final' => $this->request->getPost('med_final') ?? null,
-			'lado' => $this->request->getPost('lado') ?? null,
-			'distancia' => $this->request->getPost('distancia') ?? null,
-			'estado' => $this->request->getPost('estado') ?? null,
-			'fecha_entrada' => $this->request->getPost('fecha_entrada') ?? null,
-			'fecha_entrega' => $this->request->getPost('fecha_entrega') ?? null,
-			'observaciones' => $this->request->getPost('observaciones') ?? null,
-			'total_linea' => ($this->request->getPost('n_piezas') && $this->request->getPost('precio_venta')) ? $this->request->getPost('n_piezas') * $this->request->getPost('precio_venta') : null,
-		];
-		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
-			$id_pedido = $this->request->getPost('id_pedido');
-			// Actualizar el estado en la tabla procesos_pedidos
-			if (isset($updateData['estado'])) {
-				$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)
-					->set('estado', $updateData['estado'])
-					->update();
-			}
-			$this->actualizarTotalPedido($id_pedido);
-			$this->actualizarEstadoPedido($id_pedido);
-			return $this->response->setJSON(['success' => 'Línea de pedido actualizada correctamente y estado de procesos asociados actualizado']);
+		$data = datos_user();  
+		$db = db_connect($data['new_db']); 
+		$productosModel = new Productos_model($db);
+		$estadoModel = new EstadoModel($db);
+		$lineaPedidoModel = new LineaPedido($db); 
+		$linea_pedido = $lineaPedidoModel->find($id_lineapedido);
+		if (!$linea_pedido) {
+			return $this->response->setStatusCode(404, 'Línea de pedido no encontrada');
+		}
+		$data['productos'] = $productosModel->findAll();
+		$data['estados'] = $estadoModel->findAll();
+		$data['linea_pedido'] = $linea_pedido;
+		// Devolver la vista del formulario de edición si es AJAX
+		if ($this->request->isAJAX()) {
+			return view('editLineaPedido', $data);
 		} else {
-			return $this->response->setJSON(['error' => 'No se pudo actualizar la línea de pedido']);
+			return redirect()->back()->with('error', 'Acción no permitida');
 		}
 	}
 	public function mostrarFormularioAddLineaPedido($id_pedido)

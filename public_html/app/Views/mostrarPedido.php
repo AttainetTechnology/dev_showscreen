@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <h2 class="titlepedidos">Pedidos</h2>
 <div class="d-flex justify-content-between mb-3">
@@ -176,15 +178,11 @@ $estadoMap = [
             domLayout: 'autoHeight',
             onGridReady: function(params) {
                 gridApi = params.api;
-
-                // Asegurarse de que las columnas se ajusten al tamaño del contenedor
+                //las columnas se ajusten al tamaño del contenedor
                 params.api.sizeColumnsToFit();
-
-                // Ajuste adicional después de renderizar la tabla
                 setTimeout(function() {
                     params.api.sizeColumnsToFit();
                 }, 100);
-
                 document.getElementById('pedidoTable').style.display = 'block';
             }
 

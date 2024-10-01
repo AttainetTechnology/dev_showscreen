@@ -1,4 +1,3 @@
-
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- jQuery debe cargarse primero -->
@@ -74,7 +73,11 @@
         <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" value="<?= esc($fecha_entrega) ?>">
     </div>
 
-    <button type="submit" class="btn btn-primary">Guardar Línea Pedido</button>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Guardar Línea Pedido</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    </div>
+
 </form>
 </div>
 </div>

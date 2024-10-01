@@ -41,6 +41,7 @@
 .btnEditar {
     background-color: #337ab7 !important;
     color: white !important;
+    border-radius: 8px !important;
     width: 65px;
 }
 
@@ -52,6 +53,7 @@
 .btnEliminar {
     background-color: #d9534f !important;
     color: white !important;
+    border-radius: 8px !important;
     width: 72px;
 }
 
@@ -63,10 +65,23 @@
 .btnImprimir {
     background-color: #e4eff7 !important;
     color: 1d9dd5 !important;
+    border-radius: 8px !important;
     width: 78px;
 }
 
 .btnImprimir:hover {
+    background-color: #0B2F9F !important;
+    color: #e4eff7 !important;
+}
+
+.btnImprimirParte {
+    background-color: #e4eff7 !important;
+    color: 1d9dd5 !important;
+    width: 60px;
+    border-radius: 8px !important;
+}
+
+.btnImprimirParte:hover {
     background-color: #0B2F9F !important;
     color: #e4eff7 !important;
 }
@@ -177,3 +192,12 @@ form select.form-control {
     vertical-align: middle; /* Alinea el ícono con el texto */
     margin-left: -5px;
 }
+
+/* Ajustar la altura del modal */
+
+.modal-content {
+    max-height: 85vh; /* Ajusta la altura máxima del modal al 85% del viewport */
+    min-width: 700px !important;
+    overflow: hidden; /* Esconde cualquier contenido que sobrepase esta altura */
+}
+
