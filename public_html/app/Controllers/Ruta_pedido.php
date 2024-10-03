@@ -65,7 +65,7 @@ class Ruta_pedido extends BaseController
         $validation = \Config\Services::validation();
         $validation->setRules([
             'poblacion' => 'required',
-            'lugar' => 'required',
+            'lugar' => 'permit_empty',
             'recogida_entrega' => 'required',
             'transportista' => 'required',
             'fecha_ruta' => 'required|valid_date',
@@ -115,6 +115,25 @@ class Ruta_pedido extends BaseController
         return redirect()->to('/Ruta_pedido/rutas/' . $this->request->getPost('id_pedido') . '/' . $this->request->getPost('id_cliente'))
             ->with('success', 'La ruta ha sido guardada correctamente.');
     }
+
+    public function delete($id_ruta)
+{
+    // Conectar a la base de datos
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    
+    // Cargar el modelo de rutas
+    $rutasModel = new Rutas_model($db);
+
+    // Intentar eliminar la ruta
+    try {
+        $rutasModel->delete($id_ruta);
+    } catch (\Exception $e) {
+        log_message('error', 'Error al eliminar la ruta: ' . $e->getMessage());
+        return $this->response->setStatusCode(500)->setJSON(['error' => 'Error al eliminar la ruta.']);
+    }
+}
+
 
     public function obtenerRuta($id_ruta)
     {

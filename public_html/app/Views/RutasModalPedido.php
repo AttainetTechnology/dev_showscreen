@@ -1,30 +1,35 @@
+<!-- Cargar primero los estilos -->
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
-<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery primero, ya que algunos scripts pueden depender de él -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap después de jQuery -->
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script> <!-- ag-Grid al final -->
+
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
 <!-- Modal para mostrar las rutas relacionadas con un pedido -->
 <div class="modal fade" id="rutasModal" tabindex="-1" aria-labelledby="rutasModalLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="rutasModalLabel">Rutas del Pedido <?= esc($id_pedido) ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="d-flex justify-content-between botoneseditPedido">
-                    <button type="button" class="btn btnAddRuta" id="openAddRuta">
-                        + Añadir Ruta
-                    </button>
-                    <button id="clear-filters" class="btn ">Eliminar Filtros</button>
-                </div>
+                <h5 class="modal-title tituloRutas" id="rutasModalLabel">Rutas del Pedido <?= esc($id_pedido) ?></h5>
             </div>
-
             <div class="modal-body">
                 <div id="rutasContainer">
                     <?php if (!empty($rutas)): ?>
                         <!-- Contenedor para ag-Grid -->
-                        <div id="gridRutas" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
+                        <div id="gridRutas" class="ag-theme-alpine" style="height: 400px; width: 100%;">
+                            <div class="d-flex justify-content-between align-items-center botoneseditPedido">
+                                <button type="button" class="btn btnAddRuta" id="openAddRuta" style="flex-grow: 0;">
+                                    + Añadir Ruta
+                                </button>
+                                <button id="clear-filters" class="btn btnEliminarfiltrosRuta" style="flex-grow: 0;">
+                                    Eliminar Filtros
+                                </button>
+                            </div> <br>
+                        </div>
                     <?php else: ?>
                         <p>No hay rutas para este pedido.</p>
                     <?php endif; ?>
@@ -100,18 +105,24 @@
         $('#fecha_ruta').val(today);
         <?php if (!empty($rutas)): ?>
             var gridDiv = document.querySelector('#gridRutas');
+            if (gridDiv) {
+                gridDiv.style.display = 'block'; // Solo intenta acceder si el elemento existe
+            } else {
+                console.error('El elemento #gridRutas no está disponible en el DOM.');
+            }
             var columnDefs = [{
                     headerName: "Acciones",
                     field: "acciones",
                     cellRenderer: function(params) {
-                        var editBtn = `<button class="btn btnEditar" data-id="${params.data.id_ruta}" onclick="editarRuta(${params.data.id_ruta})">
-            <span class="material-symbols-outlined icono">edit</span>Editar</button>`;
-                        var deleteBtn = `<button class="btn btnEliminar" onclick="eliminarRuta(${params.data.id_ruta})">
-            <span class="material-symbols-outlined icono">delete</span>Eliminar</button>`;
+                        var editBtn = `<button class="btn btnEditarRuta" data-id="${params.data.id_ruta}" onclick="editarRuta(${params.data.id_ruta})">
+        <span class="material-symbols-outlined icono ">edit</span>Editar</button>`;
+                        var deleteBtn = `<button class="btn btnEliminarRuta" onclick="eliminarRuta(${params.data.id_ruta})">
+        <span class="material-symbols-outlined icono">delete</span>Eliminar</button>`;
                         return `${editBtn} ${deleteBtn}`;
                     },
+
                     cellClass: 'acciones-col',
-                    minWidth: 250,
+                    minWidth: 190,
                     filter: false
                 },
                 {
@@ -129,12 +140,14 @@
                 {
                     headerName: "Recogida/Entrega",
                     field: "recogida_entrega",
+                    minWidth: 190,
                     flex: 1,
                     filter: 'agTextColumnFilter'
                 },
                 {
                     headerName: "Transportista",
                     field: "transportista",
+                    minWidth: 150,
                     flex: 1,
                     filter: 'agTextColumnFilter'
                 },
@@ -184,7 +197,7 @@
                     setTimeout(function() {
                         params.api.sizeColumnsToFit();
                     }, 100);
-                    document.getElementById('pedidoTable').style.display = 'block';
+
                 }
             };
             new agGrid.Grid(gridDiv, gridOptions);
@@ -212,9 +225,8 @@
             $('#fecha_ruta').val(today);
             $('#gridRutas').hide();
             $('#addRutaForm').show();
-            $('.botoneseditPedido').hide();
             $('#poblacion').focus();
-            $('#rutasModalLabel').text('Añadir ruta al pedido ' + idPedidoGlobal);
+            $('#rutasModalLabel').text('Añadir ruta Pedido Id:' + idPedidoGlobal);
         });
 
         // Manejar el envío del formulario
@@ -224,7 +236,6 @@
         $('#volverTabla').on('click', function() {
             $('#addRutaForm').hide();
             $('#gridRutas').show();
-            $('.botoneseditPedido').show();
             $('#rutasModalLabel').text('Rutas del Pedido ' + idPedidoGlobal);
         });
     });
@@ -250,12 +261,26 @@
                 // Cambiar el formulario a modo de edición
                 $('#addRutaForm').show();
                 $('#gridRutas').hide();
-                $('.botoneseditPedido').hide();
 
             },
             error: function() {
                 alert("Error al cargar los datos de la ruta.");
             }
         });
+    }
+
+    function eliminarRuta(id_ruta) {
+        if (confirm('¿Estás seguro de que deseas eliminar esta ruta?')) {
+            $.ajax({
+                url: '<?= base_url('Ruta_pedido/delete') ?>/' + id_ruta,
+                type: 'DELETE',
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(xhr) {
+                    alert('Error al eliminar la ruta: ' + xhr.responseJSON.error);
+                }
+            });
+        }
     }
 </script>

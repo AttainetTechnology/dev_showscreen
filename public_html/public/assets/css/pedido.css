@@ -16,20 +16,21 @@
     color: #F5F5F7 !important;
     height: 35px;
     font-size: 16px !important;
+    border: none;
 }
 
 .btnAddPedido {
     background-color: #e4eff7;
     color: #1d9dd5;
-    margin-top: 10px;
     font-size: 16px !important;
     height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
 }
 
-.btnAddPedido:hover {
+.btnAddPedido:hover{
     background-color: #337ab7;
     color: #e4eff7 !important;
 }
@@ -198,6 +199,157 @@ form select.form-control {
 .modal-content {
     max-height: 85vh; /* Ajusta la altura máxima del modal al 85% del viewport */
     min-width: 700px !important;
+    /* height: 140%; */
     overflow: hidden; /* Esconde cualquier contenido que sobrepase esta altura */
 }
+.botoneseditPedido {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100%;
+}
 
+.btnAddRuta, .btnEliminarfiltros {
+    flex-grow: 0;
+}
+
+.modal-body{
+    margin: 23px !important;
+    margin-top: 5px !important;
+
+
+}
+.tituloRutas{
+    font-size: 25px;
+    margin: 26px;
+}
+
+.btnEliminarfiltrosRuta:hover {
+    background-color: #C7C8CC !important;
+    color: #F5F5F7 !important;
+}
+
+.btnEliminarfiltrosRuta {
+    background-color: #B7B7B7 !important;
+    color: #F5F5F7 !important;
+    height: 35px;
+    font-size: 16px !important;
+    border: none;
+    border-radius: 8px;
+}
+
+.btnAddRuta {
+    background-color: #e4eff7;
+    color: #1d9dd5;
+    font-size: 16px !important;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 8px;
+}
+
+.btnAddRuta:hover{
+    background-color: #337ab7;
+    color: #e4eff7 !important;
+}
+
+.btnEditarRuta {
+    background-color: #337ab7 !important;
+    color: white !important;
+    border-radius: 8px !important;
+    height: 30px;
+    width: 65px ;
+    border: none;
+}
+
+.btnEditarRuta:hover {
+    background-color: #0B2F9F !important;
+    color: white;
+}
+
+.btnEliminarRuta {
+    background-color: #d9534f !important;
+    color: white !important;
+    border-radius: 8px !important;
+    width: 72px;
+    height: 30px;
+    border: none;
+
+}
+
+.btnEliminarRuta:hover {
+    background-color: #0B2F9F !important;
+    color: white !important;
+}
+
+
+.botoneseditPedido {
+    display: flex;
+}
+
+.botoneseditPedido.hidden {
+    display: none !important;
+}
+/* Formulario Editar/Añadir */
+/* Formulario Editar/Añadir */
+#addRutaForm {
+    display: block; /* Cambiado a block para que ocupe todo el ancho */
+    width: 100vw; /* Ancho completo de la ventana */
+    height: auto; /* Altura automática, depende del contenido */
+    position: fixed;
+    top: 0;
+    left: 0;
+  padding-top: 74px;
+    background-color: transparent; /* Sin fondo */
+}
+
+form#formNuevaRuta {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 0; /* Sin bordes redondeados */
+    width: 100%; /* Ocupar todo el ancho disponible */
+    max-width: none; /* Sin límite de ancho */
+    box-shadow: none; /* Sin sombras */
+    overflow-y: auto;
+    max-height: calc(100vh - 100px); /* Limitar la altura si es necesario */
+    display: flex;
+    flex-direction: column; /* Elementos uno debajo del otro */
+    gap: 15px; /* Espacio entre los campos */
+}
+
+/* Ajustes para los campos de formulario y su estilo */
+label.form-label {
+    margin-bottom: 5px; /* Margen debajo de las etiquetas */
+    font-weight: bold;
+    color: #333;
+}
+
+input, select, textarea {
+    width: 100%; /* Campos ocupan todo el ancho */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+button.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+button.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    cursor: pointer;
+}

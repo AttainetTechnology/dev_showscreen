@@ -33,8 +33,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Rutas de transporte</h4>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Rutas de transporte</h4>
                         </div>
                         <div class="modal-body">
                             <iframe src="<?= base_url('Ruta_pedido/rutas/' . $pedido->id_pedido . '/' . $pedido->id_cliente) ?>" frameborder="0" width="100%" height="400px"></iframe>
