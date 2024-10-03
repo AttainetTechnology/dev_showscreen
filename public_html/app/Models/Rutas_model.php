@@ -8,7 +8,7 @@ class Rutas_model extends Model
 
     protected $table      ='rutas';
     protected $primaryKey = 'id_ruta';
-    protected $allowedFields = ['fecha_ruta','estado_ruta','poblacion','lugar','recogida_entrega','observaciones','transportista','id_pedido'];
+    protected $allowedFields = ['fecha_ruta','estado_ruta', 'id_cliente','poblacion','lugar','recogida_entrega','observaciones','transportista','id_pedido'];
 }
 
 
