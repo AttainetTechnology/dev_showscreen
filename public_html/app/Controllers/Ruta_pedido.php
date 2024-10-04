@@ -11,110 +11,147 @@ class Ruta_pedido extends BaseController
 {
     public $npedido = 0;
     public $idcliente;
+public function Rutas($pedido, $id_cliente)
+{
+    // Obtener los datos del usuario en sesión
+    $data = usuario_sesion();
 
-    public function Rutas($pedido, $id_cliente)
-    {
-        // Obtener los datos del usuario en sesión
-        $data = usuario_sesion();
-        // Intentar conectar a la base de datos del cliente
-        $db = db_connect($data['new_db']);
-        if (!$db) {
-            log_message('error', 'No se pudo conectar a la base de datos del cliente');
-            return;
-        }
+    // Intentar conectar a la base de datos del cliente
+    $db = db_connect($data['new_db']);
+    if (!$db) {
+        log_message('error', 'No se pudo conectar a la base de datos del cliente');
+        return $this->response->setJSON(['error' => 'Error al conectar a la base de datos']);
+    }
 
-        $this->npedido = $pedido;
-        $this->idcliente = $id_cliente;
+    $this->npedido = $pedido;
+    $this->idcliente = $id_cliente;
 
-        // Cargar las rutas del pedido desde el modelo
-        $rutasModel = new Rutas_model($db);
-        try {
-            $rutas = $rutasModel->where('id_pedido', $pedido)->findAll();
-        } catch (\Exception $e) {
-            log_message('error', 'Error al obtener las rutas: ' . $e->getMessage());
-            $rutas = [];
-        }
+    // Cargar las rutas del pedido desde el modelo
+    $rutasModel = new Rutas_model($db);
+    try {
+        $rutas = $rutasModel->where('id_pedido', $pedido)->findAll();
+    } catch (\Exception $e) {
+        log_message('error', 'Error al obtener las rutas: ' . $e->getMessage());
+        return $this->response->setJSON(['error' => 'Error al obtener las rutas']);
+    }
 
-        // Obtener lista de transportistas
-        $transportistas = $this->transportistas();
-        // Obtener lista de poblaciones
-        $poblacionesModel = new PoblacionesModel($db);
+    // Obtener lista de transportistas
+    $transportistas = $this->transportistas();
+    // Obtener lista de poblaciones
+    $poblacionesModel = new PoblacionesModel($db);
+    $poblaciones = $poblacionesModel->obtenerPoblaciones();
+
+    foreach ($poblaciones as $poblacion) {
+        $poblacionesMap[$poblacion['id_poblacion']] = $poblacion['poblacion'];
+    }
+
+    // Devolver los datos como JSON para la respuesta AJAX
+    return $this->response->setJSON([
+        'rutas' => $rutas,
+        'transportistas' => $transportistas,
+        'poblacionesMap' => $poblacionesMap
+    ]);
+}
+public function mostrarFormulario($pedidoId, $clienteId)
+{
+    // Obtener los datos del usuario en sesión
+    $data = usuario_sesion();
+
+    // Intentar conectar a la base de datos del cliente
+    $db = db_connect($data['new_db']);
+    if (!$db) {
+        log_message('error', 'No se pudo conectar a la base de datos del cliente');
+        return json_encode(['error' => 'Error de conexión a la base de datos']);
+    }
+
+    // Obtener lista de transportistas
+    $transportistas = $this->transportistas();
+
+    // Obtener lista de poblaciones
+    $poblacionesModel = new PoblacionesModel($db);
+    try {
         $poblaciones = $poblacionesModel->obtenerPoblaciones();
-        foreach ($poblaciones as $poblacion) {
-            $poblacionesMap[$poblacion['id_poblacion']] = $poblacion['poblacion'];
-        }
+    } catch (\Exception $e) {
+        log_message('error', 'Error al obtener las poblaciones: ' . $e->getMessage());
+        return json_encode(['error' => 'Error al obtener las poblaciones']);
+    }
+
+    // Crear un mapa de poblaciones para usar en el formulario
+    $poblacionesMap = [];
+    foreach ($poblaciones as $poblacion) {
+        $poblacionesMap[$poblacion['id_poblacion']] = $poblacion['poblacion'];
+    }
+
+    // Pasar los datos a la vista de formulario
+    return view('rutasModalPedido', [
+        'id_pedido' => $pedidoId,
+        'id_cliente' => $clienteId,
+        'transportistas' => $transportistas,
+        'poblacionesMap' => $poblacionesMap,
+        'poblaciones' => $poblaciones
+    ]);
+}
 
 
-        // Pasar los datos a la vista
-        return view('rutasModalPedido', [
-            'rutas' => $rutas,
-            'id_pedido' => $pedido,
+public function guardarRuta()
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+
+    // Validar los datos del formulario
+    $validation = \Config\Services::validation();
+    $validation->setRules([
+        'poblacion' => 'required',
+        'lugar' => 'permit_empty',
+        'recogida_entrega' => 'required',
+        'transportista' => 'required',
+        'fecha_ruta' => 'required|valid_date',
+        'observaciones' => 'permit_empty',
+        'estado_ruta' => 'permit_empty'
+    ]);
+
+    if (!$validation->withRequest($this->request)->run()) {
+        return $this->response->setJSON(['error' => $validation->getErrors()]);
+    }
+
+    $rutasModel = new Rutas_model($db);
+    $id_pedido = $this->request->getPost('id_pedido');
+    $id_cliente = $this->request->getPost('id_cliente');
+
+    if ($this->request->getPost('id_ruta')) {
+        $rutasModel->update($this->request->getPost('id_ruta'), [
+            'poblacion' => $this->request->getPost('poblacion'),
+            'lugar' => $this->request->getPost('lugar'),
+            'recogida_entrega' => $this->request->getPost('recogida_entrega'),
+            'transportista' => $this->request->getPost('transportista'),
+            'fecha_ruta' => $this->request->getPost('fecha_ruta'),
+            'observaciones' => $this->request->getPost('observaciones'),
+            'estado_ruta' => $this->request->getPost('estado_ruta'),
             'id_cliente' => $id_cliente,
-            'transportistas' => $transportistas,
-            'poblacionesMap' => $poblacionesMap,
-            'poblaciones' => $poblaciones
+            'id_pedido' => $id_pedido
+        ]);
+    } else {
+        $rutasModel->insert([
+            'poblacion' => $this->request->getPost('poblacion'),
+            'lugar' => $this->request->getPost('lugar'),
+            'recogida_entrega' => $this->request->getPost('recogida_entrega'),
+            'transportista' => $this->request->getPost('transportista'),
+            'fecha_ruta' => $this->request->getPost('fecha_ruta'),
+            'observaciones' => $this->request->getPost('observaciones'),
+            'id_cliente' => $id_cliente,
+            'id_pedido' => $id_pedido
         ]);
     }
-    public function guardarRuta()
-    {
-        // Conectar a la base de datos
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
 
-        // Validar los datos del formulario
-        $validation = \Config\Services::validation();
-        $validation->setRules([
-            'poblacion' => 'required',
-            'lugar' => 'permit_empty',
-            'recogida_entrega' => 'required',
-            'transportista' => 'required',
-            'fecha_ruta' => 'required|valid_date',
-            'observaciones' => 'permit_empty',
-            'estado_ruta' => 'permit_empty'
-        ]);
-
-        if (!$validation->withRequest($this->request)->run()) {
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-        }
-
-        $rutasModel = new Rutas_model($db);
-        $pedidosModel = new Pedidos_model($db);
-
-        $id_pedido = $this->request->getPost('id_pedido');
-        $id_cliente = $this->request->getPost('id_cliente');
-
-        $pedido = $pedidosModel->find($id_pedido);
-
-        // Si estamos editando una ruta existente
-        if ($this->request->getPost('id_ruta')) {
-            $rutasModel->update($this->request->getPost('id_ruta'), [
-                'poblacion' => $this->request->getPost('poblacion'),
-                'lugar' => $this->request->getPost('lugar'),
-                'recogida_entrega' => $this->request->getPost('recogida_entrega'),
-                'transportista' => $this->request->getPost('transportista'),
-                'fecha_ruta' => $this->request->getPost('fecha_ruta'),
-                'observaciones' => $this->request->getPost('observaciones'),
-                'estado_ruta' => $this->request->getPost('estado_ruta'),
-                'id_cliente' => $id_cliente, // Guardamos el id_cliente en la ruta
-                'id_pedido' => $id_pedido
-            ]);
-        } else {
-            // Si estamos añadiendo una nueva ruta
-            $rutasModel->insert([
-                'poblacion' => $this->request->getPost('poblacion'),
-                'lugar' => $this->request->getPost('lugar'),
-                'recogida_entrega' => $this->request->getPost('recogida_entrega'),
-                'transportista' => $this->request->getPost('transportista'),
-                'fecha_ruta' => $this->request->getPost('fecha_ruta'),
-                'observaciones' => $this->request->getPost('observaciones'),
-                'id_cliente' => $id_cliente, // Guardamos el id_cliente en la ruta
-                'id_pedido' => $id_pedido
-            ]);
-        }
-
-        return redirect()->to('/Ruta_pedido/rutas/' . $this->request->getPost('id_pedido') . '/' . $this->request->getPost('id_cliente'))
-            ->with('success', 'La ruta ha sido guardada correctamente.');
+    // Devolver el resultado como JSON si es una solicitud AJAX
+    if ($this->request->isAJAX()) {
+        return $this->response->setJSON(['success' => true]);
     }
+
+    return redirect()->to('/Ruta_pedido/rutas/' . $id_pedido . '/' . $id_cliente)
+        ->with('success', 'La ruta ha sido guardada correctamente.');
+}
+
 
     public function delete($id_ruta)
 {
@@ -135,23 +172,24 @@ class Ruta_pedido extends BaseController
 }
 
 
-    public function obtenerRuta($id_ruta)
-    {
-        // Conectar a la base de datos
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
+public function obtenerRuta($id_ruta)
+{
+    // Conectar a la base de datos
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
 
-        // Obtener los datos de la ruta
-        $rutasModel = new Rutas_model($db);
-        $ruta = $rutasModel->find($id_ruta);
+    // Obtener los datos de la ruta
+    $rutasModel = new Rutas_model($db);
+    $ruta = $rutasModel->find($id_ruta);
 
-        // Verificar si se encontró la ruta
-        if ($ruta) {
-            return $this->response->setJSON($ruta);
-        } else {
-            return $this->response->setStatusCode(404)->setJSON(['error' => 'Ruta no encontrada']);
-        }
+    // Verificar si se encontró la ruta
+    if ($ruta) {
+        return $this->response->setJSON($ruta);
+    } else {
+        return $this->response->setStatusCode(404)->setJSON(['error' => 'Ruta no encontrada']);
     }
+}
+
 
     function transportistas()
     {

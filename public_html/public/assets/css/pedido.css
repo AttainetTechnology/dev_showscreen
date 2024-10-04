@@ -199,14 +199,6 @@ form select.form-control {
 
 /* Ajustar la altura del modal */
 
-.modal-content {
-    max-height: 200vh;
-    /* Ajusta la altura máxima del modal al 85% del viewport */
-    min-width: 700px !important;
-    /* height: 140%; */
-    overflow: hidden;
-    /* Esconde cualquier contenido que sobrepase esta altura */
-}
 
 .botoneseditPedido {
     display: flex !important;
@@ -301,55 +293,6 @@ form select.form-control {
     display: none !important;
 }
 
-/* Formulario Editar/Añadir */
-/* Formulario Editar/Añadir */
-#addRutaForm {
-    display: block;
-    /* Cambiado a block para que ocupe todo el ancho */
-    width: 100vw;
-    /* Ancho completo de la ventana */
-    height: auto;
-    /* Altura automática, depende del contenido */
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding-top: 74px;
-    background-color: transparent;
-    /* Sin fondo */
-}
-
-form#formNuevaRuta {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 0;
-    width: 95%;
-    max-width: none;
-    box-shadow: none;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Ajustes para los campos de formulario y su estilo */
-label.form-label {
-    margin-bottom: 5px;
-    /* Margen debajo de las etiquetas */
-    font-weight: bold;
-    color: #333;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    /* Campos ocupan todo el ancho */
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-}
-
 
 .btnModaladdruta {
     display: flex;
@@ -378,25 +321,9 @@ textarea {
     padding: 0 15px; 
 }
 
-#gridRutas {
-    overflow-x: auto;
-    /* Permite el scroll horizontal */
-    max-width: 100%;
-    /* Ajusta la tabla al ancho máximo disponible */
-    position: relative;
-    z-index: 1;
-    height: 100vh !important;
-}
 
 .ag-root-wrapper {
     min-width: 1200px;
     /* Establece un ancho mínimo que evite el colapso */
 }
 
-iframe {
-    min-height: 65vh !important;
-}
-
-.labelAddRuta{
-    margin-bottom: 30px !important;
-}
