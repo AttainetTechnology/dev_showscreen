@@ -18,22 +18,21 @@
             </div>
             <div class="modal-body">
                 <div id="rutasContainer">
-                    <?php if (!empty($rutas)): ?>
-                        <!-- Contenedor para ag-Grid -->
-                        <div id="gridRutas" class="ag-theme-alpine" style="height: 400px; width: 100%;">
-                            <div class="d-flex justify-content-between align-items-center botoneseditPedido">
-                                <button type="button" class="btn btnAddRuta" id="openAddRuta" style="flex-grow: 0;">
-                                    + Añadir Ruta
-                                </button>
-                                <button id="clear-filters" class="btn btnEliminarfiltrosRuta" style="flex-grow: 0;">
-                                    Eliminar Filtros
-                                </button>
-                            </div> <br>
-                        </div>
-                    <?php else: ?>
-                        <p>No hay rutas para este pedido.</p>
-                    <?php endif; ?>
+                    <!-- Contenedor para ag-Grid -->
+                    <div class="d-flex justify-content-between align-items-center botoneseditPedido">
+                        <button type="button" class="btn btnAddRuta" id="openAddRuta" style="flex-grow: 0;">
+                            + Añadir Ruta
+                        </button>
+                        <button id="clear-filters" class="btn btnEliminarfiltrosRuta" style="flex-grow: 0;">
+                            Eliminar Filtros
+                        </button>
+                    </div>
+                    <br>
+                    <div id="gridRutas" class="ag-theme-alpine" style="height: 800px; width: 100%;">
+                    </div>
+   
                 </div>
+
                 <!-- Formulario para añadir una nueva ruta, inicialmente oculto -->
                 <div id="addRutaForm" style="display:none;">
                     <form id="formNuevaRuta" method="POST" action="<?= base_url('Ruta_pedido/guardarRuta') ?>">
@@ -190,7 +189,7 @@
                     resizable: true
                 },
                 rowHeight: 70,
-                domLayout: 'autoHeight',
+                domLayout: 'normal',
                 onGridReady: function(params) {
                     gridApi = params.api;
                     params.api.sizeColumnsToFit();
@@ -198,6 +197,9 @@
                         params.api.sizeColumnsToFit();
                     }, 100);
 
+                },
+                localeText: {
+                    noRowsToShow: ' '
                 }
             };
             new agGrid.Grid(gridDiv, gridOptions);

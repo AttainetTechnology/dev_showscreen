@@ -46,7 +46,7 @@ class Ruta_pedido extends BaseController
 
 
         // Pasar los datos a la vista
-        return view('RutasModalPedido', [
+        return view('rutasModalPedido', [
             'rutas' => $rutas,
             'id_pedido' => $pedido,
             'id_cliente' => $id_cliente,

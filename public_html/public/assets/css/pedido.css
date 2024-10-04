@@ -30,7 +30,7 @@
     border: none;
 }
 
-.btnAddPedido:hover{
+.btnAddPedido:hover {
     background-color: #337ab7;
     color: #e4eff7 !important;
 }
@@ -138,23 +138,24 @@ input[class^=ag-] {
 /* EDIT PEDIDO */
 
 form label {
-    font-size: 1.2rem; 
+    font-size: 1.2rem;
 }
 
 form .form-control {
-    height: 40px; 
-    font-size: 1rem; 
+    height: 40px;
+    font-size: 1rem;
 
 }
+
 form .form-control {
-    font-size: 16px !important ;
+    font-size: 16px !important;
 }
 
 form select.form-control {
     font-size: 17px !important;
 }
 
-.btnGuardar{
+.btnGuardar {
     height: 35px;
     font-size: 16px !important;
 }
@@ -189,19 +190,24 @@ form select.form-control {
 
 
 .icono {
-    font-size: 16px !important; /* Tamaño del ícono más pequeño */
-    vertical-align: middle; /* Alinea el ícono con el texto */
+    font-size: 16px !important;
+    /* Tamaño del ícono más pequeño */
+    vertical-align: middle;
+    /* Alinea el ícono con el texto */
     margin-left: -5px;
 }
 
 /* Ajustar la altura del modal */
 
 .modal-content {
-    max-height: 85vh; /* Ajusta la altura máxima del modal al 85% del viewport */
+    max-height: 200vh;
+    /* Ajusta la altura máxima del modal al 85% del viewport */
     min-width: 700px !important;
     /* height: 140%; */
-    overflow: hidden; /* Esconde cualquier contenido que sobrepase esta altura */
+    overflow: hidden;
+    /* Esconde cualquier contenido que sobrepase esta altura */
 }
+
 .botoneseditPedido {
     display: flex !important;
     justify-content: space-between !important;
@@ -209,17 +215,19 @@ form select.form-control {
     width: 100%;
 }
 
-.btnAddRuta, .btnEliminarfiltros {
+.btnAddRuta,
+.btnEliminarfiltros {
     flex-grow: 0;
 }
 
-.modal-body{
+.modal-body {
     margin: 23px !important;
     margin-top: 5px !important;
 
 
 }
-.tituloRutas{
+
+.tituloRutas {
     font-size: 25px;
     margin: 26px;
 }
@@ -250,7 +258,7 @@ form select.form-control {
     border-radius: 8px;
 }
 
-.btnAddRuta:hover{
+.btnAddRuta:hover {
     background-color: #337ab7;
     color: #e4eff7 !important;
 }
@@ -260,7 +268,7 @@ form select.form-control {
     color: white !important;
     border-radius: 8px !important;
     height: 30px;
-    width: 65px ;
+    width: 65px;
     border: none;
 }
 
@@ -292,42 +300,58 @@ form select.form-control {
 .botoneseditPedido.hidden {
     display: none !important;
 }
+
 /* Formulario Editar/Añadir */
 /* Formulario Editar/Añadir */
 #addRutaForm {
-    display: block; /* Cambiado a block para que ocupe todo el ancho */
-    width: 100vw; /* Ancho completo de la ventana */
-    height: auto; /* Altura automática, depende del contenido */
+    display: block;
+    /* Cambiado a block para que ocupe todo el ancho */
+    width: 100vw;
+    /* Ancho completo de la ventana */
+    height: auto;
+    /* Altura automática, depende del contenido */
     position: fixed;
     top: 0;
     left: 0;
-  padding-top: 74px;
-    background-color: transparent; /* Sin fondo */
+    padding-top: 74px;
+    background-color: transparent;
+    /* Sin fondo */
 }
 
 form#formNuevaRuta {
     background-color: #fff;
     padding: 20px;
-    border-radius: 0; /* Sin bordes redondeados */
-    width: 100%; /* Ocupar todo el ancho disponible */
-    max-width: none; /* Sin límite de ancho */
-    box-shadow: none; /* Sin sombras */
+    border-radius: 0;
+    /* Sin bordes redondeados */
+    width: 100%;
+    /* Ocupar todo el ancho disponible */
+    max-width: none;
+    /* Sin límite de ancho */
+    box-shadow: none;
+    /* Sin sombras */
     overflow-y: auto;
-    max-height: calc(100vh - 100px); /* Limitar la altura si es necesario */
+    max-height: calc(100vh - 100px);
+    /* Limitar la altura si es necesario */
     display: flex;
-    flex-direction: column; /* Elementos uno debajo del otro */
-    gap: 15px; /* Espacio entre los campos */
+    flex-direction: column;
+    /* Elementos uno debajo del otro */
+    gap: 15px;
+    /* Espacio entre los campos */
 }
 
 /* Ajustes para los campos de formulario y su estilo */
 label.form-label {
-    margin-bottom: 5px; /* Margen debajo de las etiquetas */
+    margin-bottom: 5px;
+    /* Margen debajo de las etiquetas */
     font-weight: bold;
     color: #333;
 }
 
-input, select, textarea {
-    width: 100%; /* Campos ocupan todo el ancho */
+input,
+select,
+textarea {
+    width: 100%;
+    /* Campos ocupan todo el ancho */
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -352,4 +376,23 @@ button.btn-secondary {
     background-color: #6c757d;
     color: #fff;
     cursor: pointer;
+}
+
+#gridRutas {
+    overflow-x: auto;
+    /* Permite el scroll horizontal */
+    max-width: 100%;
+    /* Ajusta la tabla al ancho máximo disponible */
+    position: relative;
+    z-index: 1;
+    height: 85vh !important;
+}
+
+.ag-root-wrapper {
+    min-width: 1200px;
+    /* Establece un ancho mínimo que evite el colapso */
+}
+
+iframe {
+    height: 65vh !important;
 }

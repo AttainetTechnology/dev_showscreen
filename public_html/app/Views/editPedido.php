@@ -28,23 +28,28 @@
             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#myModal">
                 <i class="fa fa-truck fa-fw"></i> Rutas de transporte
             </button>
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Rutas de transporte</h4>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <iframe src="<?= base_url('Ruta_pedido/rutas/' . $pedido->id_pedido . '/' . $pedido->id_cliente) ?>" frameborder="0" width="100%" height="400px"></iframe>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
+          <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> <!-- Cambié modal-dialog a modal-lg para hacer el modal más ancho -->
+        <div class="modal-content" style="height: 80vh;"> <!-- Hacer que el modal tenga el 80% de la altura de la ventana -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Rutas de transporte</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
+            <div class="modal-body" style="padding: 0; height: 65vh;"> <!-- Elimina el padding y ocupa toda la altura -->
+                <iframe src="<?= base_url('Ruta_pedido/rutas/' . $pedido->id_pedido . '/' . $pedido->id_cliente) ?>" 
+                        frameborder="0" 
+                        width="100%" 
+                        height="65vh" 
+                        style="border: none; height: 100%;"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
             <a href="<?= base_url('pedidos/entregar/' . $pedido->id_pedido) ?>" class="btn btn-success btn-sm">
                 <i class="fa fa-check fa-fw"></i> Entregar Pedido
             </a>
