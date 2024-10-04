@@ -268,7 +268,7 @@ form select.form-control {
     color: white !important;
     border-radius: 8px !important;
     height: 30px;
-    width: 65px;
+    width: 75px;
     border: none;
 }
 
@@ -281,7 +281,7 @@ form select.form-control {
     background-color: #d9534f !important;
     color: white !important;
     border-radius: 8px !important;
-    width: 72px;
+    width: 85px;
     height: 30px;
     border: none;
 
@@ -322,21 +322,13 @@ form#formNuevaRuta {
     background-color: #fff;
     padding: 20px;
     border-radius: 0;
-    /* Sin bordes redondeados */
-    width: 100%;
-    /* Ocupar todo el ancho disponible */
+    width: 95%;
     max-width: none;
-    /* Sin límite de ancho */
     box-shadow: none;
-    /* Sin sombras */
     overflow-y: auto;
-    max-height: calc(100vh - 100px);
-    /* Limitar la altura si es necesario */
     display: flex;
     flex-direction: column;
-    /* Elementos uno debajo del otro */
     gap: 15px;
-    /* Espacio entre los campos */
 }
 
 /* Ajustes para los campos de formulario y su estilo */
@@ -358,24 +350,32 @@ textarea {
     font-size: 1rem;
 }
 
-button {
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    font-size: 1rem;
-    margin-top: 10px;
+
+.btnModaladdruta {
+    display: flex;
+    justify-content: right;
+    gap: 15px;
+    
 }
 
-button.btn-primary {
+.btnGuardarRuta {
     background-color: #007bff;
+    border-radius: 5px;
     color: #fff;
     cursor: pointer;
+    border: none;
+    height: 30px;
+    padding: 0 15px; 
 }
 
-button.btn-secondary {
+.btnVolverRuta {
     background-color: #6c757d;
+    border-radius: 5px;
     color: #fff;
     cursor: pointer;
+    border: none;
+    height: 30px;
+    padding: 0 15px; 
 }
 
 #gridRutas {
@@ -385,7 +385,7 @@ button.btn-secondary {
     /* Ajusta la tabla al ancho máximo disponible */
     position: relative;
     z-index: 1;
-    height: 85vh !important;
+    height: 100vh !important;
 }
 
 .ag-root-wrapper {
@@ -394,5 +394,9 @@ button.btn-secondary {
 }
 
 iframe {
-    height: 65vh !important;
+    min-height: 65vh !important;
+}
+
+.labelAddRuta{
+    margin-bottom: 30px !important;
 }

@@ -28,27 +28,27 @@
             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#myModal">
                 <i class="fa fa-truck fa-fw"></i> Rutas de transporte
             </button>
-          <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> <!-- Cambié modal-dialog a modal-lg para hacer el modal más ancho -->
-        <div class="modal-content" style="height: 80vh;"> <!-- Hacer que el modal tenga el 80% de la altura de la ventana -->
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Rutas de transporte</h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg"> <!-- Cambié modal-dialog a modal-lg para hacer el modal más ancho -->
+                    <div class="modal-content" style="height: 80vh;"> <!-- Hacer que el modal tenga el 80% de la altura de la ventana -->
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Rutas de transporte</h4>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body" style="padding: 0; height: 65vh;"> <!-- Elimina el padding y ocupa toda la altura -->
+                            <iframe src="<?= base_url('Ruta_pedido/rutas/' . $pedido->id_pedido . '/' . $pedido->id_cliente) ?>"
+                                frameborder="0"
+                                width="100%"
+                                height="65vh"
+                                style="border: none; height: 100%;"></iframe>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body" style="padding: 0; height: 65vh;"> <!-- Elimina el padding y ocupa toda la altura -->
-                <iframe src="<?= base_url('Ruta_pedido/rutas/' . $pedido->id_pedido . '/' . $pedido->id_cliente) ?>" 
-                        frameborder="0" 
-                        width="100%" 
-                        height="65vh" 
-                        style="border: none; height: 100%;"></iframe>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
             <a href="<?= base_url('pedidos/entregar/' . $pedido->id_pedido) ?>" class="btn btn-success btn-sm">
                 <i class="fa fa-check fa-fw"></i> Entregar Pedido
@@ -152,93 +152,92 @@
 
         <div id="lineasPedidoGrid" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
         <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Array de estados desde PHP
-    const estadosTexto = <?= json_encode($estados_texto) ?>;
+            document.addEventListener('DOMContentLoaded', function() {
+                // Array de estados desde PHP
+                const estadosTexto = <?= json_encode($estados_texto) ?>;
 
-    // Definición de columnas para ag-Grid
-    const columnDefs = [
-        {
-            headerName: 'Acciones',
-            field: 'acciones',
-            cellRenderer: renderActions,
-            cellClass: 'acciones-col',
-            minWidth: 250,
-            filter: false,
-        },
-        {
-            headerName: 'ID Línea',
-            field: 'id_lineapedido',
-            flex: 1,
-            filter: 'agTextColumnFilter',
-            floatingFilter: true,
-        },
-        {
-            headerName: 'Uds.',
-            field: 'n_piezas',
-            flex: 1,
-            filter: 'agTextColumnFilter',
-            floatingFilter: true,
-        },
-        {
-            headerName: 'Base',
-            field: 'nom_base',
-            flex: 1,
-            filter: 'agTextColumnFilter',
-            floatingFilter: true,
-        },
-        {
-            headerName: 'Producto',
-            field: 'nombre_producto',
-            flex: 1,
-            filter: 'agTextColumnFilter',
-            floatingFilter: true,
-        },
-        {
-            headerName: 'Estado',
-            field: 'estado',
-            flex: 1,
-            filter: 'agTextColumnFilter',
-            floatingFilter: true,
-            valueGetter: function(params) {
-                return estadosTexto[params.data.estado] || 'Estado desconocido';
-            },
-            valueFormatter: function(params) {
-                return estadosTexto[params.data.estado] || 'Estado desconocido';
-            }
-        },
-        {
-            headerName: 'Med. Inicial',
-            field: 'med_inicial',
-            flex: 1,
-            minWidth:130,
-            filter: 'agTextColumnFilter',
-            floatingFilter: true,
-        },
-        {
-            headerName: 'Med. Final',
-            field: 'med_final',
-            flex: 1,
-            filter: 'agTextColumnFilter',
-            floatingFilter: true,
-        },
-        {
-            headerName: 'Total',
-            field: 'total_linea',
-            flex: 1,
-            filter: 'agTextColumnFilter',
-            floatingFilter: true,
-            valueFormatter: params => `${params.value} €`,
-        },
-    ];
+                // Definición de columnas para ag-Grid
+                const columnDefs = [{
+                        headerName: 'Acciones',
+                        field: 'acciones',
+                        cellRenderer: renderActions,
+                        cellClass: 'acciones-col',
+                        minWidth: 250,
+                        filter: false,
+                    },
+                    {
+                        headerName: 'ID Línea',
+                        field: 'id_lineapedido',
+                        flex: 1,
+                        filter: 'agTextColumnFilter',
+                        floatingFilter: true,
+                    },
+                    {
+                        headerName: 'Uds.',
+                        field: 'n_piezas',
+                        flex: 1,
+                        filter: 'agTextColumnFilter',
+                        floatingFilter: true,
+                    },
+                    {
+                        headerName: 'Base',
+                        field: 'nom_base',
+                        flex: 1,
+                        filter: 'agTextColumnFilter',
+                        floatingFilter: true,
+                    },
+                    {
+                        headerName: 'Producto',
+                        field: 'nombre_producto',
+                        flex: 1,
+                        filter: 'agTextColumnFilter',
+                        floatingFilter: true,
+                    },
+                    {
+                        headerName: 'Estado',
+                        field: 'estado',
+                        flex: 1,
+                        filter: 'agTextColumnFilter',
+                        floatingFilter: true,
+                        valueGetter: function(params) {
+                            return estadosTexto[params.data.estado] || 'Estado desconocido';
+                        },
+                        valueFormatter: function(params) {
+                            return estadosTexto[params.data.estado] || 'Estado desconocido';
+                        }
+                    },
+                    {
+                        headerName: 'Med. Inicial',
+                        field: 'med_inicial',
+                        flex: 1,
+                        minWidth: 130,
+                        filter: 'agTextColumnFilter',
+                        floatingFilter: true,
+                    },
+                    {
+                        headerName: 'Med. Final',
+                        field: 'med_final',
+                        flex: 1,
+                        filter: 'agTextColumnFilter',
+                        floatingFilter: true,
+                    },
+                    {
+                        headerName: 'Total',
+                        field: 'total_linea',
+                        flex: 1,
+                        filter: 'agTextColumnFilter',
+                        floatingFilter: true,
+                        valueFormatter: params => `${params.value} €`,
+                    },
+                ];
 
-    // Datos desde PHP
-    const rowData = <?= json_encode($lineas_pedido) ?>;
+                // Datos desde PHP
+                const rowData = <?= json_encode($lineas_pedido) ?>;
 
-    // Función para renderizar acciones en cada fila
-    function renderActions(params) {
-        const id = params.data.id_lineapedido;
-        return `
+                // Función para renderizar acciones en cada fila
+                function renderActions(params) {
+                    const id = params.data.id_lineapedido;
+                    return `
             <button class="btn btnEditar btn-sm" data-id="${id}" data-bs-toggle="modal" data-bs-target="#editarLineaModal">
             <span class="material-symbols-outlined icono">edit</span>Editar</button>
             <a href="<?= base_url('pedidos/imprimir_parte/') ?>${id}" class="btn btnImprimirParte btn-sm" target="_blank">
@@ -246,54 +245,53 @@ document.addEventListener('DOMContentLoaded', function() {
             <a href="<?= base_url('pedidos/deleteLinea/') ?>${id}" class="btn btnEliminar btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
              <span class="material-symbols-outlined icono"> delete </span>Eliminar</a>
         `;
-    }
+                }
 
-    // Opciones de la tabla ag-Grid
-    const gridOptions = {
-        columnDefs: columnDefs,
-        rowData: rowData,
-        pagination: true,
-        paginationPageSize: 10,
-        defaultColDef: {
-            sortable: true,
-            filter: true,
-            floatingFilter: true,
-            resizable: true,
-        },
-        domLayout: 'autoHeight',
-        rowHeight: 70,
-        onGridReady: function(params) {
-            // Ajusta el tamaño de las columnas al tamaño del contenedor
-            params.api.sizeColumnsToFit();
-            // Guardamos el gridApi para usarlo más tarde
-            window.gridApi = params.api;
-        },
-    };
-    // Inicializar la tabla ag-Grid
-    const eGridDiv = document.querySelector('#lineasPedidoGrid');
-    new agGrid.Grid(eGridDiv, gridOptions);
+                // Opciones de la tabla ag-Grid
+                const gridOptions = {
+                    columnDefs: columnDefs,
+                    rowData: rowData,
+                    pagination: true,
+                    paginationPageSize: 10,
+                    defaultColDef: {
+                        sortable: true,
+                        filter: true,
+                        floatingFilter: true,
+                        resizable: true,
+                    },
+                    domLayout: 'autoHeight',
+                    rowHeight: 70,
+                    onGridReady: function(params) {
+                        // Ajusta el tamaño de las columnas al tamaño del contenedor
+                        params.api.sizeColumnsToFit();
+                        // Guardamos el gridApi para usarlo más tarde
+                        window.gridApi = params.api;
+                    },
+                };
+                // Inicializar la tabla ag-Grid
+                const eGridDiv = document.querySelector('#lineasPedidoGrid');
+                new agGrid.Grid(eGridDiv, gridOptions);
 
-    // Botón para eliminar filtros
-    document.querySelector('#clear-filters').addEventListener('click', function() {
-        if (window.gridApi) {
-            window.gridApi.setFilterModel(null); // Eliminar todos los filtros
-            window.gridApi.onFilterChanged(); // Forzar la actualización de los datos
-        }
-    });
+                // Botón para eliminar filtros
+                document.querySelector('#clear-filters').addEventListener('click', function() {
+                    if (window.gridApi) {
+                        window.gridApi.setFilterModel(null); // Eliminar todos los filtros
+                        window.gridApi.onFilterChanged(); // Forzar la actualización de los datos
+                    }
+                });
 
-    // Botón para recargar la página
-    document.querySelector('#reload-page').addEventListener('click', function() {
-        location.reload();
-    });
+                // Botón para recargar la página
+                document.querySelector('#reload-page').addEventListener('click', function() {
+                    location.reload();
+                });
 
-    // Ajustar las columnas al redimensionar la ventana
-    window.addEventListener('resize', function() {
-        if (window.gridApi) {
-            window.gridApi.sizeColumnsToFit();
-        }
-    });
-});
-
+                // Ajustar las columnas al redimensionar la ventana
+                window.addEventListener('resize', function() {
+                    if (window.gridApi) {
+                        window.gridApi.sizeColumnsToFit();
+                    }
+                });
+            });
         </script>
         <!-- Modal HTML (Definido una sola vez en la página) -->
         <div class="modal fade" id="editarLineaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
