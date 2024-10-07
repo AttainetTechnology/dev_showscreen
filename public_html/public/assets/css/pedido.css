@@ -211,13 +211,12 @@ form select.form-control {
 .btnEliminarfiltros {
     flex-grow: 0;
 }
-
+/* 
 .modal-body {
     margin: 23px !important;
     margin-top: 5px !important;
 
-
-}
+} */
 
 .tituloRutas {
     font-size: 25px;
@@ -313,21 +312,36 @@ form select.form-control {
     border: none;
     height: 30px;
     padding: 0 15px; 
+    font-size: 17px !important;
 }
 
 .btnVolverRuta {
-    background-color: #6c757d;
+    background-color: #B7B7B7 !important;
+    color: #F5F5F7 !important;
     border-radius: 5px;
-    color: #fff;
     cursor: pointer;
     border: none;
     height: 30px;
     padding: 0 15px; 
+    font-size: 17px !important;
+}
+
+.btnVolverRuta:hover {
+    background-color: #949292 !important;
+    color: #F5F5F7 !important;
 }
 
 
 .ag-root-wrapper {
     min-width: 1200px;
-    /* Establece un ancho mínimo que evite el colapso */
+
 }
 
+.modal.fade .modal-dialog {
+    max-height: 90vh;
+}
+
+.modal-body {
+    max-height: 70vh; 
+
+}

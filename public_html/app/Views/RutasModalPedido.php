@@ -1,12 +1,12 @@
-
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery primero, ya que algunos scripts pueden depender de él -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap después de jQuery -->
-<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script> <!-- ag-Grid al final -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
+
 <!-- Formulario para añadir una nueva ruta -->
 <div id="addRutaForm">
     <form id="formNuevaRuta" method="POST" action="<?= base_url('Ruta_pedido/guardarRuta') ?>">
@@ -70,60 +70,61 @@
 
 <!-- Añadir el script justo antes del cierre del body -->
 <script>
-$(document).ready(function() {
-    // Obtener la fecha de hoy en formato 'YYYY-MM-DD'
-    var today = new Date().toISOString().split('T')[0];
-    if ($('#fecha_ruta').val() === '') {
-        $('#fecha_ruta').val(today);
-    }
+    $(document).ready(function() {
+        // Inicializar la fecha de hoy en el campo de fecha si está vacío
+        var today = new Date().toISOString().split('T')[0];
+        if ($('#fecha_ruta').val() === '') {
+            $('#fecha_ruta').val(today);
+        }
 
-    // Mostrar formulario y ocultar botones
-    $('#openAddRuta').on('click', function() {
-        $('#botonesRuta, #gridRutas').hide();   // Ocultar los botones y la tabla
-        $('#addRutaForm').show();                // Mostrar el formulario
-    });
+        // Función para abrir el formulario de añadir ruta
+        $('#openAddRuta').on('click', function() {
+            $('#botonesRuta').hide(); // Oculta los botones
+            $('#gridRutas').hide(); // Oculta la tabla
+            $('#addRutaForm').show(); // Muestra el formulario
+            console.log("Formulario de añadir ruta abierto, botones y tabla ocultos.");
+        });
 
-    // Al hacer clic en el botón "Guardar Ruta"
-    $(document).on('submit', '#formNuevaRuta', function(event) {
-        event.preventDefault();
-        var formData = $(this).serialize();
-        $('.btnGuardarRuta').prop('disabled', true);
+        // Función para volver a la tabla y mostrar los botones
+        $('#volverTabla').on('click', function() {
+            $('#addRutaForm').hide(); // Oculta el formulario
+            $('#gridRutas').show(); // Muestra la tabla
+            $('#botonesRuta').show(); // Muestra los botones
+            console.log("Volver a la tabla, botones y tabla mostrados.");
+        });
 
-        $.ajax({
-            url: '<?= base_url('Ruta_pedido/guardarRuta') ?>',
-            method: 'POST',
-            data: formData,
-            success: function(response) {
-                if (response.success) {
-                    // Recargar la página para volver a la vista de la tabla
-                    window.location.href = window.location.href.split('?')[0] + '?openModal=1';
-                } else {
-                    alert('Error: ' + response.error);
+        // Enviar el formulario sin recargar la página
+        $('#formNuevaRuta').on('submit', function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $('.btnGuardarRuta').prop('disabled', true);
+
+            $.ajax({
+                url: '<?= base_url('Ruta_pedido/guardarRuta') ?>',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = window.location.href.split('?')[0] + '?openModal=1';
+                    } else {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function() {
+                    alert('Error al guardar la ruta.');
+                },
+                complete: function() {
+                    $('.btnGuardarRuta').prop('disabled', false);
                 }
-            },
-            error: function() {
-                alert('Error al guardar la ruta.');
-            },
-            complete: function() {
-                $('.btnGuardarRuta').prop('disabled', false);
+            });
+        });
+
+        // Botón para limpiar filtros en la tabla
+        $('#clear-filters-rutas').on('click', function() {
+            if (window.gridApiRutas) {
+                window.gridApiRutas.setFilterModel(null);
+                window.gridApiRutas.onFilterChanged();
             }
         });
     });
-
-    // Volver a la tabla y mostrar los botones
-    $('#volverTabla').on('click', function() {
-        $('#addRutaForm').hide();           // Ocultar el formulario
-        $('#gridRutas, #botonesRuta').show(); // Mostrar la tabla y los botones
-    });
-
-    // Limpiar filtros en la tabla
-    $('#clear-filters-rutas').on('click', function() {
-        if (window.gridApiRutas) {
-            window.gridApiRutas.setFilterModel(null);
-            window.gridApiRutas.onFilterChanged();
-        }
-    });
-});
-
-
 </script>

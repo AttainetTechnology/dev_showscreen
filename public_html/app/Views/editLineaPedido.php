@@ -6,9 +6,10 @@
     <h5 class="modal-title" id="addLineaPedidoLabel">Añadir Línea de Pedido</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<div class="modal-body">
+<div class="content-body">
     <form class="editLineaForm" action="<?= base_url('pedidos/updateLineaPedido/' . $linea_pedido['id_lineapedido']) ?>" method="post" data-linea-id="<?= $linea_pedido['id_lineapedido'] ?>">
         <input type="hidden" name="id_pedido" value="<?= esc($linea_pedido['id_pedido']) ?>">
+        <br>
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary ">Guardar Cambios</button>
         </div>
@@ -97,9 +98,9 @@
         </div>
         <br>
         <div class="modal-footer">
-<button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-</div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
     </form>
 </div>
 
