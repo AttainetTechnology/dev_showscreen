@@ -71,37 +71,59 @@
 <!-- Añadir el script justo antes del cierre del body -->
 <script>
 $(document).ready(function() {
+    // Obtener la fecha de hoy en formato 'YYYY-MM-DD'
+    var today = new Date().toISOString().split('T')[0];
+    if ($('#fecha_ruta').val() === '') {
+        $('#fecha_ruta').val(today);
+    }
+
+    // Mostrar formulario y ocultar botones
+    $('#openAddRuta').on('click', function() {
+        $('#botonesRuta, #gridRutas').hide();   // Ocultar los botones y la tabla
+        $('#addRutaForm').show();                // Mostrar el formulario
+    });
+
     // Al hacer clic en el botón "Guardar Ruta"
     $(document).on('submit', '#formNuevaRuta', function(event) {
-        event.preventDefault(); // Prevenir el comportamiento estándar del formulario
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $('.btnGuardarRuta').prop('disabled', true);
 
-        var formData = $(this).serialize(); // Serializar los datos del formulario
-
-        // Realizar la solicitud AJAX para guardar la ruta
         $.ajax({
             url: '<?= base_url('Ruta_pedido/guardarRuta') ?>',
             method: 'POST',
             data: formData,
             success: function(response) {
                 if (response.success) {
-                    // Volver a mostrar la tabla de rutas y ocultar el formulario
-                    $('#addRutaForm').hide(); // Esconder el formulario de añadir/editar
-                    $('#gridRutas').show();   // Mostrar la tabla de rutas actualizada
-
+                    // Recargar la página para volver a la vista de la tabla
+                    window.location.href = window.location.href.split('?')[0] + '?openModal=1';
                 } else {
                     alert('Error: ' + response.error);
                 }
             },
             error: function() {
                 alert('Error al guardar la ruta.');
+            },
+            complete: function() {
+                $('.btnGuardarRuta').prop('disabled', false);
             }
         });
     });
 
-    // Botón "Volver" al hacer clic para regresar a la tabla
+    // Volver a la tabla y mostrar los botones
     $('#volverTabla').on('click', function() {
-        $('#addRutaForm').hide();  // Ocultar el formulario
-        $('#gridRutas').show();    // Mostrar la tabla
+        $('#addRutaForm').hide();           // Ocultar el formulario
+        $('#gridRutas, #botonesRuta').show(); // Mostrar la tabla y los botones
+    });
+
+    // Limpiar filtros en la tabla
+    $('#clear-filters-rutas').on('click', function() {
+        if (window.gridApiRutas) {
+            window.gridApiRutas.setFilterModel(null);
+            window.gridApiRutas.onFilterChanged();
+        }
     });
 });
+
+
 </script>

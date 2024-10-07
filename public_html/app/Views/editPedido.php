@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                            <!-- <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button> -->
                         </div>
                     </div>
                 </div>
@@ -307,31 +307,34 @@
     </div>
 
     <script>
-$(document).ready(function() {
-    // Al hacer clic en el botón, cargar el contenido dentro del modal
-    $('#openModal').on('click', function() {
-        var pedidoId = '<?= $pedido->id_pedido ?>';
-        var clienteId = '<?= $pedido->id_cliente ?>';
+        $(document).ready(function() {
 
-        // Mostrar mensaje de carga mientras se obtiene el contenido
-        $('#modalContent').html('<div class="text-center"><p>Cargando...</p></div>');
+            // Al hacer clic en el botón, cargar el contenido dentro del modal
+            $('#openModal').on('click', function() {
+                var pedidoId = '<?= $pedido->id_pedido ?>';
+                var clienteId = '<?= $pedido->id_cliente ?>';
 
-        // Hacer la solicitud AJAX para obtener las rutas
-        $.ajax({
-            url: '<?= base_url('Ruta_pedido/rutas') ?>/' + pedidoId + '/' + clienteId,
-            method: 'GET',
-            success: function(response) {
-                if (response.error) {
-                    $('#modalContent').html('<div class="alert alert-danger">' + response.error + '</div>');
-                    return;
-                }
+                // Mostrar mensaje de carga mientras se obtiene el contenido
+                $('#modalContent').html('<div class="text-center"><p>Cargando...</p></div>');
 
-                // Limpiar el contenido anterior del modal y mostrar la estructura
-                $('#modalContent').html(`
+                // Hacer la solicitud AJAX para obtener las rutas
+                $.ajax({
+                    url: '<?= base_url('Ruta_pedido/rutas') ?>/' + pedidoId + '/' + clienteId,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.error) {
+                            $('#modalContent').html('<div class="alert alert-danger">' + response.error + '</div>');
+                            return;
+                        }
+
+                        // Limpiar el contenido anterior del modal y mostrar la estructura
+                        $('#modalContent').html(`
                     <div id="rutasContainer">
-                        <div class="d-flex justify-content-between align-items-center botoneseditPedido">
+                        <div id="botonesRuta" class="d-flex justify-content-between align-items-center botoneseditRuta">
                             <button type="button" class="btn btnAddRuta" id="openAddRuta" style="flex-grow: 0;">+ Añadir Ruta</button>
-                            <button id="clear-filters" class="btn btnEliminarfiltrosRuta" style="flex-grow: 0;">Eliminar Filtros</button>
+                <!-- Botón "Eliminar Filtros" dentro del modal -->
+                <button id="clear-filters-rutas" class="btn btnEliminarfiltrosRuta" style="flex-grow: 0;">Eliminar Filtros</button>
+
                         </div>
                         <br>
                         <div id="gridRutas" class="ag-theme-alpine" style="height: 800px; width: 100%;"></div>
@@ -339,206 +342,248 @@ $(document).ready(function() {
                     <div id="addRutaForm" style="display:none;"></div>
                 `);
 
-                // Inicializar ag-Grid con los datos de la respuesta
-                initializeAgGrid(response.rutas, response.poblacionesMap, response.transportistas);
-                setupEventHandlers(); // Aquí se configuran los eventos para "Añadir" y "Editar"
+                        // Inicializar ag-Grid con los datos de la respuesta
+                        initializeAgGrid(response.rutas, response.poblacionesMap, response.transportistas);
+                        setupEventHandlers();
+                    },
+                    error: function() {
+                        $('#modalContent').html('<div class="alert alert-danger">Error al cargar las rutas.</div>');
+                    }
+                });
+            });
+
+            // Función para inicializar ag-Grid
+            function initializeAgGrid(rutas, poblacionesMap, transportistasMap) {
+                var estadoMap = {
+                    1: 'No preparado',
+                    2: 'Recogido',
+                    0: 'Pendiente'
+                };
+
+                var columnDefs = [{
+                        headerName: "Acciones",
+                        field: "acciones",
+                        cellRenderer: function(params) {
+                            var editBtn = `<button class="btn btnEditarRuta" data-id="${params.data.id_ruta}" onclick="editarRuta(${params.data.id_ruta})">
+                    <span class="material-symbols-outlined icono">edit</span>Editar</button>`;
+                            var deleteBtn = `<button class="btn btnEliminarRuta" data-id="${params.data.id_ruta}" onclick="eliminarRuta(${params.data.id_ruta})">
+                    <span class="material-symbols-outlined icono">delete</span>Eliminar</button>`;
+                            return `${editBtn} ${deleteBtn}`;
+                        },
+                        cellClass: 'acciones-col',
+                        minWidth: 190,
+                        filter: false
+                    },
+                    {
+                        headerName: "Población",
+                        field: "poblacion",
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    },
+                    {
+                        headerName: "Lugar",
+                        field: "lugar",
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    },
+                    {
+                        headerName: "Recogida/Entrega",
+                        field: "recogida_entrega",
+                        minWidth: 190,
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    },
+                    {
+                        headerName: "Transportista",
+                        field: "transportista",
+                        minWidth: 150,
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    },
+                    {
+                        headerName: "Fecha",
+                        field: "fecha_ruta",
+                        flex: 1,
+                        filter: 'agDateColumnFilter'
+                    },
+                    {
+                        headerName: "Estado",
+                        field: "estado_ruta",
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    }
+                ];
+
+                var rowData = rutas.map(function(ruta) {
+                    return {
+                        id_ruta: ruta.id_ruta,
+                        poblacion: poblacionesMap[ruta.poblacion] || 'Desconocido',
+                        lugar: ruta.lugar,
+                        recogida_entrega: ruta.recogida_entrega == 1 ? 'Recogida' : 'Entrega',
+                        transportista: transportistasMap[ruta.transportista] || 'No asignado',
+                        fecha_ruta: ruta.fecha_ruta,
+                        estado_ruta: estadoMap[ruta.estado_ruta] || 'Desconocido'
+                    };
+                });
+
+                var gridDiv = document.querySelector('#gridRutas');
+                var gridOptions = {
+                    columnDefs: columnDefs,
+                    rowData: rowData,
+                    pagination: true,
+                    paginationPageSize: 10,
+                    defaultColDef: {
+                        sortable: true,
+                        filter: true,
+                        floatingFilter: true,
+                        resizable: true
+                    },
+                    rowHeight: 70,
+                    domLayout: 'normal',
+                    onGridReady: function(params) {
+                        params.api.sizeColumnsToFit();
+                        window.gridApiRutas = params.api;
+                    },
+                    localeText: {
+                        noRowsToShow: 'No hay registros disponibles.'
+                    }
+                };
+
+                var gridDiv = document.querySelector('#gridRutas');
+        new agGrid.Grid(gridDiv, gridOptions);
+
+        // Configurar el botón "Eliminar Filtros" para la tabla de rutas
+        $('#clear-filters-rutas').on('click', function() {
+            if (window.gridApiRutas) {
+                window.gridApiRutas.setFilterModel(null); // Eliminar todos los filtros en la tabla de rutas
+                window.gridApiRutas.onFilterChanged(); // Actualizar la tabla
+            }
+        });
+    }    
+
+            // Configurar eventos para "Añadir" y "Editar" Ruta
+            function setupEventHandlers() {
+                $('#formNuevaRuta').on('submit', function(event) {
+                    event.preventDefault();
+                    $(this).unbind('submit').submit();
+                });
+
+                // Botón para añadir una nueva ruta
+                $('#openAddRuta').on('click', function() {
+                    var pedidoId = '<?= $pedido->id_pedido ?>';
+                    var clienteId = '<?= $pedido->id_cliente ?>';
+
+                    // Mostrar formulario de añadir ruta
+ $.ajax({
+            url: '<?= base_url('Ruta_pedido/mostrarFormulario') ?>/' + pedidoId + '/' + clienteId,
+            method: 'GET',
+            success: function(response) {
+                $('#addRutaForm').html(response);
+                $('#addRutaForm').show();       // Mostrar el formulario de añadir/editar ruta
+                $('#gridRutas, #botonesRuta').hide(); // Ocultar la tabla y los botones
+                $('#rutasModalLabel').text('Añadir Ruta'); // Cambiar el título del modal
             },
             error: function() {
-                $('#modalContent').html('<div class="alert alert-danger">Error al cargar las rutas.</div>');
+                alert('Error al cargar el formulario de ruta.');
             }
         });
     });
 
-    // Función para inicializar ag-Grid
-    function initializeAgGrid(rutas, poblacionesMap, transportistasMap) {
-        var estadoMap = {
-            1: 'No preparado',
-            2: 'Recogido',
-            0: 'Pendiente'
-        };
 
-        var columnDefs = [
-            {
-                headerName: "Acciones",
-                field: "acciones",
-                cellRenderer: function(params) {
-                    var editBtn = `<button class="btn btnEditarRuta" data-id="${params.data.id_ruta}" onclick="editarRuta(${params.data.id_ruta})">
-                    <span class="material-symbols-outlined icono">edit</span>Editar</button>`;
-                    var deleteBtn = `<button class="btn btnEliminarRuta" data-id="${params.data.id_ruta}" onclick="eliminarRuta(${params.data.id_ruta})">
-                    <span class="material-symbols-outlined icono">delete</span>Eliminar</button>`;
-                    return `${editBtn} ${deleteBtn}`;
-                },
-                cellClass: 'acciones-col',
-                minWidth: 190,
-                filter: false
-            },
-            { headerName: "Población", field: "poblacion", flex: 1, filter: 'agTextColumnFilter' },
-            { headerName: "Lugar", field: "lugar", flex: 1, filter: 'agTextColumnFilter' },
-            { headerName: "Recogida/Entrega", field: "recogida_entrega", minWidth: 190, flex: 1, filter: 'agTextColumnFilter' },
-            { headerName: "Transportista", field: "transportista", minWidth: 150, flex: 1, filter: 'agTextColumnFilter' },
-            { headerName: "Fecha", field: "fecha_ruta", flex: 1, filter: 'agDateColumnFilter' },
-            { headerName: "Estado", field: "estado_ruta", flex: 1, filter: 'agTextColumnFilter' }
-        ];
+                // Botón para editar una ruta existente
+                window.editarRuta = function(id_ruta) {
+                    var pedidoId = '<?= $pedido->id_pedido ?>';
+                    var clienteId = '<?= $pedido->id_cliente ?>';
 
-        var rowData = rutas.map(function(ruta) {
-            return {
-                id_ruta: ruta.id_ruta,
-                poblacion: poblacionesMap[ruta.poblacion] || 'Desconocido',
-                lugar: ruta.lugar,
-                recogida_entrega: ruta.recogida_entrega == 1 ? 'Recogida' : 'Entrega',
-                transportista: transportistasMap[ruta.transportista] || 'No asignado',
-                fecha_ruta: ruta.fecha_ruta,
-                estado_ruta: estadoMap[ruta.estado_ruta] || 'Desconocido'
-            };
-        });
-
-        var gridDiv = document.querySelector('#gridRutas');
-        var gridOptions = {
-            columnDefs: columnDefs,
-            rowData: rowData,
-            pagination: true,
-            paginationPageSize: 10,
-            defaultColDef: {
-                sortable: true,
-                filter: true,
-                floatingFilter: true,
-                resizable: true
-            },
-            rowHeight: 70,
-            domLayout: 'normal',
-            onGridReady: function(params) {
-                params.api.sizeColumnsToFit();
-            },
-            localeText: {
-                noRowsToShow: 'No hay registros disponibles.'
-            }
-        };
-
-        // Inicializar ag-Grid
-        new agGrid.Grid(gridDiv, gridOptions);
-    }
-
-    // Configurar eventos para "Añadir" y "Editar" Ruta
-    function setupEventHandlers() {
-        $('#formNuevaRuta').on('submit', function(event) {
-            event.preventDefault();
-            $(this).unbind('submit').submit();
-        });
-
-        // Botón para añadir una nueva ruta
-        $('#openAddRuta').on('click', function() {
-            var pedidoId = '<?= $pedido->id_pedido ?>';
-            var clienteId = '<?= $pedido->id_cliente ?>';
-
-            // Mostrar formulario de añadir ruta
-            $.ajax({
-                url: '<?= base_url('Ruta_pedido/mostrarFormulario') ?>/' + pedidoId + '/' + clienteId,
-                method: 'GET',
-                success: function(response) {
-                    // Cargar el formulario
-                    $('#addRutaForm').html(response);
-                    $('#gridRutas').hide();
-                    $('#addRutaForm').show();
-                    $('#rutasModalLabel').text('Añadir Ruta'); // Cambiar el título del modal
-                },
-                error: function() {
-                    alert('Error al cargar el formulario de ruta.');
-                }
-            });
-        });
-
-        // Botón para editar una ruta existente
-        window.editarRuta = function(id_ruta) {
-            var pedidoId = '<?= $pedido->id_pedido ?>';
-            var clienteId = '<?= $pedido->id_cliente ?>';
-
-            // Mostrar formulario de edición de ruta
-            $.ajax({
-                url: '<?= base_url('Ruta_pedido/mostrarFormulario') ?>/' + pedidoId + '/' + clienteId,
-                method: 'GET',
-                success: function(response) {
-                    // Cargar el formulario
-                    $('#addRutaForm').html(response);
-                    $('#gridRutas').hide();
-                    $('#addRutaForm').show();
-                    $('#rutasModalLabel').text('Editar Ruta'); // Cambiar el título del modal
-
-                    // Cargar los datos de la ruta seleccionada
+                    // Mostrar formulario de edición de ruta
                     $.ajax({
-                        url: '<?= base_url('Ruta_pedido/obtenerRuta') ?>/' + id_ruta,
+                        url: '<?= base_url('Ruta_pedido/mostrarFormulario') ?>/' + pedidoId + '/' + clienteId,
                         method: 'GET',
-                        success: function(rutaResponse) {
-                            // Rellenar el formulario con los datos obtenidos
-                            $('#poblacion').val(rutaResponse.poblacion);
-                            $('#lugar').val(rutaResponse.lugar);
-                            $('#recogida_entrega').val(rutaResponse.recogida_entrega);
-                            $('#transportista').val(rutaResponse.transportista);
-                            $('#fecha_ruta').val(rutaResponse.fecha_ruta);
-                            $('#observaciones').val(rutaResponse.observaciones);
-                            $('#id_ruta').val(rutaResponse.id_ruta);
-                            $('#estadoRutaDiv').show(); // Mostrar el estado
-                            $('#estado_ruta').val(rutaResponse.estado_ruta);
+                        success: function(response) {
+                            // Cargar el formulario
+                            $('#addRutaForm').html(response);
+                            $('#gridRutas').hide();
+                            $('#gridRutas, #botonesRuta').hide();
+                            $('#addRutaForm').show();
+                            $('#rutasModalLabel').text('Editar Ruta');
+
+                            // Cargar los datos de la ruta seleccionada
+                            $.ajax({
+                                url: '<?= base_url('Ruta_pedido/obtenerRuta') ?>/' + id_ruta,
+                                method: 'GET',
+                                success: function(rutaResponse) {
+                                    // Rellenar el formulario con los datos obtenidos
+                                    $('#poblacion').val(rutaResponse.poblacion);
+                                    $('#lugar').val(rutaResponse.lugar);
+                                    $('#recogida_entrega').val(rutaResponse.recogida_entrega);
+                                    $('#transportista').val(rutaResponse.transportista);
+                                    $('#fecha_ruta').val(rutaResponse.fecha_ruta);
+                                    $('#observaciones').val(rutaResponse.observaciones);
+                                    $('#id_ruta').val(rutaResponse.id_ruta);
+                                    $('#estadoRutaDiv').show(); // Mostrar el estado
+                                    $('#estado_ruta').val(rutaResponse.estado_ruta);
+                                },
+                                error: function() {
+                                    alert('Error al cargar los datos de la ruta.');
+                                }
+                            });
                         },
                         error: function() {
-                            alert('Error al cargar los datos de la ruta.');
+                            alert('Error al cargar el formulario de ruta.');
                         }
                     });
-                },
-                error: function() {
-                    alert('Error al cargar el formulario de ruta.');
-                }
-            });
-        };
+                };
 
-        // Botón para volver a la tabla de rutas
-        $('#volverTabla').on('click', function() {
-            $('#addRutaForm').hide();
-            $('#gridRutas').show();
-            $('#rutasModalLabel').text('Rutas del Pedido');
-        });
-    }
-
-    // Función para eliminar una ruta
-    window.eliminarRuta = function(id_ruta) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta ruta?')) {
-        $.ajax({
-            url: '<?= base_url('Ruta_pedido/delete') ?>/' + id_ruta,
-            method: 'DELETE',
-            success: function(response) {
-                if (response.success) {
-                    alert(response.message); // Mostrar el mensaje de éxito
-                    // Recargar solo el contenido del modal, no toda la página
-                    cargarRutasModal(); // Función que recarga las rutas dentro del modal
-                } else {
-                    cargarRutasModal(); // Función que recarga las rutas dentro del modal
-                }
-            },
-            error: function(xhr) {
-                alert('Error al eliminar la ruta: ' + xhr.responseText); // Manejo de errores
-            }
-        });
-    }
-};
-function cargarRutasModal() {
-    var pedidoId = '<?= $pedido->id_pedido ?>';
-    var clienteId = '<?= $pedido->id_cliente ?>';
-
-    // Hacer la solicitud AJAX para obtener las rutas actualizadas
-    $.ajax({
-        url: '<?= base_url('Ruta_pedido/rutas') ?>/' + pedidoId + '/' + clienteId,
-        method: 'GET',
-        success: function(response) {
-            if (response.error) {
-                $('#modalContent').html('<div class="alert alert-danger">' + response.error + '</div>');
-                return;
+                // Botón para volver a la tabla de rutas
+                $('#volverTabla').on('click', function() {
+                    $('#addRutaForm').hide();
+                    $('#gridRutas').show();
+                    $('#rutasModalLabel').text('Rutas del Pedido');
+                });
             }
 
-            // Actualizar el contenido del modal con las rutas
-            $('#modalContent').html(`
+            // Función para eliminar una ruta
+            window.eliminarRuta = function(id_ruta) {
+                if (confirm('¿Estás seguro de que deseas eliminar esta ruta?')) {
+                    $.ajax({
+                        url: '<?= base_url('Ruta_pedido/delete') ?>/' + id_ruta,
+                        method: 'DELETE',
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.message); // Mostrar el mensaje de éxito
+                                // Recargar solo el contenido del modal, no toda la página
+                                cargarRutasModal(); // Función que recarga las rutas dentro del modal
+                            } else {
+                                cargarRutasModal(); // Función que recarga las rutas dentro del modal
+                            }
+                        },
+                        error: function(xhr) {
+                            alert('Error al eliminar la ruta: ' + xhr.responseText); // Manejo de errores
+                        }
+                    });
+                }
+            };
+
+            function cargarRutasModal() {
+                var pedidoId = '<?= $pedido->id_pedido ?>';
+                var clienteId = '<?= $pedido->id_cliente ?>';
+
+                // Hacer la solicitud AJAX para obtener las rutas actualizadas
+                $.ajax({
+                    url: '<?= base_url('Ruta_pedido/rutas') ?>/' + pedidoId + '/' + clienteId,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.error) {
+                            $('#modalContent').html('<div class="alert alert-danger">' + response.error + '</div>');
+                            return;
+                        }
+
+                        // Actualizar el contenido del modal con las rutas
+                        $('#modalContent').html(`
                 <div id="rutasContainer">
-                    <div class="d-flex justify-content-between align-items-center botoneseditPedido">
+                    <div id="botonesRuta"  class="d-flex justify-content-between align-items-center botoneseditRuta">
                         <button type="button" class="btn btnAddRuta" id="openAddRuta" style="flex-grow: 0;">+ Añadir Ruta</button>
-                        <button id="clear-filters" class="btn btnEliminarfiltrosRuta" style="flex-grow: 0;">Eliminar Filtros</button>
+                        <button id="clear-filters-rutas" class="btn btnEliminarfiltrosRuta" style="flex-grow: 0;">Eliminar Filtros</button>
                     </div>
                     <br>
                     <div id="gridRutas" class="ag-theme-alpine" style="height: 800px; width: 100%;"></div>
@@ -546,48 +591,171 @@ function cargarRutasModal() {
                 <div id="addRutaForm" style="display:none;"></div>
             `);
 
-            // Inicializar de nuevo la tabla de rutas con los datos actualizados
-            initializeAgGrid(response.rutas, response.poblacionesMap, response.transportistas);
-            setupEventHandlers(); // Volver a configurar los eventos para "Añadir" y "Editar"
-        },
-        error: function() {
-            $('#modalContent').html('<div class="alert alert-danger">Error al cargar las rutas.</div>');
-        }
-    });
-}
-
-
-});
-
-        $(document).ready(function() {
-
-            // Limpiar filtros individuales
-            $('.clear-filter').on('click', function() {
-                const filterId = $(this).data('filter');
-                const element = document.getElementById(filterId);
-
-                if (element.tagName === 'SELECT') {
-                    element.selectedIndex = 0;
-                } else {
-                    element.value = '';
-                }
-
-                applyFilters();
-            });
-
-            // Limpiar todos los filtros
-            $('#clear-filters').on('click', function() {
-                Object.keys(filters).forEach(filterId => {
-                    const element = document.getElementById(filterId);
-                    if (element.tagName === 'SELECT') {
-                        element.selectedIndex = 0;
-                    } else {
-                        element.value = '';
+                        // Inicializar de nuevo la tabla de rutas con los datos actualizados
+                        initializeAgGrid(response.rutas, response.poblacionesMap, response.transportistas);
+                        setupEventHandlers(); // Volver a configurar los eventos para "Añadir" y "Editar"
+                    },
+                    error: function() {
+                        $('#modalContent').html('<div class="alert alert-danger">Error al cargar las rutas.</div>');
                     }
                 });
+            }
 
-                applyFilters();
+        });
+        $(document).ready(function() {
+            function abrirModalSiEsNecesario() {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('openModal')) {
+                    $('#openModal').click();
+                }
+            }
+            abrirModalSiEsNecesario();
+
+            // Evento para cargar el contenido dentro del modal
+            $('#openModal').on('click', function() {
+                var pedidoId = '<?= $pedido->id_pedido ?>';
+                var clienteId = '<?= $pedido->id_cliente ?>';
+
+                $('#modalContent').html('<div class="text-center"><p>Cargando...</p></div>');
+
+                $.ajax({
+                    url: '<?= base_url('Ruta_pedido/rutas') ?>/' + pedidoId + '/' + clienteId,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.error) {
+                            $('#modalContent').html('<div class="alert alert-danger">' + response.error + '</div>');
+                            return;
+                        }
+
+                        $('#modalContent').html(`
+                    <div id="rutasContainer">
+                        <div id="botonesRuta" class="d-flex justify-content-between align-items-center botoneseditRuta">
+                            <button type="button" class="btn btnAddRuta" id="openAddRuta" style="flex-grow: 0;">+ Añadir Ruta</button>
+                            <button id="clear-filters-rutas" class="btn btnEliminarfiltrosRuta" style="flex-grow: 0;">Eliminar Filtros</button>
+                        </div>
+                        <br>
+                        <div id="gridRutas" class="ag-theme-alpine" style="height: 800px; width: 100%;"></div>
+                    </div>
+                    <div id="addRutaForm" style="display:none;"></div>
+                `);
+
+                        initializeAgGrid(response.rutas, response.poblacionesMap, response.transportistas);
+                        setupEventHandlers();
+                    },
+                    error: function() {
+                        $('#modalContent').html('<div class="alert alert-danger">Error al cargar las rutas.</div>');
+                    }
+                });
             });
+            // Función para inicializar ag-Grid
+            function initializeAgGrid(rutas, poblacionesMap, transportistasMap) {
+                var estadoMap = {
+                    1: 'No preparado',
+                    2: 'Recogido',
+                    0: 'Pendiente'
+                };
+
+                var columnDefs = [{
+                        headerName: "Acciones",
+                        field: "acciones",
+                        cellRenderer: function(params) {
+                            var editBtn = `<button class="btn btnEditarRuta" data-id="${params.data.id_ruta}" onclick="editarRuta(${params.data.id_ruta})">
+                    <span class="material-symbols-outlined icono">edit</span>Editar</button>`;
+                            var deleteBtn = `<button class="btn btnEliminarRuta" data-id="${params.data.id_ruta}" onclick="eliminarRuta(${params.data.id_ruta})">
+                    <span class="material-symbols-outlined icono">delete</span>Eliminar</button>`;
+                            return `${editBtn} ${deleteBtn}`;
+                        },
+                        cellClass: 'acciones-col',
+                        minWidth: 190,
+                        filter: false
+                    },
+                    {
+                        headerName: "Población",
+                        field: "poblacion",
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    },
+                    {
+                        headerName: "Lugar",
+                        field: "lugar",
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    },
+                    {
+                        headerName: "Recogida/Entrega",
+                        field: "recogida_entrega",
+                        minWidth: 190,
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    },
+                    {
+                        headerName: "Transportista",
+                        field: "transportista",
+                        minWidth: 150,
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    },
+                    {
+                        headerName: "Fecha",
+                        field: "fecha_ruta",
+                        flex: 1,
+                        filter: 'agDateColumnFilter'
+                    },
+                    {
+                        headerName: "Estado",
+                        field: "estado_ruta",
+                        flex: 1,
+                        filter: 'agTextColumnFilter'
+                    }
+                ];
+
+                var rowData = rutas.map(function(ruta) {
+                    return {
+                        id_ruta: ruta.id_ruta,
+                        poblacion: poblacionesMap[ruta.poblacion] || 'Desconocido',
+                        lugar: ruta.lugar,
+                        recogida_entrega: ruta.recogida_entrega == 1 ? 'Recogida' : 'Entrega',
+                        transportista: transportistasMap[ruta.transportista] || 'No asignado',
+                        fecha_ruta: ruta.fecha_ruta,
+                        estado_ruta: estadoMap[ruta.estado_ruta] || 'Desconocido'
+                    };
+                });
+
+                var gridDiv = document.querySelector('#gridRutas');
+                var gridOptions = {
+                    columnDefs: columnDefs,
+                    rowData: rowData,
+                    pagination: true,
+                    paginationPageSize: 10,
+                    defaultColDef: {
+                        sortable: true,
+                        filter: true,
+                        floatingFilter: true,
+                        resizable: true
+                    },
+                    rowHeight: 70,
+                    domLayout: 'normal',
+                    onGridReady: function(params) {
+                        params.api.sizeColumnsToFit();
+                        window.gridApi = params.api;
+                    },
+                    localeText: {
+                        noRowsToShow: 'No hay registros disponibles.'
+                    }
+                };
+
+                var gridDiv = document.querySelector('#gridRutas');
+        new agGrid.Grid(gridDiv, gridOptions);
+
+        // Configurar el botón "Eliminar Filtros" para la tabla de rutas
+        $('#clear-filters-rutas').on('click', function() {
+            if (window.gridApiRutas) {
+                window.gridApiRutas.setFilterModel(null); // Eliminar todos los filtros en la tabla de rutas
+                window.gridApiRutas.onFilterChanged(); // Actualizar la tabla
+            }
+        });
+    }
+
         });
         $(document).on('click', '.btnEditar', function() {
             var lineaId = $(this).data('id'); // Obtener el ID de la línea de pedido

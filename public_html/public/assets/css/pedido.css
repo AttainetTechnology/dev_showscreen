@@ -20,7 +20,7 @@
 }
 
 .btnAddPedido {
-    background-color: #e4eff7;
+    background-color: #e4eff7 !important;
     color: #1d9dd5;
     font-size: 16px !important;
     height: 35px;
@@ -200,7 +200,7 @@ form select.form-control {
 /* Ajustar la altura del modal */
 
 
-.botoneseditPedido {
+.botoneseditPedido, .botoneseditRuta {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
@@ -239,8 +239,8 @@ form select.form-control {
 }
 
 .btnAddRuta {
-    background-color: #e4eff7;
-    color: #1d9dd5;
+    background-color: #e4eff7 !important;
+    color: #1d9dd5 !important;
     font-size: 16px !important;
     height: 35px;
     display: flex;
@@ -251,7 +251,7 @@ form select.form-control {
 }
 
 .btnAddRuta:hover {
-    background-color: #337ab7;
+    background-color: #337ab7 !important;
     color: #e4eff7 !important;
 }
 
@@ -285,8 +285,12 @@ form select.form-control {
 }
 
 
-.botoneseditPedido {
+.botoneseditPedido, .botoneseditRuta {
     display: flex;
+}
+.botoneseditRuta{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .botoneseditPedido.hidden {
