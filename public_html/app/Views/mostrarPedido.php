@@ -184,7 +184,28 @@ $estadoMap = [
                     params.api.sizeColumnsToFit();
                 }, 100);
                 document.getElementById('pedidoTable').style.display = 'block';
-            }
+            },
+            getRowClass: function(params) {
+    switch(params.data.estado) {
+        case "Pendiente de material":
+            return 'estado0'; 
+        case "Falta Material":
+            return 'estado1';
+        case "Material recibido":
+            return 'estado2';
+        case "En Máquinas":
+            return 'estado3';
+        case "Terminado":
+            return 'estado4';
+        case "Entregado":
+            return 'estado5';
+        case "Anulado":
+            return 'estado6';
+        default:
+            return '';
+    }
+}
+
 
         };
         // Crear la tabla en el contenedor

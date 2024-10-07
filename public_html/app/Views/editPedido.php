@@ -107,7 +107,7 @@
             "0" => "Pendiente de material",
             "1" => "Falta Material",
             "2" => "Material recibido",
-            "3" => "En proceso",
+            "3" => "En Máquinas",
             "4" => "Terminado",
             "5" => "Entregado",
             "6" => "Anulado"
@@ -266,6 +266,31 @@
                         // Guardamos el gridApi para usarlo más tarde
                         window.gridApi = params.api;
                     },
+                    getRowClass: function(params) {
+    // Obtener el estado en formato texto
+    const estadoTexto = estadosTexto[params.data.estado] || 'Estado desconocido';
+
+    // Asignar la clase CSS en función del estado
+    switch (estadoTexto) {
+        case "Pendiente de material":
+            return 'estado0';
+        case "Falta Material":
+            return 'estado1';
+        case "Material recibido":
+            return 'estado2';
+        case "En Máquinas":
+            return 'estado3';
+        case "Terminado":
+            return 'estado4';
+        case "Entregado":
+            return 'estado5';
+        case "Anulado":
+            return 'estado6';
+        default:
+            return '';
+    }
+}
+
                 };
                 // Inicializar la tabla ag-Grid
                 const eGridDiv = document.querySelector('#lineasPedidoGrid');
@@ -447,7 +472,8 @@
                     },
                     localeText: {
                         noRowsToShow: 'No hay registros disponibles.'
-                    }
+                    },
+                    
                 };
 
                 var gridDiv = document.querySelector('#gridRutas');
