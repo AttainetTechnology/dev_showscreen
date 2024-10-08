@@ -387,9 +387,9 @@
                         field: "acciones",
                         cellRenderer: function(params) {
                             var editBtn = `<button class="btn btnEditarRuta" data-id="${params.data.id_ruta}" onclick="editarRuta(${params.data.id_ruta})">
-                    <span class="material-symbols-outlined icono">edit</span>Editar</button>`;
+                <span class="material-symbols-outlined icono">edit</span>Editar</button>`;
                             var deleteBtn = `<button class="btn btnEliminarRuta" data-id="${params.data.id_ruta}" onclick="eliminarRuta(${params.data.id_ruta})">
-                    <span class="material-symbols-outlined icono">delete</span>Eliminar</button>`;
+                <span class="material-symbols-outlined icono">delete</span>Eliminar</button>`;
                             return `${editBtn} ${deleteBtn}`;
                         },
                         cellClass: 'acciones-col',
@@ -460,23 +460,28 @@
                         floatingFilter: true,
                         resizable: true
                     },
+                    getRowStyle: function(params) {
+                        // Cambiar el fondo a verde si el estado es "Recogido" (estado = 2)
+                        if (params.data && params.data.estado_ruta === 'Recogido') {
+                            return {
+                                backgroundColor: '#50b752b0',
+                                color: 'white'
+                            };
+                        }
+                        return null;
+                    },
                     onGridReady: function(params) {
                         params.api.sizeColumnsToFit();
                         $('#botonesRuta').show(); // Asegura que los botones se muestren cuando la tabla esté lista
+                        window.gridApiRutas = params.api;
                     },
                     rowHeight: 70,
                     domLayout: 'autoHeight',
-                    onGridReady: function(params) {
-                        params.api.sizeColumnsToFit();
-                        window.gridApiRutas = params.api;
-                    },
                     localeText: {
                         noRowsToShow: 'No hay registros disponibles.'
-                    },
-
+                    }
                 };
 
-                var gridDiv = document.querySelector('#gridRutas');
                 new agGrid.Grid(gridDiv, gridOptions);
 
                 // Configurar el botón "Eliminar Filtros" para la tabla de rutas
@@ -487,6 +492,7 @@
                     }
                 });
             }
+
 
             // Configurar eventos para "Añadir" y "Editar" Ruta
             function setupEventHandlers() {
