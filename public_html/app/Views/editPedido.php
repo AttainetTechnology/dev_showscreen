@@ -267,29 +267,29 @@
                         window.gridApi = params.api;
                     },
                     getRowClass: function(params) {
-    // Obtener el estado en formato texto
-    const estadoTexto = estadosTexto[params.data.estado] || 'Estado desconocido';
+                        // Obtener el estado en formato texto
+                        const estadoTexto = estadosTexto[params.data.estado] || 'Estado desconocido';
 
-    // Asignar la clase CSS en función del estado
-    switch (estadoTexto) {
-        case "Pendiente de material":
-            return 'estado0';
-        case "Falta Material":
-            return 'estado1';
-        case "Material recibido":
-            return 'estado2';
-        case "En Máquinas":
-            return 'estado3';
-        case "Terminado":
-            return 'estado4';
-        case "Entregado":
-            return 'estado5';
-        case "Anulado":
-            return 'estado6';
-        default:
-            return '';
-    }
-}
+                        // Asignar la clase CSS en función del estado
+                        switch (estadoTexto) {
+                            case "Pendiente de material":
+                                return 'estado0';
+                            case "Falta Material":
+                                return 'estado1';
+                            case "Material recibido":
+                                return 'estado2';
+                            case "En Máquinas":
+                                return 'estado3';
+                            case "Terminado":
+                                return 'estado4';
+                            case "Entregado":
+                                return 'estado5';
+                            case "Anulado":
+                                return 'estado6';
+                            default:
+                                return '';
+                        }
+                    }
 
                 };
                 // Inicializar la tabla ag-Grid
@@ -473,7 +473,7 @@
                     localeText: {
                         noRowsToShow: 'No hay registros disponibles.'
                     },
-                    
+
                 };
 
                 var gridDiv = document.querySelector('#gridRutas');
@@ -632,14 +632,16 @@
         $(document).ready(function() {
             function abrirModalSiEsNecesario() {
                 const urlParams = new URLSearchParams(window.location.search);
+
                 if (urlParams.has('openModal')) {
                     $('#openModal').click();
+                    // Remover el parámetro 'openModal' de la URL sin recargar la página
+                    urlParams.delete('openModal');
+                    const newUrl = window.location.pathname + '?' + urlParams.toString();
+                    window.history.replaceState({}, '', newUrl);
                 }
             }
             abrirModalSiEsNecesario();
-
-            // Evento para cargar el contenido dentro del modal
-
             // Función para inicializar ag-Grid
             function initializeAgGrid(rutas, poblacionesMap, transportistasMap) {
                 var estadoMap = {
