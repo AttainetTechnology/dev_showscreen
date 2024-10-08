@@ -85,3 +85,5 @@ $routes->get('comparadorproductos/(:num)', 'ComparadorProductos::index/$1');
 
 $routes->get('familiaproveedor', 'Familia_proveedor::index');
 $routes->post('Ruta_pedido/guardarRuta', 'Ruta_pedido::guardarRuta');
+$routes->get('elegirProveedor/(:num)', 'Proveedores::elegirProveedor/$1');
+

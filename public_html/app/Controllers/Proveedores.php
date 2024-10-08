@@ -19,7 +19,7 @@ class Proveedores extends BaseControllerGC
         $crud->setRelation('id_contacto', 'contactos', '{nombre} {apellidos}');
         // Campos
         $crud->addFields(['nombre_proveedor', 'nif', 'email', 'telf', 'contacto', 'direccion', 'pais', 'id_provincia', 'poblacion', 'f_pago', 'fax', 'cargaen', 'contacto', 'observaciones_proveedor', 'web']);
-        $crud->editFields(['para_boton', 'nombre_proveedor', 'nif', 'direccion', 'id_provincia', 'poblacion', 'telf', 'cargaen', 'f_pago', 'web', 'email', 'observaciones_proveedor', 'fax', 'contacto']);
+        $crud->editFields(['nombre_proveedor', 'nif', 'direccion', 'id_provincia', 'poblacion', 'telf', 'cargaen', 'f_pago', 'web', 'email', 'observaciones_proveedor', 'fax', 'contacto']);
         // Columnas
         $crud->columns(['nombre_proveedor', 'nif', 'direccion', 'contacto', 'id_provincia', 'telf', 'cargaen', 'web', 'email']);
         $crud->displayAs('id_provincia', 'Provincia');
@@ -27,11 +27,7 @@ class Proveedores extends BaseControllerGC
         $crud->displayAs('cargaen', 'Carga en');
         $crud->displayAs('observaciones_proveedor', 'Observaciones');
         $crud->setLangString('modal_save', 'Guardar Proveedor');
-        // Personalizar el campo id_proveedor para incluir el botón
-        $crud->callbackEditField('para_boton', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $button = "<a href='" . base_url("proveedores/verProductos/{$primaryKeyValue}") . "' class='btn btn-warning btn-sm botonProductos' data-toggle='modal' data-target='#productosModal'><i class='fa fa-box fa-fw'></i> Ver Productos</a>";
-            return $button . "<input type='hidden' name='id_proveedor' value='{$fieldValue}'>";
-        });
+
         // Callbacks para LOG
         $crud->callbackAfterInsert(function ($stateParameters) {
             $this->logAction('Proveedores', 'Añade proveedor', $stateParameters);
@@ -167,4 +163,44 @@ class Proveedores extends BaseControllerGC
 
         return $this->response->setJSON(['success' => true]);
     }
+    public function asociarProveedor()
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $model = new ProductosProveedorModel($db);
+
+    $id_producto = $this->request->getPost('id_producto');
+    $id_proveedor = $this->request->getPost('id_proveedor');
+    $ref_producto = $this->request->getPost('ref_producto');
+    $precio = $this->request->getPost('precio');
+
+    if (empty($id_producto) || empty($id_proveedor) || empty($ref_producto) || empty($precio)) {
+        return redirect()->back()->with('error', 'Todos los campos son obligatorios.');
+    }
+
+    $model->insert([
+        'id_producto_necesidad' => $id_producto,
+        'id_proveedor' => $id_proveedor,
+        'ref_producto' => $ref_producto,
+        'precio' => $precio,
+    ]);
+
+    return redirect()->to(base_url('comparadorproductos/' . $id_producto))->with('message', 'Proveedor asociado exitosamente.');
+}
+public function elegirProveedor($id_producto)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $proveedoresModel = new ProveedoresModel($db);
+
+    // Obtener todos los proveedores para el desplegable
+    $proveedores = $proveedoresModel->findAll();
+
+    // Cargar la vista con los proveedores y el ID del producto
+    return view('elegirProveedor', [
+        'id_producto' => $id_producto,
+        'proveedores' => $proveedores,
+    ]);
+}
+
 }

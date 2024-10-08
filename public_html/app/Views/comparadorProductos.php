@@ -2,6 +2,7 @@
 <?= $this->section('content') ?>
 <div class="comparador">
     <h2>Comparador de Productos</h2>
+
     <?php if (empty($comparador)): ?>
         <p>No hay productos disponibles para comparar.</p>
     <?php else: ?>
@@ -11,6 +12,12 @@
                     <h5 class="mb-0"><?= esc($item['producto']['nombre_producto']) ?></h5>
                 </div>
                 <div class="card-body">
+
+                    <!-- Botón para abrir el modal de elegir proveedor -->
+                    <button class="btn btn-primary mb-3 btn-elegir-proveedor" data-id-producto="<?= $item['producto']['id_producto'] ?>">
+                        Elegir Proveedor
+                    </button>
+
                     <?php if (empty($item['ofertas'])): ?>
                         <p>No hay ofertas disponibles para este producto.</p>
                     <?php else: ?>
@@ -40,9 +47,27 @@
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+
+<!-- Modal para elegir proveedor -->
+<div class="modal fade" id="elegirProveedorModal" tabindex="-1" role="dialog" aria-labelledby="elegirProveedorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="modalContent">
+            <!-- Contenido del modal se carga mediante AJAX -->
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     $(document).ready(function() {
+        // Cargar contenido del modal para elegir proveedor mediante AJAX
+        $('.btn-elegir-proveedor').on('click', function() {
+            var idProducto = $(this).data('id-producto');
+            $('#modalContent').load('<?= base_url("elegirProveedor") ?>/' + idProducto, function() {
+                $('#elegirProveedorModal').modal('show');
+            });
+        });
+
         $('.selectable-row').on('click', function() {
             var productoIndex = $(this).data('producto-index');
             var ofertaIndex = $(this).attr('id').split('-').pop();
