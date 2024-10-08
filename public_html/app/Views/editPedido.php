@@ -260,6 +260,9 @@
                     },
                     domLayout: 'autoHeight',
                     rowHeight: 70,
+                    localeText: {
+                        noRowsToShow: 'No hay registros disponibles.'
+                    },
                     onGridReady: function(params) {
                         // Ajusta el tamaño de las columnas al tamaño del contenedor
                         params.api.sizeColumnsToFit();
