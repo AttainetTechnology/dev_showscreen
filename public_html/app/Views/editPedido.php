@@ -464,8 +464,8 @@
                         // Cambiar el fondo a verde si el estado es "Recogido" (estado = 2)
                         if (params.data && params.data.estado_ruta === 'Recogido') {
                             return {
-                                backgroundColor: '#50b752b0',
-                                color: 'white'
+                                backgroundColor: '#dff0d8',
+                                color: 'black'
                             };
                         }
                         return null;
