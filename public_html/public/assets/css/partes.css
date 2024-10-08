@@ -140,7 +140,7 @@ div#printableArea {
     padding: 25px 70px;
     background-color: #ffffff;
     margin: 10px;
-    min-height: 1159px;
+    /* min-height: 1159px; */
     padding: 5rem;
 
 }
@@ -475,7 +475,9 @@ img.imagen_parte {
 }
 
 .modal-content {
-    height: 100%;
+    height: 80vh;
+    width: 60vw;
+    margin-left: -179px;
 }
 
 #DatosAcceso {

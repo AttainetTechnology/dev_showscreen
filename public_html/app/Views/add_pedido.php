@@ -1,8 +1,8 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-<h2 class="titlepedidos">Añadir Pedido</h2>
-
-<div class="container mt-4">
+<h2 class="titlepedidosadd">Añadir Pedido</h2>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
+<div class="container mt-4 addpedido">
     <form action="<?= base_url('pedidos/save') ?>" method="post">
         <!-- Campo de empresa -->
         <div class="form-group">

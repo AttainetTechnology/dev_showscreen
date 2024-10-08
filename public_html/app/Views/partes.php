@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/partes.css') ?>?v=<?= time() ?>">
 <?php foreach ($lineas as $l) { ?>
     <?php foreach ($productos as $prod) { ?>
         <?php foreach ($pedidos as $p) { ?>
@@ -26,6 +27,7 @@
                     </script>
                     <input type="button" onclick="printDiv('printableArea')" value="Imprimir Parte" class="btn btn-success btn-sm" />
                     <div id="printableArea">
+                        <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/partes.css') ?>?v=<?= time() ?>">
                         <!-- Cabecera -->
                         <div class="row">
                             <div id="parte_fila_left">

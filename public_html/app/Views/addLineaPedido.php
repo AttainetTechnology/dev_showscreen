@@ -6,8 +6,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
+
 <!-- Modal para añadir una nueva línea de pedido -->
 <form id="addLineaPedidoForm" action="<?= base_url('pedidos/addLineaPedido') ?>" method="post">
+<div class="d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary">Guardar Línea Pedido</button>
+</div>
+
     <input type="hidden" name="id_pedido" value="<?= esc($pedido['id_pedido']) ?>">
     <div class="form-group">
         <label for="id_producto">Producto <span class="text-danger">*</span>:</label>
@@ -24,6 +29,7 @@
     </div>
 
     <!-- Campos opcionales -->
+     
     <div class="form-group">
         <label for="n_piezas">Cantidad:</label>
         <input type="number" name="n_piezas" class="form-control">

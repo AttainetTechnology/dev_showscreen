@@ -4,7 +4,8 @@
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
-<div class="container mt-5">
+
+<div class="container mt-5 editpedido">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery debe cargarse primero -->
@@ -237,14 +238,19 @@
                 function renderActions(params) {
                     const id = params.data.id_lineapedido;
                     return `
-            <button class="btn btnEditar btn-sm" data-id="${id}" data-bs-toggle="modal" data-bs-target="#editarLineaModal">
-            <span class="material-symbols-outlined icono">edit</span>Editar</button>
-            <a href="<?= base_url('pedidos/imprimir_parte/') ?>${id}" class="btn btnImprimirParte btn-sm" target="_blank">
-               <span class="material-symbols-outlined icono">print</span>Parte</a>
-            <a href="<?= base_url('pedidos/deleteLinea/') ?>${id}" class="btn btnEliminar btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
-             <span class="material-symbols-outlined icono"> delete </span>Eliminar</a>
-        `;
+        <button class="btn btnEditar btn-sm" data-id="${id}" data-bs-toggle="modal" data-bs-target="#editarLineaModal">
+            <span class="material-symbols-outlined icono">edit</span>Editar
+        </button>
+        <button class="btn btnImprimirParte btn-sm" onclick="mostrarParte(${id})">
+            <span class="material-symbols-outlined icono">print</span>Parte
+        </button>
+        <a href="<?= base_url('pedidos/deleteLinea/') ?>${id}" class="btn btnEliminar btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta línea?');">
+            <span class="material-symbols-outlined icono">delete</span>Eliminar
+        </a>
+    `;
                 }
+
+
 
                 // Opciones de la tabla ag-Grid
                 const gridOptions = {
@@ -319,7 +325,46 @@
                     }
                 });
             });
+
+            function mostrarParte(id_lineapedido) {
+                $.ajax({
+                    url: '<?= base_url("partes/print/") ?>' + id_lineapedido,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#modalParteContent').html(data);
+                        $('#parteModal').modal('show');
+                    },
+                    error: function() {
+                        $('#modalParteContent').html('<p class="text-danger">Error al cargar el parte.</p>');
+                        $('#parteModal').modal('show');
+                    }
+                });
+            }
+
+            function printDiv(divId) {
+                var printContents = document.getElementById(divId).innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+                window.print();
+                document.body.innerHTML = originalContents;
+            }
         </script>
+
+        <!-- Modal para mostrar el Parte -->
+        <div class="modal fade" id="parteModal" tabindex="-1" aria-labelledby="parteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="parteModalLabel">Parte de Trabajo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalParteContent">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal HTML (Definido una sola vez en la página) -->
         <div class="modal fade" id="editarLineaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">

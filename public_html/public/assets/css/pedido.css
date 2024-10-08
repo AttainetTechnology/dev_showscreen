@@ -362,3 +362,19 @@ form select.form-control {
     max-height: 70vh; 
 
 }
+
+.addpedido, .titlepedidosadd {
+    margin-left: 3vw;
+    margin-top: 10vh;
+}
+
+.editpedido{
+    margin-left: 3vw !important;
+    margin-right: 3vw !important;
+}
+
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1500px !important;
+    }
+}

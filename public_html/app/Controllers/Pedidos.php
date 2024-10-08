@@ -157,13 +157,12 @@ public function add()
         'fecha_entrada' => $this->request->getPost('fecha_entrada'),
         'fecha_entrega' => $this->request->getPost('fecha_entrega'),
         'observaciones' => $this->request->getPost('observaciones'),
-        'pedido_por' => $nombre_usuario  // Usar el nombre completo del usuario aquí
+        'pedido_por' => $nombre_usuario
     ];
 
     // Insertar el pedido y capturar el ID recién creado
-    $id_pedido = $pedidoModel->insert($pedidoData, true); // 'true' para obtener el ID
+    $id_pedido = $pedidoModel->insert($pedidoData, true); 
 
-    // Verificar si se insertó correctamente y redirigir a la página de edición
     if ($id_pedido) {
         $this->logAction('Pedido', 'Añadir Pedido', $pedidoData);
         return redirect()->to(base_url("pedidos/edit/$id_pedido"))->with('success', 'Pedido guardado correctamente');
@@ -206,7 +205,6 @@ public function add()
 
 		$data['pedido'] = $pedido;
 		$data['lineas_pedido'] = $lineas_pedido;
-		// Cargar la vista de edición del pedido
 		return view('editPedido', $data);
 	}
 	public function update($id_pedido)

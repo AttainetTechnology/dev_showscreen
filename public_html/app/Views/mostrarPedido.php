@@ -9,9 +9,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-<h2 class="titlepedidos">Pedidos</h2>
+<h2 class="titlepedidosmostrar">Pedidos</h2>
 <div class="d-flex justify-content-between mb-3">
-<a href="<?= base_url('pedidos/add') ?>" class="btn btnAddPedido">+ Añadir Pedido</a>
+    <a href="<?= base_url('pedidos/add') ?>" class="btn btnAddPedido">+ Añadir Pedido</a>
 
     <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>
 </div>
@@ -236,7 +236,6 @@ $estadoMap = [
                 <a href="<?= base_url('pedidos/print/') ?>${id}" class="btn btnImprimir" target="_blank">Imprimir</a>`;
         }
     });
-
 </script>
 
 <?= $this->endSection() ?>
