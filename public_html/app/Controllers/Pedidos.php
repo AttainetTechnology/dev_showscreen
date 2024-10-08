@@ -66,44 +66,40 @@ class Pedidos extends BaseControllerGC
 		// Cargar la vista pasando los datos
 		echo view('mostrarPedido', $data);
 	}
-	public function add()
-	{
-		$data = datos_user();  // Obtener los datos de la sesión del usuario
-		$db = db_connect($data['new_db']);  // Conectar a la base de datos del cliente
+public function add()
+{
+    $data = datos_user();  // Obtener los datos de la sesión del usuario
+    $db = db_connect($data['new_db']);  // Conectar a la base de datos del cliente
 
-		$clienteModel = new ClienteModel($db);
-		$data['clientes'] = $clienteModel->findAll();
-		// Obtener el ID del usuario autenticado
-		$id_usuario = $data['id_user'];
-		// Consulta para obtener el nombre y apellidos desde la tabla 'users' de la BBDD del cliente
-		$builder = $db->table('users');
-		$builder->select('nombre_usuario, apellidos_usuario');
-		$builder->where('id', $id_usuario);
-		$builder->where('user_activo', '1');
-		$query = $builder->get();
-		$usuario = $query->getRow();
-		// Verificar si se encontró el usuario
-		if ($usuario) {
-			$data['usuario_sesion'] = [
-				'id_user' => $id_usuario,
-				'nombre_usuario' => $usuario->nombre_usuario,
-				'apellidos_usuario' => $usuario->apellidos_usuario
-			];
-		} else {
-			$data['usuario_sesion'] = [
-				'id_user' => $id_usuario,
-				'nombre_usuario' => 'Usuario desconocido',
-				'apellidos_usuario' => ''
-			];
-		}
-		if ($this->request->isAJAX()) {
-			// Retornar solo la vista del formulario si es una petición AJAX (al abrir el modal)
-			return view('add_pedido', $data);
-		} else {
-			// Si no es una petición AJAX, redirigir con el parámetro de modal para que se abra automáticamente
-			return redirect()->to(base_url('pedidos?modal=add'));
-		}
-	}
+    $clienteModel = new ClienteModel($db);
+    $data['clientes'] = $clienteModel->findAll();
+
+    // Obtener el ID del usuario autenticado
+    $id_usuario = $data['id_user'];
+
+    // Consulta para obtener el nombre y apellidos desde la tabla 'users' de la BBDD del cliente
+    $builder = $db->table('users');
+    $builder->select('nombre_usuario, apellidos_usuario');
+    $builder->where('id', $id_usuario);
+    $builder->where('user_activo', '1');
+    $query = $builder->get();
+    $usuario = $query->getRow();
+
+    // Verificar si se encontró el usuario
+    $data['usuario_sesion'] = $usuario ? [
+        'id_user' => $id_usuario,
+        'nombre_usuario' => $usuario->nombre_usuario,
+        'apellidos_usuario' => $usuario->apellidos_usuario
+    ] : [
+        'id_user' => $id_usuario,
+        'nombre_usuario' => 'Usuario desconocido',
+        'apellidos_usuario' => ''
+    ];
+
+    // Cargar la vista completa como página, en lugar de manejar una petición AJAX
+    return view('add_pedido', $data);
+}
+
 	function guarda_usuario()
 	{
 		$session = session();
@@ -127,55 +123,55 @@ class Pedidos extends BaseControllerGC
 		return $usuarios;
 	}
 	public function save()
-	{
-		// Obtener los datos del usuario autenticado desde la sesión
-		$data = usuario_sesion();
-		$db = db_connect($data['new_db']);
-		$pedidoModel = new Pedidos_model($db);
+{
+    // Obtener los datos del usuario autenticado desde la sesión
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $pedidoModel = new Pedidos_model($db);
 
-		// Validación básica de datos
-		if (!$this->validate([
-			'id_cliente' => 'required',
-			'fecha_entrada' => 'required',
-			'fecha_entrega' => 'required',
-		])) {
-			return redirect()->back()->with('error', 'Faltan datos obligatorios');
-		}
+    // Validación básica de datos
+    if (!$this->validate([
+        'id_cliente' => 'required',
+        'fecha_entrada' => 'required',
+        'fecha_entrega' => 'required',
+    ])) {
+        return redirect()->back()->with('error', 'Faltan datos obligatorios');
+    }
 
-		// Obtener el nombre del usuario desde la tabla 'users' en la base de datos
-		$builder = $db->table('users');
-		$builder->select('nombre_usuario, apellidos_usuario');
-		$builder->where('id', $data['id_user']);
-		$builder->where('user_activo', '1');
-		$query = $builder->get();
-		$usuario = $query->getRow();
+    // Obtener el nombre del usuario desde la tabla 'users' en la base de datos
+    $builder = $db->table('users');
+    $builder->select('nombre_usuario, apellidos_usuario');
+    $builder->where('id', $data['id_user']);
+    $builder->where('user_activo', '1');
+    $query = $builder->get();
+    $usuario = $query->getRow();
 
-		// Verificar si se encontró el usuario
-		if ($usuario) {
-			$nombre_usuario = $usuario->nombre_usuario . ' ' . $usuario->apellidos_usuario;
-		} else {
-			$nombre_usuario = 'test';
-		}
+    // Verificar si se encontró el usuario
+    $nombre_usuario = $usuario ? $usuario->nombre_usuario . ' ' . $usuario->apellidos_usuario : 'test';
 
-		// Preparar los datos para insertar el pedido
-		$data = [
-			'id_cliente' => $this->request->getPost('id_cliente'),
-			'referencia' => $this->request->getPost('referencia'),
-			'id_usuario' => $this->request->getPost('id_usuario'),
-			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
-			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
-			'observaciones' => $this->request->getPost('observaciones'),
-			'pedido_por' => $nombre_usuario  // Usar el nombre completo del usuario aquí
-		];
+    // Preparar los datos para insertar el pedido
+    $pedidoData = [
+        'id_cliente' => $this->request->getPost('id_cliente'),
+        'referencia' => $this->request->getPost('referencia'),
+        'id_usuario' => $this->request->getPost('id_usuario'),
+        'fecha_entrada' => $this->request->getPost('fecha_entrada'),
+        'fecha_entrega' => $this->request->getPost('fecha_entrega'),
+        'observaciones' => $this->request->getPost('observaciones'),
+        'pedido_por' => $nombre_usuario  // Usar el nombre completo del usuario aquí
+    ];
 
-		// Insertar el pedido
-		if ($pedidoModel->insert($data)) {
-			$this->logAction('Pedido', 'Añadir Pedido', $data);
-			return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido guardado correctamente');
-		} else {
-			return redirect()->back()->with('error', 'No se pudo guardar el pedido');
-		}
-	}
+    // Insertar el pedido y capturar el ID recién creado
+    $id_pedido = $pedidoModel->insert($pedidoData, true); // 'true' para obtener el ID
+
+    // Verificar si se insertó correctamente y redirigir a la página de edición
+    if ($id_pedido) {
+        $this->logAction('Pedido', 'Añadir Pedido', $pedidoData);
+        return redirect()->to(base_url("pedidos/edit/$id_pedido"))->with('success', 'Pedido guardado correctamente');
+    } else {
+        return redirect()->back()->with('error', 'No se pudo guardar el pedido');
+    }
+}
+
 	public function edit($id_pedido)
 	{
 		helper('controlacceso');

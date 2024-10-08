@@ -11,20 +11,8 @@
 
 <h2 class="titlepedidos">Pedidos</h2>
 <div class="d-flex justify-content-between mb-3">
-    <a href="#" id="openModal" class="btn btnAddPedido">+ Añadir Pedido</a>
+<a href="<?= base_url('pedidos/add') ?>" class="btn btnAddPedido">+ Añadir Pedido</a>
 
-    <div class="modal fade" id="addPedidoModal" tabindex="-1" role="dialog" aria-labelledby="addPedidoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addPedidoModalLabel">Añadir Pedido</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                </div>
-            </div>
-        </div>
-    </div>
     <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>
 </div>
 <br>
@@ -249,28 +237,6 @@ $estadoMap = [
         }
     });
 
-    $(document).ready(function() {
-        // Abrir modal para añadir pedido
-        $('#openModal').click(function(e) {
-            e.preventDefault();
-            abrirModal();
-        });
-
-        function abrirModal() {
-            $.get('<?= base_url('pedidos/add') ?>', function(response) {
-                $('#addPedidoModal .modal-body').html(response);
-                $('#addPedidoModal').modal('show');
-            }).fail(function() {
-                alert('Hubo un error al cargar el contenido del modal.');
-            });
-        }
-
-        // Mostrar modal si está en la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('modal') === 'add') {
-            abrirModal();
-        }
-    });
 </script>
 
 <?= $this->endSection() ?>
