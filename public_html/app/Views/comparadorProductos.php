@@ -20,7 +20,7 @@
 <div class="comparador">
 
     <h2>Comparador de Productos</h2>
-
+    <button type="button" class="btn btn-info mb-3" id="volverButton">Volver</button>
     <?php if (empty($comparador)): ?>
         <p>No hay productos disponibles para comparar.</p>
     <?php else: ?>
@@ -159,6 +159,9 @@
                 });
             }
         });
+    });
+    document.getElementById('volverButton').addEventListener('click', function() {
+        window.location.href = '<?= base_url('productos_necesidad') ?>';
     });
 </script>
 

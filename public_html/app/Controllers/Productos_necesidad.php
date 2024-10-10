@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Productos_model;
+use App\Models\ProductosNecesidadModel;
+use App\Models\FamiliaProveedorModel;
 
 
 use \Gumlet\ImageResize;
@@ -12,143 +14,72 @@ class Productos_necesidad extends BaseControllerGC
 
     public function index()
     {
-        $crud = $this->_getClientDatabase();
-        $crud->setSubject('Producto', 'Productos Necesidad');
-        $crud->setTable('productos_necesidad');
-        // Fields
-        $crud->addFields(['nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
-        $crud->editFields(['para_boton', 'nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto', 'id_producto_venta']);
-        $crud->columns(['nombre_producto', 'id_familia', 'imagen', 'unidad', 'estado_producto']);
-        $crud->setRelation('id_familia', 'familia_proveedor', 'nombre');
-        // Display As
-        $crud->displayAs('id_familia', 'Familia');
-        $crud->displayAs('nombre_producto', 'Nombre del Producto');
-        $crud->displayAs('imagen', 'Imagen');
-        $crud->displayAs('unidad', 'Unidad');
-        $crud->displayAs('estado_producto', 'Estado');
-        $crud->displayAs('id_producto_venta', 'Producto que vendemos');
-        $crud->setLangString('modal_save', 'Guardar Producto');
-
-        // ACCIONES
-        $crud->setActionButton('Precio', 'fa fa-euro-sign', function ($row) {
-            $link = base_url('comparadorproductos/' . $row->id_producto);
-            return $link;
-        }, false);
-
-        $crud->callbackEditField('para_boton', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $button = "<a href='" . base_url("productos_necesidad/verProductos/{$primaryKeyValue}") . "' class='btn btn-warning btn-sm botonProductos' data-toggle='modal' data-target='#productoModal'><i class='fa fa-box fa-fw'></i> ¿Vendemos este producto?</a>";
-            return $button . "<input type='hidden' name='id_producto' value='{$fieldValue}'>";
-        });
-
-        $crud->callbackEditField('id_producto_venta', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $nombre_producto_venta = $this->obtenerNombreProductoVenta($primaryKeyValue);
-            return "<div>{$nombre_producto_venta}</div>";
-        });
-
-        // Define paths and upload settings for images
-        $globalUploadPath = 'public/assets/uploads/files/' . $this->data['id_empresa'] . '/productos_necesidad/';
-        if (!is_dir($globalUploadPath)) {
-            mkdir($globalUploadPath, 0777, true);
-        }
-        $uploadValidations = [
-            'maxUploadSize' => '7M',
-            'minUploadSize' => '1K',
-            'allowedFileTypes' => ['gif', 'jpeg', 'jpg', 'png', 'tiff']
-        ];
-        $crud->setFieldUpload('imagen', $globalUploadPath, $globalUploadPath, $uploadValidations);
-
-        $id_empresa = $this->data['id_empresa'];
-        $crud->callbackColumn('imagen', function ($value, $row) use ($id_empresa) {
-            if ($value === null || $value === '') {
-                return '';
-            } else {
-                $specificPath = "public/assets/uploads/files/" . $id_empresa . "/productos_necesidad/";
-                return "<img src='" . base_url($specificPath . $value) . "' height='60' class='img_producto'>";
-            }
-        });
-
-        $crud->callbackBeforeUpload(function ($stateParameters) use ($globalUploadPath) {
-            $productoId = $_POST['pk_value'] ?? null;
-            $uploadPath = $globalUploadPath . $productoId . '/';
-            if (!is_dir($uploadPath) && !mkdir($uploadPath, 0755, true)) {
-                return false;
-            }
-            $existingImages = glob($uploadPath . "*.{jpg,jpeg,png}", GLOB_BRACE);
-            foreach ($existingImages as $image) {
-                unlink($image);
-            }
-            $stateParameters->uploadPath = $uploadPath;
-            return $stateParameters;
-        });
-        $crud->callbackAfterUpload(function ($result) {
-            $isSuccess = isset($result->isSuccess) ? $result->isSuccess : true;
-            if ($isSuccess && is_string($result->uploadResult)) {
-                $fileName = $result->uploadResult;
-                $producto = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_POST['nombre_producto'] ?? '');
-                $idProducto = $_POST['pk_value'] ?? '';
-                $Newname = $producto . $idProducto . "/" . $fileName;
-                $result->uploadResult = $Newname;
-
-                $fullPath = $result->stateParameters->uploadPath . $fileName;
-
-                if (file_exists($fullPath)) {
-                    $image = new ImageResize($fullPath);
-                    $image->resizeToBestFit(300, 300);
-                    $image->save($fullPath);
-                }
-            }
-            return $result;
-        });
-        // Callbacks para registrar las acciones realizadas en LOG
-        $crud->callbackAfterInsert(function ($stateParameters) {
-            $this->logAction('Productos Necesidad', 'Añade producto', $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterUpdate(function ($stateParameters) {
-            $this->logAction('Productos Necesidad', 'Edita producto, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterDelete(function ($stateParameters) {
-            $this->logAction('Productos Necesidad', 'Elimina producto, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-
-        // Output
-        $output = $crud->render();
-        return $this->_GC_output("layouts/main", $output);
+        // Cargar la vista principal de AG-Grid para productos
+        return view('productos_necesidad');
     }
+
+    
     public function getProductos()
     {
+        // Obtener productos en formato JSON para AG-Grid
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $productosModel = new Productos_model($db);
+        $productosModel = new ProductosNecesidadModel($db);
+        $familiaModel = new FamiliaProveedorModel($db);
+        
+        // Obtener todos los productos
         $productos = $productosModel->findAll();
+
+        // Asociar el nombre de la familia a cada producto
+        foreach ($productos as &$producto) {
+            // Obtener el nombre de la familia a partir del id_familia
+            $familia = $familiaModel->find($producto['id_familia']);
+            $producto['nombre_familia'] = $familia ? $familia['nombre'] : 'Sin familia';
+
+            // Construir la URL de la imagen
+            $producto['imagen'] = $this->getImageUrl($producto['imagen'], $data['id_empresa']);
+            
+            // Definir las acciones
+            $producto['acciones'] = [
+                'precio' => base_url("comparadorproductos/{$producto['id_producto']}"),
+                'verProductos' => base_url("productos_necesidad/verProductos/{$producto['id_producto']}"),
+                'editar' => base_url("productos_necesidad/edit/{$producto['id_producto']}"),
+                'eliminar' => base_url("productos_necesidad/delete/{$producto['id_producto']}")
+            ];
+        }
 
         return $this->response->setJSON($productos);
     }
+
+    private function getImageUrl($imageName, $idEmpresa)
+    {
+        $path = "public/assets/uploads/files/{$idEmpresa}/productos_necesidad/";
+        return $imageName ? base_url($path . $imageName) : '';
+    }
+
     public function verProductos($id_producto)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new Productos_model($db);
-        $familiaModel = new \App\Models\Familia_productos_model($db);
-
+        $familiaModel = new \App\Models\FamiliaProveedorModel($db);
+        
         $productos = $model->orderBy('nombre_producto', 'ASC')->findAll();
         $familias = $familiaModel->orderBy('nombre', 'ASC')->findAll();
-
-        // Obtener el producto necesidad actual para verificar si tiene un id_producto_venta asignado
-        $productosNecesidadModel = new \App\Models\ProductosNecesidadModel($db);
+        
+        $productosNecesidadModel = new ProductosNecesidadModel($db);
         $productoNecesidad = $productosNecesidadModel->find($id_producto);
         $idProductoVentaSeleccionado = $productoNecesidad['id_producto_venta'];
-
-        // Cargar la vista con la lista de productos, familias, el id_producto y si está seleccionado
+        
         return view('selectProducto', [
             'productos' => $productos,
-            'familias' => $familias, // Pasar las familias a la vista
+            'familias' => $familias,
             'id_producto' => $id_producto,
             'id_producto_venta' => $idProductoVentaSeleccionado
         ]);
     }
+    
+    
     public function actualizarProductoVenta()
     {
         $data = usuario_sesion();
@@ -185,6 +116,108 @@ class Productos_necesidad extends BaseControllerGC
         // Devolver una respuesta JSON
         return $this->response->setJSON(['success' => true]);
     }
+    public function add()
+    {
+        // Cargar vista del formulario de añadir producto
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $familiaModel = new FamiliaProveedorModel($db);
+
+        // Obtener familias para el select en el formulario
+        $familias = $familiaModel->findAll();
+
+        return view('addProductoProveedor', ['familias' => $familias]);
+    }
+
+    public function save()
+    {
+        
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new ProductosNecesidadModel($db);
+
+        // Validación básica
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'nombre_producto' => 'required',
+            'id_familia' => 'required',
+            'estado_producto' => 'required'
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
+
+        // Guardar producto
+        $productosModel->save([
+            'nombre_producto' => $this->request->getPost('nombre_producto'),
+            'id_familia' => $this->request->getPost('id_familia'),
+            'unidad' => $this->request->getPost('unidad'),
+            'estado_producto' => $this->request->getPost('estado_producto')
+        ]);
+
+        return redirect()->to(base_url('productos_necesidad'))->with('success', 'Producto añadido correctamente.');
+    }
+
+    public function edit($id_producto)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $productosModel = new ProductosNecesidadModel($db);
+    $familiaModel = new FamiliaProveedorModel($db);
+
+    // Obtener el producto y las familias disponibles
+    $producto = $productosModel->find($id_producto);
+    $familias = $familiaModel->findAll();
+
+    // Verificar si hay un producto de venta asociado
+    $productoVentaNombre = $this->obtenerNombreProductoVenta($id_producto);
+
+    return view('editProductoProveedor', [
+        'producto' => $producto,
+        'familias' => $familias,
+        'productoVentaNombre' => $productoVentaNombre
+    ]);
+}
+public function update($id_producto)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $productosModel = new ProductosNecesidadModel($db);
+
+    // Validación básica
+    $validation = \Config\Services::validation();
+    $validation->setRules([
+        'nombre_producto' => 'required',
+        'id_familia' => 'required',
+        'estado_producto' => 'required'
+    ]);
+
+    if (!$validation->withRequest($this->request)->run()) {
+        return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+    }
+
+    // Procesar imagen si se subió una nueva
+    $image = $this->request->getFile('imagen');
+    $imageName = $productosModel->find($id_producto)['imagen']; // Usar la imagen existente si no se carga una nueva
+    if ($image && $image->isValid()) {
+        $imageName = $image->getRandomName();
+        $image->move("public/assets/uploads/files/{$data['id_empresa']}/productos_necesidad/", $imageName);
+    }
+
+    // Actualizar producto
+    $productosModel->update($id_producto, [
+        'para_boton' => $this->request->getPost('para_boton'),
+        'nombre_producto' => $this->request->getPost('nombre_producto'),
+        'id_familia' => $this->request->getPost('id_familia'),
+        'imagen' => $imageName,
+        'unidad' => $this->request->getPost('unidad'),
+        'estado_producto' => $this->request->getPost('estado_producto')
+    ]);
+
+    return redirect()->to(base_url('productos_necesidad'))->with('success', 'Producto actualizado correctamente.');
+}
+
 
     private function obtenerNombreProductoVenta($id_producto_necesidad)
     {

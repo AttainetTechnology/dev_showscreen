@@ -1,19 +1,8 @@
-<?= $this->extend('layouts/main') ?>
 
-<?= $this->section('content') ?>
-
-<div class="modal fade" id="productoModal" tabindex="-1" role="dialog" aria-labelledby="productoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
                 <h5 class="modal-title" id="productoModalLabel">Selecciona un producto</h5>
-                <a href="<?= base_url('productos_necesidad'); ?>">
-                    <button type="button" class="btn-close-custom" aria-label="Close">
-                        &times;
-                    </button>
-                </a>
+
             </div>
-            <div class="modal-body" id="productosModalBody">
+            <div id="productosModalBody">
                 <label for="filtrarFamilia">Filtrar por Familia:</label>
                 <select id="filtrarFamilia" class="form-control">
                     <option value="">Todas las Familias</option>
@@ -51,9 +40,7 @@
                     </table>
                 <?php endif; ?>
             </div>
-        </div>
-    </div>
-</div>
+
 
 <script>
     $(document).ready(function() {
@@ -126,11 +113,7 @@
             }, 'json');
         });
 
-        // Si se cierra el modal, redirigir a la página de productos necesidad
-        $('#productoModal').on('hidden.bs.modal', function() {
-            window.location.href = '<?= base_url('productos_necesidad') ?>';
-        });
+
     });
 </script>
 
-<?= $this->endSection() ?>
