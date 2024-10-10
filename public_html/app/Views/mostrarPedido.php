@@ -137,7 +137,7 @@ $estadoMap = [
                 filter: 'agTextColumnFilter'
             }
         ];
-
+        
         var rowData = [
             <?php foreach ($pedidos as $pedido): ?> {
                     id_pedido: "<?= $pedido->id_pedido ?>",
@@ -162,7 +162,7 @@ $estadoMap = [
                 floatingFilter: true,
                 resizable: true
             },
-            rowHeight: 70,
+            rowHeight: 60,
             domLayout: 'autoHeight',
             localeText: {
                 noRowsToShow: 'No hay registros disponibles.'
@@ -216,7 +216,7 @@ $estadoMap = [
 
         // Funciones auxiliares
         function compareDates(filterLocalDateAtMidnight, cellValue) {
-            if (!cellValue) return -1;
+            if (!cellValue) return -1;          
             const cellDateParts = cellValue.split('-');
             const cellDate = new Date(Number(cellDateParts[0]), Number(cellDateParts[1]) - 1, Number(cellDateParts[2]));
             return cellDate < filterLocalDateAtMidnight ? -1 : cellDate > filterLocalDateAtMidnight ? 1 : 0;

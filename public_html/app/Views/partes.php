@@ -7,25 +7,50 @@
                     <?php
                     $volver = isset($_GET['pg2']) ? $_GET['pg2'] : 'javascript:window.close();';
                     ?>
-                    <a href="javascript:void(0);" class="btn btn-warning btn-sm" onclick="window.close();">Cerrar</a>
                     <a href="javascript:void(0);" onclick="verificarYMarcarLinea(<?php echo $l->id_lineapedido; ?>);" class="btn btn-info btn-sm">
                         Cerrar y marcar línea como recibida
                     </a>
                     <script>
-                        function verificarYMarcarLinea(id_lineapedido) {
+                        function verificarYMarcarLinea(id_lineapedido, id_pedido) {
                             fetch('<?php echo base_url(); ?>/Partes_controller/verificarEstadoProcesos/' + id_lineapedido)
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.status === 'error') {
                                         alert(data.message);
                                     } else {
-                                        window.location.href = '<?php echo base_url(); ?>/Partes_controller/CambiaEstado/' + id_lineapedido;
+                                        // Cambiar el estado
+                                        return fetch('<?php echo base_url(); ?>/Partes_controller/CambiaEstado/' + id_lineapedido);
                                     }
+                                })
+                                .then(() => {
+                                    // Redirigir a la página deseada una vez que se complete la operación
+                                    window.location.href = '<?php echo base_url(); ?>/pedidos/edit/' + id_pedido;
                                 })
                                 .catch(error => console.error('Error:', error));
                         }
                     </script>
-                    <input type="button" onclick="printDiv('printableArea')" value="Imprimir Parte" class="btn btn-success btn-sm" />
+                    <input type="button" onclick="printAndCloseModal('printableArea')" value="Imprimir Parte" class="btn btn-success btn-sm" />
+
+                    <script>
+                        function printAndCloseModal(divId) {
+                            printDiv(divId);
+                            const modal = document.querySelector('.modal');
+                            if (modal) {
+                                const modalInstance = bootstrap.Modal.getInstance(modal);
+                                modalInstance.hide();
+                            }
+                        }
+                        function printDiv(divId) {
+                            var printContents = document.getElementById(divId).innerHTML;
+                            var originalContents = document.body.innerHTML;
+
+                            document.body.innerHTML = printContents;
+                            window.print();
+                            document.body.innerHTML = originalContents;
+                            window.location.reload();
+                        }
+                    </script>
+
                     <div id="printableArea">
                         <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/partes.css') ?>?v=<?= time() ?>">
                         <!-- Cabecera -->

@@ -31,20 +31,21 @@
 .btnEliminarfiltros {
     background-color: #B7B7B7 !important;
     color: #F5F5F7 !important;
-    height: 35px;
-    font-size: 16px !important;
+    height: 30px;
+    font-size: 14px !important;
     border: none;
 }
 
 .btnAddPedido {
     background-color: #e4eff7 !important;
     color: #1d9dd5;
-    font-size: 16px !important;
-    height: 35px;
+    font-size: 14px !important;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
+    margin-left: 20px;
 }
 
 .btnAddPedido:hover {
@@ -61,6 +62,8 @@
     color: white !important;
     border-radius: 8px !important;
     width: 65px;
+    height: 27px !important;
+
 }
 
 .btnEditar:hover {
@@ -73,6 +76,8 @@
     color: white !important;
     border-radius: 8px !important;
     width: 72px;
+    height: 27px !important;
+
 }
 
 .btnEliminar:hover {
@@ -85,6 +90,8 @@
     color: 1d9dd5 !important;
     border-radius: 8px !important;
     width: 78px;
+    height: 27px;
+
 }
 
 .btnImprimir:hover {
@@ -97,6 +104,7 @@
     color: 1d9dd5 !important;
     width: 60px;
     border-radius: 8px !important;
+    height: 27px;
 }
 
 .btnImprimirParte:hover {
@@ -104,9 +112,14 @@
     color: #e4eff7 !important;
 }
 
+.titlepedidosmostrar{
+    margin-top: 30px;
+    margin-left: 25px;
+}
+
 
 .ag-header-cell-text {
-    font-size: 20px;
+    font-size: 16px !important;
 
 }
 
@@ -128,13 +141,13 @@
 input[class^=ag-] {
     margin: 5px;
     background-color: var(--ag-background-color);
-    height: 35px !important;
+    height: 30px !important;
 }
 
 .ag-theme-alpine .ag-cell {
     padding: 10px;
     box-sizing: border-box;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .ag-theme-alpine .ag-cell.acciones-col {
@@ -155,28 +168,23 @@ input[class^=ag-] {
 /* EDIT PEDIDO */
 
 form label {
-    font-size: 1.2rem;
+    font-size: 16px;
 }
+
 
 form .form-control {
     height: 40px;
-    font-size: 1rem;
-
-}
-
-form .form-control {
-    font-size: 16px !important;
+    font-size: 15px !important;
 }
 
 form select.form-control {
-    font-size: 17px !important;
+    font-size: 15px !important;
 }
 
 .btnGuardar {
-    height: 35px;
-    font-size: 16px !important;
+    height: 27px;
+    font-size: 14px !important;
 }
-
 
 /* LINEA DE PEDIDO */
 
@@ -184,20 +192,13 @@ form select.form-control {
     background-color: #e4eff7 !important;
     color: #1d9dd5 !important;
     margin-top: 10px;
-    font-size: 16px !important;
-    height: 35px;
+    height: 27px;
+    margin-left: 20px;
 }
 
 .btnAddLinea:hover {
     background-color: #337ab7 !important;
     color: #e4eff7 !important;
-}
-
-.btnrecarga {
-    background-color: #ffc107 !important;
-    color: #000000 !important;
-    height: 35px;
-    font-size: 16px !important;
 }
 
 .btnrecarga:hover {
@@ -248,8 +249,8 @@ form select.form-control {
 .btnEliminarfiltrosRuta {
     background-color: #B7B7B7 !important;
     color: #F5F5F7 !important;
-    height: 35px;
-    font-size: 16px !important;
+    font-size: 14px !important;
+    height: 27px;
     border: none;
     border-radius: 8px;
 }
@@ -257,8 +258,8 @@ form select.form-control {
 .btnAddRuta {
     background-color: #e4eff7 !important;
     color: #1d9dd5 !important;
-    font-size: 16px !important;
-    height: 35px;
+    font-size: 14px !important;
+    height: 27px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -275,8 +276,8 @@ form select.form-control {
     background-color: #337ab7 !important;
     color: white !important;
     border-radius: 8px !important;
-    height: 30px;
-    width: 75px;
+    height: 27px;
+    width: 70px;
     border: none;
 }
 
@@ -289,8 +290,8 @@ form select.form-control {
     background-color: #d9534f !important;
     color: white !important;
     border-radius: 8px !important;
-    width: 85px;
-    height: 30px;
+    width: 80px;
+    height: 27px;
     border: none;
 
 }
@@ -351,6 +352,7 @@ form select.form-control {
 
 .ag-root-wrapper {
     min-width: 1200px;
+    margin-left: 20px;
 
 }
 
@@ -369,7 +371,7 @@ form select.form-control {
 }
 
 .editpedido{
-    margin-left: 3vw !important;
+    margin-left: 1vw !important;
     margin-right: 3vw !important;
 }
 
