@@ -1,6 +1,24 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<style>
+    .star-icon {
+        cursor: pointer;
+        fill: none;
+        stroke: black;
+    }
+
+    .star-icon.selected {
+        fill: yellow;
+        stroke: yellow;
+    }
+</style>
+
+
 <div class="comparador">
+
     <h2>Comparador de Productos</h2>
 
     <?php if (empty($comparador)): ?>
@@ -12,8 +30,6 @@
                     <h5 class="mb-0"><?= esc($item['producto']['nombre_producto']) ?></h5>
                 </div>
                 <div class="card-body">
-
-                    <!-- Botón para abrir el modal de elegir proveedor -->
                     <button class="btn btn-primary mb-3 btn-elegir-proveedor" data-id-producto="<?= $item['producto']['id_producto'] ?>">
                         Elegir Proveedor
                     </button>
@@ -24,6 +40,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th>Acciones</th>
                                     <th>Proveedor</th>
                                     <th>Referencia Producto</th>
                                     <th>Precio</th>
@@ -32,14 +49,24 @@
                             <tbody>
                                 <?php foreach ($item['ofertas'] as $oferta): ?>
                                     <tr id="producto-<?= $item['producto']['id_producto'] ?>-oferta-<?= $oferta['id'] ?>"
-                                        class="selectable-row <?= $oferta['seleccion_mejor'] == 1 ? 'table-success' : '' ?>"
+                                        class="selectable-row"
                                         data-producto-index="<?= $item['producto']['id_producto'] ?>">
+                                        <td class="star-column">
+                                            <svg class="star-icon <?= $oferta['seleccion_mejor'] == 1 ? 'selected' : '' ?>" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27Z" stroke="#000" stroke-width="2" />
+                                            </svg>
+                                            <button class="btn-nuevo-pedido btn btn-primary" data-id-proveedor="<?= $oferta['id_proveedor'] ?>">
+                                                + Nuevo pedido
+                                            </button>
+
+                                        </td>
                                         <td><?= esc($oferta['nombre_proveedor']) ?></td>
                                         <td><?= esc($oferta['ref_producto']) ?></td>
                                         <td><?= esc($oferta['precio']) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
+
                         </table>
                     <?php endif; ?>
                 </div>
@@ -57,10 +84,35 @@
     </div>
 </div>
 
+
+<!-- Modal para añadir pedido (solo esquema) -->
+<div class="modal fade" id="addPedidoModal" tabindex="-1" role="dialog" aria-labelledby="addPedidoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" id="pedidoModalContent">
+            <!-- Contenido del modal cargado mediante AJAX -->
+        </div>
+    </div>
+</div>
+
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 <script>
     $(document).ready(function() {
-        // Cargar contenido del modal para elegir proveedor mediante AJAX
+        $('.btn-nuevo-pedido').on('click', function() {
+            var idProveedor = $(this).data('id-proveedor');
+            $('#pedidoModalContent').load('<?= base_url("Pedidos_proveedor/add") ?>' + '?id_proveedor=' + idProveedor, function(response, status, xhr) {
+                if (status === "error") {
+                    console.error("Error al cargar el contenido: " + xhr.status + " " + xhr.statusText);
+                    alert("Error al cargar el contenido del modal. Inténtalo más tarde.");
+                } else {
+                    $('#addPedidoModal').modal('show');
+                }
+            });
+        });
+
+
         $('.btn-elegir-proveedor').on('click', function() {
             var idProducto = $(this).data('id-producto');
             $('#modalContent').load('<?= base_url("elegirProveedor") ?>/' + idProducto, function() {
@@ -68,13 +120,14 @@
             });
         });
 
-        $('.selectable-row').on('click', function() {
-            var productoIndex = $(this).data('producto-index');
-            var ofertaIndex = $(this).attr('id').split('-').pop();
-            var isSelected = $(this).hasClass('table-success');
+        $('.star-icon').on('click', function() {
+            var $this = $(this);
+            var productoIndex = $this.closest('.selectable-row').data('producto-index');
+            var ofertaIndex = $this.closest('tr').attr('id').split('-').pop();
+            var isSelected = $this.hasClass('selected');
 
             if (isSelected) {
-                $(this).removeClass('table-success');
+                $this.removeClass('selected');
                 $.ajax({
                     url: '/comparadorProductos/deseleccionarMejor',
                     method: 'POST',
@@ -84,16 +137,11 @@
                     },
                     success: function(response) {
                         console.log('Proveedor deseleccionado exitosamente');
-                        alert('Has deseleccionado la mejor oferta para este producto.');
-                    },
-                    error: function() {
-                        console.error('Error al deseleccionar el proveedor');
                     }
                 });
             } else {
-                $('tr[data-producto-index="' + productoIndex + '"]').removeClass('table-success');
-                $(this).addClass('table-success');
-
+                $('tr[data-producto-index="' + productoIndex + '"] .star-icon').removeClass('selected');
+                $this.addClass('selected');
                 $.ajax({
                     url: '/comparadorProductos/seleccionarMejor',
                     method: 'POST',
@@ -103,15 +151,17 @@
                     },
                     success: function(response) {
                         console.log('Proveedor seleccionado exitosamente');
-                        alert('Has seleccionado una mejor oferta para este producto.');
-                    },
-                    error: function() {
-                        console.error('Error al seleccionar el proveedor');
+                        // Verificar si la clase se aplicó
+                        if (!$this.hasClass('selected')) {
+                            $this.addClass('selected');
+                        }
                     }
                 });
             }
         });
     });
 </script>
+
+
 
 <?= $this->endSection() ?>

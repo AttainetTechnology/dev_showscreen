@@ -165,14 +165,16 @@ class Pedidos_proveedor extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $clienteModel = new ProveedoresModel($db);
-
-
+    
         $data['proveedores'] = $clienteModel->findAll();
         $data['usuario_html'] = $this->guarda_usuario();
-
+        
+        // Obtener el ID del proveedor desde la URL
+        $data['id_proveedor_seleccionado'] = $this->request->getGet('id_proveedor');
+    
         echo view('add_pedidoProveedor', $data);
     }
-
+    
     //modal add pedido
     public function save()
     {
