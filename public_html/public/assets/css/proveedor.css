@@ -1,0 +1,27 @@
+.ag-icon-filter {
+    display: none !important;
+}
+
+.btnAddPedido {
+    background-color: #e4eff7 !important;
+    color: #1d9dd5;
+    font-size: 14px !important;
+    height: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    margin-left: 25px;
+}
+
+.btnAddPedido:hover {
+    background-color: #337ab7 !important;
+    color: #e4eff7 !important;
+}
+
+.tituloProductosNecesidad {
+    margin-top: 80px;
+    margin-left: 25px;
+}
+

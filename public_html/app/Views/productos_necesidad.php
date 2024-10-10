@@ -2,91 +2,117 @@
 <?= $this->section('content') ?>
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<h2>Productos Necesidad</h2>
+<h2 class="tituloProductosNecesidad">Productos Necesidad</h2>
 
-<!-- Botón para añadir producto -->
-<div class="mb-3">
-    <a href="<?= base_url('productos_necesidad/add') ?>" class="btn btn-primary">
+<div class="d-flex justify-content-between mb-3">
+    <a href="<?= base_url('productos_necesidad/add') ?>" class="btn btn-primary btnAddPedido">
         <i class="fa fa-plus"></i> Añadir Producto
     </a>
+    <button id="clear-filters btnEliminarFiltro" class="btn btn-danger">Eliminar Filtros</button>
 </div>
-
 
 <div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const columnDefs = [{
+                headerName: "Acciones",
+                field: "acciones",
+                cellRenderer: params => {
+                    const links = params.value;
+                    return `
+                        <a href="${links.editar}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Editar</a>
+                        <a href="${links.precio}" class="btn btn-primary btn-sm"><i class="fa fa-euro-sign"></i> Precio</a>
+                        <button onclick="eliminarProducto('${links.eliminar}')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Eliminar</button>
+                    `;
+                },
+                filter: false,
+                minWidth: 250
+            },
+            {
+                headerName: "Nombre del Producto",
+                field: "nombre_producto",
+                filter: 'agTextColumnFilter'
+            },
+            {
+                headerName: "Familia",
+                field: "nombre_familia",
+                filter: 'agTextColumnFilter'
+            },
+            {
+                headerName: "Imagen",
+                field: "imagen",
+                cellRenderer: params => params.value ? `<img src="${params.value}" height="60">` : ''
+            },
+            {
+                headerName: "Unidad",
+                field: "unidad",
+                filter: 'agTextColumnFilter'
+            },
+            {
+                headerName: "Estado",
+                field: "estado_producto",
+                filter: 'agTextColumnFilter'
+            }
+        ];
+
         const gridOptions = {
-            columnDefs: [{
-                    headerName: "Acciones",
-                    field: "acciones",
-                    cellRenderer: params => {
-                        const links = params.value;
-                        return `
-                            <a href="${links.editar}" class="btn btn-success btn-sm">
-                                <i class="fa fa-edit"></i> Editar
-                            </a>
-                            <a href="${links.precio}" class="btn btn-primary btn-sm">
-                                <i class="fa fa-euro-sign"></i> Precio
-                            </a>
-                            <a href="${links.eliminar}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
-                                <i class="fa fa-trash"></i> Eliminar
-                            </a>
-                        `;
-                    }
-                },
-                {
-                    headerName: "Nombre del Producto",
-                    field: "nombre_producto",
-                    sortable: true,
-                    filter: true
-                },
-                {
-                    headerName: "Familia",
-                    field: "nombre_familia",
-                    sortable: true,
-                    filter: true
-                },
-                {
-                    headerName: "Imagen",
-                    field: "imagen",
-                    cellRenderer: params => params.value ? `<img src="${params.value}" height="60">` : ''
-                },
-                {
-                    headerName: "Unidad",
-                    field: "unidad",
-                    sortable: true,
-                    filter: true
-                },
-                {
-                    headerName: "Estado",
-                    field: "estado_producto",
-                    sortable: true,
-                    filter: true
-                },
-            ],
+            columnDefs: columnDefs,
             defaultColDef: {
                 flex: 1,
-                minWidth: 100
+                minWidth: 100,
+                sortable: true,
+                floatingFilter: true,
+                resizable: true
             },
-            rowData: []
+            rowData: [],
+            pagination: true,
+            paginationPageSize: 10,
+            domLayout: 'autoHeight',
+            onGridReady: function(params) {
+                const gridApi = params.api;
+                fetchData(gridApi);
+            },
+            localeText: {
+                noRowsToShow: 'No hay registros disponibles.'
+            }
         };
 
         const eGridDiv = document.querySelector('#myGrid');
-        const gridApi = agGrid.createGrid(eGridDiv, gridOptions);
+        new agGrid.Grid(eGridDiv, gridOptions);
 
-        // Fetch data and apply it to the grid
+        document.getElementById('clear-filters').addEventListener('click', () => {
+            gridOptions.api.setFilterModel(null);
+            gridOptions.api.onFilterChanged();
+        });
+    });
+
+    function fetchData(gridApi) {
         fetch('<?= base_url("productos_necesidad/getProductos") ?>')
             .then(response => response.json())
-            .then(data => {
-                gridApi.applyTransaction({
-                    add: data
-                });
-            })
+            .then(data => gridApi.applyTransaction({
+                add: data
+            }))
             .catch(error => console.error('Error al cargar los datos:', error));
-    });
-</script>
+    }
 
+    function eliminarProducto(url) {
+        if (confirm("¿Estás seguro de eliminar este producto?")) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function(response) {
+                    location.reload();
+                },
+                error: function() {
+                    alert("Error al intentar eliminar el producto.");
+                }
+            });
+        }
+    }
+</script>
 <?= $this->endSection() ?>

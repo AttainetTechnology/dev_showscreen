@@ -23,12 +23,15 @@
     </div>
 
     <div class="mb-3">
-        <label for="imagen" class="form-label">Imagen</label>
-        <input type="file" name="imagen" id="imagen" class="form-control">
-        <?php if ($producto['imagen']): ?>
-            <p>Imagen actual: <img src="<?= base_url("public/assets/uploads/files/{$data['id_empresa']}/productos_necesidad/" . $producto['imagen']) ?>" height="60"></p>
-        <?php endif; ?>
-    </div>
+    <label for="imagen" class="form-label">Imagen</label>
+    <input type="file" name="imagen" id="imagen" class="form-control">
+    <?php if ($producto['imagen']): ?>
+        <p>Imagen actual: 
+            <img src="<?= base_url("public/assets/uploads/files/{$id_empresa}/productos_necesidad/{$producto['id_producto']}/" . $producto['imagen']) ?>" height="60">
+        </p>
+        <button type="button" class="btn btn-danger mt-2" id="eliminarImagenButton">Eliminar Imagen</button>
+    <?php endif; ?>
+</div>
 
     <div class="mb-3">
         <label for="unidad" class="form-label">Unidad</label>
@@ -66,6 +69,26 @@
 </div>
 <script>
     $(document).ready(function() {
+        $('#eliminarImagenButton').on('click', function() {
+            if (confirm("¿Estás seguro de que deseas eliminar esta imagen?")) {
+                $.ajax({
+                    url: '<?= base_url('productos_necesidad/eliminarImagen/' . $producto['id_producto']) ?>',
+                    type: 'POST',
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload(); // Recargar la página para actualizar el estado de la imagen
+                        } else {
+                            alert(response.message || "Error al eliminar la imagen.");
+                        }
+                    },
+                    error: function() {
+                        alert("Error al intentar eliminar la imagen.");
+                    }
+                });
+            }
+        });
+
         $('#abrirModalProducto').on('click', function() {
             $.ajax({
                 url: '<?= base_url('productos_necesidad/verProductos/' . $producto['id_producto']) ?>',
