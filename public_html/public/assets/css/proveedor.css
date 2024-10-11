@@ -25,7 +25,7 @@
     margin-left: 25px;
 }
 
-.btnEliminarFiltro, #volverButton{
+.btnEliminarFiltro{
     background-color: #B7B7B7 !important;
     color: #F5F5F7 !important;
     height: 30px;
@@ -34,7 +34,17 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.btnEliminarFiltro:hover, #volverButton:hover {
+#volverButton {
+    background-color: #B7B7B7 !important;
+    color: #F5F5F7 !important;
+    height: 30px;
+    font-size: 14px !important;
+    border: none;
+    margin-top: 3vh;
+}
+
+.btnEliminarFiltro:hover,
+#volverButton:hover {
     background-color: #a9aaad !important;
     color: #F5F5F7 !important;
 }
@@ -46,12 +56,13 @@
     border-radius: 5px !important;
     width: 68px !important;
     height: 25px;
-    font-size: 14px; /* Tamaño de texto adecuado */
+    font-size: 14px;
+    /* Tamaño de texto adecuado */
     text-align: center;
 }
 
 .material-symbols-outlined.icono {
-    font-size: 15px; 
+    font-size: 15px;
     margin-right: 3px;
 }
 
@@ -91,47 +102,76 @@
     background-color: #0B2F9F !important;
     color: #e4eff7 !important;
 }
-.btn-nuevo-pedido{
+
+.btn-nuevo-pedido {
     background-color: #e4eff7 !important;
     color: #1d9dd5 !important;
     border-radius: 5px !important;
     border: none;
 }
-.btn-nuevo-pedido:hover{
+
+.btn-nuevo-pedido:hover {
     background-color: #0B2F9F !important;
     color: #e4eff7 !important;
 }
 
-.btn-elegir-proveedor{
+.btn-elegir-proveedor {
     background-color: #0B2F9F !important;
     color: #e4eff7 !important;
     margin: 5px;
 }
-.btn-elegir-proveedor:hover{
-        background-color: #140a3f !important;
+
+.btn-elegir-proveedor:hover {
+    background-color: #140a3f !important;
     color: #c4ecfd !important;
 }
+
 .actions {
     display: flex;
     align-items: center;
-    gap: 10px; /* Ajusta el espacio entre el icono y el botón */
-    white-space: nowrap; /* Evita que el texto del botón se divida en varias líneas */
+    gap: 10px;
+    white-space: nowrap;
 }
 
-.titleAddproducto{
+.titleAddproducto,
+.titleEditProductoProveedor {
     margin-left: 3vw;
     margin-top: 10vh;
 }
 
-.fromAddProduct{
-    margin-left:3vw;
+.fromAddProduct {
+    margin-left: 3vw;
     margin-top: 5vh;
 }
 
-.buttonsAddProduct{
+.fromEditProductProveed {
+    margin-left: 3vw;
+}
+
+.buttonsAddProduct {
     display: flex;
-   margin-top:3vh;
-    justify-content: space-between; /* Alinea los botones a los extremos */
-    align-items: center; /* Alinea los botones verticalmente en el mismo nivel */
-    margin-top: 3vh; /* Mantiene el margen de los botones superior */
+    margin-top: -2vh;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttonsEditProductProveed {
+    display: flex;
+    margin-top: 1vh;
+    margin-left: 3vw;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btnVendemosProd {
+
+    border-radius: 5px !important;
+    border: none;
+    background-color: #0b9f30 !important;
+    color: #e4f7e8 !important;
+}
+
+.btnVendemosProd:hover {
+    background-color: #bafbc0 !important;
+    color: #064a19 !important;
 }

@@ -1,10 +1,14 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 
-<h2>Editar Producto</h2>
-<button type="button" class="btn btn-info mb-3" id="abrirModalProducto">¿Vendemos este producto?</button>
-<button type="button" class="btn btn-info mb-3" id="volverButton">Volver</button>
-<form action="<?= base_url('productos_necesidad/update/' . $producto['id_producto']) ?>" method="post" enctype="multipart/form-data">
+<h2 class="titleEditProductoProveedor">Editar Producto</h2>
+<div class="buttonsEditProductProveed">
+    <button type="button" class="btn mb-3 btnVendemosProd" id="abrirModalProducto">¿Vendemos este producto?</button>
+    <button type="button" class="btn mb-3" id="volverButton">Volver</button>
+</div>
+
+<form action="<?= base_url('productos_necesidad/update/' . $producto['id_producto']) ?>" method="post" enctype="multipart/form-data" class="fromEditProductProveed">
 
 
     <div class="mb-3">
@@ -51,7 +55,7 @@
         <input type="text" class="form-control" value="<?= $productoVentaNombre ?>" readonly>
     </div>
 
-    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+    <button type="submit" class="btn btn-primary" style="margin-top: 2vh;">Guardar Cambios</button>
 </form>
 <!-- Modal HTML -->
 <div class="modal fade" id="productoModal" tabindex="-1" role="dialog" aria-labelledby="productoModalLabel" aria-hidden="true">

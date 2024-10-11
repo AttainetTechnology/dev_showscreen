@@ -22,10 +22,6 @@
 <div class="comparador">
 
     <h2>Comparador de Productos</h2>
-    <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-info mb-3" id="volverButton">Volver</button>
-</div>
-
     <?php if (empty($comparador)): ?>
         <p>No hay productos disponibles para comparar.</p>
     <?php else: ?>
@@ -67,7 +63,7 @@
                                         <td><?= esc($oferta['nombre_proveedor']) ?></td>
                                         <td><?= esc($oferta['ref_producto']) ?></td>
                                         <td><?= esc($oferta['precio']) ?></td>
-                                    </tr>
+                                   </tr>
                                 <?php endforeach; ?>
                             </tbody>
 
@@ -78,6 +74,11 @@
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+
+<div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-info mb-3" id="volverButton" style="margin-right: 2vw;">Volver</button>
+</div>
+
 
 <!-- Modal para elegir proveedor -->
 <div class="modal fade" id="elegirProveedorModal" tabindex="-1" role="dialog" aria-labelledby="elegirProveedorModalLabel" aria-hidden="true">
