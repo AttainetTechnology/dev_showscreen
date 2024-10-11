@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <h2 class="tituloProductosNecesidad">Productos Necesidad</h2>
 
@@ -12,7 +13,8 @@
     <a href="<?= base_url('productos_necesidad/add') ?>" class="btn btn-primary btnAddPedido">
         <i class="fa fa-plus"></i> Añadir Producto
     </a>
-    <button id="clear-filters btnEliminarFiltro" class="btn btn-danger">Eliminar Filtros</button>
+    <button id="clear-filters" class="btn btn-danger btnEliminarFiltro">Eliminar Filtros</button>
+
 </div>
 
 <div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
@@ -25,9 +27,11 @@
                 cellRenderer: params => {
                     const links = params.value;
                     return `
-                        <a href="${links.editar}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Editar</a>
-                        <a href="${links.precio}" class="btn btn-primary btn-sm"><i class="fa fa-euro-sign"></i> Precio</a>
-                        <button onclick="eliminarProducto('${links.eliminar}')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Eliminar</button>
+    <a href="${links.editar}" class="btn btnEditar">
+    <span class="material-symbols-outlined icono">edit</span>Editar</a>
+    </a>
+                        <a href="${links.precio}" class="btn btn-primary btn-sm btnPrecio"><i class="fa fa-euro-sign"></i>€ Precio</a>
+                        <button onclick="eliminarProducto('${links.eliminar}')" class="btn btn-danger btn-sm btnEliminar"><i class="fa fa-trash"></i> Eliminar</button>
                     `;
                 },
                 filter: false,
@@ -77,6 +81,8 @@
                 const gridApi = params.api;
                 fetchData(gridApi);
             },
+            rowHeight: 60,
+            domLayout: 'autoHeight',
             localeText: {
                 noRowsToShow: 'No hay registros disponibles.'
             }

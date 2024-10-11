@@ -1,7 +1,9 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 
 <style>
     .star-icon {
@@ -20,7 +22,10 @@
 <div class="comparador">
 
     <h2>Comparador de Productos</h2>
+    <div class="d-flex justify-content-end">
     <button type="button" class="btn btn-info mb-3" id="volverButton">Volver</button>
+</div>
+
     <?php if (empty($comparador)): ?>
         <p>No hay productos disponibles para comparar.</p>
     <?php else: ?>
@@ -30,17 +35,16 @@
                     <h5 class="mb-0"><?= esc($item['producto']['nombre_producto']) ?></h5>
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-primary mb-3 btn-elegir-proveedor" data-id-producto="<?= $item['producto']['id_producto'] ?>">
+                    <button class="btn mb-3 btn-elegir-proveedor" data-id-producto="<?= $item['producto']['id_producto'] ?>">
                         Elegir Proveedor
                     </button>
-
                     <?php if (empty($item['ofertas'])): ?>
                         <p>No hay ofertas disponibles para este producto.</p>
                     <?php else: ?>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Acciones</th>
+                                <th style="width: 10vw;">Acciones</th>
                                     <th>Proveedor</th>
                                     <th>Referencia Producto</th>
                                     <th>Precio</th>
@@ -51,15 +55,15 @@
                                     <tr id="producto-<?= $item['producto']['id_producto'] ?>-oferta-<?= $oferta['id'] ?>"
                                         class="selectable-row"
                                         data-producto-index="<?= $item['producto']['id_producto'] ?>">
-                                        <td class="star-column">
-                                            <svg class="star-icon <?= $oferta['seleccion_mejor'] == 1 ? 'selected' : '' ?>" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27Z" stroke="#000" stroke-width="2" />
-                                            </svg>
-                                            <button class="btn-nuevo-pedido btn btn-primary" data-id-proveedor="<?= $oferta['id_proveedor'] ?>">
-                                                + Nuevo pedido
-                                            </button>
+                                        <td class="star-column actions">
+    <svg class="star-icon <?= $oferta['seleccion_mejor'] == 1 ? 'selected' : '' ?>" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27Z" stroke="#000" stroke-width="2" />
+    </svg>
+    <button class="btn-nuevo-pedido btn" data-id-proveedor="<?= $oferta['id_proveedor'] ?>">
+        + Nuevo pedido
+    </button>
+</td>
 
-                                        </td>
                                         <td><?= esc($oferta['nombre_proveedor']) ?></td>
                                         <td><?= esc($oferta['ref_producto']) ?></td>
                                         <td><?= esc($oferta['precio']) ?></td>

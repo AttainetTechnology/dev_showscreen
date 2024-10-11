@@ -1,8 +1,9 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 
-<h2>Añadir Producto</h2>
-<form action="<?= base_url('productos_necesidad/save') ?>" method="post" enctype="multipart/form-data">
+<h2 class="titleAddproducto">Añadir Producto</h2>
+<form action="<?= base_url('productos_necesidad/save') ?>" method="post" enctype="multipart/form-data" class="fromAddProduct">
 
 
 
@@ -35,8 +36,16 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-success">Guardar Producto</button>
+    <div class="buttonsAddProduct">
+    <button type="submit" class="btn btn-primary">Añadir Producto</button>
+    <button type="button" class="btn btn-info mb-3" id="volverButton">Volver</button>
+</div>
+
 </form>
 
-
+<script>
+        document.getElementById('volverButton').addEventListener('click', function() {
+        window.location.href = '<?= base_url('productos_necesidad') ?>';
+    });
+</script>
 <?= $this->endSection() ?>

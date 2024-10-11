@@ -25,3 +25,113 @@
     margin-left: 25px;
 }
 
+.btnEliminarFiltro, #volverButton{
+    background-color: #B7B7B7 !important;
+    color: #F5F5F7 !important;
+    height: 30px;
+    font-size: 14px !important;
+    border: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.btnEliminarFiltro:hover, #volverButton:hover {
+    background-color: #a9aaad !important;
+    color: #F5F5F7 !important;
+}
+
+.btnEditar {
+
+    background-color: #337ab7 !important;
+    color: white !important;
+    border-radius: 5px !important;
+    width: 68px !important;
+    height: 25px;
+    font-size: 14px; /* Tamaño de texto adecuado */
+    text-align: center;
+}
+
+.material-symbols-outlined.icono {
+    font-size: 15px; 
+    margin-right: 3px;
+}
+
+
+.btnEditar:hover {
+    background-color: #0B2F9F !important;
+    color: white;
+}
+
+.btnEliminar {
+    background-color: #d9534f !important;
+    color: white !important;
+    border-radius: 5px !important;
+    width: 72px;
+    height: 27px !important;
+
+}
+
+.btnEliminar:hover {
+    background-color: #0B2F9F !important;
+    color: white !important;
+    border: none;
+}
+
+.btnPrecio {
+    background-color: #e4eff7 !important;
+    color: #1d9dd5 !important;
+    border-radius: 5px !important;
+    width: 64px;
+    height: 25px;
+    border: none;
+
+}
+
+.btnPrecio:hover {
+
+    background-color: #0B2F9F !important;
+    color: #e4eff7 !important;
+}
+.btn-nuevo-pedido{
+    background-color: #e4eff7 !important;
+    color: #1d9dd5 !important;
+    border-radius: 5px !important;
+    border: none;
+}
+.btn-nuevo-pedido:hover{
+    background-color: #0B2F9F !important;
+    color: #e4eff7 !important;
+}
+
+.btn-elegir-proveedor{
+    background-color: #0B2F9F !important;
+    color: #e4eff7 !important;
+    margin: 5px;
+}
+.btn-elegir-proveedor:hover{
+        background-color: #140a3f !important;
+    color: #c4ecfd !important;
+}
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Ajusta el espacio entre el icono y el botón */
+    white-space: nowrap; /* Evita que el texto del botón se divida en varias líneas */
+}
+
+.titleAddproducto{
+    margin-left: 3vw;
+    margin-top: 10vh;
+}
+
+.fromAddProduct{
+    margin-left:3vw;
+    margin-top: 5vh;
+}
+
+.buttonsAddProduct{
+    display: flex;
+   margin-top:3vh;
+    justify-content: space-between; /* Alinea los botones a los extremos */
+    align-items: center; /* Alinea los botones verticalmente en el mismo nivel */
+    margin-top: 3vh; /* Mantiene el margen de los botones superior */
+}
