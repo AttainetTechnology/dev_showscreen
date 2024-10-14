@@ -12,17 +12,17 @@
 
     <div class="mb-3">
         <label for="nif" class="form-label">NIF</label>
-        <input type="text" name="nif" id="nif" class="form-control" required>
+        <input type="text" name="nif" id="nif" class="form-control">
     </div>
 
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" id="email" class="form-control" required>
+        <input type="email" name="email" id="email" class="form-control">
     </div>
 
     <div class="mb-3">
         <label for="telf" class="form-label">Teléfono</label>
-        <input type="text" name="telf" id="telf" class="form-control" required>
+        <input type="text" name="telf" id="telf" class="form-control">
     </div>
 
     <div class="mb-3">
@@ -32,17 +32,23 @@
 
     <div class="mb-3">
         <label for="direccion" class="form-label">Dirección</label>
-        <input type="text" name="direccion" id="direccion" class="form-control" required>
+        <input type="text" name="direccion" id="direccion" class="form-control">
     </div>
 
     <div class="mb-3">
         <label for="pais" class="form-label">País</label>
-        <input type="text" name="pais" id="pais" class="form-control" required>
+        <select name="pais" id="pais" class="form-select">
+            <option value="">Selecciona un país</option>
+            <?php foreach ($paises as $pais): ?>
+                <option value="<?= $pais['id'] ?>"><?= $pais['nombre'] ?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
+
 
     <div class="mb-3">
         <label for="id_provincia" class="form-label">Provincia</label>
-        <select name="id_provincia" id="id_provincia" class="form-select" required>
+        <select name="id_provincia" id="id_provincia" class="form-select">
             <option value="">Selecciona una provincia</option>
             <?php foreach ($provincias as $provincia): ?>
                 <option value="<?= $provincia['id_provincia'] ?>"><?= $provincia['provincia'] ?></option>
@@ -57,7 +63,12 @@
 
     <div class="mb-3">
         <label for="f_pago" class="form-label">Forma de Pago</label>
-        <input type="text" name="f_pago" id="f_pago" class="form-control">
+        <select name="f_pago" id="f_pago" class="form-select">
+            <option value="">Selecciona una forma de pago</option>
+            <?php foreach ($formas_pago as $forma): ?>
+                <option value="<?= $forma['id_formapago'] ?>"><?= $forma['formapago'] ?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
 
     <div class="mb-3">

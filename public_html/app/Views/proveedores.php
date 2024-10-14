@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <h2 class="tituloProveedores">Proveedores</h2>
-
 <div class="d-flex justify-content-between mb-3">
     <a href="<?= base_url('proveedores/add') ?>" class="btn btn-primary">
         <i class="fa fa-plus"></i> Añadir Proveedor
@@ -16,7 +15,6 @@
 
     <button id="clear-filters" class="btn btn-danger">Eliminar Filtros</button>
 </div>
-
 <div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
 
 <script>
@@ -132,7 +130,7 @@
                 url: url,
                 type: 'POST',
                 success: function(response) {
-                    location.reload(); // Recarga la tabla después de la eliminación
+                    location.reload();
                 },
                 error: function() {
                     alert("Error al intentar eliminar el proveedor.");
