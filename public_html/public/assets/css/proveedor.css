@@ -61,7 +61,7 @@
 }
 
 .material-symbols-outlined.icono {
-    font-size: 15px;
+    font-size: 12px;
     margin-right: 3px;
 }
 
@@ -75,7 +75,7 @@
     background-color: #d9534f !important;
     color: white !important;
     border-radius: 5px !important;
-    width: 72px;
+    width: 76px;
     height: 27px !important;
 
 }
@@ -168,7 +168,6 @@
     align-items: center;
 }
 
-
 .btnVendemosProd {
 
     border-radius: 5px !important;
@@ -182,17 +181,23 @@
     color: #064a19 !important;
 }
 
-
-.comparador {
+.comparador, .fromAddProveedor, .formEditProveedor{
 	margin-top: 1vw;
-	margin-left: 4vh;
+	margin-left: 2vh;
 	margin-right: 4vh;
 }
 #productosModalBody{
     margin:10px !important;
 }
 
-.titleComparador{
-	margin-top: 3vw;
-    margin-left: 4vh;
+.titleComparador, .tituloProveedores, .titleAddProveedor{
+    margin-top: 80px;
+    margin-left: 25px;
+}
+
+.buttonsAddProveedor{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
 }

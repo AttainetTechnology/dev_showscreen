@@ -4,7 +4,6 @@
 
 <h2 class="titleAddProveedor">Añadir Proveedor</h2>
 <form action="<?= base_url('proveedores/save') ?>" method="post" enctype="multipart/form-data" class="fromAddProveedor">
-
     <div class="mb-3">
         <label for="nombre_proveedor" class="form-label">Nombre del Proveedor</label>
         <input type="text" name="nombre_proveedor" id="nombre_proveedor" class="form-control" required>
@@ -45,7 +44,6 @@
         </select>
     </div>
 
-
     <div class="mb-3">
         <label for="id_provincia" class="form-label">Provincia</label>
         <select name="id_provincia" id="id_provincia" class="form-select">
@@ -62,26 +60,6 @@
     </div>
 
     <div class="mb-3">
-        <label for="f_pago" class="form-label">Forma de Pago</label>
-        <select name="f_pago" id="f_pago" class="form-select">
-            <option value="">Selecciona una forma de pago</option>
-            <?php foreach ($formas_pago as $forma): ?>
-                <option value="<?= $forma['id_formapago'] ?>"><?= $forma['formapago'] ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label for="fax" class="form-label">Fax</label>
-        <input type="text" name="fax" id="fax" class="form-control">
-    </div>
-
-    <div class="mb-3">
-        <label for="cargaen" class="form-label">Carga en</label>
-        <input type="text" name="cargaen" id="cargaen" class="form-control">
-    </div>
-
-    <div class="mb-3">
         <label for="observaciones_proveedor" class="form-label">Observaciones</label>
         <textarea name="observaciones_proveedor" id="observaciones_proveedor" class="form-control" rows="3"></textarea>
     </div>
@@ -93,8 +71,9 @@
 
     <div class="buttonsAddProveedor">
         <button type="submit" class="btn btn-primary">Añadir Proveedor</button>
-        <button type="button" class="btn btn-info mb-3" id="volverButton">Volver</button>
+        <button type="button" class="btn btn-info mb-3" id="volverButton" style="margin-top:15px;">Volver</button>
     </div>
+    
 
 </form>
 

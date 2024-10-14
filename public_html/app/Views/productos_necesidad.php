@@ -17,7 +17,7 @@
 
 </div>
 
-<div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
+<div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%; margin-left:27px;"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

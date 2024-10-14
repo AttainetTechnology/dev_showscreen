@@ -44,13 +44,10 @@ class Proveedores extends BaseControllerGC
 
         $builderPaises = $db->table('paises');
         $paises = $builderPaises->select('id, nombre')->get()->getResultArray();
-        $builderFormasPago = $db->table('formas_pago');
-        $formas_pago = $builderFormasPago->select('id_formapago, formapago')->get()->getResultArray();
 
         return view('addProveedor', [
             'provincias' => $provincias,
             'paises' => $paises,
-            'formas_pago' => $formas_pago
         ]);
     }
 

@@ -1,7 +1,8 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 
-<h2>Editar Proveedor</h2>
+<h2 class="titleAddProveedor">Editar Proveedor</h2>
 
 <form action="<?= base_url('proveedores/update/' . $proveedor['id_proveedor']) ?>" method="post" class="formEditProveedor">
 
@@ -42,22 +43,6 @@
         <input type="text" name="telf" id="telf" class="form-control" value="<?= $proveedor['telf'] ?>">
     </div>
 
-    <div class="mb-3">
-        <label for="cargaen" class="form-label">Carga en</label>
-        <input type="text" name="cargaen" id="cargaen" class="form-control" value="<?= $proveedor['cargaen'] ?>">
-    </div>
-
-    <div class="mb-3">
-        <label for="f_pago" class="form-label">Forma de Pago</label>
-        <select name="f_pago" id="f_pago" class="form-select">
-            <option value="">Selecciona una forma de pago</option>
-            <?php foreach ($formas_pago as $forma): ?>
-                <option value="<?= $forma['id_formapago'] ?>" <?= $forma['id_formapago'] == $proveedor['f_pago'] ? 'selected' : '' ?>>
-                    <?= $forma['formapago'] ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
 
     <div class="mb-3">
         <label for="web" class="form-label">Sitio Web</label>
@@ -75,16 +60,11 @@
     </div>
 
     <div class="mb-3">
-        <label for="fax" class="form-label">Fax</label>
-        <input type="text" name="fax" id="fax" class="form-control" value="<?= $proveedor['fax'] ?>">
-    </div>
-
-    <div class="mb-3">
         <label for="contacto" class="form-label">Contacto</label>
         <input type="text" name="contacto" id="contacto" class="form-control" value="<?= $proveedor['contacto'] ?>">
     </div>
 
-    <div class="buttonsEditProveedor">
+    <div class="buttonsAddProveedor">
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         <a href="<?= base_url('proveedores') ?>" class="btn btn-secondary">Cancelar</a>
     </div>

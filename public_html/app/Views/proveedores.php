@@ -9,13 +9,12 @@
 
 <h2 class="tituloProveedores">Proveedores</h2>
 <div class="d-flex justify-content-between mb-3">
-    <a href="<?= base_url('proveedores/add') ?>" class="btn btn-primary">
-        <i class="fa fa-plus"></i> Añadir Proveedor
+    <a href="<?= base_url('proveedores/add') ?>" class="btn btn-primary btnAddPedido">+ Añadir Proveedor
     </a>
 
-    <button id="clear-filters" class="btn btn-danger">Eliminar Filtros</button>
+    <button id="clear-filters" class="btn btnEliminarFiltro">Eliminar Filtros</button>
 </div>
-<div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
+<div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%; margin-left:27px;"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
