@@ -36,128 +36,125 @@ class Pedidos_proveedor extends BaseControllerGC
     }
     //CREAMOS LA PAGINA DE PEDIDOS
 
-    public function todos($coge_estado, $where_estado)
+    public function todos()
     {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $builder = $db->table('pedidos_proveedor');
 
-        //Control de login	
-        helper('controlacceso');
-        $nivel = control_login();
-        //Fin Control de Login
+        $builder->select('id_pedido, fecha_salida, id_proveedor, referencia, estado, fecha_entrega, id_usuario, total_pedido');
+        $builder->orderBy('fecha_salida', 'desc');
+        $builder->orderBy('id_pedido', 'desc');
 
+        $pedidos = $builder->get()->getResultArray();
 
-        $crud = $this->_getClientDatabase();
+        foreach ($pedidos as &$pedido) {
+            $pedido['nombre_proveedor'] = $this->getProveedorNombre($pedido['id_proveedor']);
+            $pedido['nombre_usuario'] = $this->getUsuarioNombre($pedido['id_usuario']);
+            $pedido['estado_texto'] = $this->getEstadoTexto($pedido['estado']);
+            $pedido['acciones'] = [
+                'imprimir' => base_url("pedidos_proveedor/print/{$pedido['id_pedido']}"),
+                'eliminar' => base_url("Pedidos_proveedor/eliminar/{$pedido['id_pedido']}"), // Verifica el caso de `Pedidos_proveedor`
+                'editar' => base_url("pedidos_proveedor/editar/{$pedido['id_pedido']}")
+            ];
+            
+        }
 
-        $crud->setSubject('Pedido', 'Pedidos');
-        $crud->where($coge_estado . $where_estado);
-        $crud->setTable('pedidos_proveedor');
-        $crud->defaultOrdering('fecha_salida', 'desc');
-        $crud->defaultOrdering('id_pedido', 'desc');
-        $crud->requiredFields(['id_proveedor']);
+        return view('mostrarPedidosProveedor', ['pedidos' => $pedidos]);
+    }
 
-        //RELACIONES
-        $crud->setRelation('id_proveedor', 'proveedores', 'nombre_proveedor');
-        // $crud->setRelation('id_usuario', 'users', 'nombre_usuario');
-        //$crud->setRelation('estado', 'Estados', 'nombre_estado');
-        $crud->fieldType('estado', 'dropdown_search', [
+    private function getProveedorNombre($id_proveedor)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $proveedor = $db->table('proveedores')->select('nombre_proveedor')->where('id_proveedor', $id_proveedor)->get()->getRow();
+        return $proveedor ? $proveedor->nombre_proveedor : 'Desconocido';
+    }
+
+    private function getUsuarioNombre($id_usuario)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $usuario = $db->table('users')->select('nombre_usuario')->where('id', $id_usuario)->get()->getRow();
+        return $usuario ? $usuario->nombre_usuario : 'Desconocido';
+    }
+
+    private function getEstadoTexto($estado)
+    {
+        $estados = [
             "0" => "Pendiente de realizar",
             "1" => "Pendiente de recibir",
             "2" => "Recibido",
             "6" => "Anulado"
-        ]);
-        //DISPLAY AS
-        $crud->displayAs('bt_imprimir', '');
-        $crud->displayAs('id_pedido', 'Id pedido');
-        $crud->displayAs('id_proveedor', 'Empresa');
-        $crud->displayAs('id_usuario', 'Hace el pedido');
+        ];
+        return $estados[$estado] ?? 'Desconocido';
+    }
+    public function editar($id_pedido)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $pedidoModel = new PedidosProveedorModel($db);
 
-        //VISTAS
-        $crud->columns(['id_pedido', 'fecha_salida', 'id_proveedor', 'referencia', 'estado', 'fecha_entrega', 'id_usuario', 'total_pedido']);
-        $crud->addFields(['id_proveedor', 'referencia', 'id_usuario', 'fecha_salida', 'fecha_entrega', 'observaciones']);
-        $crud->editFields(['bt_imprimir', 'id_proveedor', 'referencia', 'observaciones', 'fecha_salida', 'fecha_entrega', 'id_pedido', 'detalles']);
-        $crud->displayAs('bt_imprimir', " ");
-
-        //ACCIONES
-        $crud->setActionButton('Imprimir', 'fa fa-print', function ($row) {
-            $uri = service('uri');
-            $uri = current_url(true);
-            $pg2 = urlencode($uri);
-            $link = base_url('pedidos_proveedor/print/') . '/' . $row->id_pedido . '?volver=' . $pg2;
-            return $link;
-        }, true);
-
-        //UNSETS
-
-        $crud->unsetRead();
-
-        //CALLBACKS
-
-        $crud->callbackColumn('total_pedido', function ($value, $row) {
-            return "<div class='estado" . $row->estado . "'><strong>" . $value . "€</strong></div>";
-        });
-        //$crud->callbackEditField('bt_imprimir', array($this, 'boton_imprimir'));
-
-        $crud->callbackEditField('bt_imprimir', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $id_pedido = $rowData->id_pedido;
-            $id_proveedor = $rowData->id_proveedor;
-            // Esta función carga todos los botones
-            return '
-            <input type="hidden" name="bt_imprimir" value="">
-            <a href="' . base_url('pedidos_proveedor/print/' . $id_pedido) . '" class="btn btn-info btn-sm" target="_blanck">
-                <i class="fa fa-print fa-fw"></i> Imprimir pedido
-            </a>
-            <a href="' . base_url('pedidos_proveedor/anular/' . $id_pedido) . '" class="btn btn-danger btn-sm btn_anular">
-                <i class="fa fa-trash fa-fw"></i> Anular todo
-            </a>
-            <a href="' . base_url('pedidos_proveedor/pedido_realizado/' . $id_pedido) . '" class="btn btn-primary btn-sm text-white"">
-                <i class="fa fa-check fa-fw"></i> Pedido realizado
-            </a>
-            <a href="' . base_url('pedidos_proveedor/pedido_recibido/' . $id_pedido) . '" class="btn btn-success btn-sm">
-                <i class="fa fa-box fa-fw"></i> Pedido recibido
-            </a>
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-            <!-- /.modal -->
-            ';
-        });
-        $crud->callbackEditField('id_pedido', array($this, 'paso_id_pedido'));
-        $crud->callbackEditField('detalles', array($this, 'lineas'));
-        $crud->callbackAddField('fecha_salida', array($this, '_saca_fecha_salida'));
-        $crud->callbackAddField('fecha_entrega', array($this, '_saca_fecha_entrega'));
-        $crud->callbackAddField('id_usuario', array($this, 'guarda_usuario'));
-        // Callbacks tabla LOG
-        $crud->callbackAfterInsert(function ($stateParameters) {
-            $this->logAction('Pedido Proveedor', 'Añadir Pedido', $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterUpdate(function ($stateParameters) {
-            $this->logAction('Pedido Proveedor', 'Editar Pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterDelete(function ($stateParameters) {
-            $this->logAction('Pedido Proveedor', 'Eliminar Pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-
-        $crud->setLangString('form_update_changes', 'Actualizar pedido');
-        $crud->setLangString('modal_save', 'Guardar pedido');
-        $output = $crud->render();
-
-        if ($output->isJSONResponse) {
-            header('Content-Type: application/json; charset=utf-8');
-            echo $output->output;
-            exit;
+        // Obtener datos del pedido
+        $pedido = $pedidoModel->find($id_pedido);
+        if (!$pedido) {
+            return redirect()->to(base_url('pedidos_proveedor'))->with('error', 'Pedido no encontrado.');
         }
-        echo view('layouts/main', (array)$output);
+
+        // Obtener datos adicionales necesarios
+        $proveedores = (new ProveedoresModel($db))->findAll();
+        $usuarios = $this->getUsuarios();
+        $estados = [
+            "0" => "Pendiente de realizar",
+            "1" => "Pendiente de recibir",
+            "2" => "Recibido",
+            "6" => "Anulado"
+        ];
+
+        // Pasar datos a la vista
+        return view('editPedidoProveedor', [
+            'pedido' => $pedido,
+            'proveedores' => $proveedores,
+            'usuarios' => $usuarios,
+            'estados' => $estados
+        ]);
+    }
+    public function update($id_pedido)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $pedidoModel = new PedidosProveedorModel($db);
+
+        // Verificar que el pedido existe
+        $pedido = $pedidoModel->find($id_pedido);
+        if (!$pedido) {
+            return redirect()->to(base_url('pedidos_proveedor'))->with('error', 'Pedido no encontrado.');
+        }
+
+        // Recoger los datos del formulario
+        $pedidoData = [
+            'id_proveedor' => $this->request->getPost('id_proveedor'),
+            'referencia' => $this->request->getPost('referencia'),
+            'observaciones' => $this->request->getPost('observaciones'),
+            'fecha_salida' => $this->request->getPost('fecha_salida'),
+            'fecha_entrega' => $this->request->getPost('fecha_entrega'),
+            'estado' => $this->request->getPost('estado')
+        ];
+
+        // Guardar cambios en la base de datos
+        if ($pedidoModel->update($id_pedido, $pedidoData)) {
+            return redirect()->to(base_url('pedidos_proveedor'))->with('message', 'Pedido actualizado con éxito.');
+        } else {
+            return redirect()->back()->with('error', 'Error al actualizar el pedido.');
+        }
+    }
+
+
+    private function getUsuarios()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        return $db->table('users')->select('id, nombre_usuario')->get()->getResultArray();
     }
 
     public function add()
@@ -165,43 +162,71 @@ class Pedidos_proveedor extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $clienteModel = new ProveedoresModel($db);
-    
+
         $data['proveedores'] = $clienteModel->findAll();
         $data['usuario_html'] = $this->guarda_usuario();
-        
+
         // Obtener el ID del proveedor desde la URL
         $data['id_proveedor_seleccionado'] = $this->request->getGet('id_proveedor');
-    
-        echo view('add_pedidoProveedor', $data);
+
+        echo view('add_pedidoProveedorModal', $data);
     }
-    
+    public function addPedido()
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $clienteModel = new ProveedoresModel($db);
+
+    $data['proveedores'] = $clienteModel->findAll();
+    $data['usuario_html'] = $this->guarda_usuario();
+    $data['id_proveedor_seleccionado'] = $this->request->getGet('id_proveedor');
+
+    return view('addPedidoProveedor', $data); 
+}
+public function eliminar($id_pedido)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $pedidoModel = new PedidosProveedorModel($db);
+    $deleted = $pedidoModel->delete($id_pedido);
+
+    if ($deleted) {
+        // Devolver una respuesta JSON con éxito
+        return $this->response->setJSON(['success' => true]);
+    } else {
+        // Devolver una respuesta JSON de error
+        return $this->response->setJSON(['success' => false]);
+    }
+}
+
+
     //modal add pedido
     public function save()
     {
-        $data = usuario_sesion();
+        $data = usuario_sesion(); // Obtiene los datos de la sesión del usuario actual
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
-
-        $data = [
+    
+        // Datos del pedido, incluyendo `id_usuario`
+        $pedidoData = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
             'referencia' => $this->request->getPost('referencia'),
             'fecha_salida' => $this->request->getPost('fecha_salida'),
-            'fecha_entrega' => $this->request->getPost('fecha_entrega'),
             'observaciones' => $this->request->getPost('observaciones'),
+            'id_usuario' => $data['id_user'] 
         ];
+    
+      // Guardar el pedido y verificar si la operación fue exitosa
+    if ($pedidoModel->insert($pedidoData)) {
+        // Obtener el ID del pedido recién insertado
+        $insertId = $pedidoModel->insertID();
 
-        if ($pedidoModel->insert($data)) {
-            // Obtener el ID del pedido recién insertado
-            $insertId = $pedidoModel->insertID();
-
-            // Registrar la acción en el log
-            $this->logAction('Pedido Proveedor', 'Añadir Pedido', $data);
-
-            // Redirigir a la página en marcha
-            return redirect()->to(base_url('pedidos_proveedor'));
-        } else {
-            return redirect()->back()->with('error', 'No se pudo guardar el pedido');
-        }
+        // Redirigir a la página de edición del pedido
+        return redirect()->to(base_url("/pedidos_proveedor/editar/$insertId"))
+                         ->with('message', 'Pedido guardado con éxito.');
+    } else {
+        return redirect()->back()->with('error', 'No se pudo guardar el pedido');
+    }
     }
 
     function paso_id_pedido($value, $id_pedido)
@@ -252,7 +277,6 @@ class Pedidos_proveedor extends BaseControllerGC
         return redirect()->to('pedidos_proveedor/index#/edit/' . $id_pedido);
     }
 
-
     function lineas($value, $id_pedido)
     {
         if (isset($_GET['pg2'])) {
@@ -273,20 +297,11 @@ class Pedidos_proveedor extends BaseControllerGC
 			</fieldset>';
     }
 
-
     public function _saca_fecha_salida()
     {
         $entrada = date('Y-m-d');
         return "<input id='field-fecha-entrada' type='date' name='fecha_salida' value='" . $entrada . "' class='datepicker-input form-control hasDatepicker'>";
     }
-    public function _saca_fecha_entrega()
-    {
-        $fecha = date('d-m-Y');
-        $entrega = date('Y-m-d', strtotime($fecha . "+ 14 days"));
-        return "<input id='field-fecha-entrega' type='date' name='fecha_entrega' value=" . $entrega . " class='datepicker-input form-control hasDatepicker'>";
-    }
-
-
     // CREAMOS LA LINEA DE PEDIDOS
 
     public function Linea_pedidos($id_pedido)

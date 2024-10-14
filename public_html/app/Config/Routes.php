@@ -87,4 +87,5 @@ $routes->get('familiaproveedor', 'Familia_proveedor::index');
 $routes->post('Ruta_pedido/guardarRuta', 'Ruta_pedido::guardarRuta');
 $routes->get('elegirProveedor/(:num)', 'Proveedores::elegirProveedor/$1');
 $routes->post('productos_necesidad/save', 'Productos_necesidad::save');
+$routes->get('pedidos_proveedor', 'Pedidos_proveedor::todos');
 

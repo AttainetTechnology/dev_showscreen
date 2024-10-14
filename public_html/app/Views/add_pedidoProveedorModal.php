@@ -28,10 +28,6 @@
             <input type="date" id="fecha_salida" name="fecha_salida" class="form-control" value="<?= date('Y-m-d') ?>" required>
         </div>
         <br>
-        <div class="form-group">
-            <label for="fecha_entrega">Fecha de Entrega:</label>
-            <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control" value="<?= date('Y-m-d', strtotime('+14 days')) ?>" required>
-        </div>
         <br>
         <div class="form-group">
             <label for="observaciones">Observaciones:</label>
