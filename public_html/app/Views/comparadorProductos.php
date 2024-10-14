@@ -21,12 +21,12 @@
 
 <div class="comparador">
 
-    <h2>Comparador de Productos</h2>
+    <h2 class="titleComparador">Comparador de Productos</h2>
     <?php if (empty($comparador)): ?>
         <p>No hay productos disponibles para comparar.</p>
     <?php else: ?>
         <?php foreach ($comparador as $item): ?>
-            <div class="card mb-4">
+            <div class="card mb-4 comparador">
                 <div class="card-header">
                     <h5 class="mb-0"><?= esc($item['producto']['nombre_producto']) ?></h5>
                 </div>

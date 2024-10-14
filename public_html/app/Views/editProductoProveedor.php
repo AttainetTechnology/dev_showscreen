@@ -5,7 +5,6 @@
 <h2 class="titleEditProductoProveedor">Editar Producto</h2>
 <div class="buttonsEditProductProveed">
     <button type="button" class="btn mb-3 btnVendemosProd" id="abrirModalProducto">¿Vendemos este producto?</button>
-    <button type="button" class="btn mb-3" id="volverButton">Volver</button>
 </div>
 
 <form action="<?= base_url('productos_necesidad/update/' . $producto['id_producto']) ?>" method="post" enctype="multipart/form-data" class="fromEditProductProveed">
@@ -54,23 +53,26 @@
         <label class="form-label">Producto que vendemos</label>
         <input type="text" class="form-control" value="<?= $productoVentaNombre ?>" readonly>
     </div>
-
-    <button type="submit" class="btn btn-primary" style="margin-top: 2vh;">Guardar Cambios</button>
+    <div class="buttonsEditProductProveedAbajo">
+    <button type="submit" class="btn btn-primary" >Guardar Cambios</button>
+    <button type="button" class="btn mb-3" id="volverButton" style="margin-top:15px;">Volver</button>
+</div>
 </form>
 <!-- Modal HTML -->
 <div class="modal fade" id="productoModal" tabindex="-1" role="dialog" aria-labelledby="productoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="height: 100vh;">
             <div class="modal-header">
                 <h5 class="modal-title" id="productoModalLabel">Selecciona un producto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="productosModalBody">
+            <div class="modal-body" id="productosModalBody" style="overflow-y: auto; max-height: calc(100vh - 150px);">
                 <!-- Contenido cargado dinámicamente por AJAX -->
             </div>
         </div>
     </div>
 </div>
+
 <script>
     $(document).ready(function() {
         $('#eliminarImagenButton').on('click', function() {
