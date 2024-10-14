@@ -94,14 +94,20 @@ class Pedidos_proveedor extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
-
+    
         // Obtener datos del pedido
         $pedido = $pedidoModel->find($id_pedido);
         if (!$pedido) {
             return redirect()->to(base_url('pedidos_proveedor'))->with('error', 'Pedido no encontrado.');
         }
-
-        // Obtener datos adicionales necesarios
+    
+        // Obtener todas las líneas de pedido asociadas con el pedido
+        $builder = $db->table('linea_pedido_proveedor');
+        $builder->where('id_pedido', $id_pedido);
+        $query = $builder->get();
+        $lineasPedido = $query->getResultArray();
+    
+        // Obtener proveedores y otros datos adicionales
         $proveedores = (new ProveedoresModel($db))->findAll();
         $usuarios = $this->getUsuarios();
         $estados = [
@@ -110,15 +116,18 @@ class Pedidos_proveedor extends BaseControllerGC
             "2" => "Recibido",
             "6" => "Anulado"
         ];
-
-        // Pasar datos a la vista
+    
+        // Pasar todos los datos a la vista
         return view('editPedidoProveedor', [
             'pedido' => $pedido,
             'proveedores' => $proveedores,
             'usuarios' => $usuarios,
-            'estados' => $estados
+            'estados' => $estados,
+            'lineasPedido' => $lineasPedido // Pasar la variable lineasPedido a la vista
         ]);
     }
+    
+     
     public function update($id_pedido)
     {
         $data = usuario_sesion();
@@ -306,82 +315,78 @@ public function eliminar($id_pedido)
 
     public function Linea_pedidos($id_pedido)
     {
-        helper('controlacceso');
-        $nivel = control_login();
-        $crud = $this->_getClientDatabase();
-        $crud->setTable('linea_pedido_proveedor');
-        $crud->setSubject('Línea de Pedido', 'Lineas del Pedido');
-        $crud->where('id_pedido=' . $id_pedido);
-        $crud->defaultOrdering('id_lineapedido', 'asc');
-        $crud->fieldType('estado', 'dropdown_search', [
-            "0" => "Pendiente de realizar",
-            "1" => "Pendiente de recibir",
-            "2" => "Recibido",
-            "6" => "Anulado"
-        ]);
-        $this->idpedido = $id_pedido;
-        $crud->fieldType('id_pedido', 'hidden', $id_pedido);
-        $crud->requiredFields(['n_piezas', 'id_producto']);
-        $crud->fieldType('total_linea', 'invisible');
-
-        // VISTAS
-        $crud->columns(['n_piezas', 'id_producto', 'estado', 'total_linea']);
-        $crud->editFields(['id_pedido', 'n_piezas', 'precio_compra', 'id_producto',  'estado', 'fecha_salida', 'fecha_entrega', 'observaciones', 'total_linea']);
-        $crud->addFields(['id_pedido', 'n_piezas',  'id_producto', 'observaciones', 'total_linea']);
-
-        // RELACIONES
-        $crud->setRelation('id_producto', 'productos_necesidad', 'nombre_producto');
-        $crud->setRelation('estado', 'estados_proveedor', 'nombre_estado');
-
-        // DISPLAY_AS
-        $crud->displayAs('n_piezas', 'Uds.');
-        $crud->displayAs('id_producto', 'Producto');
-        $crud->setLangString('modal_save', 'Guardar Línea de Pedido');
-
-        // CALLBACKS
-        $crud->callbackColumn('total_linea', function ($value, $row) {
-            return "<div class='estado" . $row->estado . "'><strong>" . $value . "€</strong></div>";
-        });
-        $crud->callbackBeforeUpdate(array($this, 'saca_precio_linea'));
-        $crud->callbackAfterUpdate(function ($stateParameters) use ($id_pedido) {
-            $this->logAction('Linea pedido proveedor', 'Edita línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            $this->actualizarTotalPedido($id_pedido);
-            $this->actualizarEstadoPedido($id_pedido); // Llamada a la nueva función
-            return $stateParameters;
-        });
-        $crud->callbackBeforeInsert(function ($post_array) use ($id_pedido) {
-            // Asegurarse de que el id_pedido se incluya en los datos
-            $post_array->data['id_pedido'] = $id_pedido;
-            return $this->saca_precio_linea($post_array);
-        });
-        $crud->callbackAfterInsert(function ($stateParameters) use ($id_pedido) {
-            $this->logAction('Linea pedido proveedor', 'Añade línea de pedido', $stateParameters);
-            $this->actualizarTotalPedido($id_pedido);
-            $this->actualizarEstadoPedido($id_pedido); // Llamada a la nueva función
-            return $stateParameters;
-        });
-        $crud->callbackAfterDelete(function ($stateParameters) use ($id_pedido) {
-            $this->logAction('Linea pedido proveedor', 'Elimina línea de pedido, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            $this->actualizarTotalPedido($id_pedido);
-            $this->actualizarEstadoPedido($id_pedido); // Llamada a la nueva función
-            return $stateParameters;
-        });
-        $crud->callbackAddField('fecha_salida', array($this, '_saca_fecha_salida'));
-        $crud->callbackAddField('fecha_entrega', array($this, '_saca_fecha_entrega'));
-        $crud->callbackAddField('id_usuario', array($this, 'guarda_usuario'));
-        $crud->unsetPrint();
-        $crud->unsetExport();
-        $crud->unsetRead();
-
-        $output = $crud->render();
-
-        if ($output->isJSONResponse) {
-            header('Content-Type: application/json; charset=utf-8');
-            echo $output->output;
-            exit;
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $builder = $db->table('linea_pedido_proveedor');
+    
+        // Obtener todas las líneas de pedido asociadas con el pedido
+        $builder->where('id_pedido', $id_pedido);
+        $query = $builder->get();
+        $lineasPedido = $query->getResultArray();
+    
+        if (empty($lineasPedido)) {
+            log_message('error', 'No se encontraron líneas de pedido para el pedido ID: ' . $id_pedido);
+        } else {
+            log_message('info', 'Líneas de pedido encontradas: ' . json_encode($lineasPedido));
         }
-        return $this->_output_sencillo($output);
+    
+        return view('editPedidoProveedor', [
+            'lineasPedido' => $lineasPedido,
+            'id_pedido' => $id_pedido,
+            'estados' => [
+                "0" => "Pendiente de realizar",
+                "1" => "Pendiente de recibir",
+                "2" => "Recibido",
+                "6" => "Anulado"
+            ]
+        ]);
     }
+    
+
+// Método para crear una nueva línea de pedido
+public function crearLinea()
+{
+    $data = $this->request->getPost();
+    $data['id_pedido'] = $this->request->getPost('id_pedido');
+
+    $db = db_connect(usuario_sesion()['new_db']);
+    $builder = $db->table('linea_pedido_proveedor');
+
+    if ($builder->insert($data)) {
+        return $this->response->setJSON(['success' => true]);
+    } else {
+        return $this->response->setJSON(['success' => false]);
+    }
+}
+
+// Método para actualizar una línea de pedido
+public function actualizarLinea($id_lineapedido)
+{
+    $data = $this->request->getPost();
+    $db = db_connect(usuario_sesion()['new_db']);
+    $builder = $db->table('linea_pedido_proveedor');
+    $builder->where('id_lineapedido', $id_lineapedido);
+
+    if ($builder->update($data)) {
+        return $this->response->setJSON(['success' => true]);
+    } else {
+        return $this->response->setJSON(['success' => false]);
+    }
+}
+
+// Método para eliminar una línea de pedido
+public function eliminarLinea($id_lineapedido)
+{
+    $db = db_connect(usuario_sesion()['new_db']);
+    $builder = $db->table('linea_pedido_proveedor');
+    $builder->where('id_lineapedido', $id_lineapedido);
+
+    if ($builder->delete()) {
+        return $this->response->setJSON(['success' => true]);
+    } else {
+        return $this->response->setJSON(['success' => false]);
+    }
+}
 
     function _pinta_euro_linea($total_linea)
     {

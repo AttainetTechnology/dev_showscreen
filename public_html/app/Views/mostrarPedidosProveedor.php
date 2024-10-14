@@ -11,9 +11,18 @@
 <h2 class="tituloProveedores">Pedidos del Proveedor</h2>
 
 <div class="d-flex justify-content-between mb-3">
-    <a href="<?= base_url('Pedidos_proveedor/addPedido') ?>" class="btn btn-primary">+ Añadir Pedido</a>
-    <button id="clear-filters" class="btn ms-auto">Eliminar Filtros</button>
+    <a href="<?= base_url('Pedidos_proveedor/addPedido') ?>" class="btn btn-primary btnAddPedido">+ Añadir Pedido</a>
+    <button id="clear-filters" class="btn ms-auto btnEliminarfiltros">Eliminar Filtros</button>
 </div>
+<?php
+// Mapeo de estados
+$estadoMap = [
+    "0" => "Pendiente de realizar",
+    "1" => "Pendiente de recibir",
+    "2" => "Recibido",
+    "6" => "Anulado"
+];
+?>
 
 <div id="gridPedidosProveedor" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
 
@@ -25,13 +34,13 @@
                 cellRenderer: function(params) {
                     const acciones = params.value;
                     return `
-                        <button onclick="editarPedido('${acciones.editar}')" class="btn btn-success btn-sm">
+                        <button onclick="editarPedido('${acciones.editar}')" class="btn btnEditar btn-sm">
                             <i class="fa fa-edit"></i> Editar
                         </button>
-                        <a href="${acciones.imprimir}" class="btn btn-info btn-sm" target="_blank">
+                        <a href="${acciones.imprimir}" class="btn btnImprimir btn-sm" target="_blank">
                             <i class="fa fa-print"></i> Imprimir
                         </a>
-   <button onclick="eliminarPedido('${acciones.eliminar}')" class="btn btn-danger btn-sm">
+   <button onclick="eliminarPedido('${acciones.eliminar}')" class="btn btnEliminar btn-sm">
             <i class="fa fa-trash"></i> Eliminar
         </button>
                     `;
@@ -97,6 +106,15 @@
             onGridReady: function(params) {
                 const gridApi = params.api;
                 gridApi.sizeColumnsToFit();
+            },
+             getRowClass: function(params) {
+                switch (params.data.estado_texto) {
+                    case "Pendiente de realizar": return 'estado0';
+                    case "Pendiente de recibir": return 'estado1';
+                    case "Recibido": return 'estado2';
+                    case "Anulado": return 'estado6';
+                    default: return '';
+                }
             }
         };
 

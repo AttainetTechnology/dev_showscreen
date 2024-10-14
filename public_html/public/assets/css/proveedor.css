@@ -1,3 +1,9 @@
+.estado1 { background-color: #ff9933 !important; }
+.estado2 { background-color: #fff3cd !important; }
+.estado3 { background-color: #fcebfa !important; }
+.estado4 { background-color: #dff0d8 !important; }
+.estado5 { background-color: #50b752b0 !important; color: #ffffff !important; }
+.estado6 { background-color: #ff6c6ccc !important; color: #ffffff !important; }
 .ag-icon-filter {
     display: none !important;
 }
@@ -200,4 +206,74 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 50px;
+}
+.btnAddPedido {
+    background-color: #e4eff7 !important;
+    color: #1d9dd5;
+    font-size: 14px !important;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    margin-left: 20px;
+}
+
+.btnAddPedido:hover {
+    background-color: #337ab7;
+    color: #e4eff7 !important;
+}
+
+.btnEliminarfiltros:hover {
+    background-color: #C7C8CC !important;
+    color: #F5F5F7 !important;
+}
+
+.btnEliminarfiltros {
+    background-color: #B7B7B7 !important;
+    color: #F5F5F7 !important;
+    height: 30px;
+    font-size: 14px !important;
+    border: none;
+}
+.btnEditar {
+    background-color: #337ab7 !important;
+    color: white !important;
+    border-radius: 8px !important;
+    width: 65px;
+    height: 27px !important;
+
+}
+
+.btnEditar:hover {
+    background-color: #0B2F9F !important;
+    color: white;
+}
+
+.btnEliminar {
+    background-color: #d9534f !important;
+    color: white !important;
+    border-radius: 8px !important;
+    width: 72px;
+    height: 27px !important;
+
+}
+
+.btnEliminar:hover {
+    background-color: #0B2F9F !important;
+    color: white !important;
+}
+
+.btnImprimir {
+    background-color: #e4eff7 !important;
+    color: 1d9dd5 !important;
+    border-radius: 8px !important;
+    width: 78px;
+    height: 27px;
+
+}
+
+.btnImprimir:hover {
+    background-color: #0B2F9F !important;
+    color: #e4eff7 !important;
 }
