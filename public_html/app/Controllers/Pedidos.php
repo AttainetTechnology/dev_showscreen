@@ -24,7 +24,7 @@ class Pedidos extends BaseControllerGC
 	}
 	public function enmarcha()
 	{
-		$this->todos('estado<', '4');
+		$this->todos('estado<=', '4');
 	}
 	public function terminados()
 	{
