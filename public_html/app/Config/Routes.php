@@ -88,4 +88,8 @@ $routes->post('Ruta_pedido/guardarRuta', 'Ruta_pedido::guardarRuta');
 $routes->get('elegirProveedor/(:num)', 'Proveedores::elegirProveedor/$1');
 $routes->post('productos_necesidad/save', 'Productos_necesidad::save');
 $routes->get('pedidos_proveedor', 'Pedidos_proveedor::todos');
-
+$routes->get('familiaProveedor/getFamiliasProveedores', 'Familia_proveedor::getFamiliasProveedores');
+$routes->match(['GET', 'POST'], 'familiaProveedor/editar/(:num)', 'Familia_proveedor::editar/$1');
+$routes->post('familiaProveedor/actualizarFamilia', 'Familia_proveedor::actualizarFamilia');
+$routes->post('familiaProveedor/agregarFamilia', 'Familia_proveedor::agregarFamilia');
+$routes->post('familiaProveedor/eliminar/(:num)', 'Familia_proveedor::eliminarFamilia/$1');
