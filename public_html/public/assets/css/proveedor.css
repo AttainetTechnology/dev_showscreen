@@ -28,23 +28,6 @@
     display: none !important;
 }
 
-.btnAddPedido{
-    background-color: #e4eff7 !important;
-    color: #1d9dd5;
-    font-size: 14px !important;
-    height: 30px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    margin-left: 25px;
-}
-
-.btnAddPedido:hover {
-    background-color: #337ab7 !important;
-    color: #e4eff7 !important;
-}
 
 .tituloProductosNecesidad {
     margin-top: 80px;
@@ -80,8 +63,8 @@
     background-color: #337ab7 !important;
     color: white !important;
     border-radius: 5px !important;
-    width: 68px !important;
-    height: 25px;
+    width: 65px !important;
+    height: 27px;
     font-size: 14px;
     /* Tamaño de texto adecuado */
     text-align: center;
@@ -217,6 +200,9 @@
     margin-top: 50px;
     margin-left: 35px;
 }
+.tituloProveedores{
+    margin-bottom: 15px;
+}
 
 .btnAddPedido {
     background-color: #e4eff7 !important;
@@ -248,33 +234,6 @@
     border: none;
 }
 
-.btnEditar {
-    background-color: #337ab7 !important;
-    color: white !important;
-    border-radius: 8px !important;
-    width: 65px;
-    height: 27px !important;
-
-}
-
-.btnEditar:hover {
-    background-color: #0B2F9F !important;
-    color: white;
-}
-
-.btnEliminar {
-    background-color: #d9534f !important;
-    color: white !important;
-    border-radius: 8px !important;
-    width: 72px;
-    height: 27px !important;
-
-}
-
-.btnEliminar:hover {
-    background-color: #0B2F9F !important;
-    color: white !important;
-}
 
 .btnImprimir {
     background-color: #e4eff7 !important;
@@ -292,7 +251,7 @@
 
 .btnEditPedido {
     margin: 18px;
-    margin-left: 35px;
+    margin-left: 35px !important;
 }
 .formEditPedido, .formEditProveedor, .fromAddProveedor{
     margin: 23px;
@@ -314,5 +273,27 @@
 .saveProducto{
     height: 30px;
     margin-top: 2px;
+}
+
+.titleEditLineas {
+    margin-left: 40px;
+    margin-top: -35px;
+}
+.btnAddLinea {
+    background-color: #e4eff7 !important;
+    color: #1d9dd5 !important;
+    margin-top: 10px;
+    height: 27px;
+    margin-left: 26px;
+}
+.btnAddLinea:hover {
+    background-color: #337ab7 !important;
+    color: #e4eff7 !important;
+}
+#lineaPedidosGrid{
+    height:500px; 
+    width:100%; 
+    margin-top:20px;
+    margin-left:20px;
 }
 

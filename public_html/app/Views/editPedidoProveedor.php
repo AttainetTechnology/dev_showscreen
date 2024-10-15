@@ -8,8 +8,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<h2 class="titleAddproducto">Editar Pedido del Proveedor</h2>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<h2 class="titleAddproducto">Editar Pedido Proveedor</h2>
 
 <div class="mb-3 row btnEditPedido">
     <div class="col-12"> <!-- Cambiamos a col-12 para usar todo el ancho -->
@@ -72,16 +73,17 @@
 
     <div class="buttonsEditPedido">
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        <a href="<?= base_url('pedidos_proveedor') ?>" class="btn btn-secondary">Volver</a>
+        <a href="<?= base_url('pedidos_proveedor') ?>" class="btn btn-secondary volverButton">Volver</a>
     </div>
 
 </form>
 <br> <br>
-<h2>Lineas del pedido</h2>
-<br>
+<h2 class="titleEditLineas">Lineas del pedido</h2>
+<hr style="border: 5px solid #FFCC32; margin-top: 10px; margin-bottom: 20px;">
+
 <div class="d-flex justify-content-between mb-3">
-    <button id="addLineaPedidoBtn" class="btn btn-primary">Agregar Línea de Pedido</button>
-    <button id="clear-filters" class="btn btn-secondary" style="margin-top: 10px;">Eliminar Filtros</button>
+    <button id="addLineaPedidoBtn" class="btn btnAddLinea">+ Añadir Línea de Pedido</button>
+    <button id="clear-filters" class="btn btn-secondary btnEliminarfiltros" style="margin-top: 10px;">Eliminar Filtros</button>
 </div>
 
 <!-- Modal -->
@@ -99,7 +101,6 @@
                 <div id="modal-content-placeholder"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button type="button" id="saveLineaPedido" class="btn btn-primary">Guardar</button>
             </div>
         </div>
@@ -120,20 +121,18 @@
                 <div id="edit-modal-content-placeholder"></div> <!-- Aquí se cargará el formulario de edición -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+             
                 <button type="button" id="updateLineaPedido" class="btn btn-primary">Guardar Cambios</button>
             </div>
         </div>
     </div>
 </div>
-
-
-<div id="lineaPedidosGrid" class="ag-theme-alpine" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+<div id="lineaPedidosGrid" class="ag-theme-alpine"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const estadosTexto = <?= json_encode($estados) ?>;
-        const lineasPedido = <?= json_encode($lineasPedido) ?> || []; // Aseguramos que sea un array vacío si no hay datos.
+        const lineasPedido = <?= json_encode($lineasPedido) ?> || [];
         console.log("Datos de lineasPedido:", lineasPedido);
         console.log("Datos de estados:", estadosTexto);
 
@@ -193,8 +192,8 @@
         function renderActions(params) {
             const id = params.data.id_lineapedido;
             return `
-                <button onclick="editarLinea(${id})" class="btn btn-warning btn-sm">Editar</button>
-                <button onclick="eliminarLinea(${id})" class="btn btn-danger btn-sm">Eliminar</button>
+                <button onclick="editarLinea(${id})" class="btn btnEditar btn-sm"> <span class="material-symbols-outlined icono">edit</span>Editar</button>
+                <button onclick="eliminarLinea(${id})" class="btn btnEliminar btn-sm"> <span class="material-symbols-outlined icono">delete</span>Eliminar</button>
             `;
         }
 
@@ -264,6 +263,13 @@
             }
         });
     });
+
+    $(document).ready(function() {
+    $('.close').on('click', function() {
+        $('#addLineaPedidoModal').modal('hide');
+        $('#editLineaPedidoModal').modal('hide');
+    });
+});
 
     // Acción para guardar la nueva línea de pedido
     $('#saveLineaPedido').on('click', function() {

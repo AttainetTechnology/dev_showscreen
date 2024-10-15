@@ -24,7 +24,7 @@ $estadoMap = [
 ];
 ?>
 
-<div id="gridPedidosProveedor" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
+<div id="gridPedidosProveedor" class="ag-theme-alpine" style="height: 600px; width: 100%; margin-left:20px"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -35,7 +35,7 @@ $estadoMap = [
                     const acciones = params.value;
                     return `
                         <button onclick="editarPedido('${acciones.editar}')" class="btn btnEditar btn-sm">
-                            <i class="fa fa-edit"></i> Editar
+ <span class="material-symbols-outlined icono">edit</span>Editar
                         </button>
                         <a href="${acciones.imprimir}" class="btn btnImprimir btn-sm" target="_blank">
                             <i class="fa fa-print"></i> Imprimir
