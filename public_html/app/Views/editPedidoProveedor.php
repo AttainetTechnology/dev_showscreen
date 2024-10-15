@@ -57,18 +57,15 @@
 <br>
 <button id="addLineaPedidoBtn" class="btn btn-primary">Agregar Línea de Pedido</button>
 <button id="clear-filters" class="btn btn-secondary" style="margin-top: 10px;">Eliminar Filtros</button>
+
 <div id="lineaPedidosGrid" class="ag-theme-alpine" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const estadosTexto = <?= json_encode($estados) ?>;
-        const lineasPedido = <?= json_encode($lineasPedido) ?>;
+        const lineasPedido = <?= json_encode($lineasPedido) ?> || []; // Aseguramos que sea un array vacío si no hay datos.
         console.log("Datos de lineasPedido:", lineasPedido);
         console.log("Datos de estados:", estadosTexto);
-
-        if (!lineasPedido || lineasPedido.length === 0) {
-            console.error("No hay datos disponibles para lineasPedido.");
-            return;
-        }
 
         const columnDefs = [{
                 headerName: "Acciones",
@@ -121,6 +118,7 @@
                 valueFormatter: params => `${params.value} €`
             }
         ];
+
         function renderActions(params) {
             const id = params.data.id_lineapedido;
             return `
@@ -128,9 +126,10 @@
                 <button onclick="eliminarLinea(${id})" class="btn btn-danger btn-sm">Eliminar</button>
             `;
         }
+
         const gridOptions = {
             columnDefs: columnDefs,
-            rowData: lineasPedido,
+            rowData: lineasPedido, // Inicializar aunque esté vacío
             pagination: true,
             paginationPageSize: 10,
             defaultColDef: {
@@ -142,7 +141,7 @@
             domLayout: "autoHeight",
             rowHeight: 60,
             localeText: {
-                noRowsToShow: "No hay registros disponibles."
+                noRowsToShow: "No hay registros disponibles." // Mensaje que aparecerá si no hay datos.
             },
             onGridReady: function(params) {
                 params.api.sizeColumnsToFit();
@@ -164,6 +163,7 @@
                 }
             }
         };
+
         const eGridDiv = document.querySelector('#lineaPedidosGrid');
         new agGrid.Grid(eGridDiv, gridOptions);
 
@@ -175,4 +175,5 @@
 
     });
 </script>
+
 <?= $this->endSection() ?>

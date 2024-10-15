@@ -54,12 +54,10 @@ class Pedidos_proveedor extends BaseControllerGC
             $pedido['estado_texto'] = $this->getEstadoTexto($pedido['estado']);
             $pedido['acciones'] = [
                 'imprimir' => base_url("pedidos_proveedor/print/{$pedido['id_pedido']}"),
-                'eliminar' => base_url("Pedidos_proveedor/eliminar/{$pedido['id_pedido']}"), // Verifica el caso de `Pedidos_proveedor`
+                'eliminar' => base_url("Pedidos_proveedor/eliminar/{$pedido['id_pedido']}"), 
                 'editar' => base_url("pedidos_proveedor/editar/{$pedido['id_pedido']}")
-            ];
-            
+            ];          
         }
-
         return view('mostrarPedidosProveedor', ['pedidos' => $pedidos]);
     }
 
