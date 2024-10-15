@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\ProveedoresModel;
 use App\Models\PedidosProveedorModel;
 use App\Models\LineaPedidoModel;
+use App\Models\ProductosNecesidadModel;
+
 
 class Pedidos_proveedor extends BaseControllerGC
 {
@@ -101,7 +103,9 @@ class Pedidos_proveedor extends BaseControllerGC
     
         // Obtener todas las líneas de pedido asociadas con el pedido
         $builder = $db->table('linea_pedido_proveedor');
-        $builder->where('id_pedido', $id_pedido);
+        $builder->select('linea_pedido_proveedor.*, productos_necesidad.nombre_producto'); // Seleccionamos la línea y el nombre del producto
+        $builder->join('productos_necesidad', 'productos_necesidad.id_producto = linea_pedido_proveedor.id_producto', 'left');
+        $builder->where('linea_pedido_proveedor.id_pedido', $id_pedido);
         $query = $builder->get();
         $lineasPedido = $query->getResultArray();
     
@@ -279,11 +283,13 @@ public function eliminar($id_pedido)
     {
         $Lineaspedido_model = new LineaPedidoModel();
         $Lineaspedido_model->anular_lineas($id_pedido);
+        
         // TABLA LOG
         $this->logAction('Pedido Proveedor', 'Anular pedido, ID: ' . $id_pedido, []);
-        return redirect()->to('pedidos_proveedor/index#/edit/' . $id_pedido);
+        
+        // Redirigir a la página de edición del pedido
+        return redirect()->to(base_url('pedidos_proveedor/editar/' . $id_pedido));
     }
-
     function lineas($value, $id_pedido)
     {
         if (isset($_GET['pg2'])) {
@@ -341,50 +347,111 @@ public function eliminar($id_pedido)
     }
     
 
-// Método para crear una nueva línea de pedido
-public function crearLinea()
-{
-    $data = $this->request->getPost();
-    $data['id_pedido'] = $this->request->getPost('id_pedido');
-
-    $db = db_connect(usuario_sesion()['new_db']);
-    $builder = $db->table('linea_pedido_proveedor');
-
-    if ($builder->insert($data)) {
-        return $this->response->setJSON(['success' => true]);
-    } else {
-        return $this->response->setJSON(['success' => false]);
+    public function addLineaPedidoForm($id_pedido)
+    {
+        $db = db_connect(usuario_sesion()['new_db']);
+        
+        // Obtener los productos disponibles
+        $productosModel = new ProductosNecesidadModel($db);
+        $productos = $productosModel->findAll();
+    
+        return view('addLineaPedidoProveedor', [
+            'productos' => $productos,
+            'id_pedido' => $id_pedido
+        ]);
     }
-}
-
-// Método para actualizar una línea de pedido
-public function actualizarLinea($id_lineapedido)
-{
-    $data = $this->request->getPost();
-    $db = db_connect(usuario_sesion()['new_db']);
-    $builder = $db->table('linea_pedido_proveedor');
-    $builder->where('id_lineapedido', $id_lineapedido);
-
-    if ($builder->update($data)) {
-        return $this->response->setJSON(['success' => true]);
-    } else {
-        return $this->response->setJSON(['success' => false]);
+    public function crearLinea()
+    {
+        $data = $this->request->getPost();
+        $data['id_pedido'] = $this->request->getPost('id_pedido');
+        
+        $db = db_connect(usuario_sesion()['new_db']);  // Conexión a la base de datos
+        $builder = $db->table('linea_pedido_proveedor');
+        
+        // Insertamos la nueva línea de pedido
+        if ($builder->insert($data)) {
+            // Obtener el ID de la línea recién creada
+            $id_lineapedido = $db->insertID();  // Usar el objeto $db para obtener el ID insertado
+    
+            // Llamamos a saca_precio_linea para calcular el total de la línea
+            $post_array = new \stdClass();
+            $post_array->data = $data;
+            $post_array->data['id_lineapedido'] = $id_lineapedido;  // Pasamos el ID de la línea
+    
+            $this->saca_precio_linea($post_array);
+        
+            // Recalcular el total del pedido
+            $this->actualizarTotalPedido($data['id_pedido']);
+        
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false]);
+        }
     }
-}
-
-// Método para eliminar una línea de pedido
-public function eliminarLinea($id_lineapedido)
-{
-    $db = db_connect(usuario_sesion()['new_db']);
-    $builder = $db->table('linea_pedido_proveedor');
-    $builder->where('id_lineapedido', $id_lineapedido);
-
-    if ($builder->delete()) {
-        return $this->response->setJSON(['success' => true]);
-    } else {
-        return $this->response->setJSON(['success' => false]);
+    public function actualizarLinea($id_lineapedido)
+    {
+        $data = $this->request->getPost(); // Recoge los datos enviados por el formulario, que ahora incluirá 'id_pedido'
+        $db = db_connect(usuario_sesion()['new_db']);
+        $builder = $db->table('linea_pedido_proveedor');
+        $builder->where('id_lineapedido', $id_lineapedido);
+    
+        if ($builder->update($data)) {
+            // Recalcular el total de la línea y el total del pedido
+            $post_array = new \stdClass();
+            $post_array->data = $data;  // Ahora debe incluir id_pedido
+            $this->saca_precio_linea($post_array);
+    
+            // Recalcular el total del pedido
+            $this->actualizarTotalPedido($data['id_pedido']);
+    
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false]);
+        }
     }
-}
+    
+    public function eliminarLinea($id_lineapedido)
+    {
+        $db = db_connect(usuario_sesion()['new_db']);
+        $builder = $db->table('linea_pedido_proveedor');
+    
+        // Obtener el ID del pedido antes de eliminar la línea
+        $linea = $builder->select('id_pedido')->where('id_lineapedido', $id_lineapedido)->get()->getRow();
+    
+        if ($builder->where('id_lineapedido', $id_lineapedido)->delete()) {
+            // Recalcular el total del pedido después de eliminar la línea
+            $this->actualizarTotalPedido($linea->id_pedido);
+    
+            // Responder con un mensaje de éxito
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            // Responder con un mensaje de error
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar la línea de pedido']);
+        }
+    }
+    
+    public function editLineaPedidoForm($id_lineapedido)
+    {
+        $db = db_connect(usuario_sesion()['new_db']);
+        
+        // Obtener la línea de pedido que vamos a editar
+        $builder = $db->table('linea_pedido_proveedor');
+        $builder->select('linea_pedido_proveedor.*, productos_necesidad.nombre_producto');
+        $builder->join('productos_necesidad', 'productos_necesidad.id_producto = linea_pedido_proveedor.id_producto', 'left');
+        $builder->where('id_lineapedido', $id_lineapedido);
+        $lineaPedido = $builder->get()->getRowArray();
+    
+        // Obtener la lista de productos
+        $productosModel = new ProductosNecesidadModel($db);
+        $productos = $productosModel->findAll();
+    
+        return view('editLineaProveedor', [
+            'lineaPedido' => $lineaPedido,
+            'productos' => $productos
+        ]);
+    }
+    
+    
 
     function _pinta_euro_linea($total_linea)
     {
@@ -439,25 +506,31 @@ public function eliminarLinea($id_lineapedido)
     public function saca_precio_linea($post_array)
     {
         log_message('debug', 'Datos recibidos para insertar línea de pedido: ' . print_r($post_array, true));
-
+    
         // Verificar que 'id_producto' esté presente
-        if (!isset($post_array->data['id_producto'])) {
-            log_message('error', 'ID del producto no está presente en los datos.');
+        if (!isset($post_array->data['id_producto']) || !isset($post_array->data['id_lineapedido'])) {
+            log_message('error', 'ID del producto o ID de la línea de pedido no está presente en los datos.');
             return $post_array;
         }
+    
         $id_producto = $post_array->data['id_producto'];
         $id_pedido = $post_array->data['id_pedido'];
         $n_piezas = $post_array->data['n_piezas'];
+        $id_lineapedido = $post_array->data['id_lineapedido'];  // Obtenemos el ID de la línea recién creada
+    
         // Conectamos a la base de datos
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
+    
         // Obtener el id_proveedor del pedido actual
         $builder_pedido = $db->table('pedidos_proveedor');
         $builder_pedido->select('id_proveedor');
         $builder_pedido->where('id_pedido', $id_pedido);
         $query_pedido = $builder_pedido->get();
+    
         if ($query_pedido->getNumRows() > 0) {
             $id_proveedor = $query_pedido->getRow()->id_proveedor;
+    
             // Verificar que el producto esté asociado al proveedor correcto
             $builder_producto = $db->table('productos_proveedor');
             $builder_producto->select('precio');
@@ -465,6 +538,7 @@ public function eliminarLinea($id_lineapedido)
             $builder_producto->where('id_proveedor', $id_proveedor);
             $builder_producto->where('seleccion_mejor', 1);
             $query_producto = $builder_producto->get();
+    
             if ($query_producto->getNumRows() > 0) {
                 $producto = $query_producto->getRow();
                 $precio = $producto->precio;
@@ -475,7 +549,7 @@ public function eliminarLinea($id_lineapedido)
                 $builder_producto->where('id_producto_necesidad', $id_producto);
                 $builder_producto->where('id_proveedor', $id_proveedor);
                 $query_producto = $builder_producto->get();
-
+    
                 if ($query_producto->getNumRows() > 0) {
                     $producto = $query_producto->getRow();
                     $precio = $producto->precio;
@@ -485,25 +559,28 @@ public function eliminarLinea($id_lineapedido)
                     return $post_array;
                 }
             }
+    
             // Calcular el total de la línea
             $total_linea = $n_piezas * $precio;
             $post_array->data['total_linea'] = $total_linea;
             $post_array->data['precio_compra'] = $precio;
-            // Actualizar la línea de pedido con el total calculado
+    
+            // Actualizar SOLO la línea de pedido recién creada con el total calculado
             $builder_linea = $db->table('linea_pedido_proveedor');
             $builder_linea->set('total_linea', $total_linea);
             $builder_linea->set('precio_compra', $precio);
-            $builder_linea->where('id_pedido', $id_pedido);
-            $builder_linea->where('id_producto', $id_producto);
+            $builder_linea->where('id_lineapedido', $id_lineapedido);  // Solo actualizar esta línea
             $builder_linea->update();
-
+    
             log_message('debug', 'Línea de pedido actualizada con total: ' . $total_linea);
         } else {
             log_message('error', 'No se encontró el pedido con ID: ' . $id_pedido);
             $post_array->data['total_linea'] = 0;
         }
+    
         return $post_array;
     }
+    
     private function actualizarTotalPedido($id_pedido)
     {
         $data = usuario_sesion();
@@ -549,39 +626,46 @@ public function eliminarLinea($id_lineapedido)
     }
 
     public function pedido_realizado($id_pedido)
-    {
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
-        // Actualizar el estado de las líneas de pedido a 1
-        $builder_lineas = $db->table('linea_pedido_proveedor');
-        $builder_lineas->set('estado', 1);
-        $builder_lineas->where('id_pedido', $id_pedido);
-        $builder_lineas->update();
-        // Actualizar el estado del pedido a 1
-        $builder_pedido = $db->table('pedidos_proveedor');
-        $builder_pedido->set('estado', 1);
-        $builder_pedido->where('id_pedido', $id_pedido);
-        $builder_pedido->update();
-        return redirect()->to(base_url('pedidos_proveedor'));
-    }
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    
+    // Actualizar el estado de las líneas de pedido a 1
+    $builder_lineas = $db->table('linea_pedido_proveedor');
+    $builder_lineas->set('estado', 1);
+    $builder_lineas->where('id_pedido', $id_pedido);
+    $builder_lineas->update();
+    
+    // Actualizar el estado del pedido a 1
+    $builder_pedido = $db->table('pedidos_proveedor');
+    $builder_pedido->set('estado', 1);
+    $builder_pedido->where('id_pedido', $id_pedido);
+    $builder_pedido->update();
+    
+    // Redirigir a la página de edición del pedido
+    return redirect()->to(base_url('pedidos_proveedor/editar/' . $id_pedido));
+}
 
-    public function pedido_recibido($id_pedido)
-    {
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
-        // Actualizar el estado de las líneas de pedido a 2
-        $builder_lineas = $db->table('linea_pedido_proveedor');
-        $builder_lineas->set('estado', 2);
-        $builder_lineas->where('id_pedido', $id_pedido);
-        $builder_lineas->update();
-
-        // Actualizar el estado del pedido a 2
-        $builder_pedido = $db->table('pedidos_proveedor');
-        $builder_pedido->set('estado', 2);
-        $builder_pedido->where('id_pedido', $id_pedido);
-        $builder_pedido->update();
-        return redirect()->to(base_url('pedidos_proveedor'));
-    }
+public function pedido_recibido($id_pedido)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    
+    // Actualizar el estado de las líneas de pedido a 2
+    $builder_lineas = $db->table('linea_pedido_proveedor');
+    $builder_lineas->set('estado', 2);
+    $builder_lineas->where('id_pedido', $id_pedido);
+    $builder_lineas->update();
+    
+    // Actualizar el estado del pedido a 2
+    $builder_pedido = $db->table('pedidos_proveedor');
+    $builder_pedido->set('estado', 2);
+    $builder_pedido->where('id_pedido', $id_pedido);
+    $builder_pedido->update();
+    
+    // Redirigir a la página de edición del pedido
+    return redirect()->to(base_url('pedidos_proveedor/editar/' . $id_pedido));
+}
     function imprimir_parte($row)
     {
         $uri = current_url();

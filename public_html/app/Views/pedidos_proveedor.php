@@ -46,7 +46,7 @@ foreach ($pedido as $ped) { ?>
                     </div>
                 </div>
             </div> <!-- Cierro fila -->
-            <div class="tituparte">Pedido externo</div>
+            <div class="tituparte">Pedido proveedor</div>
             <div id="observaciones">
                 <div class="seccionparte">Observaciones de pedido:</div>
                 <?php echo $ped->observaciones; ?>

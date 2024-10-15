@@ -85,7 +85,7 @@
                             alert(response.message);
                             location.reload(); // Recargar la página para actualizar el estado de la imagen
                         } else {
-                            alert(response.message || "Error al eliminar la imagen.");
+                            location.reload(); 
                         }
                     },
                     error: function() {

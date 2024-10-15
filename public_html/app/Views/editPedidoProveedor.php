@@ -7,7 +7,31 @@
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 <h2>Editar Pedido del Proveedor</h2>
+
+<div class="mb-3 row">
+    <div class="col-12"> <!-- Cambiamos a col-12 para usar todo el ancho -->
+        <div id="gc-form-bt_imprimir" class="d-flex justify-content-start gap-2"> <!-- Añadimos d-flex, justify-content-start, y gap para separar los botones -->
+            <input type="hidden" name="bt_imprimir" value="">
+            <a href="<?= base_url('pedidos_proveedor/print/' . $pedido['id_pedido']) ?>" class="btn btn-info btn-sm" target="_blanck">
+                <i class="fa fa-print fa-fw"></i> Imprimir pedido
+            </a>
+            <a href="<?= base_url('pedidos_proveedor/anular/' . $pedido['id_pedido']) ?>" class="btn btn-danger btn-sm btn_anular">
+                <i class="fa fa-trash fa-fw"></i> Anular todo
+            </a>
+            <a href="<?= base_url('pedidos_proveedor/pedido_realizado/' . $pedido['id_pedido']) ?>" class="btn btn-primary btn-sm text-white">
+                <i class="fa fa-check fa-fw"></i> Pedido realizado
+            </a>
+            <a href="<?= base_url('pedidos_proveedor/pedido_recibido/' . $pedido['id_pedido']) ?>" class="btn btn-success btn-sm">
+                <i class="fa fa-archive fa-fw"></i> Pedido recibido <!-- Cambiado a fa-archive -->
+            </a>
+        </div>
+    </div>
+</div>
+
+
 <form action="<?= base_url('pedidos_proveedor/update/' . $pedido['id_pedido']) ?>" method="post" class="formEditPedido">
     <div class="mb-3">
         <label for="id_proveedor" class="form-label">Proveedor</label>
@@ -55,8 +79,54 @@
 <br> <br>
 <h2>Lineas del pedido</h2>
 <br>
-<button id="addLineaPedidoBtn" class="btn btn-primary">Agregar Línea de Pedido</button>
-<button id="clear-filters" class="btn btn-secondary" style="margin-top: 10px;">Eliminar Filtros</button>
+<div class="d-flex justify-content-between mb-3">
+    <button id="addLineaPedidoBtn" class="btn btn-primary">Agregar Línea de Pedido</button>
+    <button id="clear-filters" class="btn btn-secondary" style="margin-top: 10px;">Eliminar Filtros</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addLineaPedidoModal" tabindex="-1" role="dialog" aria-labelledby="addLineaPedidoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addLineaPedidoModalLabel">Agregar Línea de Pedido</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Aquí se cargará el contenido del formulario mediante AJAX -->
+                <div id="modal-content-placeholder"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="saveLineaPedido" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar línea de pedido -->
+<div class="modal fade" id="editLineaPedidoModal" tabindex="-1" role="dialog" aria-labelledby="editLineaPedidoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLineaPedidoModalLabel">Editar Línea de Pedido</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="edit-modal-content-placeholder"></div> <!-- Aquí se cargará el formulario de edición -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="updateLineaPedido" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div id="lineaPedidosGrid" class="ag-theme-alpine" style="height: 500px; width: 100%; margin-top: 20px;"></div>
 
@@ -67,58 +137,58 @@
         console.log("Datos de lineasPedido:", lineasPedido);
         console.log("Datos de estados:", estadosTexto);
 
-        const columnDefs = [{
-                headerName: "Acciones",
-                field: "acciones",
-                cellRenderer: renderActions,
-                cellClass: "acciones-col",
-                minWidth: 250,
-                filter: false
-            },
-            {
-                headerName: "ID Línea",
-                field: "id_lineapedido",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true
-            },
-            {
-                headerName: "Uds.",
-                field: "n_piezas",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true
-            },
-            {
-                headerName: "Producto",
-                field: "id_producto",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true
-            },
-            {
-                headerName: "Estado",
-                field: "estado",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true,
-                valueGetter: function(params) {
-                    return estadosTexto[params.data.estado] || "Estado desconocido";
-                },
-                valueFormatter: function(params) {
-                    return estadosTexto[params.data.estado] || "Estado desconocido";
-                }
-            },
-            {
-                headerName: "Total (€)",
-                field: "total_linea",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true,
-                valueFormatter: params => `${params.value} €`
-            }
-        ];
-
+        const columnDefs = [
+    {
+        headerName: "Acciones",
+        field: "acciones",
+        cellRenderer: renderActions,
+        cellClass: "acciones-col",
+        minWidth: 250,
+        filter: false
+    },
+    {
+        headerName: "ID Línea",
+        field: "id_lineapedido",
+        flex: 1,
+        filter: "agTextColumnFilter",
+        floatingFilter: true
+    },
+    {
+        headerName: "Uds.",
+        field: "n_piezas",
+        flex: 1,
+        filter: "agTextColumnFilter",
+        floatingFilter: true
+    },
+    {
+        headerName: "Producto",
+        field: "nombre_producto", 
+        flex: 1,
+        filter: "agTextColumnFilter",
+        floatingFilter: true
+    },
+    {
+        headerName: "Estado",
+        field: "estado",
+        flex: 1,
+        filter: "agTextColumnFilter",
+        floatingFilter: true,
+        valueGetter: function(params) {
+            return estadosTexto[params.data.estado] || "Estado desconocido";
+        },
+        valueFormatter: function(params) {
+            return estadosTexto[params.data.estado] || "Estado desconocido";
+        }
+    },
+    {
+        headerName: "Total (€)",
+        field: "total_linea",
+        flex: 1,
+        filter: "agTextColumnFilter",
+        floatingFilter: true,
+        valueFormatter: params => `${params.value} €`
+    }
+];
         function renderActions(params) {
             const id = params.data.id_lineapedido;
             return `
@@ -174,6 +244,108 @@
         });
 
     });
+</script>
+<script>
+// Acción al hacer clic en el botón de agregar línea de pedido
+$('#addLineaPedidoBtn').on('click', function () {
+    // Abrir el modal
+    $('#addLineaPedidoModal').modal('show');
+    
+    // Cargar el formulario dentro del modal usando AJAX
+    $.ajax({
+        url: '<?= base_url('pedidos_proveedor/addLineaPedidoForm/' . $pedido['id_pedido']) ?>',
+        type: 'GET',
+        success: function (response) {
+            $('#modal-content-placeholder').html(response); // Insertar el formulario en el modal
+        },
+        error: function (xhr, status, error) {
+            alert('Error al cargar el formulario: ' + error);
+        }
+    });
+});
+
+// Acción para guardar la nueva línea de pedido
+$('#saveLineaPedido').on('click', function () {
+    // Enviar el formulario mediante AJAX
+    var formData = $('#addLineaPedidoForm').serialize(); // Serializar los datos del formulario
+    
+    $.ajax({
+        url: '<?= base_url('pedidos_proveedor/crearLinea') ?>', // Ruta para guardar el registro
+        type: 'POST',
+        data: formData,
+        success: function (response) {
+            if (response.success) {
+                $('#addLineaPedidoModal').modal('hide'); // Cerrar el modal
+                location.reload(); // Recargar la página para reflejar los cambios
+            } else {
+                alert('Error al agregar la línea de pedido');
+            }
+        }
+    });
+});
+// Acción al hacer clic en el botón de editar línea de pedido
+function editarLinea(id_lineapedido) {
+    // Abrir el modal de edición
+    $('#editLineaPedidoModal').modal('show');
+    
+    // Cargar el formulario dentro del modal usando AJAX
+    $.ajax({
+        url: '<?= base_url('pedidos_proveedor/editLineaPedidoForm') ?>/' + id_lineapedido,
+        type: 'GET',
+        success: function (response) {
+            $('#edit-modal-content-placeholder').html(response); // Insertar el formulario en el modal
+        },
+        error: function (xhr, status, error) {
+            alert('Error al cargar el formulario de edición: ' + error);
+        }
+    });
+}
+
+// Acción para guardar los cambios de la línea de pedido editada
+$('#updateLineaPedido').on('click', function () {
+    // Verifica que el formulario está cargado en el modal antes de proceder
+    var form = $('#editLineaPedidoForm');
+
+    if (form.length === 0) {
+        alert('El formulario de edición no está disponible.');
+        return;
+    }
+    // Serializar el formulario de edición
+    var formData = form.serialize();
+    // Realizar la solicitud AJAX para actualizar la línea
+    $.ajax({
+        url: '<?= base_url('pedidos_proveedor/actualizarLinea') ?>/' + $('input[name="id_lineapedido"]').val(),
+        type: 'POST',
+        data: formData,
+        success: function (response) {
+            if (response.success) {
+                $('#editLineaPedidoModal').modal('hide'); // Cerrar el modal
+                location.reload(); // Recargar la página para reflejar los cambios
+            } else {
+                alert('Error al actualizar la línea de pedido');
+            }
+        },
+    });
+});
+// Acción al hacer clic en el botón de eliminar línea de pedido
+function eliminarLinea(id_lineapedido) {
+    if (confirm('¿Estás seguro de que deseas eliminar esta línea de pedido?')) {
+        // Enviar la solicitud AJAX para eliminar la línea
+        $.ajax({
+            url: '<?= base_url('pedidos_proveedor/eliminarLinea') ?>/' + id_lineapedido,
+            type: 'POST',
+            success: function(response) {
+                if (response.success) {
+                    location.reload(); 
+                } else {
+                    alert('Error al eliminar la línea de pedido: ' + (response.message || 'Desconocido.'));
+                }
+            },
+        });
+    }
+}
+
+
 </script>
 
 <?= $this->endSection() ?>
