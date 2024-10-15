@@ -70,7 +70,7 @@
     </div>
 
     <div class="buttonsAddProveedor">
-        <button type="submit" class="btn btn-primary">Añadir Proveedor</button>
+        <button type="submit" class="btn btn-primary saveProveedor">Añadir Proveedor</button>
         <button type="button" class="btn btn-info mb-3" id="volverButton" style="margin-top:15px;">Volver</button>
     </div>
     

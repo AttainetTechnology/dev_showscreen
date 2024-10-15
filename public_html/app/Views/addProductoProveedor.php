@@ -37,7 +37,7 @@
     </div>
 
     <div class="buttonsAddProduct">
-    <button type="submit" class="btn btn-primary">Añadir Producto</button>
+    <button type="submit" class="btn btn-primary saveProducto">Añadir Producto</button>
     <button type="button" class="btn btn-info mb-3" id="volverButton">Volver</button>
 </div>
 

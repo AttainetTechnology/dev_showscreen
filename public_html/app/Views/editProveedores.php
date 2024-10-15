@@ -66,7 +66,7 @@
 
     <div class="buttonsAddProveedor">
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        <a href="<?= base_url('proveedores') ?>" class="btn btn-secondary">Cancelar</a>
+        <a href="<?= base_url('proveedores') ?>" class="btn volverButton">Volver</a>
     </div>
 </form>
 

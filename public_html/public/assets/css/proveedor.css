@@ -1,14 +1,34 @@
-.estado1 { background-color: #ff9933 !important; }
-.estado2 { background-color: #fff3cd !important; }
-.estado3 { background-color: #fcebfa !important; }
-.estado4 { background-color: #dff0d8 !important; }
-.estado5 { background-color: #50b752b0 !important; color: #ffffff !important; }
-.estado6 { background-color: #ff6c6ccc !important; color: #ffffff !important; }
+.estado1 {
+    background-color: #ff9933 !important;
+}
+
+.estado2 {
+    background-color: #fff3cd !important;
+}
+
+.estado3 {
+    background-color: #fcebfa !important;
+}
+
+.estado4 {
+    background-color: #dff0d8 !important;
+}
+
+.estado5 {
+    background-color: #50b752b0 !important;
+    color: #ffffff !important;
+}
+
+.estado6 {
+    background-color: #ff6c6ccc !important;
+    color: #ffffff !important;
+}
+
 .ag-icon-filter {
     display: none !important;
 }
 
-.btnAddPedido {
+.btnAddPedido{
     background-color: #e4eff7 !important;
     color: #1d9dd5;
     font-size: 14px !important;
@@ -31,7 +51,7 @@
     margin-left: 25px;
 }
 
-.btnEliminarFiltro{
+.btnEliminarFiltro {
     background-color: #B7B7B7 !important;
     color: #F5F5F7 !important;
     height: 30px;
@@ -40,15 +60,16 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
-#volverButton {
-    background-color: #B7B7B7 !important;
+
+#volverButton, .volverButton {
+    background-color: #adabab !important;
     color: #F5F5F7 !important;
     height: 30px;
     font-size: 14px !important;
     border: none;
 }
 
-.btnEliminarFiltro:hover,
+.btnEliminarFiltro:hover, .volverButton,
 #volverButton:hover {
     background-color: #a9aaad !important;
     color: #F5F5F7 !important;
@@ -153,12 +174,6 @@
     margin-left: 3vw;
 }
 
-.buttonsAddProduct {
-    display: flex;
-    margin-top: -2vh;
-    justify-content: space-between;
-    align-items: center;
-}
 
 .buttonsEditProductProveed {
     display: flex;
@@ -168,10 +183,14 @@
     align-items: center;
 }
 
-.buttonsEditProductProveedAbajo{
+.buttonsEditProductProveedAbajo {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 20px; 
 }
 
 .btnVendemosProd {
@@ -187,26 +206,18 @@
     color: #064a19 !important;
 }
 
-.comparador, .fromAddProveedor, .formEditProveedor{
-	margin-top: 1vw;
-	margin-left: 2vh;
-	margin-right: 4vh;
-}
-#productosModalBody{
-    margin:10px !important;
+.comparador,
+#productosModalBody {
+    margin: 10px !important;
 }
 
-.titleComparador, .tituloProveedores, .titleAddProveedor{
-    margin-top: 80px;
-    margin-left: 25px;
+.titleComparador,
+.tituloProveedores,
+.titleAddProveedor {
+    margin-top: 50px;
+    margin-left: 35px;
 }
 
-.buttonsAddProveedor{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 50px;
-}
 .btnAddPedido {
     background-color: #e4eff7 !important;
     color: #1d9dd5;
@@ -236,6 +247,7 @@
     font-size: 14px !important;
     border: none;
 }
+
 .btnEditar {
     background-color: #337ab7 !important;
     color: white !important;
@@ -277,3 +289,30 @@
     background-color: #0B2F9F !important;
     color: #e4eff7 !important;
 }
+
+.btnEditPedido {
+    margin: 18px;
+    margin-left: 35px;
+}
+.formEditPedido, .formEditProveedor, .fromAddProveedor{
+    margin: 23px;
+    margin-left: 45px;
+}
+
+.buttonsEditPedido, .buttonsAddProveedor, .buttonsAddProduct  {
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 20px; 
+}
+
+.saveProveedor{
+    height: 30px;
+    margin-top: 15px;
+}
+
+.saveProducto{
+    height: 30px;
+    margin-top: 2px;
+}
+

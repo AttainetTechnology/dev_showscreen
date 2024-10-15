@@ -9,9 +9,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<h2>Editar Pedido del Proveedor</h2>
+<h2 class="titleAddproducto">Editar Pedido del Proveedor</h2>
 
-<div class="mb-3 row">
+<div class="mb-3 row btnEditPedido">
     <div class="col-12"> <!-- Cambiamos a col-12 para usar todo el ancho -->
         <div id="gc-form-bt_imprimir" class="d-flex justify-content-start gap-2"> <!-- Añadimos d-flex, justify-content-start, y gap para separar los botones -->
             <input type="hidden" name="bt_imprimir" value="">
@@ -72,7 +72,7 @@
 
     <div class="buttonsEditPedido">
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        <a href="<?= base_url('pedidos_proveedor') ?>" class="btn btn-secondary">Cancelar</a>
+        <a href="<?= base_url('pedidos_proveedor') ?>" class="btn btn-secondary">Volver</a>
     </div>
 
 </form>
