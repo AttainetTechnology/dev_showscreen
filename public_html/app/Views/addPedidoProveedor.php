@@ -1,10 +1,10 @@
-
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <div class="container mt-5">
     <h2 class="mb-4">Añadir Pedido</h2>
     <form action="<?= base_url('Pedidos_proveedor/save') ?>" method="post">
-    <div class="form-group mb-3">
+        <div class="form-group mb-3">
             <label for="id_cliente">Empresa:</label>
             <select id="id_cliente" name="id_proveedor" class="form-control" required>
                 <option value="" selected disabled hidden>Seleccione empresa</option>
@@ -15,7 +15,6 @@
                 <?php endforeach; ?>
             </select>
         </div>
-
 
         <div class="form-group mb-3">
             <label for="referencia">Referencia:</label>
@@ -37,8 +36,18 @@
             <?= $usuario_html; ?>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar Pedido</button>
+        <div class="buttonsEditProductProveedAbajo">
+            <button type="submit" class="btn btn-primary">Guardar Pedido</button>
+            <button type="button" class="btn mb-3" id="volverButton" style="margin-top:15px;">Volver</button>
+        </div>
     </form>
 </div>
+
+<script>
+    // Agregamos la funcionalidad al botón "Volver"
+    document.getElementById('volverButton').addEventListener('click', function() {
+        window.location.href = '<?= base_url('pedidos_proveedor') ?>';
+    });
+</script>
 
 <?= $this->endSection() ?>

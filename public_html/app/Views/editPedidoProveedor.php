@@ -137,58 +137,59 @@
         console.log("Datos de lineasPedido:", lineasPedido);
         console.log("Datos de estados:", estadosTexto);
 
-        const columnDefs = [
-    {
-        headerName: "Acciones",
-        field: "acciones",
-        cellRenderer: renderActions,
-        cellClass: "acciones-col",
-        minWidth: 250,
-        filter: false
-    },
-    {
-        headerName: "ID Línea",
-        field: "id_lineapedido",
-        flex: 1,
-        filter: "agTextColumnFilter",
-        floatingFilter: true
-    },
-    {
-        headerName: "Uds.",
-        field: "n_piezas",
-        flex: 1,
-        filter: "agTextColumnFilter",
-        floatingFilter: true
-    },
-    {
-        headerName: "Producto",
-        field: "nombre_producto", 
-        flex: 1,
-        filter: "agTextColumnFilter",
-        floatingFilter: true
-    },
-    {
-        headerName: "Estado",
-        field: "estado",
-        flex: 1,
-        filter: "agTextColumnFilter",
-        floatingFilter: true,
-        valueGetter: function(params) {
-            return estadosTexto[params.data.estado] || "Estado desconocido";
-        },
-        valueFormatter: function(params) {
-            return estadosTexto[params.data.estado] || "Estado desconocido";
-        }
-    },
-    {
-        headerName: "Total (€)",
-        field: "total_linea",
-        flex: 1,
-        filter: "agTextColumnFilter",
-        floatingFilter: true,
-        valueFormatter: params => `${params.value} €`
-    }
-];
+        const columnDefs = [{
+                headerName: "Acciones",
+                field: "acciones",
+                cellRenderer: renderActions,
+                cellClass: "acciones-col",
+                minWidth: 250,
+                filter: false
+            },
+            {
+                headerName: "ID Línea",
+                field: "id_lineapedido",
+                flex: 1,
+                filter: "agTextColumnFilter",
+                floatingFilter: true
+            },
+            {
+                headerName: "Uds.",
+                field: "n_piezas",
+                flex: 1,
+                filter: "agTextColumnFilter",
+                floatingFilter: true
+            },
+            {
+                headerName: "Producto",
+                field: "nombre_producto",
+                flex: 1,
+                filter: "agTextColumnFilter",
+                floatingFilter: true
+            },
+            {
+                headerName: "Estado",
+                field: "estado",
+                flex: 1,
+                filter: "agTextColumnFilter",
+                floatingFilter: true,
+                valueGetter: function(params) {
+                    return estadosTexto[params.data.estado] || "Estado desconocido";
+                },
+                valueFormatter: function(params) {
+                    return estadosTexto[params.data.estado] || "Estado desconocido";
+                }
+            },
+            {
+                headerName: "Total (€)",
+                field: "total_linea",
+                flex: 1,
+                filter: "agTextColumnFilter",
+                floatingFilter: true,
+                valueFormatter: params => `${params.value !== null ? params.value : 0} €` // Mostrar 0 si el valor es null
+            }
+
+        ];
+
         function renderActions(params) {
             const id = params.data.id_lineapedido;
             return `
@@ -246,106 +247,104 @@
     });
 </script>
 <script>
-// Acción al hacer clic en el botón de agregar línea de pedido
-$('#addLineaPedidoBtn').on('click', function () {
-    // Abrir el modal
-    $('#addLineaPedidoModal').modal('show');
-    
-    // Cargar el formulario dentro del modal usando AJAX
-    $.ajax({
-        url: '<?= base_url('pedidos_proveedor/addLineaPedidoForm/' . $pedido['id_pedido']) ?>',
-        type: 'GET',
-        success: function (response) {
-            $('#modal-content-placeholder').html(response); // Insertar el formulario en el modal
-        },
-        error: function (xhr, status, error) {
-            alert('Error al cargar el formulario: ' + error);
-        }
-    });
-});
+    // Acción al hacer clic en el botón de agregar línea de pedido
+    $('#addLineaPedidoBtn').on('click', function() {
+        // Abrir el modal
+        $('#addLineaPedidoModal').modal('show');
 
-// Acción para guardar la nueva línea de pedido
-$('#saveLineaPedido').on('click', function () {
-    // Enviar el formulario mediante AJAX
-    var formData = $('#addLineaPedidoForm').serialize(); // Serializar los datos del formulario
-    
-    $.ajax({
-        url: '<?= base_url('pedidos_proveedor/crearLinea') ?>', // Ruta para guardar el registro
-        type: 'POST',
-        data: formData,
-        success: function (response) {
-            if (response.success) {
-                $('#addLineaPedidoModal').modal('hide'); // Cerrar el modal
-                location.reload(); // Recargar la página para reflejar los cambios
-            } else {
-                alert('Error al agregar la línea de pedido');
-            }
-        }
-    });
-});
-// Acción al hacer clic en el botón de editar línea de pedido
-function editarLinea(id_lineapedido) {
-    // Abrir el modal de edición
-    $('#editLineaPedidoModal').modal('show');
-    
-    // Cargar el formulario dentro del modal usando AJAX
-    $.ajax({
-        url: '<?= base_url('pedidos_proveedor/editLineaPedidoForm') ?>/' + id_lineapedido,
-        type: 'GET',
-        success: function (response) {
-            $('#edit-modal-content-placeholder').html(response); // Insertar el formulario en el modal
-        },
-        error: function (xhr, status, error) {
-            alert('Error al cargar el formulario de edición: ' + error);
-        }
-    });
-}
-
-// Acción para guardar los cambios de la línea de pedido editada
-$('#updateLineaPedido').on('click', function () {
-    // Verifica que el formulario está cargado en el modal antes de proceder
-    var form = $('#editLineaPedidoForm');
-
-    if (form.length === 0) {
-        alert('El formulario de edición no está disponible.');
-        return;
-    }
-    // Serializar el formulario de edición
-    var formData = form.serialize();
-    // Realizar la solicitud AJAX para actualizar la línea
-    $.ajax({
-        url: '<?= base_url('pedidos_proveedor/actualizarLinea') ?>/' + $('input[name="id_lineapedido"]').val(),
-        type: 'POST',
-        data: formData,
-        success: function (response) {
-            if (response.success) {
-                $('#editLineaPedidoModal').modal('hide'); // Cerrar el modal
-                location.reload(); // Recargar la página para reflejar los cambios
-            } else {
-                alert('Error al actualizar la línea de pedido');
-            }
-        },
-    });
-});
-// Acción al hacer clic en el botón de eliminar línea de pedido
-function eliminarLinea(id_lineapedido) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta línea de pedido?')) {
-        // Enviar la solicitud AJAX para eliminar la línea
+        // Cargar el formulario dentro del modal usando AJAX
         $.ajax({
-            url: '<?= base_url('pedidos_proveedor/eliminarLinea') ?>/' + id_lineapedido,
+            url: '<?= base_url('pedidos_proveedor/addLineaPedidoForm/' . $pedido['id_pedido']) ?>',
+            type: 'GET',
+            success: function(response) {
+                $('#modal-content-placeholder').html(response); // Insertar el formulario en el modal
+            },
+            error: function(xhr, status, error) {
+                alert('Error al cargar el formulario: ' + error);
+            }
+        });
+    });
+
+    // Acción para guardar la nueva línea de pedido
+    $('#saveLineaPedido').on('click', function() {
+        // Enviar el formulario mediante AJAX
+        var formData = $('#addLineaPedidoForm').serialize(); // Serializar los datos del formulario
+
+        $.ajax({
+            url: '<?= base_url('pedidos_proveedor/crearLinea') ?>', // Ruta para guardar el registro
             type: 'POST',
+            data: formData,
             success: function(response) {
                 if (response.success) {
-                    location.reload(); 
+                    $('#addLineaPedidoModal').modal('hide'); // Cerrar el modal
+                    location.reload(); // Recargar la página para reflejar los cambios
                 } else {
-                    alert('Error al eliminar la línea de pedido: ' + (response.message || 'Desconocido.'));
+                    alert('Error al agregar la línea de pedido');
+                }
+            }
+        });
+    });
+    // Acción al hacer clic en el botón de editar línea de pedido
+    function editarLinea(id_lineapedido) {
+        // Abrir el modal de edición
+        $('#editLineaPedidoModal').modal('show');
+
+        // Cargar el formulario dentro del modal usando AJAX
+        $.ajax({
+            url: '<?= base_url('pedidos_proveedor/editLineaPedidoForm') ?>/' + id_lineapedido,
+            type: 'GET',
+            success: function(response) {
+                $('#edit-modal-content-placeholder').html(response); // Insertar el formulario en el modal
+            },
+            error: function(xhr, status, error) {
+                alert('Error al cargar el formulario de edición: ' + error);
+            }
+        });
+    }
+
+    // Acción para guardar los cambios de la línea de pedido editada
+    $('#updateLineaPedido').on('click', function() {
+        // Verifica que el formulario está cargado en el modal antes de proceder
+        var form = $('#editLineaPedidoForm');
+
+        if (form.length === 0) {
+            alert('El formulario de edición no está disponible.');
+            return;
+        }
+        // Serializar el formulario de edición
+        var formData = form.serialize();
+        // Realizar la solicitud AJAX para actualizar la línea
+        $.ajax({
+            url: '<?= base_url('pedidos_proveedor/actualizarLinea') ?>/' + $('input[name="id_lineapedido"]').val(),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    $('#editLineaPedidoModal').modal('hide'); // Cerrar el modal
+                    location.reload(); // Recargar la página para reflejar los cambios
+                } else {
+                    alert('Error al actualizar la línea de pedido');
                 }
             },
         });
+    });
+    // Acción al hacer clic en el botón de eliminar línea de pedido
+    function eliminarLinea(id_lineapedido) {
+        if (confirm('¿Estás seguro de que deseas eliminar esta línea de pedido?')) {
+            // Enviar la solicitud AJAX para eliminar la línea
+            $.ajax({
+                url: '<?= base_url('pedidos_proveedor/eliminarLinea') ?>/' + id_lineapedido,
+                type: 'POST',
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Error al eliminar la línea de pedido: ' + (response.message || 'Desconocido.'));
+                    }
+                },
+            });
+        }
     }
-}
-
-
 </script>
 
 <?= $this->endSection() ?>
