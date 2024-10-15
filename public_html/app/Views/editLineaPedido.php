@@ -99,7 +99,7 @@
         <br>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-secondary volverButton" data-bs-dismiss="modal">Cerrar</button>
         </div>
     </form>
 </div>

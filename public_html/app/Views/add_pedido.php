@@ -48,7 +48,17 @@
         <input type="hidden" id="id_usuario" name="id_usuario" value="<?= esc($usuario_sesion['id_user']); ?>">
         
         <br>
+        
+        <div class="buttonsEditProductProveedAbajo">
         <button type="submit" class="btn btn-primary">Guardar Pedido</button>
+        <button type="button" class="btn mb-3 volverButton" id="volverButton" style="margin-top:15px;">Volver</button>
+        </div>
     </form>
 </div>
+<script>
+    document.getElementById('volverButton').addEventListener('click', function() {
+        window.location.href = '<?= base_url('pedidos/enmarcha') ?>';
+    });
+</script>
+
 <?= $this->endSection() ?>

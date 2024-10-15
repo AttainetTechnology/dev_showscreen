@@ -380,3 +380,26 @@ form select.form-control {
         max-width: 1500px !important;
     }
 }
+
+.buttonsEditProductProveedAbajo{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 20px; 
+}
+
+ .volverButton {
+    background-color: #adabab !important;
+    color: #F5F5F7 !important;
+    height: 30px;
+    font-size: 14px !important;
+    border: none;
+}
+
+.volverButton {
+    background-color: #a9aaad !important;
+    color: #F5F5F7 !important;
+}
