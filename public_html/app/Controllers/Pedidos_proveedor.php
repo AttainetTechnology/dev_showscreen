@@ -135,13 +135,13 @@ class Pedidos_proveedor extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
-
+    
         // Verificar que el pedido existe
         $pedido = $pedidoModel->find($id_pedido);
         if (!$pedido) {
             return redirect()->to(base_url('pedidos_proveedor'))->with('error', 'Pedido no encontrado.');
         }
-
+    
         // Recoger los datos del formulario
         $pedidoData = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
@@ -151,14 +151,16 @@ class Pedidos_proveedor extends BaseControllerGC
             'fecha_entrega' => $this->request->getPost('fecha_entrega'),
             'estado' => $this->request->getPost('estado')
         ];
-
+    
         // Guardar cambios en la base de datos
         if ($pedidoModel->update($id_pedido, $pedidoData)) {
-            return redirect()->to(base_url('pedidos_proveedor'))->with('message', 'Pedido actualizado con éxito.');
+            // Redirigir de vuelta a la página de edición del pedido
+            return redirect()->to(base_url('pedidos_proveedor/editar/' . $id_pedido))->with('message', 'Pedido actualizado con éxito.');
         } else {
             return redirect()->back()->with('error', 'Error al actualizar el pedido.');
         }
     }
+    
 
 
     private function getUsuarios()
