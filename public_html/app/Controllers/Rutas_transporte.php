@@ -13,7 +13,6 @@ class Rutas_transporte extends BaseControllerGC
     {
         $data = array();
 
-        // Obtener los datos del usuario
         $data = datos_user();
 
         // Obtener el ID del transportista de la URL

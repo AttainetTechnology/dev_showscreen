@@ -6,14 +6,12 @@ use App\Models\ProductosProveedorModel;
 use App\Models\ProveedoresModel;
 use App\Models\FamiliaProveedorModel;
 
-
 class Proveedores extends BaseControllerGC
 {
     public function index()
     {
         return view('proveedores');
     }
-
     public function getProveedores()
     {
         $data = usuario_sesion();
@@ -22,7 +20,6 @@ class Proveedores extends BaseControllerGC
         $builder->select('proveedores.id_proveedor, proveedores.nombre_proveedor, proveedores.nif, proveedores.direccion, proveedores.contacto, proveedores.telf, proveedores.cargaen, proveedores.web, proveedores.email, provincias.provincia AS nombre_provincia');
         $builder->join('provincias', 'proveedores.id_provincia = provincias.id_provincia', 'left');
         $result = $builder->get()->getResult();
-
         foreach ($result as &$row) {
             $row->acciones = [
                 'editar' => base_url("proveedores/edit/{$row->id_proveedor}"),
@@ -33,18 +30,14 @@ class Proveedores extends BaseControllerGC
         return $this->response->setJSON($result);
     }
 
-
     public function add()
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-
         $provinciasModel = new \App\Models\ProvinciasModel($db);
         $provincias = $provinciasModel->findAll();
-
         $builderPaises = $db->table('paises');
         $paises = $builderPaises->select('id, nombre')->get()->getResultArray();
-
         return view('addProveedor', [
             'provincias' => $provincias,
             'paises' => $paises,
@@ -56,14 +49,10 @@ class Proveedores extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $proveedoresModel = new ProveedoresModel($db);
-
-        // Validación: asegurar que el nombre del proveedor esté presente
         $nombreProveedor = $this->request->getPost('nombre_proveedor');
         if (empty($nombreProveedor)) {
             return redirect()->back()->with('error', 'El nombre del proveedor es obligatorio.');
         }
-
-        // Recoge los datos del formulario
         $proveedorData = [
             'nombre_proveedor' => $nombreProveedor,
             'nif' => $this->request->getPost('nif'),
@@ -80,8 +69,6 @@ class Proveedores extends BaseControllerGC
             'observaciones_proveedor' => $this->request->getPost('observaciones_proveedor'),
             'web' => $this->request->getPost('web'),
         ];
-
-        // Guardar en la base de datos
         if ($proveedoresModel->insert($proveedorData)) {
             return redirect()->to(base_url('proveedores'))->with('message', 'Proveedor añadido con éxito.');
         } else {
@@ -94,24 +81,16 @@ class Proveedores extends BaseControllerGC
         $db = db_connect($data['new_db']);
         $proveedoresModel = new ProveedoresModel($db);
 
-        // Obtener datos del proveedor
         $proveedor = $proveedoresModel->find($id);
         if (!$proveedor) {
             return redirect()->to(base_url('proveedores'))->with('error', 'Proveedor no encontrado.');
         }
-
-        // Obtener provincias
         $provinciasModel = new \App\Models\ProvinciasModel($db);
         $provincias = $provinciasModel->findAll();
-
-        // Obtener países
         $builderPaises = $db->table('paises');
         $paises = $builderPaises->select('id, nombre')->get()->getResultArray();
-
-        // Obtener formas de pago
         $builderFormasPago = $db->table('formas_pago');
         $formas_pago = $builderFormasPago->select('id_formapago, formapago')->get()->getResultArray();
-
         return view('editProveedores', [
             'proveedor' => $proveedor,
             'provincias' => $provincias,
@@ -125,12 +104,10 @@ class Proveedores extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $proveedoresModel = new ProveedoresModel($db);
-
         $proveedor = $proveedoresModel->find($id);
         if (!$proveedor) {
             return redirect()->to(base_url('proveedores'))->with('error', 'Proveedor no encontrado.');
         }
-
         $proveedorData = [
             'nombre_proveedor' => $this->request->getPost('nombre_proveedor'),
             'nif' => $this->request->getPost('nif'),
@@ -147,16 +124,12 @@ class Proveedores extends BaseControllerGC
             'observaciones_proveedor' => $this->request->getPost('observaciones_proveedor'),
             'web' => $this->request->getPost('web'),
         ];
-
-        // Guardar cambios en la base de datos
         if ($proveedoresModel->update($id, $proveedorData)) {
             return redirect()->to(base_url('proveedores'))->with('message', 'Proveedor actualizado con éxito.');
         } else {
             return redirect()->back()->with('error', 'Error al actualizar el proveedor.');
         }
     }
-
-
     public function verProductos($id_proveedor)
     {
         $data = usuario_sesion();
@@ -181,7 +154,6 @@ class Proveedores extends BaseControllerGC
             'familias' => $familias
         ]);
     }
-
     public function agregarProducto()
     {
         $data = usuario_sesion();
@@ -190,7 +162,6 @@ class Proveedores extends BaseControllerGC
         if (empty($this->request->getPost('id_producto_necesidad'))) {
             return redirect()->back()->with('error', 'El ID del producto necesidad es obligatorio.');
         }
-
         $productoData = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
             'id_producto_necesidad' => $this->request->getPost('id_producto_necesidad'),
@@ -204,7 +175,6 @@ class Proveedores extends BaseControllerGC
             echo "Error al añadir el producto.";
         }
     }
-
 
     public function eliminarProducto()
     {
@@ -256,7 +226,6 @@ class Proveedores extends BaseControllerGC
         if (empty($id_producto) || empty($id_proveedor) || empty($ref_producto) || empty($precio)) {
             return redirect()->back()->with('error', 'Todos los campos son obligatorios.');
         }
-
         $model->insert([
             'id_producto_necesidad' => $id_producto,
             'id_proveedor' => $id_proveedor,
