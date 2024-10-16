@@ -130,14 +130,14 @@ input[class^=ag-] {
 }
 
 .btn-elegir-proveedor {
-    background-color: #0B2F9F !important;
+    background-color: #174cec !important;
     color: #e4eff7 !important;
     margin: 5px;
 }
 
 .btn-elegir-proveedor:hover {
-    background-color: #140a3f !important;
-    color: #c4ecfd !important;
+    background-color: #0B2F9F !important;
+    color: #ffffff !important;
 }
 
 .actions {

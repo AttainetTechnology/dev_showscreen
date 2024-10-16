@@ -29,21 +29,22 @@ $estadoMap = [
 <div id="pedidoTable" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        var allowDelete = <?= json_encode($allow_delete); ?>;
+
         var columnDefs = [{
                 headerName: "Acciones",
                 field: "acciones",
                 cellRenderer: function(params) {
                     var editBtn = `<a href="<?= base_url('pedidos/edit/') ?>${params.data.id_pedido}" class="btn btnEditar">
-                    <span class="material-symbols-outlined icono">edit</span>Editar</a>`;
+                <span class="material-symbols-outlined icono">edit</span>Editar</a>`;
                     var printBtn = `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" class="btn btnImprimir" target="_blank">
-                    <span class="material-symbols-outlined icono">print</span> Imprimir</a>`;
-                    var deleteBtn = `<a href="<?= base_url('pedidos/delete/') ?>${params.data.id_pedido}" class="btn btnEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">
-                    <span class="material-symbols-outlined icono"> delete </span>Eliminar</a>`;
-
-                    return `${editBtn} ${printBtn} ${deleteBtn} `;
+                <span class="material-symbols-outlined icono">print</span> Imprimir</a>`
+                    var deleteBtn = allowDelete ? `<a href="<?= base_url('pedidos/delete/') ?>${params.data.id_pedido}" class="btn btnEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">
+                <span class="material-symbols-outlined icono"> delete </span>Eliminar</a>` : '';
+                    return `${editBtn} ${printBtn} ${deleteBtn}`;
                 },
                 cellClass: 'acciones-col',
-                minWidth: 250,
+                minWidth: 220,
                 filter: false
             },
             {

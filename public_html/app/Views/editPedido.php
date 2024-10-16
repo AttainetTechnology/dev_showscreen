@@ -83,7 +83,6 @@
         <div class="button-container" style=" text-align: right;">
             <button type="submit" class="btn btn-primary btnGuardar">Guardar Pedido</button>
         </div>
-        <br>
     </form>
     <div class="form-group">
         <?php
@@ -97,7 +96,6 @@
             "6" => "Anulado"
         ];
         ?>
-        <br>
         <h3 style="margin-left: 5px;">Líneas del Pedido</h3>
         <hr style="border: 5px solid #FFCC32; margin-top: 10px; margin-bottom: 20px;">
         <br>

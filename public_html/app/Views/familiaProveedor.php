@@ -8,7 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<h2 class="tituloProveedores">Familias de Proveedores</h2>
+<h2 class="tituloProveedores">Familia Productos Proveedor</h2>
 <div class="d-flex justify-content-between mb-3 btnFamiliaProveedor">
     <button onclick="abrirModalAgregar()" class="btn btnAddPedido">+ Añadir Familia</button>
     <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>

@@ -101,9 +101,9 @@
 
 .btnImprimirParte {
     background-color: #e4eff7 !important;
-    color: 1d9dd5 !important;
+    color: #1d9dd5 !important;
     width: 60px;
-    border-radius: 8px !important;
+    border-radius: 5px !important;
     height: 27px;
 }
 
@@ -275,7 +275,7 @@ form select.form-control {
 .btnEditarRuta {
     background-color: #337ab7 !important;
     color: white !important;
-    border-radius: 8px !important;
+    border-radius: 5px !important;
     height: 27px;
     width: 70px;
     border: none;
@@ -289,7 +289,7 @@ form select.form-control {
 .btnEliminarRuta {
     background-color: #d9534f !important;
     color: white !important;
-    border-radius: 8px !important;
+    border-radius: 5px !important;
     width: 80px;
     height: 27px;
     border: none;
@@ -366,8 +366,8 @@ form select.form-control {
 }
 
 .addpedido, .titlepedidosadd {
-    margin-left: 3vw;
-    margin-top: 10vh;
+    margin-left: 2vw;
+    margin-top: 6vh;
 }
 
 .editpedido{

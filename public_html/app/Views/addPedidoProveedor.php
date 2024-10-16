@@ -2,7 +2,7 @@
 <?= $this->section('content') ?>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <div class="container mt-5 formAddPedidoProveedor">
-    <h2 class="mb-4">Añadir Pedido</h2>
+    <h2 class="mb-4">Añadir Pedido Proveedor</h2>
     <form action="<?= base_url('Pedidos_proveedor/save') ?>" method="post">
         <div class="form-group mb-3">
             <label for="id_cliente">Empresa:</label>

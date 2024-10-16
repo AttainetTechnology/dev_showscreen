@@ -7,11 +7,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-<h2 class="tituloProductosNecesidad">Productos Necesidad</h2>
+<h2 class="tituloProductosNecesidad">Productos Proveedor</h2>
 
 <div class="d-flex justify-content-between mb-3 btnProductoNecesidad">
     <a href="<?= base_url('productos_necesidad/add') ?>" class="btn btn-primary btnAddPedido">
-        <i class="fa fa-plus"></i> Añadir Producto
+   </i>+ Añadir Producto
     </a>
     <button id="clear-filters" class="btn btn-danger btnEliminarFiltro">Eliminar Filtros</button>
 
