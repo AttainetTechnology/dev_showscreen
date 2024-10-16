@@ -14,7 +14,6 @@ $crud->setTable('poblaciones_rutas');
 $crud->requiredFields(['poblacion']);
 $crud->columns(array('poblacion'));
 $crud->addFields(['poblacion']);
-//$crud->unsetRead();
 $crud->setLangString('modal_save', 'Crear Población');
 
 // Callbacks para registrar las acciones realizadas en LOG
