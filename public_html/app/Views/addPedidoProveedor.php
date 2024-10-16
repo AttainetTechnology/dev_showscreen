@@ -15,7 +15,6 @@
                 <?php endforeach; ?>
             </select>
         </div>
-
         <div class="form-group mb-3">
             <label for="referencia">Referencia:</label>
             <input type="text" id="referencia" name="referencia" class="form-control">
@@ -42,12 +41,9 @@
         </div>
     </form>
 </div>
-
 <script>
-    // Agregamos la funcionalidad al botón "Volver"
     document.getElementById('volverButton').addEventListener('click', function() {
         window.location.href = '<?= base_url('pedidos_proveedor') ?>';
     });
 </script>
-
 <?= $this->endSection() ?>

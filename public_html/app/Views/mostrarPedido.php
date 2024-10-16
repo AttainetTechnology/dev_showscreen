@@ -1,7 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
-<!-- Importar estilos y scripts de AG Grid -->
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
@@ -17,7 +16,6 @@
 </div>
 <br>
 <?php
-// Mapeo de estados
 $estadoMap = [
     "0" => "Pendiente de material",
     "1" => "Falta Material",
@@ -31,7 +29,6 @@ $estadoMap = [
 <div id="pedidoTable" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Definición de columnas con filtros de texto
         var columnDefs = [{
                 headerName: "Acciones",
                 field: "acciones",
@@ -137,7 +134,7 @@ $estadoMap = [
                 filter: 'agTextColumnFilter'
             }
         ];
-        
+
         var rowData = [
             <?php foreach ($pedidos as $pedido): ?> {
                     id_pedido: "<?= $pedido->id_pedido ?>",
@@ -212,7 +209,7 @@ $estadoMap = [
         });
 
         function compareDates(filterLocalDateAtMidnight, cellValue) {
-            if (!cellValue) return -1;          
+            if (!cellValue) return -1;
             const cellDateParts = cellValue.split('-');
             const cellDate = new Date(Number(cellDateParts[0]), Number(cellDateParts[1]) - 1, Number(cellDateParts[2]));
             return cellDate < filterLocalDateAtMidnight ? -1 : cellDate > filterLocalDateAtMidnight ? 1 : 0;

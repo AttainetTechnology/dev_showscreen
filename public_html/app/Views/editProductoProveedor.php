@@ -6,15 +6,11 @@
 <div class="buttonsEditProductProveed">
     <button type="button" class="btn mb-3 btnVendemosProd" id="abrirModalProducto">¿Vendemos este producto?</button>
 </div>
-
 <form action="<?= base_url('productos_necesidad/update/' . $producto['id_producto']) ?>" method="post" enctype="multipart/form-data" class="fromEditProductProveed">
-
-
     <div class="mb-3">
         <label for="nombre_producto" class="form-label">Nombre del Producto</label>
         <input type="text" name="nombre_producto" id="nombre_producto" class="form-control" value="<?= $producto['nombre_producto'] ?>" required>
     </div>
-
     <div class="mb-3">
         <label for="id_familia" class="form-label">Familia</label>
         <select name="id_familia" id="id_familia" class="form-select" required>
@@ -24,7 +20,6 @@
             <?php endforeach; ?>
         </select>
     </div>
-
     <div class="mb-3">
     <label for="imagen" class="form-label">Imagen</label>
     <input type="file" name="imagen" id="imagen" class="form-control">
@@ -67,12 +62,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="productosModalBody" style="overflow-y: auto; max-height: calc(100vh - 150px);">
-                <!-- Contenido cargado dinámicamente por AJAX -->
             </div>
         </div>
     </div>
 </div>
-
 <script>
     $(document).ready(function() {
         $('#eliminarImagenButton').on('click', function() {
@@ -83,7 +76,7 @@
                     success: function(response) {
                         if (response.success) {
                             alert(response.message);
-                            location.reload(); // Recargar la página para actualizar el estado de la imagen
+                            location.reload(); 
                         } else {
                             location.reload(); 
                         }
@@ -94,14 +87,13 @@
                 });
             }
         });
-
         $('#abrirModalProducto').on('click', function() {
             $.ajax({
                 url: '<?= base_url('productos_necesidad/verProductos/' . $producto['id_producto']) ?>',
                 method: 'GET',
                 success: function(response) {
-                    $('#productosModalBody').html(response); // Inserta el contenido del modal
-                    $('#productoModal').modal('show'); // Muestra el modal
+                    $('#productosModalBody').html(response); 
+                    $('#productoModal').modal('show');
                 },
                 error: function() {
                     alert('Error al cargar el modal.');
@@ -109,7 +101,6 @@
             });
         });
 
-        // Redirigir al cerrar el modal
         $('#productoModal').on('hidden.bs.modal', function() {
             window.location.href = '<?= base_url('productos_necesidad/edit/' . $producto['id_producto']) ?>';
         });
@@ -118,5 +109,4 @@
         window.location.href = '<?= base_url('productos_necesidad') ?>';
     });
 </script>
-
 <?= $this->endSection() ?>

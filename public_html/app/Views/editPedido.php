@@ -6,16 +6,11 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
 
 <div class="container mt-5 editpedido">
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- jQuery debe cargarse primero -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Luego carga Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
     <h2>Editar Pedido</h2>
-    <!-- Botones de Acción -->
     <div class="mb-3">
         <label for="acciones" class="form-label"></label>
         <div class="d-flex gap-2">
@@ -28,7 +23,6 @@
             <button type="button" class="btn btn-warning" id="openModal" data-bs-toggle="modal" data-bs-target="#myModal">
                 <i class="fa fa-truck fa-fw"></i> Rutas de transporte
             </button>
-
             <!-- Modal -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -38,19 +32,13 @@
                             <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body" id="modalContent" style="padding: 0;">
-                            <!-- Contenido cargado por AJAX -->
                             <div class="text-center" id="loading">
                                 <p>Cargando...</p>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Cerrar</button> -->
-                        </div>
                     </div>
                 </div>
             </div>
-
-
             <a href="<?= base_url('pedidos/entregar/' . $pedido->id_pedido) ?>" class="btn btn-success btn-sm">
                 <i class="fa fa-check fa-fw"></i> Entregar Pedido
             </a>
@@ -61,7 +49,6 @@
         <br>
     </div>
     <form action="<?= base_url('pedidos/update/' . $pedido->id_pedido) ?>" method="post">
-        <!-- Empresa -->
         <div class="form-group">
             <label for="id_cliente">Empresa:</label>
             <select id="id_cliente" name="id_cliente" class="form-control" required>
@@ -73,13 +60,11 @@
             </select>
         </div>
         <br>
-        <!-- Referencia -->
         <div class="form-group">
             <label for="referencia">Referencia:</label>
             <input type="text" id="referencia" name="referencia" class="form-control" value="<?= esc($pedido->referencia) ?>">
         </div>
         <br>
-        <!-- Fechas -->
         <div class="form-group">
             <label for="fecha_entrada">Fecha de Entrada:</label>
             <input type="date" id="fecha_entrada" name="fecha_entrada" class="form-control" value="<?= esc($pedido->fecha_entrada) ?>" required>
@@ -90,7 +75,6 @@
             <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control" value="<?= esc($pedido->fecha_entrega) ?>" required>
         </div>
         <br>
-        <!-- Observaciones -->
         <div class="form-group">
             <label for="observaciones">Observaciones:</label>
             <textarea id="observaciones" name="observaciones" class="form-control" rows="3"><?= esc($pedido->observaciones) ?></textarea>
@@ -101,7 +85,6 @@
         </div>
         <br>
     </form>
-    <!-- Líneas del Pedido -->
     <div class="form-group">
         <?php
         $estados_texto = [
@@ -126,7 +109,6 @@
                 <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>
             </div>
         </div>
-
         <!-- Modal para añadir una nueva línea de pedido -->
         <div class="modal fade" id="addLineaPedidoModal" tabindex="-1" aria-labelledby="addLineaPedidoLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -136,21 +118,15 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modalBodyAddLineaPedido">
-                        <!-- El contenido del formulario se cargará aquí mediante AJAX -->
                     </div>
                 </div>
             </div>
         </div>
-
         <br><br>
-
         <div id="lineasPedidoGrid" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Array de estados desde PHP
                 const estadosTexto = <?= json_encode($estados_texto) ?>;
-
-                // Definición de columnas para ag-Grid
                 const columnDefs = [{
                         headerName: 'Acciones',
                         field: 'acciones',
@@ -224,11 +200,8 @@
                         valueFormatter: params => `${params.value} €`,
                     },
                 ];
-
-                // Datos desde PHP
                 const rowData = <?= json_encode($lineas_pedido) ?>;
 
-                // Función para renderizar acciones en cada fila
                 function renderActions(params) {
                     const id = params.data.id_lineapedido;
                     return `
@@ -243,10 +216,6 @@
         </a>
     `;
                 }
-
-
-
-                // Opciones de la tabla ag-Grid
                 const gridOptions = {
                     columnDefs: columnDefs,
                     rowData: rowData,
@@ -264,16 +233,11 @@
                         noRowsToShow: 'No hay registros disponibles.'
                     },
                     onGridReady: function(params) {
-                        // Ajusta el tamaño de las columnas al tamaño del contenedor
                         params.api.sizeColumnsToFit();
-                        // Guardamos el gridApi para usarlo más tarde
                         window.gridApi = params.api;
                     },
                     getRowClass: function(params) {
-                        // Obtener el estado en formato texto
                         const estadoTexto = estadosTexto[params.data.estado] || 'Estado desconocido';
-
-                        // Asignar la clase CSS en función del estado
                         switch (estadoTexto) {
                             case "Pendiente de material":
                                 return 'estado0';
@@ -295,24 +259,17 @@
                     }
 
                 };
-                // Inicializar la tabla ag-Grid
                 const eGridDiv = document.querySelector('#lineasPedidoGrid');
                 new agGrid.Grid(eGridDiv, gridOptions);
-
-                // Botón para eliminar filtros
                 document.querySelector('#clear-filters').addEventListener('click', function() {
                     if (window.gridApi) {
-                        window.gridApi.setFilterModel(null); // Eliminar todos los filtros
-                        window.gridApi.onFilterChanged(); // Forzar la actualización de los datos
+                        window.gridApi.setFilterModel(null);
+                        window.gridApi.onFilterChanged();
                     }
                 });
-
-                // Botón para recargar la página
                 document.querySelector('#reload-page').addEventListener('click', function() {
                     location.reload();
                 });
-
-                // Ajustar las columnas al redimensionar la ventana
                 window.addEventListener('resize', function() {
                     if (window.gridApi) {
                         window.gridApi.sizeColumnsToFit();
@@ -344,7 +301,6 @@
                 document.body.innerHTML = originalContents;
             }
         </script>
-
         <!-- Modal para mostrar el Parte -->
         <div class="modal fade" id="parteModal" tabindex="-1" aria-labelledby="parteModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -363,12 +319,10 @@
                 location.reload();
             });
         </script>
-        <!-- Modal HTML (Definido una sola vez en la página) -->
         <div class="modal fade" id="editarLineaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="overflow-y: hidden !important;">
                     <div class="modal-body" id="modalBodyEditarLineaPedido" style="overflow-y: auto !important;">
-                        <!-- El contenido del formulario se cargará aquí mediante AJAX -->
                     </div>
                 </div>
             </div>
@@ -377,16 +331,10 @@
 
     <script>
         $(document).ready(function() {
-
-            // Al hacer clic en el botón, cargar el contenido dentro del modal
             $('#openModal').on('click', function() {
                 var pedidoId = '<?= $pedido->id_pedido ?>';
                 var clienteId = '<?= $pedido->id_cliente ?>';
-
-                // Mostrar mensaje de carga mientras se obtiene el contenido
                 $('#modalContent').html('<div class="text-center"><p>Cargando...</p></div>');
-
-                // Hacer la solicitud AJAX para obtener las rutas
                 $.ajax({
                     url: '<?= base_url('Ruta_pedido/rutas') ?>/' + pedidoId + '/' + clienteId,
                     method: 'GET',
@@ -395,8 +343,6 @@
                             $('#modalContent').html('<div class="alert alert-danger">' + response.error + '</div>');
                             return;
                         }
-
-                        // Limpiar el contenido anterior del modal y mostrar la estructura
                         $('#modalContent').html(`
                     <div id="rutasContainer">
                         <div id="botonesRuta" class="d-flex justify-content-between align-items-center botoneseditRuta botonesRuta">
@@ -409,8 +355,6 @@
                     </div>
                     <div id="addRutaForm" style="display:none;"></div>
                 `);
-
-                        // Inicializar ag-Grid con los datos de la respuesta
                         initializeAgGrid(response.rutas, response.poblacionesMap, response.transportistas);
                         setupEventHandlers();
                     },
@@ -427,7 +371,6 @@
                     2: 'Recogido',
                     0: 'Pendiente'
                 };
-
                 var columnDefs = [{
                         headerName: "Acciones",
                         field: "acciones",
@@ -507,7 +450,6 @@
                         resizable: true
                     },
                     getRowStyle: function(params) {
-                        // Cambiar el fondo a verde si el estado es "Recogido" (estado = 2)
                         if (params.data && params.data.estado_ruta === 'Recogido') {
                             return {
                                 backgroundColor: '#dff0d8',
@@ -518,7 +460,7 @@
                     },
                     onGridReady: function(params) {
                         params.api.sizeColumnsToFit();
-                        $('#botonesRuta').show(); // Asegura que los botones se muestren cuando la tabla esté lista
+                        $('#botonesRuta').show(); 
                         window.gridApiRutas = params.api;
                     },
                     rowHeight: 60,
@@ -529,38 +471,29 @@
                 };
 
                 new agGrid.Grid(gridDiv, gridOptions);
-
-                // Configurar el botón "Eliminar Filtros" para la tabla de rutas
                 $('#clear-filters-rutas').on('click', function() {
                     if (window.gridApiRutas) {
-                        window.gridApiRutas.setFilterModel(null); // Eliminar todos los filtros en la tabla de rutas
-                        window.gridApiRutas.onFilterChanged(); // Actualizar la tabla
+                        window.gridApiRutas.setFilterModel(null);
+                        window.gridApiRutas.onFilterChanged(); 
                     }
                 });
             }
-
-
-            // Configurar eventos para "Añadir" y "Editar" Ruta
             function setupEventHandlers() {
                 $('#formNuevaRuta').on('submit', function(event) {
                     event.preventDefault();
                     $(this).unbind('submit').submit();
                 });
-
-                // Botón para añadir una nueva ruta
-                // Botón para añadir una nueva ruta
                 $('#openAddRuta').on('click', function() {
                     var pedidoId = '<?= $pedido->id_pedido ?>';
                     var clienteId = '<?= $pedido->id_cliente ?>';
 
-                    // Mostrar formulario de añadir ruta
                     $.ajax({
                         url: '<?= base_url('Ruta_pedido/mostrarFormulario') ?>/' + pedidoId + '/' + clienteId,
                         method: 'GET',
                         success: function(response) {
                             $('#addRutaForm').html(response);
                             $('#addRutaForm').show();
-                            $('#gridRutas, #botonesRuta').hide(); // Oculta #botonesRuta y #gridRutas
+                            $('#gridRutas, #botonesRuta').hide(); 
                             $('#rutasModalLabel').text('Añadir Ruta');
                         },
                         error: function() {
@@ -569,21 +502,16 @@
                     });
                 });
 
-
-
-                // Botón para editar una ruta existente
-                // Botón para editar una ruta existente
                 window.editarRuta = function(id_ruta) {
                     var pedidoId = '<?= $pedido->id_pedido ?>';
                     var clienteId = '<?= $pedido->id_cliente ?>';
 
-                    // Mostrar formulario de edición de ruta
                     $.ajax({
                         url: '<?= base_url('Ruta_pedido/mostrarFormulario') ?>/' + pedidoId + '/' + clienteId,
                         method: 'GET',
                         success: function(response) {
                             $('#addRutaForm').html(response);
-                            $('#gridRutas, #botonesRuta').hide(); // Oculta #botonesRuta y #gridRutas
+                            $('#gridRutas, #botonesRuta').hide();
                             $('#addRutaForm').show();
                             $('#rutasModalLabel').text('Editar Ruta');
 
@@ -611,9 +539,6 @@
                         }
                     });
                 };
-
-
-                // Botón para volver a la tabla de rutas
                 $('#volverTabla').on('click', function() {
                     $('#addRutaForm').hide();
                     $('#gridRutas').show();
@@ -621,7 +546,6 @@
                 });
             }
 
-            // Función para eliminar una ruta
             window.eliminarRuta = function(id_ruta) {
                 if (confirm('¿Estás seguro de que deseas eliminar esta ruta?')) {
                     $.ajax({
@@ -629,15 +553,14 @@
                         method: 'DELETE',
                         success: function(response) {
                             if (response.success) {
-                                alert(response.message); // Mostrar el mensaje de éxito
-                                // Recargar solo el contenido del modal, no toda la página
-                                cargarRutasModal(); // Función que recarga las rutas dentro del modal
+                                alert(response.message);
+                                cargarRutasModal(); 
                             } else {
-                                cargarRutasModal(); // Función que recarga las rutas dentro del modal
+                                cargarRutasModal(); 
                             }
                         },
                         error: function(xhr) {
-                            alert('Error al eliminar la ruta: ' + xhr.responseText); // Manejo de errores
+                            alert('Error al eliminar la ruta: ' + xhr.responseText);
                         }
                     });
                 }
@@ -647,7 +570,6 @@
                 var pedidoId = '<?= $pedido->id_pedido ?>';
                 var clienteId = '<?= $pedido->id_cliente ?>';
 
-                // Hacer la solicitud AJAX para obtener las rutas actualizadas
                 $.ajax({
                     url: '<?= base_url('Ruta_pedido/rutas') ?>/' + pedidoId + '/' + clienteId,
                     method: 'GET',
@@ -656,8 +578,6 @@
                             $('#modalContent').html('<div class="alert alert-danger">' + response.error + '</div>');
                             return;
                         }
-
-                        // Actualizar el contenido del modal con las rutas
                         $('#modalContent').html(`
                 <div id="rutasContainer">
                     <div id="botonesRuta"  class="d-flex justify-content-between align-items-center botoneseditRuta botonesRuta">
@@ -670,9 +590,8 @@
                 <div id="addRutaForm" style="display:none;"></div>
             `);
 
-                        // Inicializar de nuevo la tabla de rutas con los datos actualizados
                         initializeAgGrid(response.rutas, response.poblacionesMap, response.transportistas);
-                        setupEventHandlers(); // Volver a configurar los eventos para "Añadir" y "Editar"
+                        setupEventHandlers(); 
                     },
                     error: function() {
                         $('#modalContent').html('<div class="alert alert-danger">Error al cargar las rutas.</div>');
@@ -687,14 +606,12 @@
 
                 if (urlParams.has('openModal')) {
                     $('#openModal').click();
-                    // Remover el parámetro 'openModal' de la URL sin recargar la página
                     urlParams.delete('openModal');
                     const newUrl = window.location.pathname + '?' + urlParams.toString();
                     window.history.replaceState({}, '', newUrl);
                 }
             }
             abrirModalSiEsNecesario();
-            // Función para inicializar ag-Grid
             function initializeAgGrid(rutas, poblacionesMap, transportistasMap) {
                 var estadoMap = {
                     1: 'No preparado',
@@ -782,7 +699,7 @@
                     },
                     onGridReady: function(params) {
                         params.api.sizeColumnsToFit();
-                        $('#botonesRuta').show(); // Asegura que los botones se muestren cuando la tabla esté lista
+                        $('#botonesRuta').show(); 
                     },
                     rowHeight: 60,
                     domLayout: 'normal',
@@ -797,42 +714,33 @@
 
                 var gridDiv = document.querySelector('#gridRutas');
                 new agGrid.Grid(gridDiv, gridOptions);
-
-                // Configurar el botón "Eliminar Filtros" para la tabla de rutas
                 $('#clear-filters-rutas').on('click', function() {
                     if (window.gridApiRutas) {
-                        window.gridApiRutas.setFilterModel(null); // Eliminar todos los filtros en la tabla de rutas
-                        window.gridApiRutas.onFilterChanged(); // Actualizar la tabla
+                        window.gridApiRutas.setFilterModel(null);
+                        window.gridApiRutas.onFilterChanged();
                     }
                 });
             }
 
         });
         $(document).on('click', '.btnEditar', function() {
-            var lineaId = $(this).data('id'); // Obtener el ID de la línea de pedido
+            var lineaId = $(this).data('id');
 
-            // Hacer la solicitud AJAX para cargar el formulario de edición
             $.ajax({
                 url: '<?= base_url("pedidos/mostrarFormularioEditarLineaPedido") ?>/' + lineaId,
                 method: 'GET',
                 success: function(response) {
-                    // Cargar el contenido del formulario dentro del modal
-                    $('#modalBodyEditarLineaPedido').html(response); // Asegúrate de que la respuesta contiene la vista correcta
-                    $('#editarLineaModal').modal('show'); // Mostrar el modal
+                    $('#modalBodyEditarLineaPedido').html(response);
+                    $('#editarLineaModal').modal('show');
                 },
                 error: function() {
                     alert('Hubo un error al cargar el formulario. Por favor, intenta de nuevo.');
                 }
             });
         });
-
-
-
         $(document).ready(function() {
-            // Al hacer clic en el botón para abrir el modal "Añadir Línea de Pedido"
             $('#openAddLineaPedidoModal').click(function() {
                 var idPedido = $(this).data('id-pedido');
-                // Hacer la solicitud AJAX para cargar el contenido del modal
                 $.ajax({
                     url: '<?= base_url("pedidos/mostrarFormularioAddLineaPedido") ?>/' + idPedido,
                     method: 'GET',
@@ -845,7 +753,6 @@
                     }
                 });
             });
-            // Gestión del envío del formulario
             $(document).on('submit', '#addLineaPedidoForm', function(e) {
                 e.preventDefault();
                 var formData = $(this).serialize();
@@ -854,7 +761,6 @@
                     type: 'POST',
                     data: formData,
                     success: function(response) {
-                        // alert('Línea de pedido añadida correctamente.');
                         location.reload();
                     },
                     error: function() {
@@ -864,5 +770,4 @@
             });
         });
     </script>
-
     <?= $this->endSection() ?>

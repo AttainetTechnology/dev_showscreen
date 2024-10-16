@@ -36,23 +36,18 @@
     document.getElementById('addProcessModal').addEventListener('submit', function(event) {
         const nombreProcesoInput = document.getElementById('nombre_proceso');
         let nombreProceso = nombreProcesoInput.value; 
-        // Verificamos si el nombre del proceso contiene puntos
         if (nombreProceso.includes('.')) {
             alert('No se permite el uso de puntos en el nombre del proceso.');
-            event.preventDefault(); // Evita que el formulario se envíe
-            return;
+            event.preventDefault(); 
         }
-        // Convertimos el valor a mayúsculas
         nombreProceso = nombreProceso.toUpperCase(); 
         nombreProcesoInput.value = nombreProceso;
     });
     $(document).ready(function() {
         $('#addProcessModal').modal('show');
-        // Detecta cuando el modal se cierra (incluido al hacer clic fuera del modal)
         $('#addProcessModal').on('hidden.bs.modal', function() {
             window.location.href = '<?= base_url('procesos'); ?>';
         });
-        // Detecta cuando se hace clic fuera del modal para cerrarlo
         $(document).on('click', function(event) {
             var clickInsideModal = $(event.target).closest('.modal-content').length;
             if (!clickInsideModal) {

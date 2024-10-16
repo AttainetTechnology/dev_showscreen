@@ -3,8 +3,6 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-
 <style>
     .star-icon {
         cursor: pointer;
@@ -17,10 +15,7 @@
         stroke: yellow;
     }
 </style>
-
-
 <div class="comparador">
-
     <h2 class="titleComparador">Comparador de Productos</h2>
     <?php if (empty($comparador)): ?>
         <p>No hay productos disponibles para comparar.</p>
@@ -78,28 +73,20 @@
 <div class="d-flex justify-content-end">
     <button type="button" class="btn btn-info mb-3" id="volverButton" style="margin-right: 2vw;">Volver</button>
 </div>
-
-
 <!-- Modal para elegir proveedor -->
 <div class="modal fade" id="elegirProveedorModal" tabindex="-1" role="dialog" aria-labelledby="elegirProveedorModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content" id="modalContent">
-            <!-- Contenido del modal se carga mediante AJAX -->
         </div>
     </div>
 </div>
-
-
-<!-- Modal para añadir pedido (solo esquema) -->
+<!-- Modal para añadir pedido  -->
 <div class="modal fade" id="addPedidoModal" tabindex="-1" role="dialog" aria-labelledby="addPedidoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" id="pedidoModalContent">
-            <!-- Contenido del modal cargado mediante AJAX -->
         </div>
     </div>
 </div>
-
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
@@ -116,15 +103,12 @@
                 }
             });
         });
-
-
         $('.btn-elegir-proveedor').on('click', function() {
             var idProducto = $(this).data('id-producto');
             $('#modalContent').load('<?= base_url("elegirProveedor") ?>/' + idProducto, function() {
                 $('#elegirProveedorModal').modal('show');
             });
         });
-
         $('.star-icon').on('click', function() {
             var $this = $(this);
             var productoIndex = $this.closest('.selectable-row').data('producto-index');
@@ -156,7 +140,6 @@
                     },
                     success: function(response) {
                         console.log('Proveedor seleccionado exitosamente');
-                        // Verificar si la clase se aplicó
                         if (!$this.hasClass('selected')) {
                             $this.addClass('selected');
                         }
@@ -169,7 +152,5 @@
         window.location.href = '<?= base_url('productos_necesidad') ?>';
     });
 </script>
-
-
 
 <?= $this->endSection() ?>

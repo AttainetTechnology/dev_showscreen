@@ -34,14 +34,14 @@ $estadoMap = [
                     const acciones = params.value;
                     return `
                         <button onclick="editarPedido('${acciones.editar}')" class="btn btnEditar btn-sm">
- <span class="material-symbols-outlined icono">edit</span>Editar
+                            <span class="material-symbols-outlined icono">edit</span>Editar
                         </button>
                         <a href="${acciones.imprimir}" class="btn btnImprimir btn-sm" target="_blank">
                             <i class="fa fa-print"></i> Imprimir
                         </a>
-   <button onclick="eliminarPedido('${acciones.eliminar}')" class="btn btnEliminar btn-sm">
-            <i class="fa fa-trash"></i> Eliminar
-        </button>
+                        <button onclick="eliminarPedido('${acciones.eliminar}')" class="btn btnEliminar btn-sm">
+                             <i class="fa fa-trash"></i> Eliminar
+                        </button>
                     `;
                 },
                 minWidth: 300,
@@ -83,7 +83,7 @@ $estadoMap = [
                 flex: 1,
                 filter: "agTextColumnFilter",
                 floatingFilter: true,
-                valueFormatter: params => `${params.value !== null ? params.value : 0} €` 
+                valueFormatter: params => `${params.value !== null ? params.value : 0} €`
             }
         ];
 
@@ -108,13 +108,18 @@ $estadoMap = [
                 const gridApi = params.api;
                 gridApi.sizeColumnsToFit();
             },
-             getRowClass: function(params) {
+            getRowClass: function(params) {
                 switch (params.data.estado_texto) {
-                    case "Pendiente de realizar": return 'estado0';
-                    case "Pendiente de recibir": return 'estado1';
-                    case "Recibido": return 'estado2';
-                    case "Anulado": return 'estado6';
-                    default: return '';
+                    case "Pendiente de realizar":
+                        return 'estado0';
+                    case "Pendiente de recibir":
+                        return 'estado1';
+                    case "Recibido":
+                        return 'estado2';
+                    case "Anulado":
+                        return 'estado6';
+                    default:
+                        return '';
                 }
             }
         };
@@ -129,21 +134,21 @@ $estadoMap = [
     });
 
     function eliminarPedido(url) {
-    if (confirm("¿Estás seguro de eliminar este pedido?")) {
-        fetch(url, {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    alert("No se pudo eliminar el pedido.");
-                }
-            })
-            .catch(error => console.error("Error al eliminar el pedido:", error));
+        if (confirm("¿Estás seguro de eliminar este pedido?")) {
+            fetch(url, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert("No se pudo eliminar el pedido.");
+                    }
+                })
+                .catch(error => console.error("Error al eliminar el pedido:", error));
+        }
     }
-}
 
 
     function editarPedido(url) {

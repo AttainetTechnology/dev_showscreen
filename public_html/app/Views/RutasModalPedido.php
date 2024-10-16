@@ -1,13 +1,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
-<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
 
-<!-- Formulario para añadir una nueva ruta -->
 <div id="addRutaForm">
     <form id="formNuevaRuta" method="POST" action="<?= base_url('Ruta_pedido/guardarRuta') ?>">
         <input type="hidden" name="id_pedido" value="<?= esc($id_pedido) ?>" />
@@ -66,39 +63,31 @@
     </form>
 </div>
 
-
-
-<!-- Añadir el script justo antes del cierre del body -->
 <script>
     $(document).ready(function() {
-        // Inicializar la fecha de hoy en el campo de fecha si está vacío
         var today = new Date().toISOString().split('T')[0];
         if ($('#fecha_ruta').val() === '') {
             $('#fecha_ruta').val(today);
         }
-
         // Función para abrir el formulario de añadir ruta
         $('#openAddRuta').on('click', function() {
-            $('#botonesRuta').hide(); // Oculta los botones
-            $('#gridRutas').hide(); // Oculta la tabla
-            $('#addRutaForm').show(); // Muestra el formulario
+            $('#botonesRuta').hide(); 
+            $('#gridRutas').hide();
+            $('#addRutaForm').show();
             console.log("Formulario de añadir ruta abierto, botones y tabla ocultos.");
         });
-
         // Función para volver a la tabla y mostrar los botones
         $('#volverTabla').on('click', function() {
-            $('#addRutaForm').hide(); // Oculta el formulario
-            $('#gridRutas').show(); // Muestra la tabla
-            $('#botonesRuta').show(); // Muestra los botones
+            $('#addRutaForm').hide(); 
+            $('#gridRutas').show(); 
+            $('#botonesRuta').show();
             console.log("Volver a la tabla, botones y tabla mostrados.");
         });
-
         // Enviar el formulario sin recargar la página
         $('#formNuevaRuta').on('submit', function(event) {
             event.preventDefault();
             var formData = $(this).serialize();
             $('.btnGuardarRuta').prop('disabled', true);
-
             $.ajax({
                 url: '<?= base_url('Ruta_pedido/guardarRuta') ?>',
                 method: 'POST',
@@ -118,7 +107,6 @@
                 }
             });
         });
-
         // Botón para limpiar filtros en la tabla
         $('#clear-filters-rutas').on('click', function() {
             if (window.gridApiRutas) {

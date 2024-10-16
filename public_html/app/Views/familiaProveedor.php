@@ -14,7 +14,6 @@
     <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>
 </div>
 <div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
-
 <!-- Modal para agregar o editar la familia -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -40,15 +39,14 @@
 </div>
 
 <script>
-    let isEditing = false; 
+    let isEditing = false;
     document.addEventListener('DOMContentLoaded', function() {
-        const columnDefs = [
-            {
-        headerName: "Acciones",
-        field: "acciones",
-        cellRenderer: params => {
-            const links = params.data.acciones;
-            return `
+        const columnDefs = [{
+                headerName: "Acciones",
+                field: "acciones",
+                cellRenderer: params => {
+                    const links = params.data.acciones;
+                    return `
                 <button onclick="editarFamilia('${links.editar}', '${params.data.nombre}', '${params.data.id_familia}')" class="btn btnEditar btn-sm" title="Editar">
                     <i class="fa fa-pencil"></i> Editar
                 </button>
@@ -56,10 +54,10 @@
                     <i class="fa fa-trash"></i> Eliminar
                 </button>
             `;
-        },
-        filter: false,
-        minWidth: 200
-    },
+                },
+                filter: false,
+                minWidth: 200
+            },
             {
                 headerName: "ID Familia",
                 field: "id_familia",
@@ -71,7 +69,6 @@
                 filter: 'agTextColumnFilter'
             }
         ];
-
         const gridOptions = {
             columnDefs: columnDefs,
             defaultColDef: {
@@ -94,7 +91,6 @@
                 noRowsToShow: 'No hay registros disponibles.'
             }
         };
-
         const eGridDiv = document.querySelector('#myGrid');
         new agGrid.Grid(eGridDiv, gridOptions);
 
@@ -107,41 +103,38 @@
     function fetchData(gridApi) {
         fetch('<?= base_url("familiaProveedor/getFamiliasProveedores") ?>')
             .then(response => response.json())
-            .then(data => gridApi.applyTransaction({ add: data }))
+            .then(data => gridApi.applyTransaction({
+                add: data
+            }))
             .catch(error => console.error('Error al cargar los datos:', error));
     }
 
-    // Función para abrir el modal para agregar una nueva familia
     function abrirModalAgregar() {
-        $('#editModalLabel').text('Añadir Familia'); 
+        $('#editModalLabel').text('Añadir Familia');
         $('#nombre').val('');
-        $('#id_familia').val(''); 
-        isEditing = false; 
+        $('#id_familia').val('');
+        isEditing = false;
         $('#editModal').modal('show');
     }
 
-    // Función para abrir el modal para editar una familia
     function editarFamilia(url, nombre, idFamilia) {
         $('#editModalLabel').text('Editar Familia');
         $('#nombre').val(nombre);
-        $('#id_familia').val(idFamilia); 
-        isEditing = true; 
-        $('#editModal').modal('show'); 
+        $('#id_familia').val(idFamilia);
+        isEditing = true;
+        $('#editModal').modal('show');
     }
-
-    // Guardar los cambios del formulario mediante AJAX
     $(document).on('click', '#saveEditBtn', function() {
         var formData = $('#editFamiliaForm').serialize();
         var url = isEditing ? '<?= base_url("familiaProveedor/actualizarFamilia") ?>' : '<?= base_url("familiaProveedor/agregarFamilia") ?>';
-
         $.ajax({
-            url: url, 
+            url: url,
             type: 'POST',
             data: formData,
             success: function(response) {
                 if (response.success) {
-                    $('#editModal').modal('hide'); 
-                    location.reload(); 
+                    $('#editModal').modal('hide');
+                    location.reload();
                 } else {
                     alert('Error: ' + response.message);
                 }
@@ -152,21 +145,20 @@
         });
     });
 
-   // Función para eliminar una familia
-function eliminarFamilia(url) {
-    if (confirm("¿Estás seguro de eliminar esta familia?")) {
-        $.ajax({
-            url: url,
-            type: 'POST',
-            success: function(response) {
-                if (response.success) {
-                    location.reload(); 
-                } else {
-                    alert('Error: No se pudo eliminar la familia.');
-                }
-            },
-        });
+    function eliminarFamilia(url) {
+        if (confirm("¿Estás seguro de eliminar esta familia?")) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: No se pudo eliminar la familia.');
+                    }
+                },
+            });
+        }
     }
-}
 </script>
 <?= $this->endSection() ?>

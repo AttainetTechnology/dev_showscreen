@@ -1,12 +1,9 @@
 <?php
 
-// Comienza el foreach para cada $pedido
 foreach ($pedido as $ped) { ?>
     <div id="fondo">
         <input type="button" onclick="printDiv('printableArea')" value="Imprimir Pedido" class="btn btn-success btn-sm" />
-
         <div id="printableArea">
-            <!-- info row -->
             <div class="fila">
                 <div id="fila_left">
                     <?php
@@ -21,7 +18,6 @@ foreach ($pedido as $ped) { ?>
                                 ?>" class="logo_partes"><br>
                     <br>
                     <?php
-                    // Datos del proveedor en lugar del cliente
                     $db_cliente = db_connect($data['new_db']);
                     $builder = $db_cliente->table('proveedores');
                     $builder->select('id_proveedor, nombre_proveedor');
@@ -33,7 +29,6 @@ foreach ($pedido as $ped) { ?>
                     <div class="capa-numero-parte">
                         <div class="numero_pedido">Id: <strong><?php echo $ped->id_pedido; ?></strong></div>
                     </div>
-                    <!-- Mostrar el nombre del proveedor -->
                     <strong>
                         <h3><?php echo $nombre_proveedor; ?></h3>
                     </strong><br>
@@ -45,7 +40,7 @@ foreach ($pedido as $ped) { ?>
                         </div>
                     </div>
                 </div>
-            </div> <!-- Cierro fila -->
+            </div>
             <div class="tituparte">Pedido proveedor</div>
             <div id="observaciones">
                 <div class="seccionparte">Observaciones de pedido:</div>
@@ -71,7 +66,7 @@ foreach ($pedido as $ped) { ?>
                                     <td><b><?php echo $l->total_linea; ?></b> &euro;</td>
                                     <?php $total += $l->total_linea; ?>
                                 </tr>
-                            <?php } // Cierro foreach lineas 
+                            <?php } 
                             ?>
 
                             <tr id="total_pedido">
