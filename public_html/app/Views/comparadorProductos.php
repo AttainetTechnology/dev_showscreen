@@ -35,7 +35,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                <th style="width: 10vw;">Acciones</th>
+                                    <th style="width: 6vw;">Acciones</th>
                                     <th>Proveedor</th>
                                     <th>Referencia Producto</th>
                                     <th>Precio</th>
@@ -47,18 +47,18 @@
                                         class="selectable-row"
                                         data-producto-index="<?= $item['producto']['id_producto'] ?>">
                                         <td class="star-column actions">
-    <svg class="star-icon <?= $oferta['seleccion_mejor'] == 1 ? 'selected' : '' ?>" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27Z" stroke="#000" stroke-width="2" />
-    </svg>
-    <button class="btn-nuevo-pedido btn" data-id-proveedor="<?= $oferta['id_proveedor'] ?>">
-        + Nuevo pedido
-    </button>
-</td>
+                                            <svg class="star-icon <?= $oferta['seleccion_mejor'] == 1 ? 'selected' : '' ?>" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27Z" stroke="#000" stroke-width="2" />
+                                            </svg>
+                                            <button class="btn-nuevo-pedido btn" data-id-proveedor="<?= $oferta['id_proveedor'] ?>">
+                                                + Nuevo pedido
+                                            </button>
+                                        </td>
 
                                         <td><?= esc($oferta['nombre_proveedor']) ?></td>
                                         <td><?= esc($oferta['ref_producto']) ?></td>
                                         <td><?= esc($oferta['precio']) ?></td>
-                                   </tr>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
 
@@ -125,7 +125,7 @@
                         ofertaIndex: ofertaIndex
                     },
                     success: function(response) {
-                        console.log('Proveedor deseleccionado exitosamente');
+                        alert('Proveedor deseleccionado exitosamente');
                     }
                 });
             } else {
@@ -139,7 +139,7 @@
                         ofertaIndex: ofertaIndex
                     },
                     success: function(response) {
-                        console.log('Proveedor seleccionado exitosamente');
+                        alert('Proveedor seleccionado exitosamente');
                         if (!$this.hasClass('selected')) {
                             $this.addClass('selected');
                         }
