@@ -9,7 +9,7 @@
 
 <h2 class="tituloProductosNecesidad">Productos Necesidad</h2>
 
-<div class="d-flex justify-content-between mb-3">
+<div class="d-flex justify-content-between mb-3 btnProductoNecesidad">
     <a href="<?= base_url('productos_necesidad/add') ?>" class="btn btn-primary btnAddPedido">
         <i class="fa fa-plus"></i> Añadir Producto
     </a>

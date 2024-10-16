@@ -9,9 +9,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <h2 class="tituloProveedores">Familias de Proveedores</h2>
-<div class="d-flex justify-content-between mb-3">
-    <button onclick="abrirModalAgregar()" class="btn btn-primary">+ Añadir Familia</button>
-    <button id="clear-filters" class="btn btn-secondary">Eliminar Filtros</button>
+<div class="d-flex justify-content-between mb-3 btnFamiliaProveedor">
+    <button onclick="abrirModalAgregar()" class="btn btnAddPedido">+ Añadir Familia</button>
+    <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>
 </div>
 <div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
 
@@ -19,26 +19,20 @@
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <!-- Header del modal con la cruz para cerrar -->
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Añadir Familia</h5> <!-- Cambia dinámicamente -->
+                <h5 class="modal-title" id="editModalLabel">Añadir Familia</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-
-            <!-- Cuerpo del modal con el formulario -->
             <div class="modal-body">
                 <form id="editFamiliaForm">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" required>
                     </div>
-                    <input type="hidden" name="id_familia" id="id_familia"> <!-- Para editar, este campo será necesario -->
+                    <input type="hidden" name="id_familia" id="id_familia">
                 </form>
             </div>
-
-            <!-- Footer del modal para los botones de acción -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary" id="saveEditBtn">Guardar Cambios</button>
             </div>
         </div>
@@ -46,8 +40,7 @@
 </div>
 
 <script>
-    let isEditing = false; // Bandera para saber si estamos agregando o editando
-
+    let isEditing = false; 
     document.addEventListener('DOMContentLoaded', function() {
         const columnDefs = [
             {
@@ -56,10 +49,10 @@
         cellRenderer: params => {
             const links = params.data.acciones;
             return `
-                <button onclick="editarFamilia('${links.editar}', '${params.data.nombre}', '${params.data.id_familia}')" class="btn btn-warning btn-sm" title="Editar">
+                <button onclick="editarFamilia('${links.editar}', '${params.data.nombre}', '${params.data.id_familia}')" class="btn btnEditar btn-sm" title="Editar">
                     <i class="fa fa-pencil"></i> Editar
                 </button>
-                <button onclick="eliminarFamilia('${links.eliminar}')" class="btn btn-danger btn-sm" title="Eliminar">
+                <button onclick="eliminarFamilia('${links.eliminar}')" class="btn btnEliminar btn-sm" title="Eliminar">
                     <i class="fa fa-trash"></i> Eliminar
                 </button>
             `;
@@ -120,35 +113,35 @@
 
     // Función para abrir el modal para agregar una nueva familia
     function abrirModalAgregar() {
-        $('#editModalLabel').text('Añadir Familia'); // Cambiar el título del modal
-        $('#nombre').val(''); // Limpiar el campo nombre
-        $('#id_familia').val(''); // Limpiar el campo id
-        isEditing = false; // Cambiar la bandera para modo de agregar
-        $('#editModal').modal('show'); // Mostrar el modal
+        $('#editModalLabel').text('Añadir Familia'); 
+        $('#nombre').val('');
+        $('#id_familia').val(''); 
+        isEditing = false; 
+        $('#editModal').modal('show');
     }
 
     // Función para abrir el modal para editar una familia
     function editarFamilia(url, nombre, idFamilia) {
-        $('#editModalLabel').text('Editar Familia'); // Cambiar el título del modal
-        $('#nombre').val(nombre); // Llenar el campo nombre con el valor correspondiente
-        $('#id_familia').val(idFamilia); // Llenar el campo oculto con el id de la familia
-        isEditing = true; // Cambiar la bandera a modo de edición
-        $('#editModal').modal('show'); // Mostrar el modal
+        $('#editModalLabel').text('Editar Familia');
+        $('#nombre').val(nombre);
+        $('#id_familia').val(idFamilia); 
+        isEditing = true; 
+        $('#editModal').modal('show'); 
     }
 
     // Guardar los cambios del formulario mediante AJAX
     $(document).on('click', '#saveEditBtn', function() {
-        var formData = $('#editFamiliaForm').serialize(); // Serializar el formulario
+        var formData = $('#editFamiliaForm').serialize();
         var url = isEditing ? '<?= base_url("familiaProveedor/actualizarFamilia") ?>' : '<?= base_url("familiaProveedor/agregarFamilia") ?>';
 
         $.ajax({
-            url: url, // Dependiendo de si se está agregando o editando, cambiar la URL
+            url: url, 
             type: 'POST',
             data: formData,
             success: function(response) {
                 if (response.success) {
-                    $('#editModal').modal('hide'); // Cerrar el modal
-                    location.reload(); // Recargar la página para reflejar los cambios
+                    $('#editModal').modal('hide'); 
+                    location.reload(); 
                 } else {
                     alert('Error: ' + response.message);
                 }
@@ -163,7 +156,7 @@
 function eliminarFamilia(url) {
     if (confirm("¿Estás seguro de eliminar esta familia?")) {
         $.ajax({
-            url: url, // La URL del controlador para eliminar
+            url: url,
             type: 'POST',
             success: function(response) {
                 if (response.success) {
@@ -175,7 +168,5 @@ function eliminarFamilia(url) {
         });
     }
 }
-
 </script>
-
 <?= $this->endSection() ?>

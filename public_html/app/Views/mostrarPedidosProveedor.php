@@ -10,12 +10,12 @@
 
 <h2 class="tituloProveedores">Pedidos del Proveedor</h2>
 
-<div class="d-flex justify-content-between mb-3">
+<div class="d-flex justify-content-between mb-3 btnMostrarPediProveed">
     <a href="<?= base_url('Pedidos_proveedor/addPedido') ?>" class="btn btn-primary btnAddPedido">+ Añadir Pedido</a>
     <button id="clear-filters" class="btn ms-auto btnEliminarfiltros">Eliminar Filtros</button>
 </div>
 <?php
-// Mapeo de estados
+
 $estadoMap = [
     "0" => "Pendiente de realizar",
     "1" => "Pendiente de recibir",
@@ -23,7 +23,6 @@ $estadoMap = [
     "6" => "Anulado"
 ];
 ?>
-
 <div id="gridPedidosProveedor" class="ag-theme-alpine" style="height: 600px; width: 100%; margin-left:20px"></div>
 
 <script>
@@ -81,8 +80,10 @@ $estadoMap = [
             {
                 headerName: "Total Pedido",
                 field: "total_pedido",
-                filter: 'agNumberColumnFilter',
-                cellRenderer: params => `<strong>${params.value}€</strong>`
+                flex: 1,
+                filter: "agTextColumnFilter",
+                floatingFilter: true,
+                valueFormatter: params => `${params.value !== null ? params.value : 0} €` 
             }
         ];
 
@@ -146,9 +147,7 @@ $estadoMap = [
 
 
     function editarPedido(url) {
-        // Redirige a la URL del formulario de edición
         window.location.href = url;
     }
 </script>
-
 <?= $this->endSection() ?>

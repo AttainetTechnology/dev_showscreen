@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <h2 class="tituloProveedores">Proveedores</h2>
-<div class="d-flex justify-content-between mb-3">
+<div class="d-flex justify-content-between mb-3 btnProveedores">
     <a href="<?= base_url('proveedores/add') ?>" class="btn btn-primary btnAddPedido">+ Añadir Proveedor
     </a>
 

@@ -49,7 +49,7 @@
 }
 
 .btnAddPedido:hover {
-    background-color: #337ab7;
+    background-color: #337ab7 !important;
     color: #e4eff7 !important;
 }
 
@@ -60,7 +60,7 @@
 .btnEditar {
     background-color: #337ab7 !important;
     color: white !important;
-    border-radius: 8px !important;
+    border-radius: 5px !important;
     width: 65px;
     height: 27px !important;
 
@@ -74,7 +74,7 @@
 .btnEliminar {
     background-color: #d9534f !important;
     color: white !important;
-    border-radius: 8px !important;
+    border-radius: 5px !important;
     width: 72px;
     height: 27px !important;
 
@@ -87,15 +87,15 @@
 
 .btnImprimir {
     background-color: #e4eff7 !important;
-    color: 1d9dd5 !important;
-    border-radius: 8px !important;
+    color: #1d9dd5 !important;
+    border-radius: 5px !important;
     width: 78px;
     height: 27px;
 
 }
 
 .btnImprimir:hover {
-    background-color: #0B2F9F !important;
+    background-color: #0B2F9F!important;
     color: #e4eff7 !important;
 }
 
@@ -402,4 +402,7 @@ form select.form-control {
 .volverButton {
     background-color: #a9aaad !important;
     color: #F5F5F7 !important;
+}
+.btnsMostrarPedido{
+    margin-top: 20px;
 }

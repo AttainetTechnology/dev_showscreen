@@ -10,7 +10,7 @@
 
 
 <h2 class="titlepedidosmostrar">Pedidos</h2>
-<div class="d-flex justify-content-between mb-3">
+<div class="d-flex justify-content-between mb-3 btnsMostrarPedido">
     <a href="<?= base_url('pedidos/add') ?>" class="btn btnAddPedido">+ Añadir Pedido</a>
 
     <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>
@@ -169,7 +169,6 @@ $estadoMap = [
             },
             onGridReady: function(params) {
                 gridApi = params.api;
-                //las columnas se ajusten al tamaño del contenedor
                 params.api.sizeColumnsToFit();
                 setTimeout(function() {
                     params.api.sizeColumnsToFit();
@@ -199,22 +198,19 @@ $estadoMap = [
 
 
         };
-        // Crear la tabla en el contenedor
+
         var eGridDiv = document.querySelector('#pedidoTable');
         const gridApi = agGrid.createGrid(eGridDiv, gridOptions);
 
-        // Escuchar el evento 'resize' de la ventana para ajustar las columnas
         window.addEventListener('resize', function() {
             gridApi.sizeColumnsToFit();
         });
 
-        // Botón de eliminar filtros
         document.getElementById('clear-filters').addEventListener('click', () => {
             gridApi.setFilterModel(null);
             gridApi.onFilterChanged();
         });
 
-        // Funciones auxiliares
         function compareDates(filterLocalDateAtMidnight, cellValue) {
             if (!cellValue) return -1;          
             const cellDateParts = cellValue.split('-');
@@ -237,5 +233,4 @@ $estadoMap = [
         }
     });
 </script>
-
 <?= $this->endSection() ?>

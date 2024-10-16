@@ -358,7 +358,11 @@
                 </div>
             </div>
         </div>
-
+        <script>
+            $('#parteModal').on('hidden.bs.modal', function() {
+                location.reload();
+            });
+        </script>
         <!-- Modal HTML (Definido una sola vez en la página) -->
         <div class="modal fade" id="editarLineaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
