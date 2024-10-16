@@ -66,11 +66,6 @@
                 filter: 'agTextColumnFilter'
             },
             {
-                headerName: "Carga en",
-                field: "cargaen",
-                filter: 'agTextColumnFilter'
-            },
-            {
                 headerName: "Web",
                 field: "web",
                 filter: 'agTextColumnFilter'

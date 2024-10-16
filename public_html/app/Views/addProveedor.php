@@ -55,7 +55,7 @@
     </div>
     <div class="mb-3">
         <label for="web" class="form-label">Sitio Web</label>
-        <input type="url" name="web" id="web" class="form-control">
+        <input type="text" name="web" id="web" class="form-control">
     </div>
     <div class="buttonsAddProveedor">
         <button type="submit" class="btn btn-primary saveProveedor">Añadir Proveedor</button>

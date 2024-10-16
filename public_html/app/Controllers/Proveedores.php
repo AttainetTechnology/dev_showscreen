@@ -17,7 +17,7 @@ class Proveedores extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $builder = $db->table('proveedores');
-        $builder->select('proveedores.id_proveedor, proveedores.nombre_proveedor, proveedores.nif, proveedores.direccion, proveedores.contacto, proveedores.telf, proveedores.cargaen, proveedores.web, proveedores.email, provincias.provincia AS nombre_provincia');
+        $builder->select('proveedores.id_proveedor, proveedores.nombre_proveedor, proveedores.nif, proveedores.direccion, proveedores.contacto, proveedores.telf,proveedores.web, proveedores.email, provincias.provincia AS nombre_provincia');
         $builder->join('provincias', 'proveedores.id_provincia = provincias.id_provincia', 'left');
         $result = $builder->get()->getResult();
         foreach ($result as &$row) {
@@ -63,9 +63,6 @@ class Proveedores extends BaseControllerGC
             'pais' => $this->request->getPost('pais'),
             'id_provincia' => $this->request->getPost('id_provincia'),
             'poblacion' => $this->request->getPost('poblacion'),
-            'f_pago' => $this->request->getPost('f_pago'),
-            'fax' => $this->request->getPost('fax'),
-            'cargaen' => $this->request->getPost('cargaen'),
             'observaciones_proveedor' => $this->request->getPost('observaciones_proveedor'),
             'web' => $this->request->getPost('web'),
         ];
@@ -118,9 +115,6 @@ class Proveedores extends BaseControllerGC
             'pais' => $this->request->getPost('pais'),
             'id_provincia' => $this->request->getPost('id_provincia'),
             'poblacion' => $this->request->getPost('poblacion'),
-            'f_pago' => $this->request->getPost('f_pago'),
-            'fax' => $this->request->getPost('fax'),
-            'cargaen' => $this->request->getPost('cargaen'),
             'observaciones_proveedor' => $this->request->getPost('observaciones_proveedor'),
             'web' => $this->request->getPost('web'),
         ];
