@@ -81,7 +81,7 @@
         </div>
         <div class="form-group" style="font-size:20px;">
             <label>ID del Pedido:</label>
-           <strong><?= esc($pedido->id_pedido) ?></strong>
+            <strong><?= esc($pedido->id_pedido) ?></strong>
         </div>
 
 
@@ -90,7 +90,7 @@
             <button type="submit" class="btn btn-primary btnGuardar">Guardar Pedido</button>
             <a href="<?= base_url('/pedidos/enmarcha') ?>" class="btn volverButton">Volver</a>
         </div>
-    
+
 
     </form>
     <div class="form-group">
@@ -284,6 +284,7 @@
                 });
             });
 
+            // Función para mostrar el modal del parte
             function mostrarParte(id_lineapedido) {
                 $.ajax({
                     url: '<?= base_url("partes/print/") ?>' + id_lineapedido,
@@ -291,13 +292,33 @@
                     success: function(data) {
                         $('#modalParteContent').html(data);
                         $('#parteModal').modal('show');
+                        // Almacenar en sessionStorage que el modal está abierto y el ID
+                        sessionStorage.setItem('modalParteAbierto', 'true');
+                        sessionStorage.setItem('modalParteId', id_lineapedido);
                     },
                     error: function() {
                         $('#modalParteContent').html('<p class="text-danger">Error al cargar el parte.</p>');
                         $('#parteModal').modal('show');
+                        sessionStorage.setItem('modalParteAbierto', 'true');
+                        sessionStorage.setItem('modalParteId', id_lineapedido);
                     }
                 });
             }
+            // Abrir el modal automáticamente si estaba abierto antes de la recarga y cargar contenido
+            $(document).ready(function() {
+                if (sessionStorage.getItem('modalParteAbierto') === 'true') {
+                    const savedId = sessionStorage.getItem('modalParteId');
+                    if (savedId) {
+                        mostrarParte(savedId);
+                    } else {
+                        $('#parteModal').modal('show');
+                    }
+                }
+                $('#parteModal').on('hidden.bs.modal', function() {
+                    sessionStorage.removeItem('modalParteAbierto');
+                    sessionStorage.removeItem('modalParteId');
+                });
+            });
 
             function printDiv(divId) {
                 var printContents = document.getElementById(divId).innerHTML;
@@ -467,7 +488,7 @@
                     },
                     onGridReady: function(params) {
                         params.api.sizeColumnsToFit();
-                        $('#botonesRuta').show(); 
+                        $('#botonesRuta').show();
                         window.gridApiRutas = params.api;
                     },
                     rowHeight: 60,
@@ -481,10 +502,11 @@
                 $('#clear-filters-rutas').on('click', function() {
                     if (window.gridApiRutas) {
                         window.gridApiRutas.setFilterModel(null);
-                        window.gridApiRutas.onFilterChanged(); 
+                        window.gridApiRutas.onFilterChanged();
                     }
                 });
             }
+
             function setupEventHandlers() {
                 $('#formNuevaRuta').on('submit', function(event) {
                     event.preventDefault();
@@ -500,7 +522,7 @@
                         success: function(response) {
                             $('#addRutaForm').html(response);
                             $('#addRutaForm').show();
-                            $('#gridRutas, #botonesRuta').hide(); 
+                            $('#gridRutas, #botonesRuta').hide();
                             $('#rutasModalLabel').text('Añadir Ruta');
                         },
                         error: function() {
@@ -561,9 +583,9 @@
                         success: function(response) {
                             if (response.success) {
                                 alert(response.message);
-                                cargarRutasModal(); 
+                                cargarRutasModal();
                             } else {
-                                cargarRutasModal(); 
+                                cargarRutasModal();
                             }
                         },
                         error: function(xhr) {
@@ -598,7 +620,7 @@
             `);
 
                         initializeAgGrid(response.rutas, response.poblacionesMap, response.transportistas);
-                        setupEventHandlers(); 
+                        setupEventHandlers();
                     },
                     error: function() {
                         $('#modalContent').html('<div class="alert alert-danger">Error al cargar las rutas.</div>');
@@ -619,6 +641,7 @@
                 }
             }
             abrirModalSiEsNecesario();
+
             function initializeAgGrid(rutas, poblacionesMap, transportistasMap) {
                 var estadoMap = {
                     1: 'No preparado',
@@ -706,7 +729,7 @@
                     },
                     onGridReady: function(params) {
                         params.api.sizeColumnsToFit();
-                        $('#botonesRuta').show(); 
+                        $('#botonesRuta').show();
                     },
                     rowHeight: 60,
                     domLayout: 'normal',
