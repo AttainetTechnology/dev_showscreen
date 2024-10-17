@@ -22,20 +22,12 @@ div#fondo_rutas {
     display: block !Important;
     page-break-before: always;
     position: relative;
-    border-bottom: 10px solid #eee;
-    margin-bottom: 70px;
     padding-top: 70px;
-}
-
-.pagina1 {
-    display: block;
-    page-break-after: always;
-    position: relative;
 }
 @media print {
 
     body {
-        font-size: 17px !important;
+        font-size: 15px !important;
     }
 
     .pie_de_parte {
@@ -43,14 +35,6 @@ div#fondo_rutas {
         page-break-inside: avoid;
     }
 
-    .pagina2 {
-        padding-top: 0;
-        display: block !important;
-        page-break-before: always;
-        position: relative;
-        border-bottom: none;
-        margin-bottom: 0;
-    }
 
     .pagina1 {
         display: block;
@@ -271,7 +255,7 @@ div.total {
     height: 100px;
     display: none;
     margin-left: 15px !important;
-    margin-right: 5px;
+    margin-right: 10px !important;
 }
 
 .revisado {
@@ -549,4 +533,8 @@ img.imagen_parte {
 }
 .pedido-completo-pie{
     margin-left: 15px;
+}
+.imgParte2hoja{
+    margin-right: -25px !important;
+
 }

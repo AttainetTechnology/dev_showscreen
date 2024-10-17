@@ -146,7 +146,7 @@
                                                     <strong><?php echo $p->referencia; ?></strong>
                                                 </address>
                                             </div>
-                                            <div id="parte_fila_right" class="imagenparte">
+                                            <div id="parte_fila_right" class="imagenparte imgParte2hoja">
                                                 <div class="capa-numero-parte">
                                                     <div class="numero_parte">Id: <strong><?php echo $p->id_pedido; ?></strong></div>
                                                 </div>
