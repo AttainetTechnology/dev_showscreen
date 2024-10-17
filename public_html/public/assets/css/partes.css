@@ -270,6 +270,8 @@ div.total {
     width: 100%;
     height: 100px;
     display: none;
+    margin-left: 15px !important;
+    margin-right: 5px;
 }
 
 .revisado {
@@ -544,4 +546,7 @@ img.imagen_parte {
 .btn-close-custom:hover {
     color: #ff0000;
     /* Cambia el color al pasar el cursor */
+}
+.pedido-completo-pie{
+    margin-left: 15px;
 }
