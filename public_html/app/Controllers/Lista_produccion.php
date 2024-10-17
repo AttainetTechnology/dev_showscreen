@@ -35,7 +35,7 @@ class Lista_produccion extends BaseControllerGC
     {
         // Control de login    
         helper('controlacceso');
-        $nivel = control_login();    
+        $nivel = control_login();
         // Comienza Grocery CRUD a montar la tabla    
         $crud = $this->_getClientDatabase();
         // Definimos las columnas y la tabla
@@ -120,7 +120,7 @@ class Lista_produccion extends BaseControllerGC
         $pedido = $Pedidos_model->obtener_datos_pedido($id_pedido);
         foreach ($pedido as $row) {
             $cliente = $row->nombre_cliente;
-            return "<b><a href=" . base_url() . "Pedidos/edit/" . $id_pedido . " target='_blank'>" . $id_pedido . " - " . $cliente . "</a></b>";
+            return "<b><a href=" . base_url() . "Pedidos/edit/" . $id_pedido . " >" . $id_pedido . " - " . $cliente . "</a></b>";
         }
     }
 
