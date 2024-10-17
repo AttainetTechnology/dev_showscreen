@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <h2>Editar Pedido</h2>
+    <h2 class="titleditPedido">Editar Pedido</h2>
     <div class="mb-3">
         <label for="acciones" class="form-label"></label>
         <div class="d-flex gap-2">
@@ -46,9 +46,8 @@
                 <i class="fa fa-trash fa-fw"></i> Anular Pedido
             </a>
         </div>
-        <br>
     </div>
-    <form action="<?= base_url('pedidos/update/' . $pedido->id_pedido) ?>" method="post">
+    <form action="<?= base_url('pedidos/update/' . $pedido->id_pedido) ?>" method="post" class="formeditPedido">
         <div class="form-group">
             <label for="id_cliente">Empresa:</label>
             <select id="id_cliente" name="id_cliente" class="form-control" required>
@@ -59,22 +58,18 @@
                 <?php endforeach; ?>
             </select>
         </div>
-        <br>
         <div class="form-group">
             <label for="referencia">Referencia:</label>
             <input type="text" id="referencia" name="referencia" class="form-control" value="<?= esc($pedido->referencia) ?>">
         </div>
-        <br>
         <div class="form-group">
             <label for="fecha_entrada">Fecha de Entrada:</label>
             <input type="date" id="fecha_entrada" name="fecha_entrada" class="form-control" value="<?= esc($pedido->fecha_entrada) ?>" required>
         </div>
-        <br>
         <div class="form-group">
             <label for="fecha_entrega">Fecha de Entrega:</label>
             <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control" value="<?= esc($pedido->fecha_entrega) ?>" required>
         </div>
-        <br>
         <div class="form-group">
             <label for="observaciones">Observaciones:</label>
             <textarea id="observaciones" name="observaciones" class="form-control" rows="3"><?= esc($pedido->observaciones) ?></textarea>
@@ -83,15 +78,10 @@
             <label>ID del Pedido:</label>
             <strong><?= esc($pedido->id_pedido) ?></strong>
         </div>
-
-
-        <br>
         <div class="btnsEditPedido">
             <button type="submit" class="btn btn-primary btnGuardar">Guardar Pedido</button>
             <a href="<?= base_url('/pedidos/enmarcha') ?>" class="btn volverButton">Volver</a>
         </div>
-
-
     </form>
     <div class="form-group">
         <?php
@@ -105,7 +95,7 @@
             "6" => "Anulado"
         ];
         ?>
-        <h3 style="margin-left: 5px;">Líneas del Pedido</h3>
+        <h3 style="margin-left:5px; margin-top:-5px;">Líneas del Pedido</h3>
         <hr style="border: 5px solid #FFCC32; margin-top: 10px; margin-bottom: 20px;">
         <br>
         <div class="d-flex justify-content-between botoneseditPedido">
@@ -131,6 +121,7 @@
         </div>
         <br><br>
         <div id="lineasPedidoGrid" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
+        <a href="<?= base_url('/pedidos/enmarcha') ?>" class="btn volverButton volverLineaPed">Volver</a>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const estadosTexto = <?= json_encode($estados_texto) ?>;
@@ -230,6 +221,8 @@
                     rowData: rowData,
                     pagination: true,
                     paginationPageSize: 10,
+                    headerHeight: 50,
+                    floatingFiltersHeight: 30,
                     defaultColDef: {
                         sortable: true,
                         filter: true,

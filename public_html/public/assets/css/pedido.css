@@ -57,6 +57,10 @@
     margin-top: 50px;
 }
 
+.titleditPedido{
+    margin-top: -10px;
+    margin-bottom: -2px;
+}
 .btnEditar {
     background-color: #337ab7 !important;
     color: white !important;
@@ -314,6 +318,10 @@ form select.form-control {
     display: none !important;
 }
 
+.botoneseditPedido{
+    margin-top: -20px;;
+}
+
 
 .btnModaladdruta {
     display: flex;
@@ -411,4 +419,42 @@ form select.form-control {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
+}
+.formeditPedido {
+    font-size: 16px;
+}
+
+.formeditPedido label {
+    font-size: 16px;
+    margin-bottom: 1px;
+}
+
+.formeditPedido .form-control {
+    padding: 2px 6px; /* Reducir el padding para disminuir la altura */
+    font-size: 15px;
+    height: 28px; /* Establecer una altura más baja para los campos */
+}
+
+.formeditPedido select.form-control,
+.formeditPedido input.form-control,
+.formeditPedido textarea.form-control {
+    box-sizing: border-box;
+}
+
+.formeditPedido .btnsEditPedido {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.formeditPedido .btnGuardar,
+.formeditPedido .volverButton {
+    padding: 4px 8px;
+    font-size: 13px;
+}
+.volverLineaPed{
+    float: right;
+    margin-top: -70px !important;
+}
+.ag-theme-alpine .ag-header {
+    height: 30px; /* Ajusta la altura del encabezado de la tabla */
 }
