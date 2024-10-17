@@ -227,7 +227,7 @@ class Rutas extends BaseControllerGC
 		foreach ($query->getResult() as $row) {
 			$cliente = $row->nombre_cliente;
 		}
-		return "<div><a href=" . base_url() . "/Pedidos2/index#/edit/" . $id_pedido . ">" . $cliente . "</a></div>";
+		return "<div><a href=" . base_url() . "/Pedidos/edit/" . $id_pedido . ">" . $cliente . "</a></div>";
 	}
 
 	// Método para obtener el ID del pedido (ejemplo)
