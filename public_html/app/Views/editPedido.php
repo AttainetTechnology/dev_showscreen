@@ -79,10 +79,19 @@
             <label for="observaciones">Observaciones:</label>
             <textarea id="observaciones" name="observaciones" class="form-control" rows="3"><?= esc($pedido->observaciones) ?></textarea>
         </div>
-        <br>
-        <div class="button-container" style=" text-align: right;">
-            <button type="submit" class="btn btn-primary btnGuardar">Guardar Pedido</button>
+        <div class="form-group" style="font-size:20px;">
+            <label>ID del Pedido:</label>
+           <strong><?= esc($pedido->id_pedido) ?></strong>
         </div>
+
+
+        <br>
+        <div class="btnsEditPedido">
+            <button type="submit" class="btn btn-primary btnGuardar">Guardar Pedido</button>
+            <a href="<?= base_url('/pedidos/enmarcha') ?>" class="btn volverButton">Volver</a>
+        </div>
+    
+
     </form>
     <div class="form-group">
         <?php
