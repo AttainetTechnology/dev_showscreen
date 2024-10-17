@@ -11,20 +11,22 @@
                         Cerrar y marcar línea como recibida
                     </a>
                     <script>
-                        function verificarYMarcarLinea(id_lineapedido, id_pedido) {
-                            fetch('<?php echo base_url(); ?>/Partes_controller/verificarEstadoProcesos/' + id_lineapedido)
+                        function verificarYMarcarLinea(id_lineapedido) {
+                            fetch('<?= base_url(); ?>/Partes_controller/verificarEstadoProcesos/' + id_lineapedido)
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.status === 'error') {
                                         alert(data.message);
                                     } else {
-                                        // Cambiar el estado
-                                        return fetch('<?php echo base_url(); ?>/Partes_controller/CambiaEstado/' + id_lineapedido);
+                                        return fetch('<?= base_url(); ?>/Partes_controller/CambiaEstado/' + id_lineapedido);
                                     }
                                 })
                                 .then(() => {
-                                    // Redirigir a la página deseada una vez que se complete la operación
-                                    window.location.href = '<?php echo base_url(); ?>/pedidos/edit/' + id_pedido;
+                                    // Cerrar el modal y limpiar el sessionStorage después de marcar la línea como recibida
+                                    $('#parteModal').modal('hide');
+                                    sessionStorage.removeItem('modalParteAbierto');
+                                    sessionStorage.removeItem('modalParteId');
+                                    location.reload(); // Recargar la página
                                 })
                                 .catch(error => console.error('Error:', error));
                         }
@@ -40,6 +42,7 @@
                                 modalInstance.hide();
                             }
                         }
+
                         function printDiv(divId) {
                             var printContents = document.getElementById(divId).innerHTML;
                             var originalContents = document.body.innerHTML;

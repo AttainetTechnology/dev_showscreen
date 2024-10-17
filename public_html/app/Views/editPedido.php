@@ -283,7 +283,6 @@
                     }
                 });
             });
-
             // Función para mostrar el modal del parte
             function mostrarParte(id_lineapedido) {
                 $.ajax({
@@ -304,6 +303,7 @@
                     }
                 });
             }
+
             // Abrir el modal automáticamente si estaba abierto antes de la recarga y cargar contenido
             $(document).ready(function() {
                 if (sessionStorage.getItem('modalParteAbierto') === 'true') {
