@@ -223,18 +223,20 @@ class Pedidos extends BaseControllerGC
 		$updateData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
-			'id_usuario' => $this->request->getPost('id_usuario'),
+			'id_usuario' => $data['id_user'],
 			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
 			'estado' => $this->request->getPost('estado'),
 		];
+
 		if ($pedidoModel->update($id_pedido, $updateData)) {
 			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Pedido actualizado correctamente');
 		} else {
 			return redirect()->back()->with('error', 'No se pudo actualizar el pedido');
 		}
 	}
+
 	function imprimir_parte($row)
 	{
 		if (is_numeric($row)) {
