@@ -120,14 +120,6 @@ div#fondo_rutas {
     }
 }
 
-div#printableArea {
-    padding: 25px 70px;
-    background-color: #ffffff;
-    margin: 10px;
-    /* min-height: 1159px; */
-    padding: 5rem;
-
-}
 
 div#fondo {
     background-color: #eeeeee;
@@ -357,9 +349,8 @@ img.imagen_parte {
 }
 
 #parte_fila_left {
-    padding-right: 30px;
     width: 56%;
-    padding-left: 20px;
+    margin:-5px;
 }
 
 .table-responsive{
