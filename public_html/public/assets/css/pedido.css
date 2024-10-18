@@ -1,18 +1,39 @@
-.estado1 { background-color: #ff9933 !important; }
-.estado2 { background-color: #fff3cd !important; }
-.estado3 { background-color: #fcebfa !important; }
-.estado4 { background-color: #dff0d8 !important; }
-.estado5 { background-color: #50b752b0 !important; color: #ffffff !important; }
-.estado6 { background-color: #ff6c6ccc !important; color: #ffffff !important; }
+.estado1 {
+    background-color: #ff9933 !important;
+}
+
+.estado2 {
+    background-color: #fff3cd !important;
+}
+
+.estado3 {
+    background-color: #fcebfa !important;
+}
+
+.estado4 {
+    background-color: #dff0d8 !important;
+}
+
+.estado5 {
+    background-color: #50b752b0 !important;
+    color: #ffffff !important;
+}
+
+.estado6 {
+    background-color: #ff6c6ccc !important;
+    color: #ffffff !important;
+}
 
 .fondo-verde {
-    background-color: #dff0d8 !important; /* Fondo verde */
+    background-color: #dff0d8 !important;
 }
+
 .estado-pendiente {
-    background-color: #ffcccb !important; /* Color para Pendiente (opcional) */
+    background-color: #ffcccb !important;
 }
+
 .estado-no-preparado {
-    background-color: #f0e68c !important; /* Color para No preparado (opcional) */
+    background-color: #f0e68c !important;
 }
 
 .ag-icon-filter {
@@ -57,10 +78,11 @@
     margin-top: 50px;
 }
 
-.titleditPedido{
+.titleditPedido {
     margin-top: -10px;
     margin-bottom: -2px;
 }
+
 .btnEditar {
     background-color: #337ab7 !important;
     color: white !important;
@@ -99,7 +121,7 @@
 }
 
 .btnImprimir:hover {
-    background-color: #0B2F9F!important;
+    background-color: #0B2F9F !important;
     color: #e4eff7 !important;
 }
 
@@ -116,7 +138,7 @@
     color: #e4eff7 !important;
 }
 
-.titlepedidosmostrar{
+.titlepedidosmostrar {
     margin-top: 30px;
     margin-left: 25px;
 }
@@ -222,7 +244,8 @@ form select.form-control {
 /* Ajustar la altura del modal */
 
 
-.botoneseditPedido, .botoneseditRuta {
+.botoneseditPedido,
+.botoneseditRuta {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
@@ -233,6 +256,7 @@ form select.form-control {
 .btnEliminarfiltros {
     flex-grow: 0;
 }
+
 /* 
 .modal-body {
     margin: 23px !important;
@@ -306,10 +330,12 @@ form select.form-control {
 }
 
 
-.botoneseditPedido, .botoneseditRuta {
+.botoneseditPedido,
+.botoneseditRuta {
     display: flex;
 }
-.botoneseditRuta{
+
+.botoneseditRuta {
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -318,8 +344,9 @@ form select.form-control {
     display: none !important;
 }
 
-.botoneseditPedido{
-    margin-top: -20px;;
+.botoneseditPedido {
+    margin-top: -20px;
+    ;
 }
 
 
@@ -327,7 +354,7 @@ form select.form-control {
     display: flex;
     justify-content: right;
     gap: 15px;
-    
+
 }
 
 .btnGuardarRuta {
@@ -337,7 +364,7 @@ form select.form-control {
     cursor: pointer;
     border: none;
     height: 30px;
-    padding: 0 15px; 
+    padding: 0 15px;
     font-size: 17px !important;
 }
 
@@ -348,7 +375,7 @@ form select.form-control {
     cursor: pointer;
     border: none;
     height: 30px;
-    padding: 0 15px; 
+    padding: 0 15px;
     font-size: 17px !important;
 }
 
@@ -369,37 +396,44 @@ form select.form-control {
 }
 
 .modal-body {
-    max-height: 70vh; 
+    max-height: 70vh;
 
 }
 
-.addpedido, .titlepedidosadd {
+.addpedido,
+.titlepedidosadd {
     margin-left: 2vw;
     margin-top: 6vh;
 }
 
-.editpedido{
+.editpedido {
     margin-left: 1vw !important;
     margin-right: 3vw !important;
 }
 
 @media (min-width: 1400px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
         max-width: 1500px !important;
     }
 }
 
-.buttonsEditProductProveedAbajo{
+.buttonsEditProductProveedAbajo {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     display: flex;
-    justify-content: flex-end; 
-    gap: 10px; 
-    margin-top: 20px; 
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
 }
 
- .volverButton {
+.volverButton {
     background-color: #adabab !important;
     color: #F5F5F7 !important;
     height: 30px;
@@ -407,19 +441,22 @@ form select.form-control {
     border: none;
 }
 
-.volverButton {
-    background-color: #a9aaad !important;
+.volverButton:hover {
+    background-color: #808184 !important;
     color: #F5F5F7 !important;
 }
-.btnsMostrarPedido{
+
+.btnsMostrarPedido {
     margin-top: 20px;
 }
-.btnsEditPedido{
+
+.btnsEditPedido {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
 }
+
 .formeditPedido {
     font-size: 16px;
 }
@@ -430,9 +467,9 @@ form select.form-control {
 }
 
 .formeditPedido .form-control {
-    padding: 2px 6px; /* Reducir el padding para disminuir la altura */
+    padding: 2px 6px;
     font-size: 15px;
-    height: 28px; /* Establecer una altura más baja para los campos */
+    height: 28px;
 }
 
 .formeditPedido select.form-control,
@@ -451,10 +488,13 @@ form select.form-control {
     padding: 4px 8px;
     font-size: 13px;
 }
-.volverLineaPed{
+
+.volverLineaPed {
     float: right;
-    margin-top: -70px !important;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
+
 .ag-theme-alpine .ag-header {
-    height: 30px; /* Ajusta la altura del encabezado de la tabla */
+    height: 30px;
 }

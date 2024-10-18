@@ -16,7 +16,7 @@
     <h2 class="titleditPedido">Editar Pedido</h2>
     <div class="mb-3">
         <label for="acciones" class="form-label"></label>
-        <div class="d-flex gap-2">s
+        <div class="d-flex gap-2">
             <a href="<?= base_url('pedidos/print/' . $pedido->id_pedido . '?volver=' . urlencode(current_url())) ?>" class="btn btn-info btn-sm" target="_blank">
                 <i class="fa fa-print"></i> Imprimir Pedido
             </a>
@@ -123,8 +123,10 @@
             </div>
         </div>
         <br><br>
-        <div id="lineasPedidoGrid" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
-        <a href="<?= base_url('/pedidos/enmarcha') ?>" class="btn volverButton volverLineaPed">Volver</a>
+        <div class="contenedor-tabla-boton" style="width: 100%;">
+            <div id="lineasPedidoGrid" class="ag-theme-alpine" style="height: auto; width: 100%;"></div>
+            <a href="<?= base_url('/pedidos/enmarcha') ?>" class="btn volverButton volverLineaPed">Volver</a>
+        </div>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const estadosTexto = <?= json_encode($estados_texto) ?>;
@@ -301,6 +303,7 @@
                     }
                 });
             }
+
             function printDiv(divId) {
                 var printContents = document.getElementById(divId).innerHTML;
                 var originalContents = document.body.innerHTML;
