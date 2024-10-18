@@ -1,158 +1,234 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
-<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<h2 class="tituloProveedores">Pedidos Proveedor</h2>
 
-<div class="d-flex justify-content-between mb-3 btnMostrarPediProveed">
-    <a href="<?= base_url('Pedidos_proveedor/addPedido') ?>" class="btn btn-primary btnAddPedido">+ Añadir Pedido</a>
-    <button id="clear-filters" class="btn ms-auto btnEliminarfiltros">Eliminar Filtros</button>
+<h2 class="titlepedidosmostrar">Pedidos</h2>
+<div class="d-flex justify-content-between mb-3 btnsMostrarPedido">
+    <a href="<?= base_url('pedidos/add') ?>" class="btn btnAddPedido">+ Añadir Pedido</a>
+
+    <button id="clear-filters" class="btn btnEliminarfiltros">Eliminar Filtros</button>
 </div>
+<br>
 <?php
-
 $estadoMap = [
-    "0" => "Pendiente de realizar",
-    "1" => "Pendiente de recibir",
-    "2" => "Recibido",
+    "0" => "Pendiente de material",
+    "1" => "Falta Material",
+    "2" => "Material recibido",
+    "3" => "En Máquinas",
+    "4" => "Terminado",
+    "5" => "Entregado",
     "6" => "Anulado"
 ];
 ?>
-<div id="gridPedidosProveedor" class="ag-theme-alpine" style="height: 600px; width: 100%; margin-left:20px"></div>
-
+<div id="pedidoTable" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const columnDefs = [{
+        var allowDelete = <?= json_encode($allow_delete); ?>;
+
+        var columnDefs = [{
                 headerName: "Acciones",
                 field: "acciones",
                 cellRenderer: function(params) {
-                    const acciones = params.value;
-                    return `
-                        <button onclick="editarPedido('${acciones.editar}')" class="btn btnEditar btn-sm">
-                            <span class="material-symbols-outlined icono">edit</span>Editar
-                        </button>
-                        <a href="${acciones.imprimir}" class="btn btnImprimir btn-sm" target="_blank">
-                            <i class="fa fa-print"></i> Imprimir
-                        </a>
-                        <button onclick="eliminarPedido('${acciones.eliminar}')" class="btn btnEliminar btn-sm">
-                             <i class="fa fa-trash"></i> Eliminar
-                        </button>
-                    `;
+                    var editBtn = `<a href="<?= base_url('pedidos/edit/') ?>${params.data.id_pedido}" class="btn btnEditar">
+                <span class="material-symbols-outlined icono">edit</span>Editar</a>`;
+                    var printBtn = `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" class="btn btnImprimir" target="_blank">
+                <span class="material-symbols-outlined icono">print</span> Imprimir</a>`
+                    var deleteBtn = allowDelete ? `<a href="<?= base_url('pedidos/delete/') ?>${params.data.id_pedido}" class="btn btnEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">
+                <span class="material-symbols-outlined icono"> delete </span>Eliminar</a>` : '';
+                    return `${editBtn} ${printBtn} ${deleteBtn}`;
                 },
-                minWidth: 300,
+                cellClass: 'acciones-col',
+                minWidth: 220,
                 filter: false
             },
             {
                 headerName: "ID Pedido",
                 field: "id_pedido",
+                flex: 1,
                 filter: 'agTextColumnFilter'
             },
+
             {
-                headerName: "Fecha Salida",
-                field: "fecha_salida",
-                filter: 'agDateColumnFilter'
-            },
-            {
-                headerName: "Proveedor",
-                field: "nombre_proveedor",
+                headerName: "Cliente",
+                field: "cliente",
+                flex: 2,
                 filter: 'agTextColumnFilter'
             },
             {
                 headerName: "Referencia",
                 field: "referencia",
+                flex: 1,
                 filter: 'agTextColumnFilter'
             },
             {
                 headerName: "Estado",
-                field: "estado_texto",
+                field: "estado",
+                flex: 1,
                 filter: 'agTextColumnFilter'
+            },
+            {
+                headerName: "Fecha Entrada",
+                field: "fecha_entrada",
+                flex: 1,
+                filter: 'agDateColumnFilter',
+                filterParams: {
+                    comparator: function(filterLocalDateAtMidnight, cellValue) {
+                        if (!cellValue) return -1;
+                        var cellDateParts = cellValue.split('-');
+                        var cellDate = new Date(Number(cellDateParts[0]), Number(cellDateParts[1]) - 1, Number(cellDateParts[2]));
+                        if (cellDate < filterLocalDateAtMidnight) {
+                            return -1;
+                        } else if (cellDate > filterLocalDateAtMidnight) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                },
+                valueFormatter: function(params) {
+                    if (!params.value) return '';
+                    var date = new Date(params.value);
+                    return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+                }
+            },
+            {
+                headerName: "Fecha Entrega",
+                field: "fecha_entrega",
+                flex: 1,
+                filter: 'agDateColumnFilter',
+                filterParams: {
+                    comparator: function(filterLocalDateAtMidnight, cellValue) {
+                        if (!cellValue) return -1;
+                        var cellDateParts = cellValue.split('-');
+                        var cellDate = new Date(Number(cellDateParts[0]), Number(cellDateParts[1]) - 1, Number(cellDateParts[2]));
+                        if (cellDate < filterLocalDateAtMidnight) {
+                            return -1;
+                        } else if (cellDate > filterLocalDateAtMidnight) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                },
+                valueFormatter: function(params) {
+                    if (!params.value) return '';
+                    var date = new Date(params.value);
+                    return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+                }
             },
             {
                 headerName: "Usuario",
                 field: "nombre_usuario",
+                flex: 1,
                 filter: 'agTextColumnFilter'
             },
             {
-                headerName: "Total Pedido",
-                field: "total_pedido",
+                headerName: "Total",
+                field: "total",
                 flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true,
-                valueFormatter: params => `${params.value !== null ? params.value : 0} €`
+                filter: 'agTextColumnFilter'
             }
         ];
 
-        const gridOptions = {
+        var rowData = [
+            <?php foreach ($pedidos as $pedido): ?> {
+                    id_pedido: "<?= $pedido->id_pedido ?>",
+                    fecha_entrada: "<?= date('Y-m-d', strtotime($pedido->fecha_entrada)) ?>",
+                    fecha_entrega: "<?= date('Y-m-d', strtotime($pedido->fecha_entrega)) ?>",
+                    cliente: "<?= $pedido->nombre_cliente ?>",
+                    referencia: "<?= $pedido->referencia ?>",
+                    estado: "<?= $estadoMap[$pedido->estado] ?>",
+                    nombre_usuario: "<?= $pedido->nombre_usuario ?>",
+                    total: "<?= $pedido->total_pedido ?>€"
+                },
+            <?php endforeach; ?>
+        ];
+        var gridOptions = {
             columnDefs: columnDefs,
+            rowData: rowData,
+            pagination: true,
+            paginationPageSize: 10,
             defaultColDef: {
-                flex: 1,
-                minWidth: 100,
                 sortable: true,
+                filter: true,
                 floatingFilter: true,
                 resizable: true
             },
-            rowData: <?= json_encode($pedidos) ?>,
-            pagination: true,
-            paginationPageSize: 10,
-            domLayout: 'autoHeight',
             rowHeight: 60,
+            domLayout: 'autoHeight',
             localeText: {
                 noRowsToShow: 'No hay registros disponibles.'
             },
             onGridReady: function(params) {
-                const gridApi = params.api;
-                gridApi.sizeColumnsToFit();
+                gridApi = params.api;
+                params.api.sizeColumnsToFit();
+                setTimeout(function() {
+                    params.api.sizeColumnsToFit();
+                }, 100);
+                document.getElementById('pedidoTable').style.display = 'block';
             },
             getRowClass: function(params) {
-                switch (params.data.estado_texto) {
-                    case "Pendiente de realizar":
+                switch (params.data.estado) {
+                    case "Pendiente de material":
                         return 'estado0';
-                    case "Pendiente de recibir":
+                    case "Falta Material":
                         return 'estado1';
-                    case "Recibido":
+                    case "Material recibido":
                         return 'estado2';
+                    case "En Máquinas":
+                        return 'estado3';
+                    case "Terminado":
+                        return 'estado4';
+                    case "Entregado":
+                        return 'estado5';
                     case "Anulado":
                         return 'estado6';
                     default:
                         return '';
                 }
             }
+
+
         };
 
-        const eGridDiv = document.querySelector('#gridPedidosProveedor');
-        new agGrid.Grid(eGridDiv, gridOptions);
+        var eGridDiv = document.querySelector('#pedidoTable');
+        const gridApi = agGrid.createGrid(eGridDiv, gridOptions);
+
+        window.addEventListener('resize', function() {
+            gridApi.sizeColumnsToFit();
+        });
 
         document.getElementById('clear-filters').addEventListener('click', () => {
-            gridOptions.api.setFilterModel(null);
-            gridOptions.api.onFilterChanged();
+            gridApi.setFilterModel(null);
+            gridApi.onFilterChanged();
         });
-    });
 
-    function eliminarPedido(url) {
-        if (confirm("¿Estás seguro de eliminar este pedido?")) {
-            fetch(url, {
-                    method: 'POST'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert("No se pudo eliminar el pedido.");
-                    }
-                })
-                .catch(error => console.error("Error al eliminar el pedido:", error));
+        function compareDates(filterLocalDateAtMidnight, cellValue) {
+            if (!cellValue) return -1;
+            const cellDateParts = cellValue.split('-');
+            const cellDate = new Date(Number(cellDateParts[0]), Number(cellDateParts[1]) - 1, Number(cellDateParts[2]));
+            return cellDate < filterLocalDateAtMidnight ? -1 : cellDate > filterLocalDateAtMidnight ? 1 : 0;
         }
-    }
 
+        function formatDate(params) {
+            if (!params.value) return '';
+            const date = new Date(params.value);
+            return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+        }
 
-    function editarPedido(url) {
-        window.location.href = url;
-    }
+        function renderActions(params) {
+            const id = params.data.id_pedido;
+            return `
+                <a href="<?= base_url('pedidos/edit/') ?>${id}" class="btn btnEditar">Editar</a>
+                <a href="<?= base_url('pedidos/delete/') ?>${id}" class="btn btnEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">Eliminar</a>
+                <a href="<?= base_url('pedidos/print/') ?>${id}" class="btn btnImprimir" target="_blank">Imprimir</a>`;
+        }
+    });
 </script>
 <?= $this->endSection() ?>

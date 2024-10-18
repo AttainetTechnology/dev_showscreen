@@ -1,6 +1,10 @@
+<style>
+    #printableArea{
+        font-size: 18px;
+    }
+</style>
 <?php
 
-use App\Models\Usuarios_model;
 // Comienza el foreach		
 foreach ($pedido as $ped) { ?>
     <div id="fondo">
@@ -64,7 +68,7 @@ foreach ($pedido as $ped) { ?>
                         <tbody>
                             <?php $total = 0; ?>
                             <?php 
-                            $lineas_pag1 = array_slice($lineas, 0, 9); 
+                            $lineas_pag1 = array_slice($lineas, 0, 10); 
                             foreach ($lineas_pag1 as $l) { ?>
                                 <tr>
                                     <td><b><?php echo $l->n_piezas; ?> </b></td>

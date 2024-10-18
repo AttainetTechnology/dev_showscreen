@@ -10,15 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/organizador.css') ?>?v=<?= time() ?>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-    <!-- Cargamos Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <!-- Iconos Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </head>
 <div class="wrapper">
     <div id="organizador">
@@ -489,7 +486,6 @@
 </html>
 <script>
     // Variables globales
-    // Variables globales
     let selectedMachineId = null;
     let selectedClientFilterCol2 = '';
     let selectedProcesoFilterCol2 = '';
@@ -558,7 +554,6 @@
         });
     });
 
-    // Función para inicializar Sortable
     function inicializarSortable() {
         var el = document.getElementById('sortableTable').getElementsByTagName('tbody')[0];
         if (sortable) {
@@ -566,14 +561,33 @@
         }
         sortable = Sortable.create(el, {
             animation: 150,
+            scroll: true,
+            onStart: function(evt) {
+                document.addEventListener('dragover', handleDragScroll);
+            },
             onEnd: function(evt) {
-                console.log('onEnd triggered');
+                document.removeEventListener('dragover', handleDragScroll);
                 guardarOrdenEnLocalStorage();
                 actualizarOrdenProcesos();
             }
         });
     }
-    // Función para manejar el guardado del orden en localStorage
+
+    function handleDragScroll(event) {
+        const scrollContainer = document.getElementById('sortableTable').parentElement;
+        const sensitivity = 30;
+        const scrollSpeed = 10;
+
+        const mouseY = event.clientY;
+        const containerRect = scrollContainer.getBoundingClientRect();
+
+        if (mouseY < containerRect.top + sensitivity) {
+            scrollContainer.scrollTop -= scrollSpeed;
+        } else if (mouseY > containerRect.bottom - sensitivity) {
+            scrollContainer.scrollTop += scrollSpeed;
+        }
+    }
+
     function guardarOrdenEnLocalStorage() {
         const filas = document.querySelectorAll('#sortableTable tbody tr');
         let orden = Array.from(filas).map(fila => fila.getAttribute('data-id'));
