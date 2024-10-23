@@ -12,9 +12,6 @@ div#report-success,
 	font-size: 13px !important;
 }
 
-.btn {
-	padding: 0.25rem 0.5rem !important;
-}
 
 a {
 	color: #006192 !Important
@@ -916,6 +913,10 @@ a:hover.btfichar {
 }
 
 [for="gc-form-para_boton"] {
+	display: none;
+}
+
+[for="gc-form-id_producto"] {
 	display: none;
 }
 

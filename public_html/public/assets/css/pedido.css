@@ -44,36 +44,6 @@
     width: 240px !important;
 }
 
-.btnEliminarfiltros:hover {
-    background-color: #C7C8CC !important;
-    color: #F5F5F7 !important;
-}
-
-.btnEliminarfiltros {
-    background-color: #B7B7B7 !important;
-    color: #F5F5F7 !important;
-    height: 30px;
-    font-size: 14px !important;
-    border: none;
-}
-
-.btnAddPedido {
-    background-color: #e4eff7 !important;
-    color: #1d9dd5;
-    font-size: 14px !important;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    margin-left: 20px;
-}
-
-.btnAddPedido:hover {
-    background-color: #337ab7 !important;
-    color: #e4eff7 !important;
-}
-
 .titlepedidos {
     margin-top: 50px;
 }
@@ -81,56 +51,6 @@
 .titleditPedido {
     margin-top: -10px;
     margin-bottom: -2px;
-}
-
-.btnEditar {
-    background-color: #337ab7 !important;
-    color: white !important;
-    border-radius: 5px !important;
-    width: 65px;
-    height: 27px !important;
-
-}
-
-.btnEditar:hover {
-    background-color: #0B2F9F !important;
-    color: white;
-}
-
-.btnEliminar {
-    background-color: #d9534f !important;
-    color: white !important;
-    border-radius: 5px !important;
-    width: 72px;
-    height: 27px !important;
-
-}
-
-.btnEliminar:hover {
-    background-color: #0B2F9F !important;
-    color: white !important;
-}
-
-.btnImprimir {
-    background-color: #e4eff7 !important;
-    color: #1d9dd5 !important;
-    border-radius: 5px !important;
-    width: 78px;
-    height: 27px;
-
-}
-
-.btnImprimir:hover {
-    background-color: #0B2F9F !important;
-    color: #e4eff7 !important;
-}
-
-.btnImprimirParte {
-    background-color: #e4eff7 !important;
-    color: #1d9dd5 !important;
-    width: 60px;
-    border-radius: 5px !important;
-    height: 27px;
 }
 
 .btnImprimirParte:hover {
@@ -206,12 +126,6 @@ form .form-control {
 form select.form-control {
     font-size: 15px !important;
 }
-
-.btnGuardar {
-    height: 27px;
-    font-size: 14px !important;
-}
-
 /* LINEA DE PEDIDO */
 
 .btnAddLinea {
@@ -244,7 +158,6 @@ form select.form-control {
 /* Ajustar la altura del modal */
 
 
-.botoneseditPedido,
 .botoneseditRuta {
     display: flex !important;
     justify-content: space-between !important;
@@ -252,35 +165,9 @@ form select.form-control {
     width: 100%;
 }
 
-.btnAddRuta,
-.btnEliminarfiltros {
-    flex-grow: 0;
-}
-
-/* 
-.modal-body {
-    margin: 23px !important;
-    margin-top: 5px !important;
-
-} */
-
 .tituloRutas {
     font-size: 25px;
     margin: 26px;
-}
-
-.btnEliminarfiltrosRuta:hover {
-    background-color: #C7C8CC !important;
-    color: #F5F5F7 !important;
-}
-
-.btnEliminarfiltrosRuta {
-    background-color: #B7B7B7 !important;
-    color: #F5F5F7 !important;
-    font-size: 14px !important;
-    height: 27px;
-    border: none;
-    border-radius: 8px;
 }
 
 .btnAddRuta {
@@ -300,20 +187,6 @@ form select.form-control {
     color: #e4eff7 !important;
 }
 
-.btnEditarRuta {
-    background-color: #337ab7 !important;
-    color: white !important;
-    border-radius: 5px !important;
-    height: 27px;
-    width: 70px;
-    border: none;
-}
-
-.btnEditarRuta:hover {
-    background-color: #0B2F9F !important;
-    color: white;
-}
-
 .btnEliminarRuta {
     background-color: #d9534f !important;
     color: white !important;
@@ -329,8 +202,6 @@ form select.form-control {
     color: white !important;
 }
 
-
-.botoneseditPedido,
 .botoneseditRuta {
     display: flex;
 }
@@ -338,15 +209,6 @@ form select.form-control {
 .botoneseditRuta {
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-.botoneseditPedido.hidden {
-    display: none !important;
-}
-
-.botoneseditPedido {
-    margin-top: -20px;
-    ;
 }
 
 
@@ -433,28 +295,12 @@ form select.form-control {
     margin-top: 20px;
 }
 
-.volverButton {
-    background-color: #adabab !important;
-    color: #F5F5F7 !important;
-    height: 30px;
-    font-size: 14px !important;
-    border: none;
-}
-
-.volverButton:hover {
-    background-color: #808184 !important;
-    color: #F5F5F7 !important;
-}
-
-.btnsMostrarPedido {
-    margin-top: 20px;
-}
 
 .btnsEditPedido {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-top: 20px;
+    margin: 0px;
 }
 
 .formeditPedido {
@@ -483,8 +329,8 @@ form select.form-control {
     justify-content: flex-end;
 }
 
-.formeditPedido .btnGuardar,
-.formeditPedido .volverButton {
+.formeditPedido,
+.formeditPedido{
     padding: 4px 8px;
     font-size: 13px;
 }
@@ -498,3 +344,182 @@ form select.form-control {
 .ag-theme-alpine .ag-header {
     height: 30px;
 }
+
+/* botones */
+
+
+.boton{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 0px 8px 0px 12px;
+    margin: 0px;
+    border-radius: 5px;
+    font-size: 14px !important;
+}
+.botonTabla{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 4px 4px 4px 8px;
+    margin: 0px;
+    border-radius: 5px;
+    font-size: 12px !important;
+}
+.botonSeparados {
+    display: flex;
+    justify-content: space-between;  /* Alinea un botón a la izquierda y otro a la derecha */
+    width: 100%;  /* Asegura que los botones ocupen todo el espacio del contenedor */
+}
+.btnGuardar { 
+    background-color: #5CB85C !important;
+    color: white !important;
+    border: none;
+}
+.btnGuardar:hover { 
+    background-color:#268626 !important;
+    color: white I !important;
+}
+
+.btnGuardar:active { 
+    background-color: #8AD18A !important;
+    color: white !important;
+    border: none;
+}
+
+.btnGuardar svg {
+    width: 24px;
+    height: 24px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.volverButton { 
+    background-color: #337AB7 !important;
+    color: white !important;
+    border: none;
+    text-decoration: none;
+}
+.volverButton:hover { 
+    background-color:#125692 !important;
+    color: white;
+}
+
+.volverButton:active { 
+    background-color:#6897C0 !important;
+    color: white !important;
+}
+
+.volverButton svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.btnAdd { 
+    background-color: #5CB85C;
+    color: white !important;
+    border: none;
+}
+.btnAdd:hover { 
+    background-color:#268626;
+    color: white;
+}
+
+.btnAdd:active { 
+    background-color:#8AD18A!important;
+    color: white !important;
+}
+
+.btnAdd svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.btnEliminarfiltros { 
+    background-color: #D9534F !important;
+    color: white !important;
+    border: none;
+}
+.btnEliminarfiltros:hover { 
+    background-color:#AC1E1A !important;
+    color: white;
+}
+
+.btnEliminarfiltros:active { 
+    background-color:#EE8A88!important;
+    color: white !important;
+}
+
+.btnEliminarfiltros svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.btnEditar { 
+    background-color: #F0AD4E;
+    color: white !important;
+    border: none;
+}
+.btnEditar:hover { 
+    background-color:#F59A19;
+    color: white;
+}
+
+.btnEditar:active { 
+    background-color:#FAC271!important;
+    color: white !important;
+}
+
+.btnEditar svg {
+    width: 14px;
+    height: 14px;
+    color: white;
+}
+.btnImprimir { 
+    background-color: #E4EFF7;
+    color: black !important;
+    border: none;
+}
+.btnImprimir:hover { 
+    background-color:#D0E9FC;
+    color: black;
+}
+
+.btnImprimir:active { 
+    background-color:#E5E5E5!important;
+    color: black !important;
+}
+
+.btnImprimir svg {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.btnEliminar { 
+    background-color: #D9534F;
+    color: white!important;
+    border: none;
+}
+.btnEliminar:hover { 
+    background-color:#AC1E1A;
+    color: white;
+}
+
+.btnEliminar:active { 
+    background-color:#EE8A88!important;
+    color: white !important;
+}
+
+.btnEliminar svg {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+

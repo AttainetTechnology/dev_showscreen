@@ -1,6 +1,6 @@
 <style>
     #printableArea{
-        font-size: 18px;
+        font-size: 25px !important;
     }
 </style>
 <?php
@@ -68,7 +68,7 @@ foreach ($pedido as $ped) { ?>
                         <tbody>
                             <?php $total = 0; ?>
                             <?php 
-                            $lineas_pag1 = array_slice($lineas, 0, 10); 
+                            $lineas_pag1 = array_slice($lineas, 0, 18); 
                             foreach ($lineas_pag1 as $l) { ?>
                                 <tr>
                                     <td><b><?php echo $l->n_piezas; ?> </b></td>

@@ -34,7 +34,7 @@
         <!-- Campo de búsqueda -->
         <div class="form-group">
             <label for="search-proceso"></label>
-            <input type="text" class="form-control" id="search-proceso" placeholder="Busuca el nombre del proceso">
+            <input type="text" class="form-control" id="search-proceso" placeholder="Busca el nombre del proceso">
         </div>
 
         <?php
