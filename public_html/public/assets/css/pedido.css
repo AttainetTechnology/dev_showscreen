@@ -53,11 +53,6 @@
     margin-bottom: -2px;
 }
 
-.btnImprimirParte:hover {
-    background-color: #0B2F9F !important;
-    color: #e4eff7 !important;
-}
-
 .titlepedidosmostrar {
     margin-top: 30px;
     margin-left: 25px;
@@ -365,15 +360,16 @@ form select.form-control {
     justify-content: center;
     gap: 4px;
     cursor: pointer;
-    padding: 4px 4px 4px 8px;
+    padding: 4px 4px 4px 8px !important;
     margin: 0px;
     border-radius: 5px;
     font-size: 12px !important;
+    
 }
 .botonSeparados {
     display: flex;
-    justify-content: space-between;  /* Alinea un botón a la izquierda y otro a la derecha */
-    width: 100%;  /* Asegura que los botones ocupen todo el espacio del contenedor */
+    justify-content: space-between;
+    width: 100%; 
 }
 .btnGuardar { 
     background-color: #5CB85C !important;
@@ -463,12 +459,12 @@ form select.form-control {
 }
 
 .btnEditar { 
-    background-color: #F0AD4E;
+    background-color: #F0AD4E !important;
     color: white !important;
     border: none;
 }
 .btnEditar:hover { 
-    background-color:#F59A19;
+    background-color:#F59A19 !important;
     color: white;
 }
 
@@ -483,13 +479,13 @@ form select.form-control {
     color: white;
 }
 .btnImprimir { 
-    background-color: #E4EFF7;
+    background-color: #E4EFF7 !important;
     color: black !important;
     border: none;
 }
 .btnImprimir:hover { 
-    background-color:#D0E9FC;
-    color: black;
+    background-color:#D0E9FC !important;
+    color: black !important;
 }
 
 .btnImprimir:active { 
@@ -498,17 +494,17 @@ form select.form-control {
 }
 
 .btnImprimir svg {
-    width: 14px !important;
-    height: 14px !important;
+    width: 18px !important;
+    height: 18px !important;
 }
 
 .btnEliminar { 
-    background-color: #D9534F;
+    background-color: #D9534F !important;
     color: white!important;
     border: none;
 }
 .btnEliminar:hover { 
-    background-color:#AC1E1A;
+    background-color:#AC1E1A !important;
     color: white;
 }
 
@@ -518,8 +514,8 @@ form select.form-control {
 }
 
 .btnEliminar svg {
-    width: 14px !important;
-    height: 14px !important;
+    width: 18px !important;
+    height: 18px !important;
 }
 
 
