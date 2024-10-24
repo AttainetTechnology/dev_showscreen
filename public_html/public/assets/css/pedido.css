@@ -198,24 +198,6 @@ form select.form-control {
     }
 }
 
-.buttonsEditProductProveedAbajo {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-
-.btnsEditPedido {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin: 0px;
-}
-
 .formeditPedido {
     font-size: 14px;
 }

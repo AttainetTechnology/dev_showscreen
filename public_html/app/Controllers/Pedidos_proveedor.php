@@ -59,7 +59,8 @@ class Pedidos_proveedor extends BaseControllerGC
                 'editar' => base_url("pedidos_proveedor/editar/{$pedido['id_pedido']}")
             ];
         }
-        return view('mostrarPedidosProveedor', ['pedidos' => $pedidos]);
+        $allow_delete = true; 
+        return view('mostrarPedidosProveedor', ['pedidos' => $pedidos, 'allow_delete' => $allow_delete]);
     }
     private function getProveedorNombre($id_proveedor)
     {

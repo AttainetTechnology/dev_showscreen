@@ -1,4 +1,4 @@
-.boton{
+.boton {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -11,7 +11,8 @@
     text-decoration: none !important;
     border: none !important;
 }
-.botonTabla{
+
+.botonTabla {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -23,24 +24,43 @@
     font-size: 12px !important;
     text-decoration: none !important;
     border: none !important;
-    
+
 }
+
 .botonSeparados {
     display: flex;
     justify-content: space-between;
-    width: 100%; 
+    width: 100%;
 }
 
-.btnGuardar { 
+.buttonsEditProductProveedAbajo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btnsEditPedido {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 0px;
+}
+
+.btnGuardar {
     background-color: #5CB85C !important;
     color: white !important;
 }
-.btnGuardar:hover { 
-    background-color:#268626 !important;
+
+.btnGuardar:hover {
+    background-color: #268626 !important;
     color: white I !important;
 }
 
-.btnGuardar:active { 
+.btnGuardar:active {
     background-color: #8AD18A !important;
     color: white !important;
 }
@@ -52,36 +72,40 @@
     padding: 0px;
 }
 
-.volverButton { 
+.volverButton {
     background-color: #337AB7 !important;
     color: white !important;
 }
-.volverButton:hover { 
-    background-color:#125692 !important;
+
+.volverButton:hover {
+    background-color: #125692 !important;
     color: white;
 }
-.volverButton:active { 
-    background-color:#6897C0 !important;
+
+.volverButton:active {
+    background-color: #6897C0 !important;
     color: white !important;
 }
+
 .volverButton svg {
     width: 24px;
     height: 24px;
     color: white;
 }
 
-.btnAdd { 
+.btnAdd {
     background-color: #5CB85C;
     color: white !important;
     border: none;
 }
-.btnAdd:hover { 
-    background-color:#268626;
+
+.btnAdd:hover {
+    background-color: #268626;
     color: white;
 }
 
-.btnAdd:active { 
-    background-color:#8AD18A!important;
+.btnAdd:active {
+    background-color: #8AD18A !important;
     color: white !important;
 }
 
@@ -91,17 +115,18 @@
     color: white;
 }
 
-.btnEliminarfiltros { 
+.btnEliminarfiltros {
     background-color: #D9534F !important;
     color: white !important;
 }
-.btnEliminarfiltros:hover { 
-    background-color:#AC1E1A !important;
+
+.btnEliminarfiltros:hover {
+    background-color: #AC1E1A !important;
     color: white;
 }
 
-.btnEliminarfiltros:active { 
-    background-color:#EE8A88!important;
+.btnEliminarfiltros:active {
+    background-color: #EE8A88 !important;
     color: white !important;
 }
 
@@ -111,17 +136,23 @@
     color: white;
 }
 
-.btnEditar, .btnEditarTabla { 
+.btnEditar,
+.btnEditarTabla {
     background-color: #F0AD4E !important;
     color: white !important;
 }
-.btnEditar:hover, .btnEditarTabla:hover { 
-    background-color:#F59A19 !important;
+
+.btnEditar:hover,
+.btnEditarTabla:hover,
+.btnEditarIcono:hover {
+    background-color: #F59A19 !important;
     color: white !important;
 }
 
-.btnEditar:active, .btnEditarTabla:active { 
-    background-color:#FAC271!important;
+.btnEditar:active,
+.btnEditarTabla:active,
+.btnEditarIcono:active {
+    background-color: #FAC271 !important;
     color: white !important;
 }
 
@@ -130,6 +161,15 @@
     height: 21px !important;
     color: white;
 }
+
+.btnEditarIcono {
+    width: 16px;
+    height: auto;
+    color: white;
+    margin-right: 4px;
+    margin-left: 3px;
+}
+
 .btnEditarTabla svg {
     width: 12px;
     height: auto;
@@ -137,17 +177,22 @@
     margin-right: 4px;
     margin-left: 3px;
 }
-.btnImprimir, .btnImprimirTabla { 
+
+.btnImprimir,
+.btnImprimirTabla {
     background-color: #E4EFF7 !important;
     color: black !important;
 }
-.btnImprimir:hover, .btnImprimirTabla:hover { 
-    background-color:#D0E9FC !important;
+
+.btnImprimir:hover,
+.btnImprimirTabla:hover {
+    background-color: #D0E9FC !important;
     color: black !important;
 }
 
-.btnImprimir:active, .btnImprimirTabla:active { 
-    background-color:#E5E5E5!important;
+.btnImprimir:active,
+.btnImprimirTabla:active {
+    background-color: #E5E5E5 !important;
     color: black !important;
 }
 
@@ -155,22 +200,27 @@
     width: 24px !important;
     height: 24px !important;
 }
-.btnImprimirTabla svg{
+
+.btnImprimirTabla svg {
     width: 18px !important;
-    height: 18px !important; 
+    height: 18px !important;
 }
 
-.btnEliminar, .btnEliminarTabla { 
+.btnEliminar,
+.btnEliminarTabla {
     background-color: #D9534F !important;
-    color: white!important;
+    color: white !important;
 }
-.btnEliminar:hover, .btnEliminarTabla:hover { 
-    background-color:#AC1E1A !important;
+
+.btnEliminar:hover,
+.btnEliminarTabla:hover {
+    background-color: #AC1E1A !important;
     color: white;
 }
 
-.btnEliminar:active, .btnEliminarTabla:active { 
-    background-color:#EE8A88!important;
+.btnEliminar:active,
+.btnEliminarTabla:active {
+    background-color: #EE8A88 !important;
     color: white !important;
 }
 
@@ -179,21 +229,23 @@
     height: 24px !important;
 }
 
-.btnEliminarTabla svg{
+.btnEliminarTabla svg {
     width: 18px !important;
     height: 18px !important;
 }
-.btnTerminar { 
-    background-color:rgba(68, 130, 68, 1) !important;
-    color: white!important; 
+
+.btnTerminar {
+    background-color: rgba(68, 130, 68, 1) !important;
+    color: white !important;
 }
-.btnTerminar:hover { 
-    background-color:#045404!important;
+
+.btnTerminar:hover {
+    background-color: #045404 !important;
     color: white;
 }
 
-.btnTerminar:active { 
-    background-color:rgba(91, 138, 91, 1)!important;
+.btnTerminar:active {
+    background-color: rgba(91, 138, 91, 1) !important;
     color: white !important;
 }
 
@@ -201,6 +253,3 @@
     width: 18px !important;
     height: 18px !important;
 }
-
-
-
