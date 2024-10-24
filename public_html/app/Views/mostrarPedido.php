@@ -66,7 +66,7 @@ $estadoMap = [
                     return `${editBtn} ${printBtn} ${deleteBtn}`;
                 },
                 cellClass: 'acciones-col',
-                minWidth: 400,
+                minWidth: 280,
                 filter: false
             },
             {

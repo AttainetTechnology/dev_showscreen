@@ -349,7 +349,7 @@ form select.form-control {
     justify-content: center;
     gap: 3px;
     cursor: pointer;
-    padding: 0px 8px 0px 12px;
+    padding: 4px 8px 4px 12px;
     margin: 0px;
     border-radius: 5px;
     font-size: 14px !important;
@@ -461,7 +461,7 @@ form select.form-control {
 .btnEditar { 
     background-color: #F0AD4E !important;
     color: white !important;
-    border: none;
+    border: none !important;
 }
 .btnEditar:hover { 
     background-color:#F59A19 !important;
@@ -481,7 +481,7 @@ form select.form-control {
 .btnImprimir { 
     background-color: #E4EFF7 !important;
     color: black !important;
-    border: none;
+    border: none !important;
 }
 .btnImprimir:hover { 
     background-color:#D0E9FC !important;
@@ -501,7 +501,7 @@ form select.form-control {
 .btnEliminar { 
     background-color: #D9534F !important;
     color: white!important;
-    border: none;
+    border: none !important;
 }
 .btnEliminar:hover { 
     background-color:#AC1E1A !important;
