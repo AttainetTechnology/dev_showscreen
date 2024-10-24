@@ -1,0 +1,206 @@
+.boton{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px !important;
+    cursor: pointer;
+    padding: 4px 8px 4px 12px;
+    margin: 0px;
+    border-radius: 5px;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    border: none !important;
+}
+.botonTabla{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px !important;
+    cursor: pointer;
+    padding: 4px 4px 4px 8px !important;
+    margin: 0px;
+    border-radius: 5px;
+    font-size: 12px !important;
+    text-decoration: none !important;
+    border: none !important;
+    
+}
+.botonSeparados {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+}
+
+.btnGuardar { 
+    background-color: #5CB85C !important;
+    color: white !important;
+}
+.btnGuardar:hover { 
+    background-color:#268626 !important;
+    color: white I !important;
+}
+
+.btnGuardar:active { 
+    background-color: #8AD18A !important;
+    color: white !important;
+}
+
+.btnGuardar svg {
+    width: 24px;
+    height: 24px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.volverButton { 
+    background-color: #337AB7 !important;
+    color: white !important;
+}
+.volverButton:hover { 
+    background-color:#125692 !important;
+    color: white;
+}
+.volverButton:active { 
+    background-color:#6897C0 !important;
+    color: white !important;
+}
+.volverButton svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.btnAdd { 
+    background-color: #5CB85C;
+    color: white !important;
+    border: none;
+}
+.btnAdd:hover { 
+    background-color:#268626;
+    color: white;
+}
+
+.btnAdd:active { 
+    background-color:#8AD18A!important;
+    color: white !important;
+}
+
+.btnAdd svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.btnEliminarfiltros { 
+    background-color: #D9534F !important;
+    color: white !important;
+}
+.btnEliminarfiltros:hover { 
+    background-color:#AC1E1A !important;
+    color: white;
+}
+
+.btnEliminarfiltros:active { 
+    background-color:#EE8A88!important;
+    color: white !important;
+}
+
+.btnEliminarfiltros svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.btnEditar, .btnEditarTabla { 
+    background-color: #F0AD4E !important;
+    color: white !important;
+}
+.btnEditar:hover, .btnEditarTabla:hover { 
+    background-color:#F59A19 !important;
+    color: white !important;
+}
+
+.btnEditar:active, .btnEditarTabla:active { 
+    background-color:#FAC271!important;
+    color: white !important;
+}
+
+.btnEditar svg {
+    width: 21px !important;
+    height: 21px !important;
+    color: white;
+}
+.btnEditarTabla svg {
+    width: 12px;
+    height: auto;
+    color: white;
+    margin-right: 4px;
+    margin-left: 3px;
+}
+.btnImprimir, .btnImprimirTabla { 
+    background-color: #E4EFF7 !important;
+    color: black !important;
+}
+.btnImprimir:hover, .btnImprimirTabla:hover { 
+    background-color:#D0E9FC !important;
+    color: black !important;
+}
+
+.btnImprimir:active, .btnImprimirTabla:active { 
+    background-color:#E5E5E5!important;
+    color: black !important;
+}
+
+.btnImprimir svg {
+    width: 24px !important;
+    height: 24px !important;
+}
+.btnImprimirTabla svg{
+    width: 18px !important;
+    height: 18px !important; 
+}
+
+.btnEliminar, .btnEliminarTabla { 
+    background-color: #D9534F !important;
+    color: white!important;
+}
+.btnEliminar:hover, .btnEliminarTabla:hover { 
+    background-color:#AC1E1A !important;
+    color: white;
+}
+
+.btnEliminar:active, .btnEliminarTabla:active { 
+    background-color:#EE8A88!important;
+    color: white !important;
+}
+
+.btnEliminar svg {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.btnEliminarTabla svg{
+    width: 18px !important;
+    height: 18px !important;
+}
+.btnTerminar { 
+    background-color:rgba(68, 130, 68, 1) !important;
+    color: white!important; 
+}
+.btnTerminar:hover { 
+    background-color:#045404!important;
+    color: white;
+}
+
+.btnTerminar:active { 
+    background-color:rgba(91, 138, 91, 1)!important;
+    color: white !important;
+}
+
+.btnTerminar svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+
+

@@ -256,28 +256,6 @@ input#field-precio {
 	color: var(--rojosocuro) !important;
 }
 
-.btn-secondary {
-	color: var(--negro) !important;
-	background-color: #fff !important;
-	border-color: var(--grisclaro) !important;
-}
-
-.btn-success {
-	color: #fff !Important;
-	background-color: #146c43 !Important;
-	border-color: var(--verdeclaro) !Important;
-}
-
-.btn-info {
-	background-color: var(--azulclaro) !Important;
-	border-color: var(--azulclaro) !Important;
-	color: var(--azuloscuro) !Important;
-}
-
-.btn_anular {
-	color: #fff !Important;
-}
-
 .nav a {
 	color: var(--azuloscuro) !Important;
 }
