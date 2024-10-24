@@ -118,19 +118,6 @@ form select.form-control {
 }
 /* LINEA DE PEDIDO */
 
-.btnAddLinea {
-    background-color: #e4eff7 !important;
-    color: #1d9dd5 !important;
-    margin-top: 10px;
-    height: 27px;
-    margin-left: 20px;
-}
-
-.btnAddLinea:hover {
-    background-color: #337ab7 !important;
-    color: #e4eff7 !important;
-}
-
 .btnrecarga:hover {
     background-color: #ffc107a8 !important;
     color: #e4eff7 !important;

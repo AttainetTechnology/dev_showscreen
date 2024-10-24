@@ -75,7 +75,7 @@ input[class^=ag-] {
 .titleComparador,
 .tituloProveedores,
 .titleAddProveedor {
-    margin-top: 50px;
+    margin-top: 42px;
     margin-left: 35px;
 }
 .tituloProveedores{
@@ -85,11 +85,6 @@ input[class^=ag-] {
 .formEditPedido, .formEditProveedor, .fromAddProveedor{
     margin: 23px;
     margin-left: 45px;
-}
-
-.saveProveedor{
-    height: 30px;
-    margin-top: 15px;
 }
 
 .saveProducto{

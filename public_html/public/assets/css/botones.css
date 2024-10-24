@@ -4,7 +4,7 @@
     justify-content: center;
     gap: 4px !important;
     cursor: pointer;
-    padding: 4px 8px 4px 12px;
+    padding: 3px 8px 3px 12px;
     margin: 0px;
     border-radius: 5px;
     font-size: 14px !important;
@@ -72,17 +72,17 @@
     padding: 0px;
 }
 
-.volverButton {
+.volverButton, .volverButtonTabla {
     background-color: #337AB7 !important;
     color: white !important;
 }
 
-.volverButton:hover {
+.volverButton:hover, .volverButtonTabla:hover {
     background-color: #125692 !important;
     color: white;
 }
 
-.volverButton:active {
+.volverButton:active, .volverButtonTabla:active {
     background-color: #6897C0 !important;
     color: white !important;
 }
@@ -93,18 +93,22 @@
     color: white;
 }
 
-.btnAdd {
+.volverButtonTabla svg{
+    width: 15px;
+    height: auto;
+    color: white;
+}
+.btnAdd, .btnAddtabla {
     background-color: #5CB85C;
     color: white !important;
-    border: none;
 }
 
-.btnAdd:hover {
+.btnAdd:hover, .btnAddtabla:hover {
     background-color: #268626;
     color: white;
 }
 
-.btnAdd:active {
+.btnAdd:active, .btnAddtabla:active {
     background-color: #8AD18A !important;
     color: white !important;
 }
@@ -113,6 +117,10 @@
     width: 24px;
     height: 24px;
     color: white;
+}
+.btnAddtabla{
+    width: auto;
+    height: 22px !important;
 }
 
 .btnEliminarfiltros {
@@ -231,7 +239,7 @@
 
 .btnEliminarTabla svg {
     width: 18px !important;
-    height: 18px !important;
+    height: auto!important;
 }
 
 .btnTerminar {
