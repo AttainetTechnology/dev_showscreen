@@ -93,3 +93,4 @@ $routes->match(['GET', 'POST'], 'familiaProveedor/editar/(:num)', 'Familia_prove
 $routes->post('familiaProveedor/actualizarFamilia', 'Familia_proveedor::actualizarFamilia');
 $routes->post('familiaProveedor/agregarFamilia', 'Familia_proveedor::agregarFamilia');
 $routes->post('familiaProveedor/eliminar/(:num)', 'Familia_proveedor::eliminarFamilia/$1');
+$routes->post('ofertas/eliminar/(:num)/(:num)', 'ComparadorProductos::eliminarOferta/$1/$2');
