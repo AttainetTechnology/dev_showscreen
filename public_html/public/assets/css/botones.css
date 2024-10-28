@@ -4,7 +4,7 @@
     justify-content: center;
     gap: 4px !important;
     cursor: pointer;
-    padding: 3px 8px 3px 12px;
+    padding: 3px 8px 3px 10px;
     margin: 0px;
     border-radius: 5px;
     font-size: 14px !important;
@@ -185,6 +185,7 @@
     margin-right: 4px;
     margin-left: 3px;
 }
+
 
 .btnImprimir,
 .btnImprimirTabla {
