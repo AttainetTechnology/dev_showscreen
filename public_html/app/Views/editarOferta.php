@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title">Editar Oferta</h5>
+    <h5 class="modal-title">Editar producto</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
@@ -7,7 +7,7 @@
         <input type="hidden" name="id" id="idOferta" value="<?= esc($oferta['id']) ?>">
         <input type="hidden" name="id_producto" id="idProducto" value="<?= esc($id_producto) ?>">
         <div class="mb-3">
-            <label for="ref_producto" class="form-label">Referencia del Producto</label>
+            <label for="ref_producto" class="form-label">Referencia del Proveedor</label>
             <input type="text" name="ref_producto" id="ref_producto" class="form-control" value="<?= esc($oferta['ref_producto']) ?>" required>
         </div>
 

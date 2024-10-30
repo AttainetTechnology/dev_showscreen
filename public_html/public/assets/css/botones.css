@@ -273,6 +273,27 @@
     height: 18px !important;
 }
 
+.btnMover {
+    background-color: #37CDED!important;
+    color: white !important;
+}
+
+.btnMover:hover {
+    background-color: #06B0D4 !important;
+    color: white;
+}
+
+.btnMover:active {
+    background-color:#89DEF0 !important;
+    color: white !important;
+}
+
+.btnMover svg {
+    width: 12px !important;
+    height: 12px !important;
+    margin-top: 2px;
+}
+
 .container-buttons {
     display: flex;
     align-items: center;

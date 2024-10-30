@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title" id="elegirProveedorModalLabel">Elegir Proveedor para el Producto</h5>
+    <h5 class="modal-title" id="elegirProveedorModalLabel">Añadir producto</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
@@ -17,7 +17,7 @@
         </div>
 
         <div class="form-group mb-3">
-            <label for="ref_producto">Referencia del Producto</label>
+            <label for="ref_producto">Referencia del Proveedor</label>
             <input type="text" name="ref_producto" id="ref_producto" class="form-control" required>
         </div>
         <div class="form-group mb-3">
