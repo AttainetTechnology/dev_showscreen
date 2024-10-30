@@ -12,6 +12,8 @@
     border: none !important;
 }
 
+
+
 .botonTabla {
     display: inline-flex;
     align-items: center;
@@ -72,17 +74,20 @@
     padding: 0px;
 }
 
-.volverButton, .volverButtonTabla {
+.volverButton,
+.volverButtonTabla {
     background-color: #337AB7 !important;
     color: white !important;
 }
 
-.volverButton:hover, .volverButtonTabla:hover {
+.volverButton:hover,
+.volverButtonTabla:hover {
     background-color: #125692 !important;
     color: white;
 }
 
-.volverButton:active, .volverButtonTabla:active {
+.volverButton:active,
+.volverButtonTabla:active {
     background-color: #6897C0 !important;
     color: white !important;
 }
@@ -93,22 +98,26 @@
     color: white;
 }
 
-.volverButtonTabla svg{
+.volverButtonTabla svg {
     width: 15px;
     height: auto;
     color: white;
 }
-.btnAdd, .btnAddtabla {
+
+.btnAdd,
+.btnAddtabla {
     background-color: #5CB85C;
     color: white !important;
 }
 
-.btnAdd:hover, .btnAddtabla:hover {
+.btnAdd:hover,
+.btnAddtabla:hover {
     background-color: #268626;
     color: white;
 }
 
-.btnAdd:active, .btnAddtabla:active {
+.btnAdd:active,
+.btnAddtabla:active {
     background-color: #8AD18A !important;
     color: white !important;
 }
@@ -118,7 +127,8 @@
     height: 24px;
     color: white;
 }
-.btnAddtabla{
+
+.btnAddtabla {
     width: auto;
     height: 25px !important;
 }
@@ -240,7 +250,7 @@
 
 .btnEliminarTabla svg {
     width: 18px !important;
-    height: auto!important;
+    height: auto !important;
 }
 
 .btnTerminar {
@@ -261,4 +271,11 @@
 .btnTerminar svg {
     width: 18px !important;
     height: 18px !important;
+}
+
+.container-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
 }
