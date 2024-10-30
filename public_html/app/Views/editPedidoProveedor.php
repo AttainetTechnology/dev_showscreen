@@ -42,8 +42,6 @@
         </div>
     </div>
 </div>
-
-
 <form action="<?= base_url('pedidos_proveedor/update/' . $pedido['id_pedido']) ?>" method="post" class="formEditPedido">
     <div class="mb-3">
         <label for="id_proveedor" class="form-label">Proveedor</label>
@@ -321,25 +319,24 @@
         });
     });
 
-    // Acción para guardar la nueva línea de pedido
-    $('#saveLineaPedido').on('click', function() {
-        // Enviar el formulario mediante AJAX
-        var formData = $('#addLineaPedidoForm').serialize(); // Serializar los datos del formulario
-
-        $.ajax({
-            url: '<?= base_url('pedidos_proveedor/crearLinea') ?>', // Ruta para guardar el registro
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                if (response.success) {
-                    $('#addLineaPedidoModal').modal('hide'); // Cerrar el modal
-                    location.reload(); // Recargar la página para reflejar los cambios
-                } else {
-                    alert('Error al agregar la línea de pedido');
-                }
+// Acción para guardar la nueva línea de pedido
+$('#saveLineaPedido').on('click', function() {
+    var formData = $('#addLineaPedidoForm').serialize();
+    $.ajax({
+        url: '<?= base_url('pedidos_proveedor/crearLinea') ?>',
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            if (response.success) {
+                $('#addLineaPedidoModal').modal('hide');
+                location.reload();
+            } else {
+                alert('Error al agregar la línea de pedido');
             }
-        });
+        }
     });
+});
+
     // Acción al hacer clic en el botón de editar línea de pedido
     function editarLinea(id_lineapedido) {
         // Abrir el modal de edición
@@ -401,6 +398,7 @@
             });
         }
     }
+    
 </script>
 
 <?= $this->endSection() ?>

@@ -1,5 +1,7 @@
 <form id="addLineaPedidoForm">
     <input type="hidden" name="id_pedido" value="<?= $id_pedido ?>">
+    <input type="hidden" name="id_registro" value="<?= $id_registro ?? '' ?>"> <!-- Asegurarse de que id_registro esté definido -->
+
     <div class="form-group">
         <label for="id_producto">Producto</label>
         <select name="id_producto" id="id_producto" class="form-control" required>

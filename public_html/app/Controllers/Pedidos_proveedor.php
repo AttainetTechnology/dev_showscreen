@@ -133,7 +133,8 @@ class Pedidos_proveedor extends BaseControllerGC
             'observaciones' => $this->request->getPost('observaciones'),
             'fecha_salida' => $this->request->getPost('fecha_salida'),
             'fecha_entrega' => $this->request->getPost('fecha_entrega'),
-            'estado' => $this->request->getPost('estado')
+            'estado' => $this->request->getPost('estado'),
+            'precio_compra' => $this->request->getPost('precio_compra')
         ];
         if ($pedidoModel->update($id_pedido, $pedidoData)) {
             return redirect()->to(base_url('pedidos_proveedor/editar/' . $id_pedido))->with('message', 'Pedido actualizado con éxito.');
@@ -188,7 +189,7 @@ class Pedidos_proveedor extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
-    
+
         $pedidoData = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
             'referencia' => $this->request->getPost('referencia'),
@@ -196,53 +197,68 @@ class Pedidos_proveedor extends BaseControllerGC
             'observaciones' => $this->request->getPost('observaciones'),
             'id_usuario' => $data['id_user']
         ];
-    
+
         if ($pedidoModel->insert($pedidoData)) {
             $idPedido = $pedidoModel->insertID();
             log_message('debug', 'Pedido creado con ID: ' . $idPedido);
-    
+
             // Verificar si se ha pasado un id_producto y id_registro en el POST
             $idProducto = $this->request->getPost('id_producto');
             $idRegistro = $this->request->getPost('id_registro'); // Captura id_registro
             log_message('debug', "Valores recibidos - idProducto: $idProducto, idRegistro: $idRegistro");
-    
+
             if ($idProducto && $idRegistro) {
                 $this->crearLineaPedido($idPedido, $idProducto, $idRegistro); // Pasa id_registro al método
             }
-    
+
             return redirect()->to(base_url("/pedidos_proveedor/editar/$idPedido"))
                 ->with('message', 'Pedido guardado con éxito.');
         } else {
             return redirect()->back()->with('error', 'No se pudo guardar el pedido');
         }
     }
-    
+
     private function crearLineaPedido($idPedido, $idProducto, $idRegistro)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
     
-        // Verificar el precio específico del producto usando id_registro
-        $builderProducto = $db->table('productos_proveedor');
-        $builderProducto->select('precio');
-        $builderProducto->where('id', $idRegistro); // Usar id_registro para obtener el precio exacto
-        $query = $builderProducto->get();
-        log_message('debug', "Resultado del query para id_registro $idRegistro: " . json_encode($query->getRow()));
-    
-        if ($query->getNumRows() > 0) {
-            $precio = $query->getRow()->precio;
-        } else {
-            log_message('error', "No se encontró precio para el registro con ID: $idRegistro");
-            $precio = 0;
+        // Verificar que `idRegistro` está presente y válido
+        if (!$idRegistro) {
+            log_message('error', "No se ha proporcionado idRegistro para idPedido: $idPedido y idProducto: $idProducto.");
+            return;
         }
     
-        // Preparar e insertar la línea de pedido
+        // Obtiene el precio específico del producto y proveedor usando `id_registro`
+        $builderProducto = $db->table('productos_proveedor');
+        $builderProducto->select('precio');
+        $builderProducto->where('id', $idRegistro);
+        $query = $builderProducto->get();
+    
+        // Logs detallados para depuración
+        log_message('debug', "Intentando obtener precio para idRegistro: $idRegistro, Resultado: " . json_encode($query->getRow()));
+    
+        // Verifica si se encontró el precio; si no, asigna `null` y registra el error
+        $precio = $query->getNumRows() > 0 ? $query->getRow()->precio : null;
+    
+        if (is_null($precio)) {
+            log_message('error', "No se encontró precio para el registro con ID: $idRegistro. No se agregará la línea de pedido.");
+            return;
+        }
+    
+        // Define el número de piezas o cantidad
+        $n_piezas = 1;  // Cambia `n_piezas` si es necesario
+    
+        // Calcula el total de la línea multiplicando precio y cantidad
+        $total_linea = $precio * $n_piezas;
+    
+        // Inserta la línea de pedido con el precio y total calculado
         $lineaData = [
             'id_pedido' => $idPedido,
             'id_producto' => $idProducto,
-            'n_piezas' => 1,
+            'n_piezas' => $n_piezas,
             'precio_compra' => $precio,
-            'total_linea' => $precio
+            'total_linea' => $total_linea
         ];
     
         $builderLinea = $db->table('linea_pedido_proveedor');
@@ -253,6 +269,8 @@ class Pedidos_proveedor extends BaseControllerGC
         }
     }
     
+    
+
     function paso_id_pedido($value, $id_pedido)
     {
         return $id_pedido . '<input type="hidden" name="id_pedido" value="' . $id_pedido . '">';
@@ -351,38 +369,76 @@ class Pedidos_proveedor extends BaseControllerGC
             ]
         ]);
     }
-
-
     public function addLineaPedidoForm($id_pedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
         $productos = $productosModel->findAll();
-
+    
+        // Obtener el id_registro de alguna forma (por ejemplo, pasando por GET o POST)
+        $idRegistro = $this->request->getPost('id_registro') ?? null;
+    
         return view('addLineaPedidoProveedor', [
             'productos' => $productos,
-            'id_pedido' => $id_pedido
+            'id_pedido' => $id_pedido,
+            'id_registro' => $idRegistro 
         ]);
     }
+    
     public function crearLinea()
     {
+        // Obtener datos del formulario
         $data = $this->request->getPost();
-        $data['id_pedido'] = $this->request->getPost('id_pedido');
-
+        $idPedido = $data['id_pedido'];
+        $idProducto = $data['id_producto'];
+        $idRegistro = $data['id_registro']; // Asegúrate de que este valor esté en el formulario
+    
         $db = db_connect(usuario_sesion()['new_db']);
-        $builder = $db->table('linea_pedido_proveedor');
-        if ($builder->insert($data)) {
+    
+        // Obtener el precio del producto usando id_registro
+        $builderProducto = $db->table('productos_proveedor');
+        $builderProducto->select('precio');
+        $builderProducto->where('id', $idRegistro);
+        $query = $builderProducto->get();
+    
+        // Verificar si se obtuvo un precio
+        if ($query->getNumRows() > 0) {
+            $precio = $query->getRow()->precio;
+        } else {
+            log_message('error', "No se encontró precio para el registro con ID: $idRegistro");
+            $precio = 0;
+        }
+    
+        // Calcular el total de la línea
+        $n_piezas = isset($data['n_piezas']) ? (int)$data['n_piezas'] : 1;
+        $total_linea = $precio * $n_piezas;
+    
+        // Preparar los datos de la línea de pedido
+        $lineaData = [
+            'id_pedido' => $idPedido,
+            'id_producto' => $idProducto,
+            'n_piezas' => $n_piezas,
+            'precio_compra' => $precio,
+            'total_linea' => $total_linea,
+            'observaciones' => $data['observaciones'] ?? null,
+        ];
+    
+        // Insertar la línea de pedido en la base de datos
+        $builderLinea = $db->table('linea_pedido_proveedor');
+        if ($builderLinea->insert($lineaData)) {
             $id_lineapedido = $db->insertID();
-            $post_array = new \stdClass();
-            $post_array->data = $data;
-            $post_array->data['id_lineapedido'] = $id_lineapedido;
-            $this->saca_precio_linea($post_array);
-            $this->actualizarTotalPedido($data['id_pedido']);
+    
+            // Actualizar el total del pedido
+            $this->actualizarTotalPedido($idPedido);
+    
+            log_message('debug', "Línea de pedido creada con éxito para pedido ID: $idPedido con datos: " . json_encode($lineaData));
             return $this->response->setJSON(['success' => true]);
         } else {
+            log_message('error', "Error al crear la línea de pedido para pedido ID: $idPedido.");
             return $this->response->setJSON(['success' => false]);
         }
     }
+    
     public function actualizarLinea($id_lineapedido)
     {
         $data = $this->request->getPost();
@@ -475,69 +531,33 @@ class Pedidos_proveedor extends BaseControllerGC
     public function saca_precio_linea($post_array)
     {
         log_message('debug', 'Datos recibidos para insertar línea de pedido: ' . print_r($post_array, true));
-        if (!isset($post_array->data['id_producto']) || !isset($post_array->data['id_lineapedido'])) {
-            log_message('error', 'ID del producto o ID de la línea de pedido no está presente en los datos.');
-            return $post_array;
-        }
-        $id_producto = $post_array->data['id_producto'];
-        $id_pedido = $post_array->data['id_pedido'];
-        $n_piezas = $post_array->data['n_piezas'] ?? 0;
-        $id_lineapedido = $post_array->data['id_lineapedido'];
-
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
-        $builder_pedido = $db->table('pedidos_proveedor');
-        $builder_pedido->select('id_proveedor');
-        $builder_pedido->where('id_pedido', $id_pedido);
-        $query_pedido = $builder_pedido->get();
-        if ($query_pedido->getNumRows() > 0) {
-            $id_proveedor = $query_pedido->getRow()->id_proveedor;
-            $builder_producto = $db->table('productos_proveedor');
-            $builder_producto->select('precio');
-            $builder_producto->where('id_producto_necesidad', $id_producto);
-            $builder_producto->where('id_proveedor', $id_proveedor);
-            $builder_producto->where('seleccion_mejor', 1);
-            $query_producto = $builder_producto->get();
-
-            if ($query_producto->getNumRows() > 0) {
-                $producto = $query_producto->getRow();
-                $precio = $producto->precio;
-            } else {
-                $builder_producto->resetQuery();
-                $builder_producto->select('precio');
-                $builder_producto->where('id_producto_necesidad', $id_producto);
-                $builder_producto->where('id_proveedor', $id_proveedor);
-                $query_producto = $builder_producto->get();
-
-                if ($query_producto->getNumRows() > 0) {
-                    $producto = $query_producto->getRow();
-                    $precio = $producto->precio;
-                } else {
-                    log_message('error', 'No se encontró el producto con ID: ' . $id_producto . ' para el proveedor con ID: ' . $id_proveedor);
-                    $post_array->data['total_linea'] = 0;
-                    return $post_array;
-                }
-            }
-            $precio = is_numeric($precio) ? (float)$precio : 0;
-            $n_piezas = is_numeric($n_piezas) ? (int)$n_piezas : 0;
-
-            $total_linea = $n_piezas * $precio;
+    
+        // Verifica si el precio_compra ya está definido en el formulario
+        if (isset($post_array->data['precio_compra']) && is_numeric($post_array->data['precio_compra'])) {
+            $precio = (float)$post_array->data['precio_compra'];
+            $n_piezas = is_numeric($post_array->data['n_piezas']) ? (int)$post_array->data['n_piezas'] : 0;
+    
+            // Recalcula el total_linea
+            $total_linea = $precio * $n_piezas;
             $post_array->data['total_linea'] = $total_linea;
-            $post_array->data['precio_compra'] = $precio;
-
+    
+            // Actualiza la base de datos con el nuevo total_linea
+            $db = db_connect(usuario_sesion()['new_db']);
             $builder_linea = $db->table('linea_pedido_proveedor');
             $builder_linea->set('total_linea', $total_linea);
             $builder_linea->set('precio_compra', $precio);
-            $builder_linea->where('id_lineapedido', $id_lineapedido);
+            $builder_linea->where('id_lineapedido', $post_array->data['id_lineapedido']);
             $builder_linea->update();
-
-            log_message('debug', 'Línea de pedido actualizada con total: ' . $total_linea);
-        } else {
-            log_message('error', 'No se encontró el pedido con ID: ' . $id_pedido);
-            $post_array->data['total_linea'] = 0;
+    
+            log_message('debug', 'Línea de pedido actualizada con total_linea: ' . $total_linea . ' y precio_compra: ' . $precio);
+    
+            // Asegura que el total del pedido esté actualizado
+            $this->actualizarTotalPedido($post_array->data['id_pedido']);
         }
+    
         return $post_array;
     }
+    
     private function actualizarTotalPedido($id_pedido)
     {
         $data = usuario_sesion();
