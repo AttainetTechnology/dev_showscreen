@@ -167,64 +167,73 @@
 <div id="lineaPedidosGrid" class="ag-theme-alpine"></div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const estadosTexto = <?= json_encode($estados) ?>;
-        const lineasPedido = <?= json_encode($lineasPedido) ?> || [];
-        console.log("Datos de lineasPedido:", lineasPedido);
-        console.log("Datos de estados:", estadosTexto);
+ document.addEventListener('DOMContentLoaded', function() {
+    const estadosTexto = <?= json_encode($estados) ?>;
+    const lineasPedido = <?= json_encode($lineasPedido) ?> || [];
+    console.log("Datos de lineasPedido:", lineasPedido);
+    console.log("Datos de estados:", estadosTexto);
 
-        const columnDefs = [{
-                headerName: "Acciones",
-                field: "acciones",
-                cellRenderer: renderActions,
-                cellClass: "acciones-col",
-                minWidth: 250,
-                filter: false
+    const columnDefs = [
+        {
+            headerName: "Acciones",
+            field: "acciones",
+            cellRenderer: renderActions,
+            cellClass: "acciones-col",
+            minWidth: 250,
+            filter: false
+        },
+        {
+            headerName: "ID Línea",
+            field: "id_lineapedido",
+            flex: 1,
+            filter: "agTextColumnFilter",
+            floatingFilter: true
+        },
+        {
+            headerName: "Uds.",
+            field: "n_piezas",
+            flex: 1,
+            filter: "agTextColumnFilter",
+            floatingFilter: true
+        },
+        {
+            headerName: "Producto",
+            field: "nombre_producto",
+            flex: 1,
+            filter: "agTextColumnFilter",
+            floatingFilter: true
+        },
+        {
+            headerName: "Precio Unitario",
+            field: "precio_compra",
+            flex: 1,
+            filter: "agTextColumnFilter",
+            floatingFilter: true,
+            valueFormatter: params => `${params.value !== null ? params.value : 0} €` // Mostrar 0 si el valor es null
+        },
+        {
+            headerName: "Estado",
+            field: "estado",
+            flex: 1,
+            filter: "agTextColumnFilter",
+            floatingFilter: true,
+            valueGetter: function(params) {
+                return estadosTexto[params.data.estado] || "Estado desconocido";
             },
-            {
-                headerName: "ID Línea",
-                field: "id_lineapedido",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true
-            },
-            {
-                headerName: "Uds.",
-                field: "n_piezas",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true
-            },
-            {
-                headerName: "Producto",
-                field: "nombre_producto",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true
-            },
-            {
-                headerName: "Estado",
-                field: "estado",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true,
-                valueGetter: function(params) {
-                    return estadosTexto[params.data.estado] || "Estado desconocido";
-                },
-                valueFormatter: function(params) {
-                    return estadosTexto[params.data.estado] || "Estado desconocido";
-                }
-            },
-            {
-                headerName: "Total (€)",
-                field: "total_linea",
-                flex: 1,
-                filter: "agTextColumnFilter",
-                floatingFilter: true,
-                valueFormatter: params => `${params.value !== null ? params.value : 0} €` // Mostrar 0 si el valor es null
+            valueFormatter: function(params) {
+                return estadosTexto[params.data.estado] || "Estado desconocido";
             }
+        },
+        {
+            headerName: "Total (€)",
+            field: "total_linea",
+            flex: 1,
+            filter: "agTextColumnFilter",
+            floatingFilter: true,
+            valueFormatter: params => `${params.value !== null ? params.value : 0} €` // Mostrar 0 si el valor es null
+        }
+    ];
 
-        ];
 
         function renderActions(params) {
             const id = params.data.id_lineapedido;
