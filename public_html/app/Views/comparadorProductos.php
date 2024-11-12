@@ -215,7 +215,7 @@
                     method: 'POST',
                     success: function(response) {
                         if (response.success) {
-                            location.reload(); // Recargar la página sin mostrar mensajes
+                            location.reload();
                         } else {
                             console.error("Error en la respuesta: " + (response.message || "respuesta inesperada"));
                         }
@@ -231,7 +231,6 @@
             var idProveedor = $(this).data('id-proveedor');
             var idProducto = $(this).data('id-producto');
             var idRegistro = $(this).data('id-registro');
-            console.log('idProducto:', idProducto, 'idRegistro:', idRegistro);
 
             var url = `<?= base_url("Pedidos_proveedor/add") ?>?id_proveedor=${idProveedor}&id_producto=${idProducto}&id_registro=${idRegistro}`;
 
@@ -246,6 +245,7 @@
                 }
             });
         });
+
         $('.btn-elegir-proveedor').on('click', function() {
             var idProducto = $(this).data('id-producto');
             $('#modalContent').load('<?= base_url("elegirProveedor") ?>/' + idProducto, function() {
