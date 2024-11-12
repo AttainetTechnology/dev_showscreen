@@ -10,7 +10,11 @@ class Proveedores extends BaseControllerGC
 {
     public function index()
     {
-        return view('proveedores');
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Proveedores');
+        $data['amiga'] = $this->getBreadcrumbs();
+
+        return view('proveedores', $data);
     }
     public function getProveedores()
     {
@@ -74,10 +78,13 @@ class Proveedores extends BaseControllerGC
     }
     public function edit($id)
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Proveedores', base_url('/proveedores'));
+        $this->addBreadcrumb('Editar Proveedor');
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $proveedoresModel = new ProveedoresModel($db);
-
+        $data['amiga'] = $this->getBreadcrumbs();
         $proveedor = $proveedoresModel->find($id);
         if (!$proveedor) {
             return redirect()->to(base_url('proveedores'))->with('error', 'Proveedor no encontrado.');
@@ -92,7 +99,8 @@ class Proveedores extends BaseControllerGC
             'proveedor' => $proveedor,
             'provincias' => $provincias,
             'paises' => $paises,
-            'formas_pago' => $formas_pago
+            'formas_pago' => $formas_pago,
+            'amiga' => $data['amiga']
         ]);
     }
 

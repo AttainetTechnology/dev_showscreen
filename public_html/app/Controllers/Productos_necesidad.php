@@ -135,6 +135,9 @@ class Productos_necesidad extends BaseControllerGC
 
     public function edit($id_producto)
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Productos Necesidad', base_url('/productos_necesidad'));
+        $this->addBreadcrumb('Editar Producto');
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
@@ -142,12 +145,13 @@ class Productos_necesidad extends BaseControllerGC
         $producto = $productosModel->find($id_producto);
         $familias = $familiaModel->findAll();
         $productoVentaNombre = $this->obtenerNombreProductoVenta($id_producto);
-
+        $data['amiga'] = $this->getBreadcrumbs();
         return view('editProductoProveedor', [
             'producto' => $producto,
             'familias' => $familias,
             'productoVentaNombre' => $productoVentaNombre,
-            'id_empresa' => $data['id_empresa']
+            'id_empresa' => $data['id_empresa'],
+            'amiga' => $data['amiga']
         ]);
     }
     public function update($id_producto)
