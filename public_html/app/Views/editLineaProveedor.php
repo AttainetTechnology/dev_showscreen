@@ -1,6 +1,6 @@
 <form id="editLineaPedidoForm" method="post">
     <input type="hidden" name="id_lineapedido" value="<?= $lineaPedido['id_lineapedido'] ?>">
-    <input type="hidden" name="id_pedido" value="<?= $lineaPedido['id_pedido'] ?>"> 
+    <input type="hidden" name="id_pedido" value="<?= $lineaPedido['id_pedido'] ?>">
     <div class="form-group">
         <label for="id_producto">Producto</label>
         <select name="id_producto" class="form-control" required>
@@ -19,6 +19,12 @@
         <label for="precio_compra">Precio de Compra (€)</label>
         <input type="text" name="precio_compra" class="form-control" value="<?= $lineaPedido['precio_compra'] ?>" required>
     </div>
+    <div class="form-group">
+        <label for="unidad_precio">Unidad de Precio</label>
+        <input type="text" name="unidad_precio" id="unidad_precio" class="form-control" value="<?= $lineaPedido['unidad_precio'] ?>">
+    </div>
+
+
     <div class="form-group">
         <label for="estado">Estado</label>
         <select name="estado" class="form-control" required>

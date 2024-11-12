@@ -14,7 +14,13 @@ class Productos_necesidad extends BaseControllerGC
 
     public function index()
     {
-        return view('productos_necesidad');
+
+        $this->addBreadcrumb('Inicio', base_url());
+        $this->addBreadcrumb('Productos Necesidad', base_url('productos_necesidad'));
+
+        return view('productos_necesidad', [
+            'amiga' => $this->getBreadcrumbs()
+        ]);
     }
     public function getProductos()
     {

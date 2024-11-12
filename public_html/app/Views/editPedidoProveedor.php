@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
@@ -178,15 +179,23 @@
                 field: "acciones",
                 cellRenderer: renderActions,
                 cellClass: "acciones-col",
-                minWidth: 250,
+                minWidth: 230,
                 filter: false
+            },
+            {
+                headerName: "Observaciones",
+                field: "observaciones",
+                flex: 2,
+                filter: "agTextColumnFilter",
+                floatingFilter: true
             },
             {
                 headerName: "ID Línea",
                 field: "id_lineapedido",
                 flex: 1,
                 filter: "agTextColumnFilter",
-                floatingFilter: true
+                floatingFilter: true,
+                hide: true
             },
             {
                 headerName: "Uds.",
@@ -211,6 +220,14 @@
                 valueFormatter: params => `${params.value !== null ? params.value : 0} €`
             },
             {
+                headerName: "Precio Unidad",
+                field: "unidad_precio",
+                flex: 1,
+                filter: "agTextColumnFilter",
+                floatingFilter: true,
+                valueFormatter: params => params.value ? params.value : " "
+            },
+            {
                 headerName: "Estado",
                 field: "estado",
                 flex: 1,
@@ -230,7 +247,7 @@
                 filter: "agTextColumnFilter",
                 floatingFilter: true,
                 valueFormatter: params => `${params.value !== null ? params.value : 0} €`
-            }
+            },
         ];
 
 

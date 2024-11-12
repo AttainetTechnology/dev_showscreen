@@ -58,30 +58,32 @@ foreach ($pedido as $ped) { ?>
                             <tr>
                                 <th>Unidades</th>
                                 <th>Producto</th>
-                                <th>Total</th>
+                                <th>Precio Unitario (€)</th>
+                                <th>Observaciones</th>
+                                <th>Total (€)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $total = 0; ?>
                             <?php foreach ($lineas as $l) { ?>
                                 <tr>
-                                    <td><b><?php echo $l->n_piezas; ?> </b></td>
-
-                                    <td><b><?php echo $l->nombre_producto; ?> </b></td>
+                                    <td><b><?php echo $l->n_piezas; ?></b></td>
+                                    <td><b><?php echo $l->nombre_producto; ?></b></td>
+                                    <td><b><?php echo $l->precio_compra; ?></b> &euro;</td>
+                                    <td><?php echo $l->observaciones; ?></td>
                                     <td><b><?php echo $l->total_linea; ?></b> &euro;</td>
                                     <?php $total += $l->total_linea; ?>
                                 </tr>
-                            <?php }
-                            ?>
-
+                            <?php } ?>
                             <tr id="total_pedido">
-                                <td colspan="6">
+                                <td colspan="5">
                                     Total pedido: <b><?php echo $total; ?> &euro;</b><br />
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
 
                 <!-- /.col -->
             </div>

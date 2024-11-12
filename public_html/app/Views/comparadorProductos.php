@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/proveedor.css') ?>?v=<?= time() ?>">
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/botones.css') ?>?v=<?= time() ?>">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

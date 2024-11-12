@@ -5,20 +5,24 @@ namespace App\Controllers;
 use App\Models\ProductosNecesidadModel;
 use App\Models\ProductosProveedorModel;
 
-class ComparadorProductos extends BaseController
+class ComparadorProductos extends BaseControllerGC
 {
     public function index($id_producto = null)
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Productos Necesidad', base_url('/productos_necesidad'));
+        $this->addBreadcrumb('Comparador de Precios');
+    
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-
+    
         $productosNecesidadModel = new ProductosNecesidadModel($db);
         $productosProveedorModel = new ProductosProveedorModel($db);
-
+    
         $productos = $id_producto 
             ? $productosNecesidadModel->where('id_producto', $id_producto)->findAll()
             : $productosNecesidadModel->orderBy('nombre_producto', 'ASC')->findAll();
-
+    
         $comparador = [];
         foreach ($productos as $producto) {
             $ofertas = $productosProveedorModel
@@ -26,15 +30,19 @@ class ComparadorProductos extends BaseController
                 ->join('proveedores', 'proveedores.id_proveedor = productos_proveedor.id_proveedor')
                 ->where('id_producto_necesidad', $producto['id_producto'])
                 ->findAll();
-
+    
             $comparador[] = [
                 'producto' => $producto,
                 'ofertas' => $ofertas
             ];
         }
-
-        return view('comparadorProductos', ['comparador' => $comparador]);
+    
+        return view('comparadorProductos', [
+            'comparador' => $comparador,
+            'amiga' => $this->getBreadcrumbs(), 
+        ]);
     }
+    
 
     public function seleccionarMejor()
     {

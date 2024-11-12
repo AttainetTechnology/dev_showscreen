@@ -39,6 +39,10 @@ class Pedidos_proveedor extends BaseControllerGC
     //CREAMOS LA PAGINA DE PEDIDOS
     public function todos()
     {
+        // Agregar breadcrumbs para la página de todos los pedidos
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Pedidos');
+
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $builder = $db->table('pedidos_proveedor');
@@ -48,6 +52,8 @@ class Pedidos_proveedor extends BaseControllerGC
         $builder->orderBy('id_pedido', 'desc');
 
         $pedidos = $builder->get()->getResultArray();
+
+        $data['amiga'] = $this->getBreadcrumbs();
 
         foreach ($pedidos as &$pedido) {
             $pedido['nombre_proveedor'] = $this->getProveedorNombre($pedido['id_proveedor']);
@@ -59,8 +65,13 @@ class Pedidos_proveedor extends BaseControllerGC
                 'editar' => base_url("pedidos_proveedor/editar/{$pedido['id_pedido']}")
             ];
         }
-        return view('mostrarPedidosProveedor', ['pedidos' => $pedidos]);
+
+        return view('mostrarPedidosProveedor', [
+            'pedidos' => $pedidos,
+            'amiga' => $data['amiga']
+        ]);
     }
+
     private function getProveedorNombre($id_proveedor)
     {
         $data = usuario_sesion();
@@ -87,10 +98,15 @@ class Pedidos_proveedor extends BaseControllerGC
     }
     public function editar($id_pedido)
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Pedidos', base_url('/pedidos_proveedor'));
+        $this->addBreadcrumb('Editar Pedido');
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
         $pedido = $pedidoModel->find($id_pedido);
+
+        $data['amiga'] = $this->getBreadcrumbs();
         if (!$pedido) {
             return redirect()->to(base_url('pedidos_proveedor'))->with('error', 'Pedido no encontrado.');
         }
@@ -113,7 +129,8 @@ class Pedidos_proveedor extends BaseControllerGC
             'proveedores' => $proveedores,
             'usuarios' => $usuarios,
             'estados' => $estados,
-            'lineasPedido' => $lineasPedido
+            'lineasPedido' => $lineasPedido,
+            'amiga' => $data['amiga']
         ]);
     }
 
@@ -159,12 +176,21 @@ class Pedidos_proveedor extends BaseControllerGC
     }
     public function addPedido()
     {
+
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Añadir Pedido');
+
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $clienteModel = new ProveedoresModel($db);
+
+        // Añade los datos adicionales necesarios para la vista
         $data['proveedores'] = $clienteModel->findAll();
         $data['usuario_html'] = $this->guarda_usuario();
         $data['id_proveedor_seleccionado'] = $this->request->getGet('id_proveedor');
+        $data['amiga'] = $this->getBreadcrumbs();
+
+        // Renderiza la vista
         return view('addPedidoProveedor', $data);
     }
     public function eliminar($id_pedido)
@@ -186,7 +212,7 @@ class Pedidos_proveedor extends BaseControllerGC
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
-        
+
         $pedidoData = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
             'referencia' => $this->request->getPost('referencia'),
@@ -194,18 +220,18 @@ class Pedidos_proveedor extends BaseControllerGC
             'observaciones' => $this->request->getPost('observaciones'),
             'id_usuario' => $data['id_user']
         ];
-    
+
         if ($pedidoModel->insert($pedidoData)) {
             $insertId = $pedidoModel->insertID();
-    
+
             // Verificar si se han pasado `id_producto` e `id_registro`
             $id_producto = $this->request->getPost('id_producto');
             $id_registro = $this->request->getPost('id_registro');
-            
+
             if ($id_producto && $id_registro) {
                 $this->crearLineaAutomatica($insertId, $id_producto, $id_registro);
             }
-    
+
             return redirect()->to(base_url("/pedidos_proveedor/editar/$insertId"))
                 ->with('message', 'Pedido guardado con éxito.');
         } else {
@@ -214,40 +240,40 @@ class Pedidos_proveedor extends BaseControllerGC
     }
 
     private function crearLineaAutomatica($id_pedido, $id_producto, $id_registro)
-{
-    $data = usuario_sesion();
-    $db = db_connect($data['new_db']);
-    
-    // Buscar el precio para el producto específico del proveedor
-    $builder = $db->table('productos_proveedor');
-    $builder->select('precio');
-    $builder->where('id_producto_necesidad', $id_producto);
-    $builder->where('id', $id_registro);  // id_registro identifica el precio específico de esta oferta
-    $query = $builder->get();
-    
-    if ($query->getNumRows() > 0) {
-        $precio = $query->getRow()->precio;
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
 
-        // Crear la línea de pedido
-        $lineaData = [
-            'id_pedido' => $id_pedido,
-            'id_producto' => $id_producto,
-            'precio_compra' => $precio,
-            'n_piezas' => 1,  // Inicialmente, puedes ajustar según sea necesario
-            'total_linea' => $precio
-        ];
-        
-        $lineaPedidoModel = new LineaPedidoModel($db);
-        $lineaPedidoModel->insert($lineaData);
+        // Buscar el precio para el producto específico del proveedor
+        $builder = $db->table('productos_proveedor');
+        $builder->select('precio');
+        $builder->where('id_producto_necesidad', $id_producto);
+        $builder->where('id', $id_registro);  // id_registro identifica el precio específico de esta oferta
+        $query = $builder->get();
 
-        // Actualizar el total del pedido
-        $this->actualizarTotalPedido($id_pedido);
-    } else {
-        log_message('error', 'No se encontró un precio para el producto ID: ' . $id_producto . ' y el registro ID: ' . $id_registro);
+        if ($query->getNumRows() > 0) {
+            $precio = $query->getRow()->precio;
+
+            // Crear la línea de pedido
+            $lineaData = [
+                'id_pedido' => $id_pedido,
+                'id_producto' => $id_producto,
+                'precio_compra' => $precio,
+                'n_piezas' => 1,  // Inicialmente, puedes ajustar según sea necesario
+                'total_linea' => $precio
+            ];
+
+            $lineaPedidoModel = new LineaPedidoModel($db);
+            $lineaPedidoModel->insert($lineaData);
+
+            // Actualizar el total del pedido
+            $this->actualizarTotalPedido($id_pedido);
+        } else {
+            log_message('error', 'No se encontró un precio para el producto ID: ' . $id_producto . ' y el registro ID: ' . $id_registro);
+        }
     }
-}
 
-    
+
 
     function paso_id_pedido($value, $id_pedido)
     {
@@ -387,6 +413,8 @@ class Pedidos_proveedor extends BaseControllerGC
     public function actualizarLinea($id_lineapedido)
     {
         $data = $this->request->getPost();
+        $data['unidad_precio'] = $this->request->getPost('unidad_precio'); // Captura la unidad de precio
+
         $db = db_connect(usuario_sesion()['new_db']);
         $builder = $db->table('linea_pedido_proveedor');
         $builder->where('id_lineapedido', $id_lineapedido);
@@ -419,22 +447,24 @@ class Pedidos_proveedor extends BaseControllerGC
             return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar la línea de pedido']);
         }
     }
-
     public function editLineaPedidoForm($id_lineapedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
         $builder = $db->table('linea_pedido_proveedor');
-        $builder->select('linea_pedido_proveedor.*, productos_necesidad.nombre_producto');
+        $builder->select('linea_pedido_proveedor.*, productos_necesidad.nombre_producto, linea_pedido_proveedor.unidad_precio'); // Añadir unidad_precio aquí
         $builder->join('productos_necesidad', 'productos_necesidad.id_producto = linea_pedido_proveedor.id_producto', 'left');
         $builder->where('id_lineapedido', $id_lineapedido);
         $lineaPedido = $builder->get()->getRowArray();
+
         $productosModel = new ProductosNecesidadModel($db);
         $productos = $productosModel->findAll();
+
         return view('editLineaProveedor', [
             'lineaPedido' => $lineaPedido,
             'productos' => $productos
         ]);
     }
+
     function _pinta_euro_linea($total_linea)
     {
         return "<div> <b>$total_linea &euro;</b></div>";
