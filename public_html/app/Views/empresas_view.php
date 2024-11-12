@@ -52,14 +52,13 @@
 </div>
 <div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
 
-<!-- Modal para agregar empresa -->
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" id="addModalContent"></div>
     </div>
 </div>
 
-<!-- Modal para editar empresa -->
+
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" id="editModalContent"></div>

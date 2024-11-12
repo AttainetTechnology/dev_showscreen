@@ -42,20 +42,31 @@ class Empresas extends BaseControllerGC
 		return view('addEmpresas', $data);
 	}
 	
-
     public function editForm($id)
-{
-    $data = usuario_sesion();
-    $db = db_connect($data['new_db']); 
-    $clienteModel = new ClienteModel($db);
-    $provinciasModel = new ProvinciasModel($db);
-
-    $data['empresa'] = $clienteModel->find($id);
-    $data['provincias'] = $provinciasModel->findAll(); 
-
-    return view('editEmpresa', $data); 
-}
-
+    {
+        // Verifica si el ID es válido
+        if (!is_numeric($id)) {
+            return $this->response->setStatusCode(400, 'ID inválido');
+        }
+    
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']); 
+        $clienteModel = new ClienteModel($db);
+        $provinciasModel = new ProvinciasModel($db);
+    
+        // Busca la empresa con el ID proporcionado
+        $data['empresa'] = $clienteModel->find($id);
+    
+        // Si no se encuentra la empresa, responde con un error
+        if (!$data['empresa']) {
+            return $this->response->setStatusCode(404, 'Empresa no encontrada');
+        }
+    
+        // Carga las provincias y retorna la vista
+        $data['provincias'] = $provinciasModel->findAll(); 
+        return view('editarEmpresa', $data); 
+    }
+    
 	public function add()
 {
     $data = usuario_sesion();
