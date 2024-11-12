@@ -39,6 +39,8 @@ class Pedidos extends BaseControllerGC
 
 	public function todos($coge_estado, $where_estado)
 	{
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Pedidos');
 		helper('controlacceso');
 		$session = session();
 		$data = datos_user();
@@ -63,11 +65,15 @@ class Pedidos extends BaseControllerGC
 		// Verificar el nivel de acceso para permitir la eliminación
 		$data['allow_delete'] = ($nivel_acceso == 9);
 
+		$data['amiga'] = $this->getBreadcrumbs();
 		// Cargar la vista pasando los datos
 		echo view('mostrarPedido', $data);
 	}
 	public function add()
 	{
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Pedidos', base_url('/pedidos/enmarcha'));
+		$this->addBreadcrumb('Añadir Pedido');
 		$data = datos_user();  // Obtener los datos de la sesión del usuario
 		$db = db_connect($data['new_db']);  // Conectar a la base de datos del cliente
 
@@ -84,6 +90,7 @@ class Pedidos extends BaseControllerGC
 		$builder->where('user_activo', '1');
 		$query = $builder->get();
 		$usuario = $query->getRow();
+		$data['amiga'] = $this->getBreadcrumbs();
 
 		// Verificar si se encontró el usuario
 		$data['usuario_sesion'] = $usuario ? [
@@ -173,6 +180,9 @@ class Pedidos extends BaseControllerGC
 
 	public function edit($id_pedido)
 	{
+		$this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Pedidos', base_url('/pedidos/enmarcha'));
+        $this->addBreadcrumb('Editar Pedido');
 		helper('controlacceso');
 		$session = session();
 		$data = datos_user();
@@ -202,7 +212,7 @@ class Pedidos extends BaseControllerGC
 		$data['estados'] = array_filter($estadoModel->findAll(), function ($estado) {
 			return $estado['id_estado'] != 3; // Filtra el estado con id 3
 		});
-
+		$data['amiga'] = $this->getBreadcrumbs();
 		$data['pedido'] = $pedido;
 		$data['lineas_pedido'] = $lineas_pedido;
 		return view('editPedido', $data);

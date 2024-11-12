@@ -178,6 +178,7 @@ class Pedidos_proveedor extends BaseControllerGC
     {
 
         $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Pedidos Proveedor', base_url('pedidos_proveedor'));
         $this->addBreadcrumb('Añadir Pedido');
 
         $data = usuario_sesion();
