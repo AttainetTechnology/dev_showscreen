@@ -12,11 +12,15 @@ class Contactos extends BaseController
         $nivel = control_login();
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
+        //amiga
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Contactos');
+        $data['amiga'] = $this->getBreadcrumbs();
+
         $clienteModel = new \App\Models\ClienteModel($db);
         $clientes = $clienteModel->findAll();
-        return view('contactosView', ['clientes' => $clientes]);
+        return view('contactosView', ['clientes' => $clientes, 'amiga' => $data['amiga']]);
     }
-
 
     public function getContactos()
     {

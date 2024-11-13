@@ -9,7 +9,7 @@ use App\Models\FormasPagoModel;
 use App\Models\PaisesModel;
 use App\Models\Contactos;
 
-class Empresas extends BaseControllerGC
+class Empresas extends BaseController
 {
     public function index()
     {
@@ -95,7 +95,7 @@ class Empresas extends BaseControllerGC
     
         // Instancia los modelos
         $clienteModel = new ClienteModel($db);
-        $contactoModel = new Contactos($db); // Modelo para los contactos
+        $contactoModel = new Contactos($db);
         $provinciasModel = new ProvinciasModel($db);
         $poblacionesModel = new PoblacionesModel($db);
         $formasPagoModel = new FormasPagoModel($db);
@@ -115,6 +115,12 @@ class Empresas extends BaseControllerGC
         if (!$data['empresa']) {
             return $this->response->setStatusCode(404, 'Empresa no encontrada');
         }
+    
+        // Añade migas de pan para la vista de edición de la empresa
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Empresas', base_url('empresas'));
+        $this->addBreadcrumb('Editar Empresa');
+        $data['amiga'] = $this->getBreadcrumbs();
     
         return view('editarEmpresa', $data);
     }

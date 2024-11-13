@@ -16,6 +16,7 @@ class BaseController extends Controller
     protected $data = [];
     protected $output = [];
     protected $db;
+    protected $amiga = [];
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -126,5 +127,14 @@ protected function logAction($seccion, $log, $stateParameters) {
 
     // Insertar el registro de log en la base de datos
     $logModel->insert($data);
+}
+public function addBreadcrumb($title, $link = '#')
+{
+    $this->amiga[] = ['title' => $title, 'link' => $link];
+}
+
+public function getBreadcrumbs()
+{
+    return $this->amiga;
 }
 }

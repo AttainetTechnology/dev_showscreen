@@ -76,16 +76,16 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="observaciones_cliente" class="form-label">Observaciones Cliente</label>
-            <textarea class="form-control" id="observaciones_cliente" name="observaciones_cliente"></textarea>
-        </div>
-        <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email">
         </div>
         <div class="mb-3">
             <label for="web" class="form-label">Web</label>
             <input type="text" class="form-control" id="web" name="web">
+        </div>
+        <div class="mb-3">
+            <label for="observaciones_cliente" class="form-label">Observaciones Cliente</label>
+            <textarea class="form-control" id="observaciones_cliente" name="observaciones_cliente"></textarea>
         </div>
     </div>
     <div class="modal-footer buttonsEditProductProveedAbajo">
