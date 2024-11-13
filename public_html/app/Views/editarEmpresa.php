@@ -1,9 +1,25 @@
-<form id="editEmpresaForm">
-    <input type="hidden" id="edit_id_cliente" name="id_cliente" value="<?= $empresa['id_cliente'] ?>">
-    <div class="modal-header">
-        <h5 class="modal-title">Editar Empresa</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+<?= $this->extend('layouts/main') ?>
+<?= $this->section('content') ?>
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+
+<style>
+    .titleeditEmpresa {
+        margin-left: 2vw !important;
+        margin-top: 6vh !important;
+    }
+</style>
+<h2 class="titleeditEmpresa">Editar Empresa</h2>
+<form id="editEmpresaForm" action="<?= base_url('empresas/actualizar') ?>" method="POST">
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="boton btnGuardar">Guardar Cambios
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 27" fill="none">
+                <path d="M7.11751 6.91875C6.86324 6.91875 6.61937 7.01976 6.43957 7.19956C6.25977 7.37936 6.15876 7.62322 6.15876 7.8775V19.3825C6.15876 19.6368 6.25977 19.8806 6.43957 20.0604C6.61937 20.2402 6.86324 20.3413 7.11751 20.3413H18.6225C18.8768 20.3413 19.1207 20.2402 19.3005 20.0604C19.4803 19.8806 19.5813 19.6368 19.5813 19.3825V7.8775C19.5813 7.62322 19.4803 7.37936 19.3005 7.19956C19.1207 7.01976 18.8768 6.91875 18.6225 6.91875H14.3081C14.0539 6.91875 13.81 7.01976 13.6302 7.19956C13.4504 7.37936 13.3494 7.62322 13.3494 7.8775V14.8697L15.8862 12.3319C15.9763 12.2418 16.0983 12.1913 16.2256 12.1913C16.3529 12.1913 16.475 12.2418 16.565 12.3319C16.655 12.4219 16.7056 12.544 16.7056 12.6712C16.7056 12.7985 16.655 12.9206 16.565 13.0106L13.2094 16.3663C13.1649 16.4109 13.112 16.4463 13.0537 16.4705C12.9955 16.4947 12.9331 16.5071 12.87 16.5071C12.807 16.5071 12.7445 16.4947 12.6863 16.4705C12.628 16.4463 12.5751 16.4109 12.5306 16.3663L9.17499 13.0106C9.13042 12.9661 9.09506 12.9132 9.07094 12.8549C9.04682 12.7967 9.03441 12.7343 9.03441 12.6712C9.03441 12.6082 9.04682 12.5458 9.07094 12.4876C9.09506 12.4293 9.13042 12.3764 9.17499 12.3319C9.21956 12.2873 9.27247 12.2519 9.33071 12.2278C9.38894 12.2037 9.45136 12.1913 9.51439 12.1913C9.57742 12.1913 9.63983 12.2037 9.69807 12.2278C9.7563 12.2519 9.80921 12.2873 9.85379 12.3319L12.3906 14.8697V7.8775C12.3906 7.36895 12.5927 6.88122 12.9523 6.52162C13.3119 6.16202 13.7996 5.96 14.3081 5.96H18.6225C19.1311 5.96 19.6188 6.16202 19.9784 6.52162C20.338 6.88122 20.54 7.36895 20.54 7.8775V19.3825C20.54 19.8911 20.338 20.3788 19.9784 20.7384C19.6188 21.098 19.1311 21.3 18.6225 21.3H7.11751C6.60896 21.3 6.12124 21.098 5.76164 20.7384C5.40203 20.3788 5.20001 19.8911 5.20001 19.3825V7.8775C5.20001 7.36895 5.40203 6.88122 5.76164 6.52162C6.12124 6.16202 6.60896 5.96 7.11751 5.96H9.51439C9.64153 5.96 9.76346 6.0105 9.85336 6.1004C9.94326 6.19031 9.99376 6.31224 9.99376 6.43937C9.99376 6.56651 9.94326 6.68844 9.85336 6.77834C9.76346 6.86824 9.64153 6.91875 9.51439 6.91875H7.11751Z" fill="white" />
+            </svg>
+        </button>
     </div>
+    <input type="hidden" id="edit_id_cliente" name="id_cliente" value="<?= $empresa['id_cliente'] ?>">
     <div class="modal-body">
         <div class="mb-3">
             <label for="edit_nombre_cliente" class="form-label">Nombre Cliente</label>
@@ -11,7 +27,7 @@
         </div>
         <div class="mb-3">
             <label for="edit_nif" class="form-label">NIF</label>
-            <input type="text" class="form-control" id="edit_nif" name="nif" value="<?= $empresa['nif'] ?>" required>
+            <input type="text" class="form-control" id="edit_nif" name="nif" value="<?= $empresa['nif'] ?>">
         </div>
         <div class="mb-3">
             <label for="edit_direccion" class="form-label">Dirección</label>
@@ -19,22 +35,36 @@
         </div>
         <div class="mb-3">
             <label for="edit_pais" class="form-label">País</label>
-            <input type="text" class="form-control" id="edit_pais" name="pais" value="<?= $empresa['pais'] ?>">
+            <select class="form-control" id="edit_pais" name="pais">
+                <option value="">Seleccione un país</option>
+                <?php foreach ($paises as $pais): ?>
+                    <option value="<?= $pais['id']; ?>" <?= $empresa['pais'] == $pais['id'] ? 'selected' : '' ?>>
+                        <?= $pais['nombre']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="mb-3">
             <label for="edit_id_provincia" class="form-label">Provincia</label>
             <select class="form-control" id="edit_id_provincia" name="id_provincia">
                 <option value="">Seleccione una provincia</option>
                 <?php foreach ($provincias as $provincia): ?>
-                    <option value="<?= $provincia['id_provincia'] ?>" <?= $empresa['id_provincia'] == $provincia['id_provincia'] ? 'selected' : '' ?>>
-                        <?= $provincia['provincia'] ?>
+                    <option value="<?= $provincia['id_provincia']; ?>" <?= $empresa['id_provincia'] == $provincia['id_provincia'] ? 'selected' : '' ?>>
+                        <?= $provincia['provincia']; ?>
                     </option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="mb-3">
             <label for="edit_poblacion" class="form-label">Población</label>
-            <input type="text" class="form-control" id="edit_poblacion" name="poblacion" value="<?= $empresa['poblacion'] ?>">
+            <select class="form-control" id="edit_poblacion" name="poblacion">
+                <option value="">Seleccione una población</option>
+                <?php foreach ($poblaciones as $poblacion): ?>
+                    <option value="<?= $poblacion['id_poblacion']; ?>" <?= $empresa['poblacion'] == $poblacion['id_poblacion'] ? 'selected' : '' ?>>
+                        <?= $poblacion['poblacion']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="mb-3">
             <label for="edit_telf" class="form-label">Teléfono</label>
@@ -49,16 +79,15 @@
             <input type="text" class="form-control" id="edit_cargaen" name="cargaen" value="<?= $empresa['cargaen'] ?>">
         </div>
         <div class="mb-3">
-            <label for="edit_exportacion" class="form-label">Exportación</label>
-            <input type="text" class="form-control" id="edit_exportacion" name="exportacion" value="<?= $empresa['exportacion'] ?>">
-        </div>
-        <div class="mb-3">
             <label for="edit_f_pago" class="form-label">Forma de Pago</label>
-            <input type="text" class="form-control" id="edit_f_pago" name="f_pago" value="<?= $empresa['f_pago'] ?>">
-        </div>
-        <div class="mb-3">
-            <label for="edit_otros_contactos" class="form-label">Otros Contactos</label>
-            <input type="text" class="form-control" id="edit_otros_contactos" name="otros_contactos" value="<?= $empresa['otros_contactos'] ?>">
+            <select class="form-control" id="edit_f_pago" name="f_pago">
+                <option value="">Seleccione una forma de pago</option>
+                <?php foreach ($formas_pago as $forma): ?>
+                    <option value="<?= $forma['id_formapago']; ?>" <?= $empresa['f_pago'] == $forma['id_formapago'] ? 'selected' : '' ?>>
+                        <?= $forma['formapago']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="mb-3">
             <label for="edit_email" class="form-label">Email</label>
@@ -74,29 +103,311 @@
         </div>
     </div>
     <div class="modal-footer buttonsEditProductProveedAbajo">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" onclick="actualizarEmpresa()">Guardar Cambios</button>
+        <a href="<?= base_url('empresas') ?>" class="boton volverButton">Volver
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 13C19.5 13.2155 19.4144 13.4221 19.262 13.5745C19.1096 13.7269 18.903 13.8125 18.6875 13.8125H9.27386L12.7627 17.2997C12.8383 17.3753 12.8982 17.465 12.9391 17.5637C12.98 17.6624 13.001 17.7682 13.001 17.875C13.001 17.9818 12.98 18.0876 12.9391 18.1863C12.8982 18.285 12.8383 18.3747 12.7627 18.4502C12.6872 18.5258 12.5975 18.5857 12.4988 18.6266C12.4001 18.6675 12.2943 18.6885 12.1875 18.6885C12.0807 18.6885 11.9749 18.6675 11.8762 18.6266C11.7775 18.5857 11.6878 18.5258 11.6122 18.4502L6.73724 13.5752C6.66157 13.4998 6.60154 13.4101 6.56058 13.3114C6.51962 13.2127 6.49854 13.1069 6.49854 13C6.49854 12.8931 6.51962 12.7873 6.56058 12.6886C6.60154 12.5899 6.66157 12.5002 6.73724 12.4247L11.6122 7.54974C11.7648 7.39717 11.9717 7.31146 12.1875 7.31146C12.4032 7.31146 12.6102 7.39717 12.7627 7.54974C12.9153 7.7023 13.001 7.90923 13.001 8.12499C13.001 8.34075 12.9153 8.54767 12.7627 8.70024L9.27386 12.1875H18.6875C18.903 12.1875 19.1096 12.2731 19.262 12.4255C19.4144 12.5778 19.5 12.7845 19.5 13Z" fill="white" />
+            </svg>
+        </a>
+        <button type="submit" class="boton btnGuardar">Guardar Cambios
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 27" fill="none">
+                <path d="M7.11751 6.91875C6.86324 6.91875 6.61937 7.01976 6.43957 7.19956C6.25977 7.37936 6.15876 7.62322 6.15876 7.8775V19.3825C6.15876 19.6368 6.25977 19.8806 6.43957 20.0604C6.61937 20.2402 6.86324 20.3413 7.11751 20.3413H18.6225C18.8768 20.3413 19.1207 20.2402 19.3005 20.0604C19.4803 19.8806 19.5813 19.6368 19.5813 19.3825V7.8775C19.5813 7.62322 19.4803 7.37936 19.3005 7.19956C19.1207 7.01976 18.8768 6.91875 18.6225 6.91875H14.3081C14.0539 6.91875 13.81 7.01976 13.6302 7.19956C13.4504 7.37936 13.3494 7.62322 13.3494 7.8775V14.8697L15.8862 12.3319C15.9763 12.2418 16.0983 12.1913 16.2256 12.1913C16.3529 12.1913 16.475 12.2418 16.565 12.3319C16.655 12.4219 16.7056 12.544 16.7056 12.6712C16.7056 12.7985 16.655 12.9206 16.565 13.0106L13.2094 16.3663C13.1649 16.4109 13.112 16.4463 13.0537 16.4705C12.9955 16.4947 12.9331 16.5071 12.87 16.5071C12.807 16.5071 12.7445 16.4947 12.6863 16.4705C12.628 16.4463 12.5751 16.4109 12.5306 16.3663L9.17499 13.0106C9.13042 12.9661 9.09506 12.9132 9.07094 12.8549C9.04682 12.7967 9.03441 12.7343 9.03441 12.6712C9.03441 12.6082 9.04682 12.5458 9.07094 12.4876C9.09506 12.4293 9.13042 12.3764 9.17499 12.3319C9.21956 12.2873 9.27247 12.2519 9.33071 12.2278C9.38894 12.2037 9.45136 12.1913 9.51439 12.1913C9.57742 12.1913 9.63983 12.2037 9.69807 12.2278C9.7563 12.2519 9.80921 12.2873 9.85379 12.3319L12.3906 14.8697V7.8775C12.3906 7.36895 12.5927 6.88122 12.9523 6.52162C13.3119 6.16202 13.7996 5.96 14.3081 5.96H18.6225C19.1311 5.96 19.6188 6.16202 19.9784 6.52162C20.338 6.88122 20.54 7.36895 20.54 7.8775V19.3825C20.54 19.8911 20.338 20.3788 19.9784 20.7384C19.6188 21.098 19.1311 21.3 18.6225 21.3H7.11751C6.60896 21.3 6.12124 21.098 5.76164 20.7384C5.40203 20.3788 5.20001 19.8911 5.20001 19.3825V7.8775C5.20001 7.36895 5.40203 6.88122 5.76164 6.52162C6.12124 6.16202 6.60896 5.96 7.11751 5.96H9.51439C9.64153 5.96 9.76346 6.0105 9.85336 6.1004C9.94326 6.19031 9.99376 6.31224 9.99376 6.43937C9.99376 6.56651 9.94326 6.68844 9.85336 6.77834C9.76346 6.86824 9.64153 6.91875 9.51439 6.91875H7.11751Z" fill="white" />
+            </svg>
+        </button>
     </div>
+    <br>
 </form>
+<!-- Título de Contactos y Botón para Añadir Contacto -->
+<h3>Contactos Asociados</h3>
+<button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addContactoModal">Añadir Contacto</button>
+
+<!-- Contenedor de la tabla de contactos -->
+<div id="contactosGrid" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
+<!-- Modal para editar contacto -->
+<div class="modal fade" id="editContactoModal" tabindex="-1" aria-labelledby="editContactoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editContactoModalLabel">Editar Contacto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editContactoForm">
+                    <input type="hidden" id="edit_id_contacto" name="id_contacto">
+                    <div class="mb-3">
+                        <label for="edit_nombre_contacto" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="edit_nombre_contacto" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_apellidos_contacto" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="edit_apellidos_contacto" name="apellidos" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_telf_contacto" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="edit_telf_contacto" name="telf" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_cargo_contacto" class="form-label">Cargo</label>
+                        <input type="text" class="form-control" id="edit_cargo_contacto" name="cargo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_email_contacto" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="edit_email_contacto" name="email" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="guardarEdicionContacto()">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para agregar nuevo contacto -->
+<div class="modal fade" id="addContactoModal" tabindex="-1" aria-labelledby="addContactoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactoModalLabel">Agregar Nuevo Contacto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addContactoForm">
+                    <input type="hidden" name="id_cliente" value="<?= $empresa['id_cliente'] ?>">
+                    <div class="mb-3">
+                        <label for="nombre_contacto" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre_contacto" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidos_contacto" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos_contacto" name="apellidos" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telf_contacto" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="telf_contacto" name="telf" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cargo_contacto" class="form-label">Cargo</label>
+                        <input type="text" class="form-control" id="cargo_contacto" name="cargo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email_contacto" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email_contacto" name="email" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="agregarContacto()">Guardar Contacto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-function actualizarEmpresa() {
-    var formData = $('#editEmpresaForm').serialize();
-    $.ajax({
-        url: '<?= base_url("empresas/actualizar") ?>',
-        type: 'POST',
-        data: formData,
-        success: function(response) {
-            if (response.success) {
-                $('#editModal').modal('hide');
-                location.reload();
-            } else {
-                alert('Error: ' + response.message);
+    // Declara gridOptions como una variable global
+    let gridOptions;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const columnDefs = [{
+                headerName: "Acciones",
+                field: "acciones",
+                cellRenderer: params => `
+            <button onclick="editarContacto(${params.data.id_contacto})" class="btn btn-primary btn-sm">Editar</button>
+            <button onclick="eliminarContacto(${params.data.id_contacto})" class="btn btn-danger btn-sm">Eliminar</button>
+        `,
+                minWidth: 200
+            },
+            {
+                headerName: "ID Contacto",
+                field: "id_contacto",
+                hide: true
+            }, // Campo oculto para ID de contacto
+            {
+                headerName: "Nombre",
+                field: "nombre",
+                filter: 'agTextColumnFilter',
+                minWidth: 150
+            },
+            {
+                headerName: "Apellidos",
+                field: "apellidos",
+                filter: 'agTextColumnFilter',
+                minWidth: 150
+            },
+            {
+                headerName: "Teléfono",
+                field: "telf",
+                filter: 'agTextColumnFilter',
+                minWidth: 100
+            },
+            {
+                headerName: "Cargo",
+                field: "cargo",
+                filter: 'agTextColumnFilter',
+                minWidth: 120
+            },
+            {
+                headerName: "Email",
+                field: "email",
+                filter: 'agTextColumnFilter',
+                minWidth: 200
+            },
+        ];
+
+        // Define gridOptions globalmente
+        gridOptions = {
+            columnDefs: columnDefs,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                sortable: true,
+                floatingFilter: true,
+                resizable: true
+            },
+            rowData: [], // Inicialmente vacío
+            pagination: true,
+            paginationPageSize: 10,
+            domLayout: 'autoHeight',
+            rowHeight: 50,
+            localeText: {
+                noRowsToShow: 'No hay contactos disponibles.'
+            },
+            onGridReady: function(params) {
+                fetchContactosData(params.api);
             }
-        },
-        error: function() {
-            alert('Error en la solicitud.');
-        }
+        };
+
+        const contactosGridDiv = document.querySelector('#contactosGrid');
+        new agGrid.Grid(contactosGridDiv, gridOptions);
     });
-}
+
+
+    function fetchContactosData(gridApi) {
+        const idCliente = <?= $empresa['id_cliente'] ?>;
+
+        fetch('<?= base_url("empresas/getContactosPorEmpresa") ?>/' + idCliente)
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    gridApi.applyTransaction({
+                        add: data
+                    });
+                } else {
+                    console.error('Los datos recibidos no son un array:', data);
+                }
+            })
+            .catch(error => console.error('Error al cargar los datos de contactos:', error));
+    }
+
+
+    function agregarContacto() {
+        const formData = $('#addContactoForm').serialize();
+
+        $.ajax({
+            url: '<?= base_url("contactos/agregar") ?>',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    // Cerrar el modal y limpiar el formulario
+                    $('#addContactoModal').modal('hide');
+                    $('#addContactoForm')[0].reset();
+
+                    // Recargar la página para reflejar el nuevo contacto
+                    location.reload();
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('Error en la solicitud.');
+            }
+        });
+    }
+
+    function editarContacto(id_contacto) {
+        $.ajax({
+            url: '<?= base_url("empresas/getContacto") ?>/' + id_contacto,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    $('#edit_id_contacto').val(response.data.id_contacto);
+                    $('#edit_nombre_contacto').val(response.data.nombre);
+                    $('#edit_apellidos_contacto').val(response.data.apellidos);
+                    $('#edit_telf_contacto').val(response.data.telf);
+                    $('#edit_cargo_contacto').val(response.data.cargo);
+                    $('#edit_email_contacto').val(response.data.email);
+
+                    $('#editContactoModal').modal('show');
+                } else {
+                    alert('Error al cargar los datos del contacto.');
+                }
+            },
+            error: function() {
+                alert('Error en la solicitud.');
+            }
+        });
+    }
+
+
+    function guardarEdicionContacto() {
+        const formData = $('#editContactoForm').serialize();
+
+        $.ajax({
+            url: '<?= base_url("empresas/actualizarContacto") ?>',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    // Cierra el modal y recarga la página para ver los cambios
+                    $('#editContactoModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert('Error al actualizar el contacto: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('Error en la solicitud.');
+            }
+        });
+    }
+
+
+
+    function eliminarContacto(id_contacto) {
+        if (confirm('¿Estás seguro de eliminar este contacto?')) {
+            $.ajax({
+                url: '<?= base_url("contactos/eliminarContacto") ?>/' + id_contacto,
+                type: 'POST',
+                success: function(response) {
+                    if (response.success) {
+                        // Recarga la página después de la eliminación exitosa
+                        location.reload();
+                    } else {
+                        alert('Error al eliminar el contacto: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Error en la solicitud.');
+                }
+            });
+        }
+    }
+</script>
+<?= $this->endSection() ?>
+<script>
+    function actualizarEmpresa() {
+        var formData = $('#editEmpresaForm').serialize();
+        $.ajax({
+            url: '<?= base_url("empresas/actualizar") ?>',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    $('#editModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('Error en la solicitud.');
+            }
+        });
+    }
 </script>

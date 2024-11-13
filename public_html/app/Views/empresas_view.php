@@ -73,7 +73,7 @@
                 cellRenderer: params => {
                     const links = params.data.acciones;
                     return `
-                    <button onclick="editarEmpresa('${links.editar}', '${params.data.nombre_cliente}', '${params.data.id_cliente}')" class="btn botonTabla btnEditarTabla" title="Editar">
+                     <button onclick="editarEmpresa('${links.editar}')" class="btn botonTabla btnEditarTabla" title="Editar">
                     Editar
                       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
                     <path d="M14.7513 1.98301C14.8352 2.07186 14.8823 2.19218 14.8823 2.31763C14.8823 2.44307 14.8352 2.5634 14.7513 2.65224L13.8145 3.64186L12.0182 1.74604L12.955 0.756413C13.0392 0.66756 13.1534 0.617645 13.2725 0.617645C13.3916 0.617645 13.5058 0.66756 13.59 0.756413L14.7513 1.98207V1.98301ZM13.1795 4.31109L11.3833 2.41526L5.26424 8.87435C5.21481 8.92651 5.1776 8.99013 5.15557 9.06014L4.43256 11.3484C4.41945 11.3901 4.41759 11.4349 4.42719 11.4776C4.43678 11.5204 4.45746 11.5595 4.48691 11.5906C4.51635 11.6217 4.55341 11.6435 4.59393 11.6536C4.63446 11.6637 4.67685 11.6618 4.71638 11.6479L6.88448 10.8849C6.95073 10.8619 7.011 10.823 7.06052 10.7711L13.1795 4.31109Z" fill="white"/>
@@ -103,6 +103,16 @@
                 filter: 'agTextColumnFilter'
             },
             {
+                headerName: "Dirección",
+                field: "direccion",
+                filter: 'agTextColumnFilter'
+            },
+            {
+                headerName: "Provincia",
+                field: "id_provincia",
+                filter: 'agTextColumnFilter'
+            },
+            {
                 headerName: "Población",
                 field: "poblacion",
                 filter: 'agTextColumnFilter'
@@ -113,8 +123,8 @@
                 filter: 'agTextColumnFilter'
             },
             {
-                headerName: "Carga en",
-                field: "cargaen",
+                headerName: "Forma de Pago",
+                field: "f_pago",
                 filter: 'agTextColumnFilter'
             },
             {
@@ -126,9 +136,8 @@
                 headerName: "Observaciones",
                 field: "observaciones_cliente",
                 filter: 'agTextColumnFilter'
-            }
+            },
         ];
-
         const gridOptions = {
             columnDefs: columnDefs,
             defaultColDef: {
@@ -235,14 +244,10 @@
     }
 
     function editarEmpresa(url) {
-    $('#editModalContent').load(url, function(response, status, xhr) {
-        if (status === "error") {
-            alert("Error al cargar el formulario: " + xhr.status + " " + xhr.statusText);
-        } else {
-            $('#editModal').modal('show');
-        }
-    });
+    // Cambiar de cargar un modal a redireccionar a la página de edición
+    window.location.href = url;
 }
+
 
 
     function eliminarEmpresa(url) {

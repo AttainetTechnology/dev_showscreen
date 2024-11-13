@@ -94,3 +94,7 @@ $routes->post('familiaProveedor/actualizarFamilia', 'Familia_proveedor::actualiz
 $routes->post('familiaProveedor/agregarFamilia', 'Familia_proveedor::agregarFamilia');
 $routes->post('familiaProveedor/eliminar/(:num)', 'Familia_proveedor::eliminarFamilia/$1');
 $routes->post('ofertas/eliminar/(:num)/(:num)', 'ComparadorProductos::eliminarOferta/$1/$2');
+$routes->get('contactos/getContactosPorEmpresa/(:num)', 'Empresas::getContactosPorEmpresa/$1');
+$routes->post('contactos/agregar', 'Empresas::agregarContacto');
+$routes->post('contactos/eliminarContacto/(:num)', 'Empresas::eliminarContacto/$1');
+$routes->get('empresas/getContacto/(:num)', 'Empresas::getContacto/$1');
