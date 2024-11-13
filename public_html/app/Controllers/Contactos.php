@@ -2,43 +2,83 @@
 
 namespace App\Controllers;
 
-class Contactos extends BaseControllerGC
+use App\Models\ContactoModel;
+
+class Contactos extends BaseController
 {
- 
     public function index()
     {
-        //Control de login	
-            helper('controlacceso');
-            $nivel=control_login();
-        //Fin Control de Login
-        
-        $crud = $this->_getClientDatabase();
-        $crud->setSubject('Contacto', 'Contactos');
-        $crud->setTable('contactos');
-        $crud->columns(['nombre','apellidos','telf','id_cliente','cargo']);
-        $crud->displayAs('id_cliente','Empresa');
-        $crud->setRelation('id_cliente','clientes','nombre_cliente');
-        $crud->requiredFields(['nombre','id_cliente']);
-        $crud->unsetRead();
-        $crud->setLangString('modal_save', 'Guardar Contacto');
+        helper('controlacceso');
+        $nivel = control_login();
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $clienteModel = new \App\Models\ClienteModel($db);
+        $clientes = $clienteModel->findAll();
+        return view('contactosView', ['clientes' => $clientes]);
+    }
 
-        // Callbacks para registrar las acciones realizadas en LOG
-        $crud->callbackAfterInsert(function ($stateParameters)  {
-            $this->logAction('Contactos', 'Añade contacto, ID: ' . $stateParameters->insertId , $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterUpdate(function ($stateParameters)  {
-            $this->logAction('Contactos', 'Edita contacto, ID: ' . $stateParameters->primaryKeyValue , $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterDelete(function ($stateParameters)  {
-            $this->logAction('Contactos', 'Elimina contacto, ID: ' . $stateParameters->primaryKeyValue , $stateParameters);
-            return $stateParameters;
-        });
 
-            $output = $crud->render();
-            return $this->_GC_output('layouts/main', $output);
+    public function getContactos()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ContactoModel($db);
+        $contactos = $model->findAll();
+        return $this->response->setJSON($contactos);
+    }
+    //para mostrar los contactos
+    public function agregarContacto()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ContactoModel($db);
+        $data = $this->request->getPost();
+
+        if ($model->insert($data)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al agregar contacto.']);
         }
+    }
+    //para asociar el contacto a la empresa
+    public function getContacto($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ContactoModel($db);
+        $contacto = $model->find($id);
 
+        if ($contacto) {
+            return $this->response->setJSON($contacto);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Contacto no encontrado'], 404);
+        }
+    }
+
+    public function actualizarContacto($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ContactoModel($db);
+        $data = $this->request->getPost();
+
+        if ($model->update($id, $data)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al actualizar contacto.']);
+        }
+    }
+
+    public function eliminarContacto($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ContactoModel($db);
+
+        if ($model->delete($id)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar contacto.']);
+        }
+    }
 }
-

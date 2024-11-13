@@ -3,37 +3,12 @@
 <?= $this->include('partials/amiga') ?>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/attainet.css') ?>?v=<?= time() ?>">
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/botones.css') ?>?v=<?= time() ?>">
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
-    .ag-icon-filter {
-        display: none !important;
-    }
 
-    .checkbox-icon {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-        border: 2px solid #000;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .checkbox-icon.checked {
-        background-color: #000;
-        color: #fff;
-    }
-
-
-    input[class^=ag-] {
-        margin: 5px;
-        background-color: var(--ag-background-color);
-        height: 30px !important;
-    }
-</style>
 <br>
 
 <h2 class="tituloEmpresas">Empresas</h2>

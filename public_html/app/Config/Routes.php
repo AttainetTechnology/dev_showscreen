@@ -98,3 +98,9 @@ $routes->get('contactos/getContactosPorEmpresa/(:num)', 'Empresas::getContactosP
 $routes->post('contactos/agregar', 'Empresas::agregarContacto');
 $routes->post('contactos/eliminarContacto/(:num)', 'Empresas::eliminarContacto/$1');
 $routes->get('empresas/getContacto/(:num)', 'Empresas::getContacto/$1');
+$routes->get('contactos', 'Contactos::index');
+$routes->get('contactos/getContactos', 'Contactos::getContactos');
+$routes->post('contactos/agregarContacto', 'Contactos::agregarContacto');
+$routes->post('contactos/actualizarContacto/(:num)', 'Contactos::actualizarContacto/$1');
+$routes->post('contactos/eliminarContacto/(:num)', 'Contactos::eliminarContacto/$1');
+$routes->get('contactos/getContacto/(:num)', 'Contactos::getContacto/$1');

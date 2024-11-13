@@ -1,0 +1,25 @@
+.ag-icon-filter {
+        display: none !important;
+    }
+
+    .checkbox-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border: 2px solid #000;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .checkbox-icon.checked {
+        background-color: #000;
+        color: #fff;
+    }
+
+
+    input[class^=ag-] {
+        margin: 5px;
+        background-color: var(--ag-background-color);
+        height: 30px !important;
+    }
