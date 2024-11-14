@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\ProductosNecesidadModel;
 use App\Models\ProductosProveedorModel;
 
-class ComparadorProductos extends BaseControllerGC
+class ComparadorProductos extends BaseController
 {
     public function index($id_producto = null)
     {

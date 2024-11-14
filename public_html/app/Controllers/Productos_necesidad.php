@@ -9,7 +9,7 @@ use App\Models\FamiliaProveedorModel;
 
 use \Gumlet\ImageResize;
 
-class Productos_necesidad extends BaseControllerGC
+class Productos_necesidad extends BaseController
 {
 
     public function index()

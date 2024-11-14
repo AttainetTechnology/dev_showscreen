@@ -6,7 +6,7 @@ use App\Models\ProductosProveedorModel;
 use App\Models\ProveedoresModel;
 use App\Models\FamiliaProveedorModel;
 
-class Proveedores extends BaseControllerGC
+class Proveedores extends BaseController
 {
     public function index()
     {

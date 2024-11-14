@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\FamiliaProveedorModel;
 
-class Familia_proveedor extends BaseControllerGC
+class Familia_proveedor extends BaseController
 {
 
     public function index()

@@ -8,7 +8,7 @@ use App\Models\LineaPedidoModel;
 use App\Models\ProductosNecesidadModel;
 
 
-class Pedidos_proveedor extends BaseControllerGC
+class Pedidos_proveedor extends BaseController
 {
     protected $idpedido = 0;
 
