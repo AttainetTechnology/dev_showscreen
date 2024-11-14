@@ -10,7 +10,7 @@ use App\Models\LineaPedido;
 use App\Models\Productos_model;
 use App\Models\ProcesosPedido;
 
-class Pedidos extends BaseControllerGC
+class Pedidos extends BaseController
 {
 	protected $idpedido = 0;
 
