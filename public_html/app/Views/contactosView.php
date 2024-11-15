@@ -132,7 +132,7 @@
             pagination: true,
             paginationPageSize: 10,
             domLayout: 'autoHeight',
-            rowHeight: 50,
+            rowHeight: 60,
             localeText: {
                 noRowsToShow: 'No hay contactos disponibles.'
             },

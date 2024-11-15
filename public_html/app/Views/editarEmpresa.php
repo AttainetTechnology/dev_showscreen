@@ -300,7 +300,7 @@
             pagination: true,
             paginationPageSize: 10,
             domLayout: 'autoHeight',
-            rowHeight: 50,
+            rowHeight: 60,
             localeText: {
                 noRowsToShow: 'No hay contactos disponibles.'
             },
@@ -330,7 +330,6 @@
             })
             .catch(error => console.error('Error al cargar los datos de contactos:', error));
     }
-
 
     function agregarContacto() {
         const formData = $('#addContactoForm').serialize();
@@ -380,7 +379,6 @@
             }
         });
     }
-
 
     function guardarEdicionContacto() {
         const formData = $('#editContactoForm').serialize();

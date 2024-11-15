@@ -85,16 +85,6 @@ input[class^=ag-] {
     height: 30px !important;
 }
 
-.ag-theme-alpine .ag-cell {
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-.ag-theme-alpine .ag-cell.acciones-col {
-    padding-right: 0px;
-    padding-left: 0px;
-}
 
 #pedidoTable {
     margin-right: 20px;

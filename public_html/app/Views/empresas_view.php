@@ -130,7 +130,7 @@
                 const gridApi = params.api;
                 fetchEmpresasData(gridApi);
             },
-            rowHeight: 50,
+            rowHeight: 60,
             localeText: {
                 noRowsToShow: 'No hay registros disponibles.'
             }

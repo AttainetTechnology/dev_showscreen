@@ -3,6 +3,7 @@
 <?= $this->include('partials/amiga') ?>
 
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
@@ -68,7 +69,7 @@ $estadoMap = [
                     return `${editBtn} ${printBtn} ${deleteBtn}`;
                 },
                 cellClass: 'acciones-col',
-                minWidth: 280,
+                minWidth: 260,
                 filter: false
             },
             {
