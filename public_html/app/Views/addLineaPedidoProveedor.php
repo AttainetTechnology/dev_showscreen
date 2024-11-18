@@ -18,10 +18,12 @@
             <?php endforeach; ?>
         </select>
     </div>
+
     <div class="form-group">
         <label for="n_piezas">Número de Piezas</label>
         <input type="number" name="n_piezas" id="n_piezas" class="form-control" required>
     </div>
+
     <div class="form-group">
         <label for="observaciones">Observaciones</label>
         <textarea name="observaciones" id="observaciones" class="form-control"></textarea>
