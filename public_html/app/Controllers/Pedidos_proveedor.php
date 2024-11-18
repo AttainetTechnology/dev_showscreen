@@ -381,10 +381,10 @@ class Pedidos_proveedor extends BaseController
     {
         $db = db_connect(usuario_sesion()['new_db']);
         $builder = $db->table('productos_proveedor');
-        $builder->select('productos_proveedor.id, productos_proveedor.ref_producto, productos_necesidad.nombre_producto');
+        $builder->select('productos_proveedor.ref_producto, productos_proveedor.id');
         $builder->join('productos_necesidad', 'productos_necesidad.id_producto = productos_proveedor.id_producto_necesidad', 'left');
         $productos = $builder->get()->getResultArray();
-
+    
         return view('addLineaPedidoProveedor', [
             'productos' => $productos,
             'id_pedido' => $id_pedido
@@ -393,66 +393,94 @@ class Pedidos_proveedor extends BaseController
     public function crearLinea()
     {
         $data = $this->request->getPost();
-        $data['id_pedido'] = $this->request->getPost('id_pedido');
         $ref_producto = $this->request->getPost('ref_producto');
-        
-        if (!$ref_producto) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Referencia de producto no especificada']);
-        }
-        
+    
         $db = db_connect(usuario_sesion()['new_db']);
-        
-        // Obtén el producto usando ref_producto
         $builder = $db->table('productos_proveedor');
-        $builder->select('ref_producto, precio');
+        $builder->select('precio');
         $builder->where('ref_producto', $ref_producto);
         $producto = $builder->get()->getRow();
-        
+    
         if (!$producto) {
             return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado']);
         }
-        
-        $data['ref_producto'] = $producto->ref_producto;
+    
         $data['precio_compra'] = $producto->precio;
         $data['total_linea'] = $data['precio_compra'] * $data['n_piezas'];
-        
-        // Inserta la línea de pedido
-        $builder = $db->table('linea_pedido_proveedor');
-        if ($builder->insert($data)) {
+    
+        $lineaBuilder = $db->table('linea_pedido_proveedor');
+        if ($lineaBuilder->insert($data)) {
             $this->actualizarTotalPedido($data['id_pedido']);
             return $this->response->setJSON(['success' => true]);
         } else {
-            return $this->response->setJSON(['success' => false, 'message' => 'Error al crear la línea de pedido']);
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al guardar la línea de pedido']);
         }
     }
     
     
-
     public function actualizarLinea($id_lineapedido)
     {
         $data = $this->request->getPost();
-        $data['unidad_precio'] = $this->request->getPost('unidad_precio'); // Captura la unidad de precio
-
+    
+        // Validar datos esenciales
+        if (empty($data['id_pedido']) || empty($id_lineapedido)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Datos incompletos.']);
+        }
+    
+        $data = array_filter($data); // Filtrar valores nulos o vacíos
+    
+        // Detectar cambios en la referencia del producto
+        $ref_producto_nueva = $data['ref_producto'] ?? null;
+    
         $db = db_connect(usuario_sesion()['new_db']);
-        $builder = $db->table('linea_pedido_proveedor');
-        $builder->where('id_lineapedido', $id_lineapedido);
-        $data['ref_producto'] = $this->request->getPost('ref_producto');
-        $builder->update($data);
-       
-        if ($builder->update($data)) {
+        $builder_linea = $db->table('linea_pedido_proveedor');
+    
+        // Obtener la referencia actual de la línea
+        $builder_linea->select('ref_producto, id_pedido');
+        $builder_linea->where('id_lineapedido', $id_lineapedido);
+        $linea_actual = $builder_linea->get()->getRow();
+    
+        if (!$linea_actual) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Línea de pedido no encontrada.']);
+        }
+    
+        $ref_producto_actual = $linea_actual->ref_producto;
+        $id_pedido = $linea_actual->id_pedido;
+    
+        // Si la referencia del producto ha cambiado, buscar el nuevo precio
+        if ($ref_producto_nueva && $ref_producto_nueva !== $ref_producto_actual) {
+            $builder_producto = $db->table('productos_proveedor');
+            $builder_producto->select('precio');
+            $builder_producto->where('ref_producto', $ref_producto_nueva);
+            $producto = $builder_producto->get()->getRow();
+    
+            if ($producto) {
+                $data['precio_compra'] = $producto->precio;
+                $data['total_linea'] = ($data['n_piezas'] ?? 1) * $producto->precio;
+            } else {
+                return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado para la nueva referencia.']);
+            }
+        }
+    
+        // Actualizar la línea en la base de datos
+        $builder_linea->where('id_lineapedido', $id_lineapedido);
+    
+        if ($builder_linea->update($data)) {
             $post_array = new \stdClass();
             $post_array->data = $data;
-
-            // Recalcula el precio de la línea editada
+    
+            // Recalcular el precio de la línea
             $this->saca_precio_linea($post_array);
-
-            // Actualiza el total del pedido
-            $this->actualizarTotalPedido($data['id_pedido']);
-            return $this->response->setJSON(['success' => true]);
-        } else {
-            return $this->response->setJSON(['success' => false]);
+    
+            // Actualizar el total del pedido
+            $this->actualizarTotalPedido($id_pedido);
+    
+            return $this->response->setJSON(['success' => true, 'message' => 'Línea de pedido actualizada correctamente.']);
         }
+    
+        return $this->response->setJSON(['success' => false, 'message' => 'No se pudo actualizar la línea de pedido.']);
     }
+    
     public function eliminarLinea($id_lineapedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
@@ -466,27 +494,23 @@ class Pedidos_proveedor extends BaseController
         } else {
             return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar la línea de pedido']);
         }
-    }
-    public function editLineaPedidoForm($id_lineapedido)
+    }public function editLineaPedidoForm($id_lineapedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
-        $builder = $db->table('linea_pedido_proveedor');
-        $builder->select('linea_pedido_proveedor.*, productos_necesidad.nombre_producto'); 
-        $builder->join('productos_necesidad', 'productos_necesidad.id_producto = linea_pedido_proveedor.ref_producto', 'left');
-        $builder->where('id_lineapedido', $id_lineapedido);
-        $lineaPedido = $builder->get()->getRowArray();
-        
-
-        $productosModel = new ProductosNecesidadModel($db);
-        $productos = $productosModel->findAll();
-
+        $builder = $db->table('productos_proveedor');
+        $builder->select('productos_proveedor.ref_producto');
+        $productos = $builder->get()->getResultArray();
+    
+        $lineaBuilder = $db->table('linea_pedido_proveedor');
+        $lineaBuilder->where('id_lineapedido', $id_lineapedido);
+        $lineaPedido = $lineaBuilder->get()->getRowArray();
+    
         return view('editLineaProveedor', [
             'lineaPedido' => $lineaPedido,
             'productos' => $productos
         ]);
     }
-
-    function _pinta_euro_linea($total_linea)
+    function _pinta_euro_linea($total_linea) 
     {
         return "<div> <b>$total_linea &euro;</b></div>";
     }

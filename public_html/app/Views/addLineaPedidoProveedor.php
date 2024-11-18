@@ -1,12 +1,8 @@
-<!-- CSS de Bootstrap -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-<!-- JavaScript de Bootstrap -->
+<!-- Bootstrap Bundle -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
 
 <form id="addLineaPedidoForm">
     <input type="hidden" name="id_pedido" value="<?= $id_pedido ?>">

@@ -343,7 +343,7 @@
         });
     });
 
-    $('#saveLineaPedido').on('click', function() {
+$('#saveLineaPedido').on('click', function() {
     var formData = $('#addLineaPedidoForm').serialize();
     $.ajax({
         url: '<?= base_url('pedidos_proveedor/crearLinea') ?>',
