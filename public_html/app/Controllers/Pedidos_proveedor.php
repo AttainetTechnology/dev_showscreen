@@ -210,13 +210,13 @@ class Pedidos_proveedor extends BaseController
         }
     }
 
-    //modal add pedido
     public function save()
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
-
+        log_message('debug', 'Datos recibidos en el método save: ' . print_r($this->request->getPost(), true));
+            // Datos del pedido
         $pedidoData = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
             'referencia' => $this->request->getPost('referencia'),
@@ -224,60 +224,64 @@ class Pedidos_proveedor extends BaseController
             'observaciones' => $this->request->getPost('observaciones'),
             'id_usuario' => $data['id_user']
         ];
-
-        if ($pedidoModel->insert($pedidoData)) {
-            $insertId = $pedidoModel->insertID();
-
-            // Verificar si se han pasado `id_producto` e `id_registro`
-            $id_producto = $this->request->getPost('id_producto');
-            $id_registro = $this->request->getPost('id_registro');
-
-            if ($id_producto && $id_registro) {
-                $this->crearLineaAutomatica($insertId, $id_producto, $id_registro);
+            if ($pedidoModel->insert($pedidoData)) {
+            $idPedido = $pedidoModel->insertID();
+    
+            // Verificar si se ha pasado `id_producto` y `id` del producto proveedor
+            $idProducto = $this->request->getPost('id_producto');
+            $idProductoProveedor = $this->request->getPost('id');
+    
+            log_message('debug', "Pedido creado con ID: $idPedido, id_producto: $idProducto, id_producto_proveedor: $idProductoProveedor");
+    
+            if ($idProducto && $idProductoProveedor) {
+                $this->crearLineaAutomatica($idPedido, $idProductoProveedor);
             }
-
-            return redirect()->to(base_url("/pedidos_proveedor/editar/$insertId"))
+    
+            return redirect()->to(base_url("/pedidos_proveedor/editar/$idPedido"))
                 ->with('message', 'Pedido guardado con éxito.');
         } else {
+            log_message('error', 'Error al guardar el pedido: ' . print_r($pedidoData, true));
             return redirect()->back()->with('error', 'No se pudo guardar el pedido');
         }
     }
-
-    private function crearLineaAutomatica($id_pedido, $ref_producto, $id_registro)
+    
+    private function crearLineaAutomatica($idPedido, $idProductoProveedor)
     {
+        log_message('debug', "Inicio de crearLineaAutomatica. ID Pedido: $idPedido, ID Producto Proveedor: $idProductoProveedor");
+    
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
     
-        // Buscar el precio para el producto específico del proveedor
         $builder = $db->table('productos_proveedor');
-        $builder->select('precio');
-        $builder->where('ref_producto', $ref_producto);
-        $builder->where('id', $id_registro);
-        $query = $builder->get();
+        $builder->select('ref_producto, precio');
+        $builder->where('id', $idProductoProveedor);
+        $producto = $builder->get()->getRow();
     
-        if ($query->getNumRows() > 0) {
-            $precio = $query->getRow()->precio;
+        if ($producto) {
+            log_message('debug', 'Datos del producto proveedor encontrados: ' . print_r($producto, true));
     
             // Crear la línea de pedido
             $lineaData = [
-                'id_pedido' => $id_pedido,
-                'ref_producto' => $ref_producto,
-                'precio_compra' => $precio,
-                'n_piezas' => 1,
-                'total_linea' => $precio,
+                'id_pedido' => $idPedido,
+                'ref_producto' => $producto->ref_producto,
+                'precio_compra' => $producto->precio,
+                'n_piezas' => 1, // Ajustar si es necesario
+                'total_linea' => $producto->precio,
             ];
     
             $lineaPedidoModel = new LineaPedidoModel($db);
-            $lineaPedidoModel->insert($lineaData);
-    
-            $this->actualizarTotalPedido($id_pedido);
+            if ($lineaPedidoModel->insert($lineaData)) {
+                log_message('debug', "Línea de pedido creada para el pedido $idPedido: " . print_r($lineaData, true));
+                $this->actualizarTotalPedido($idPedido);
+            } else {
+                log_message('error', "Error al insertar línea de pedido para el pedido $idPedido: " . print_r($lineaData, true));
+            }
         } else {
-            log_message('error', 'No se encontró un precio para ref_producto: ' . $ref_producto . ' y registro ID: ' . $id_registro);
+            log_message('error', "No se encontró el producto proveedor con ID: $idProductoProveedor");
         }
     }
     
-
-
+    
     function paso_id_pedido($value, $id_pedido)
     {
         return $id_pedido . '<input type="hidden" name="id_pedido" value="' . $id_pedido . '">';
@@ -416,8 +420,7 @@ class Pedidos_proveedor extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Error al guardar la línea de pedido']);
         }
     }
-    
-    
+   
     public function actualizarLinea($id_lineapedido)
     {
         $data = $this->request->getPost();
@@ -625,23 +628,28 @@ class Pedidos_proveedor extends BaseController
 
         return $post_array;
     }
-
-    private function actualizarTotalPedido($id_pedido)
+    private function actualizarTotalPedido($idPedido)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
+    
+        // Obtener el total de las líneas asociadas al pedido
         $builder = $db->table('linea_pedido_proveedor');
-        $builder->select('SUM(total_linea) as total_pedido');
-        $builder->where('id_pedido', $id_pedido);
-        $query = $builder->get();
-        if ($query->getNumRows() > 0) {
-            $total = $query->getRow()->total_pedido;
-            $pedidoBuilder = $db->table('pedidos_proveedor');
-            $pedidoBuilder->set('total_pedido', $total);
-            $pedidoBuilder->where('id_pedido', $id_pedido);
-            $pedidoBuilder->update();
+        $builder->selectSum('total_linea');
+        $builder->where('id_pedido', $idPedido);
+        $total = $builder->get()->getRow()->total_linea;
+    
+        // Validar el resultado
+        if ($total !== null) {
+            log_message('debug', "Actualizando total del pedido $idPedido a $total");
+    
+            $pedidoModel = new PedidosProveedorModel($db);
+            $pedidoModel->update($idPedido, ['total_pedido' => $total]);
+        } else {
+            log_message('error', "No se pudo calcular el total para el pedido $idPedido");
         }
     }
+    
     private function actualizarEstadoPedido($id_pedido)
     {
         $data = usuario_sesion();

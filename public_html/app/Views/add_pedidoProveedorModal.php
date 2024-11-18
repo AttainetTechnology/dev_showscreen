@@ -7,7 +7,7 @@
 <div class="modal-body">
     <form method="post" action="<?= base_url('Pedidos_proveedor/save') ?>">
     <input type="hidden" name="id_producto" id="id_producto" value="<?= isset($_GET['id_producto']) ? esc($_GET['id_producto']) : '' ?>">
-    <input type="hidden" name="id_registro" id="id_registro" value="<?= isset($_GET['id_registro']) ? esc($_GET['id_registro']) : '' ?>">
+<input type="hidden" name="id" id="id_registro" value="<?= isset($_GET['id_registro']) ? esc($_GET['id_registro']) : '' ?>">
 
         <div class="form-group">
             <label for="id_cliente">Empresa:</label>

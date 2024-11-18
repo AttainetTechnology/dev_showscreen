@@ -10,9 +10,9 @@ class LineaPedidoModel extends Model
     protected $primaryKey = 'id_lineapedido';
     protected $allowedFields = [
         'id_pedido',
+        'ref_producto',
         'fecha_salida',
         'fecha_entrega',
-        'ref_producto',
         'n_piezas',
         'observaciones',
         'id_usuario',
