@@ -3,9 +3,9 @@
     <input type="hidden" name="id_pedido" value="<?= $lineaPedido['id_pedido'] ?>">
     <div class="form-group">
         <label for="id_producto">Producto</label>
-        <select name="id_producto" class="form-control" required>
+        <select name="ref_producto" class="form-control" required>
             <?php foreach ($productos as $producto): ?>
-                <option value="<?= $producto['id_producto'] ?>" <?= $producto['id_producto'] == $lineaPedido['id_producto'] ? 'selected' : '' ?>>
+                <option value="<?= $producto['ref_producto'] ?>" <?= $producto['ref_producto'] == $lineaPedido['ref_producto'] ? 'selected' : '' ?>>
                     <?= $producto['nombre_producto'] ?>
                 </option>
             <?php endforeach; ?>

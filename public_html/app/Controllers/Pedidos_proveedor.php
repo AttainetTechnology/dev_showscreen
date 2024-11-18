@@ -105,17 +105,18 @@ class Pedidos_proveedor extends BaseController
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
         $pedido = $pedidoModel->find($id_pedido);
-
-        $data['amiga'] = $this->getBreadcrumbs();
+    
         if (!$pedido) {
             return redirect()->to(base_url('pedidos_proveedor'))->with('error', 'Pedido no encontrado.');
         }
+    
+        // Ajustar la consulta para incluir ref_producto
         $builder = $db->table('linea_pedido_proveedor');
-        $builder->select('linea_pedido_proveedor.*, productos_necesidad.nombre_producto');
-        $builder->join('productos_necesidad', 'productos_necesidad.id_producto = linea_pedido_proveedor.id_producto', 'left');
+        $builder->select('linea_pedido_proveedor.*, productos_proveedor.ref_producto'); 
+        $builder->join('productos_proveedor', 'productos_proveedor.ref_producto = linea_pedido_proveedor.ref_producto', 'left');
         $builder->where('linea_pedido_proveedor.id_pedido', $id_pedido);
-        $query = $builder->get();
-        $lineasPedido = $query->getResultArray();
+        $lineasPedido = $builder->get()->getResultArray();
+        
         $proveedores = (new ProveedoresModel($db))->findAll();
         $usuarios = $this->getUsuarios();
         $estados = [
@@ -124,15 +125,17 @@ class Pedidos_proveedor extends BaseController
             "2" => "Recibido",
             "6" => "Anulado"
         ];
+    
         return view('editPedidoProveedor', [
             'pedido' => $pedido,
             'proveedores' => $proveedores,
             'usuarios' => $usuarios,
             'estados' => $estados,
             'lineasPedido' => $lineasPedido,
-            'amiga' => $data['amiga']
+            'id_pedido' => $id_pedido, // Pasamos $id_pedido a la vista
         ]);
     }
+    
 
     public function update($id_pedido)
     {
@@ -240,40 +243,39 @@ class Pedidos_proveedor extends BaseController
         }
     }
 
-    private function crearLineaAutomatica($id_pedido, $id_producto, $id_registro)
+    private function crearLineaAutomatica($id_pedido, $ref_producto, $id_registro)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-
+    
         // Buscar el precio para el producto específico del proveedor
         $builder = $db->table('productos_proveedor');
         $builder->select('precio');
-        $builder->where('id_producto_necesidad', $id_producto);
-        $builder->where('id', $id_registro);  // id_registro identifica el precio específico de esta oferta
+        $builder->where('ref_producto', $ref_producto);
+        $builder->where('id', $id_registro);
         $query = $builder->get();
-
+    
         if ($query->getNumRows() > 0) {
             $precio = $query->getRow()->precio;
-
+    
             // Crear la línea de pedido
             $lineaData = [
                 'id_pedido' => $id_pedido,
-                'id_producto' => $id_producto,
+                'ref_producto' => $ref_producto,
                 'precio_compra' => $precio,
-                'n_piezas' => 1,  // Inicialmente, puedes ajustar según sea necesario
-                'total_linea' => $precio
+                'n_piezas' => 1,
+                'total_linea' => $precio,
             ];
-
+    
             $lineaPedidoModel = new LineaPedidoModel($db);
             $lineaPedidoModel->insert($lineaData);
-
-            // Actualizar el total del pedido
+    
             $this->actualizarTotalPedido($id_pedido);
         } else {
-            log_message('error', 'No se encontró un precio para el producto ID: ' . $id_producto . ' y el registro ID: ' . $id_registro);
+            log_message('error', 'No se encontró un precio para ref_producto: ' . $ref_producto . ' y registro ID: ' . $id_registro);
         }
     }
-
+    
 
 
     function paso_id_pedido($value, $id_pedido)
@@ -375,12 +377,13 @@ class Pedidos_proveedor extends BaseController
         ]);
     }
 
-
     public function addLineaPedidoForm($id_pedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
-        $productosModel = new ProductosNecesidadModel($db);
-        $productos = $productosModel->findAll();
+        $builder = $db->table('productos_proveedor');
+        $builder->select('productos_proveedor.id, productos_proveedor.ref_producto, productos_necesidad.nombre_producto');
+        $builder->join('productos_necesidad', 'productos_necesidad.id_producto = productos_proveedor.id_producto_necesidad', 'left');
+        $productos = $builder->get()->getResultArray();
 
         return view('addLineaPedidoProveedor', [
             'productos' => $productos,
@@ -391,25 +394,39 @@ class Pedidos_proveedor extends BaseController
     {
         $data = $this->request->getPost();
         $data['id_pedido'] = $this->request->getPost('id_pedido');
-
+        $ref_producto = $this->request->getPost('ref_producto');
+        
+        if (!$ref_producto) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Referencia de producto no especificada']);
+        }
+        
         $db = db_connect(usuario_sesion()['new_db']);
+        
+        // Obtén el producto usando ref_producto
+        $builder = $db->table('productos_proveedor');
+        $builder->select('ref_producto, precio');
+        $builder->where('ref_producto', $ref_producto);
+        $producto = $builder->get()->getRow();
+        
+        if (!$producto) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado']);
+        }
+        
+        $data['ref_producto'] = $producto->ref_producto;
+        $data['precio_compra'] = $producto->precio;
+        $data['total_linea'] = $data['precio_compra'] * $data['n_piezas'];
+        
+        // Inserta la línea de pedido
         $builder = $db->table('linea_pedido_proveedor');
         if ($builder->insert($data)) {
-            $id_lineapedido = $db->insertID();
-            $post_array = new \stdClass();
-            $post_array->data = $data;
-            $post_array->data['id_lineapedido'] = $id_lineapedido;
-
-            // Recalcula el precio de la línea creada
-            $this->saca_precio_linea($post_array);
-
-            // Actualiza el total del pedido
             $this->actualizarTotalPedido($data['id_pedido']);
             return $this->response->setJSON(['success' => true]);
         } else {
-            return $this->response->setJSON(['success' => false]);
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al crear la línea de pedido']);
         }
     }
+    
+    
 
     public function actualizarLinea($id_lineapedido)
     {
@@ -419,7 +436,9 @@ class Pedidos_proveedor extends BaseController
         $db = db_connect(usuario_sesion()['new_db']);
         $builder = $db->table('linea_pedido_proveedor');
         $builder->where('id_lineapedido', $id_lineapedido);
-
+        $data['ref_producto'] = $this->request->getPost('ref_producto');
+        $builder->update($data);
+       
         if ($builder->update($data)) {
             $post_array = new \stdClass();
             $post_array->data = $data;
@@ -452,10 +471,11 @@ class Pedidos_proveedor extends BaseController
     {
         $db = db_connect(usuario_sesion()['new_db']);
         $builder = $db->table('linea_pedido_proveedor');
-        $builder->select('linea_pedido_proveedor.*, productos_necesidad.nombre_producto, linea_pedido_proveedor.unidad_precio'); // Añadir unidad_precio aquí
-        $builder->join('productos_necesidad', 'productos_necesidad.id_producto = linea_pedido_proveedor.id_producto', 'left');
+        $builder->select('linea_pedido_proveedor.*, productos_necesidad.nombre_producto'); 
+        $builder->join('productos_necesidad', 'productos_necesidad.id_producto = linea_pedido_proveedor.ref_producto', 'left');
         $builder->where('id_lineapedido', $id_lineapedido);
         $lineaPedido = $builder->get()->getRowArray();
+        
 
         $productosModel = new ProductosNecesidadModel($db);
         $productos = $productosModel->findAll();
@@ -517,11 +537,11 @@ class Pedidos_proveedor extends BaseController
             return $post_array;
         }
 
-        $id_producto = $post_array->data['id_producto'];
-        $id_pedido = $post_array->data['id_pedido'];
-        $n_piezas = $post_array->data['n_piezas'] ?? 0;
-        $id_lineapedido = $post_array->data['id_lineapedido'];
-        $precio_compra = $post_array->data['precio_compra'] ?? null;
+    $ref_producto = $post_array->data['ref_producto'];
+    $id_pedido = $post_array->data['id_pedido'];
+    $n_piezas = $post_array->data['n_piezas'] ?? 0;
+    $id_lineapedido = $post_array->data['id_lineapedido'];
+    $precio_compra = $post_array->data['precio_compra'] ?? null;
 
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
@@ -536,7 +556,7 @@ class Pedidos_proveedor extends BaseController
                 $id_proveedor = $query_pedido->getRow()->id_proveedor;
                 $builder_producto = $db->table('productos_proveedor');
                 $builder_producto->select('precio');
-                $builder_producto->where('id_producto_necesidad', $id_producto);
+                $builder_producto->where('id_producto_necesidad', $ref_producto);
                 $builder_producto->where('id_proveedor', $id_proveedor);
                 $builder_producto->where('seleccion_mejor', 1);
                 $query_producto = $builder_producto->get();
@@ -547,14 +567,14 @@ class Pedidos_proveedor extends BaseController
                 } else {
                     $builder_producto->resetQuery();
                     $builder_producto->select('precio');
-                    $builder_producto->where('id_producto_necesidad', $id_producto);
+                    $builder_producto->where('id_producto_necesidad', $ref_producto);
                     $builder_producto->where('id_proveedor', $id_proveedor);
                     $query_producto = $builder_producto->get();
 
                     if ($query_producto->getNumRows() > 0) {
                         $precio_compra = $query_producto->getRow()->precio;
                     } else {
-                        log_message('error', 'No se encontró el producto con ID: ' . $id_producto . ' para el proveedor con ID: ' . $id_proveedor);
+                        log_message('error', 'No se encontró el producto con ID: ' . $ref_producto . ' para el proveedor con ID: ' . $id_proveedor);
                         $post_array->data['total_linea'] = 0;
                         return $post_array;
                     }

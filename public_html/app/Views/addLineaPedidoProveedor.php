@@ -1,13 +1,24 @@
+<!-- CSS de Bootstrap -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JavaScript de Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+
 <form id="addLineaPedidoForm">
     <input type="hidden" name="id_pedido" value="<?= $id_pedido ?>">
-    <input type="hidden" name="id_registro" value="<?= $id_registro ?? '' ?>"> 
 
     <div class="form-group">
-        <label for="id_producto">Producto</label>
-        <select name="id_producto" id="id_producto" class="form-control" required>
+        <label for="ref_producto">Producto</label>
+        <select name="ref_producto" id="ref_producto" class="form-control" required>
             <option value="">Seleccione un producto</option>
             <?php foreach ($productos as $producto): ?>
-                <option value="<?= $producto['id_producto'] ?>"><?= $producto['nombre_producto'] ?></option>
+                <option value="<?= $producto['ref_producto'] ?>">
+                    <?= $producto['ref_producto'] ?>
+                </option>
             <?php endforeach; ?>
         </select>
     </div>

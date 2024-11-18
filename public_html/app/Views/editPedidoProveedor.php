@@ -205,8 +205,8 @@
                 floatingFilter: true
             },
             {
-                headerName: "Producto",
-                field: "nombre_producto",
+                headerName: "Referencia Producto",
+                field: "ref_producto",
                 flex: 1,
                 filter: "agTextColumnFilter",
                 floatingFilter: true
@@ -315,8 +315,7 @@
             gridApi.setFilterModel(null);
             gridApi.onFilterChanged();
         });
-
-    });
+            });
 </script>
 <script>
     // Acción al hacer clic en el botón de agregar línea de pedido
@@ -344,23 +343,44 @@
         });
     });
 
-    // Acción para guardar la nueva línea de pedido
     $('#saveLineaPedido').on('click', function() {
-        var formData = $('#addLineaPedidoForm').serialize();
-        $.ajax({
-            url: '<?= base_url('pedidos_proveedor/crearLinea') ?>',
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                if (response.success) {
-                    $('#addLineaPedidoModal').modal('hide');
-                    location.reload();
-                } else {
-                    alert('Error al agregar la línea de pedido');
-                }
+    var formData = $('#addLineaPedidoForm').serialize();
+    $.ajax({
+        url: '<?= base_url('pedidos_proveedor/crearLinea') ?>',
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            if (response.success) {
+                $('#addLineaPedidoModal').modal('hide');
+                location.reload();
+            } else {
+                alert('Error: ' + (response.message || 'Desconocido.'));
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error AJAX:', error);
+            alert('Error en el servidor.');
+        }
     });
+});
+
+    function agregarLinea() {
+    // Abre el modal
+    $('#addLineaPedidoModal').modal('show');
+
+    // Cargar el formulario dentro del modal usando AJAX
+    $.ajax({
+        url: '<?= base_url('pedidos_proveedor/addLineaPedidoForm/' . $pedido['id_pedido']) ?>',
+        type: 'GET',
+        success: function(response) {
+            $('#modal-content-placeholder').html(response); // Insertar el formulario en el modal
+        },
+        error: function(xhr, status, error) {
+            alert('Error al cargar el formulario: ' + error);
+        }
+    });
+}
+
     //MANJEAR LAS COMAS EN DECIMALES
     function replaceCommaWithDot(input) {
         input.value = input.value.replace(/,/g, '.');
