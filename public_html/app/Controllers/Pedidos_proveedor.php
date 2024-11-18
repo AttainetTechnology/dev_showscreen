@@ -492,21 +492,26 @@ class Pedidos_proveedor extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Error al actualizar la línea de pedido.']);
         }
     }
-
     public function eliminarLinea($id_lineapedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
         $builder = $db->table('linea_pedido_proveedor');
         $linea = $builder->select('id_pedido')->where('id_lineapedido', $id_lineapedido)->get()->getRow();
-
+    
         if ($builder->where('id_lineapedido', $id_lineapedido)->delete()) {
-            // Actualiza el total del pedido
-            $this->actualizarTotalPedido($linea->id_pedido);
+            if ($linea) {
+                // Actualiza el estado del pedido
+                $this->actualizarEstadoPedido($linea->id_pedido);
+    
+                // Actualiza el total del pedido
+                $this->actualizarTotalPedido($linea->id_pedido);
+            }
             return $this->response->setJSON(['success' => true]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar la línea de pedido']);
         }
     }
+    
     public function editLineaPedidoForm($id_lineapedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
@@ -642,24 +647,31 @@ class Pedidos_proveedor extends BaseController
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-
+    
         // Obtener el total de las líneas asociadas al pedido
         $builder = $db->table('linea_pedido_proveedor');
         $builder->selectSum('total_linea');
         $builder->where('id_pedido', $idPedido);
         $total = $builder->get()->getRow()->total_linea;
-
-        // Validar el resultado
-        if ($total !== null) {
-            log_message('debug', "Actualizando total del pedido $idPedido a $total");
-
-            $pedidoModel = new PedidosProveedorModel($db);
-            $pedidoModel->update($idPedido, ['total_pedido' => $total]);
-        } else {
-            log_message('error', "No se pudo calcular el total para el pedido $idPedido");
+    
+        // Validar si hay líneas de pedido
+        $builder->resetQuery();
+        $builder->select('id_lineapedido');
+        $builder->where('id_pedido', $idPedido);
+        $hasLines = $builder->countAllResults();
+    
+        // Si no hay líneas, establecer el total a 0
+        if (!$hasLines) {
+            $total = 0;
         }
+ 
+        // Actualizar el total en la tabla pedidos_proveedor
+        $pedidoModel = new PedidosProveedorModel($db);
+        $pedidoModel->update($idPedido, ['total_pedido' => $total]);
+    
+        log_message('debug', "Total del pedido $idPedido actualizado a $total.");
     }
-
+    
     private function actualizarEstadoPedido($id_pedido)
     {
         $data = usuario_sesion();
@@ -668,14 +680,12 @@ class Pedidos_proveedor extends BaseController
         $builder->select('MIN(estado) as estado_menor');
         $builder->where('id_pedido', $id_pedido);
         $query = $builder->get();
-
         if ($query->getNumRows() > 0) {
             $estado_menor = $query->getRow()->estado_menor;
             $pedidoBuilder = $db->table('pedidos_proveedor');
             $pedidoBuilder->set('estado', $estado_menor);
             $pedidoBuilder->where('id_pedido', $id_pedido);
             $pedidoBuilder->update();
-
             log_message('debug', 'Estado del pedido actualizado a: ' . $estado_menor . ' para id_pedido: ' . $id_pedido);
         } else {
             log_message('error', 'No se encontraron líneas de pedido para id_pedido: ' . $id_pedido);
@@ -685,7 +695,6 @@ class Pedidos_proveedor extends BaseController
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-
         $builder_lineas = $db->table('linea_pedido_proveedor');
         $builder_lineas->set('estado', 1);
         $builder_lineas->where('id_pedido', $id_pedido);
@@ -701,7 +710,6 @@ class Pedidos_proveedor extends BaseController
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-
         $builder_lineas = $db->table('linea_pedido_proveedor');
         $builder_lineas->set('estado', 2);
         $builder_lineas->where('id_pedido', $id_pedido);
