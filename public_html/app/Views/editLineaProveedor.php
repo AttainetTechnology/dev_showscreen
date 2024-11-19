@@ -35,7 +35,6 @@
         <input type="text" name="unidad_precio" id="unidad_precio" class="form-control"
             value="<?= isset($lineaPedido['unidad_precio']) ? $lineaPedido['unidad_precio'] : '' ?>">
     </div>
-
     <div class="form-group">
         <label for="estado">Estado</label>
         <select name="estado" class="form-control" required>

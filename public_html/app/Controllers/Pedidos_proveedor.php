@@ -496,23 +496,39 @@ class Pedidos_proveedor extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar la línea de pedido']);
         }
     }
-
     public function editLineaPedidoForm($id_lineapedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
-        $builder = $db->table('productos_proveedor');
-        $builder->select('productos_proveedor.ref_producto');
-        $productos = $builder->get()->getResultArray();
-
+    
+        // Obtener los datos de la línea de pedido
         $lineaBuilder = $db->table('linea_pedido_proveedor');
         $lineaBuilder->where('id_lineapedido', $id_lineapedido);
         $lineaPedido = $lineaBuilder->get()->getRowArray();
-
+    
+        if (!$lineaPedido) {
+            return redirect()->back()->with('error', 'Línea de pedido no encontrada.');
+        }
+    
+        // Obtener el id_proveedor del pedido asociado
+        $pedidoBuilder = $db->table('pedidos_proveedor');
+        $pedido = $pedidoBuilder->select('id_proveedor')->where('id_pedido', $lineaPedido['id_pedido'])->get()->getRow();
+    
+        if (!$pedido) {
+            return redirect()->back()->with('error', 'Pedido asociado no encontrado.');
+        }
+    
+        // Filtrar productos que pertenecen al proveedor
+        $productosBuilder = $db->table('productos_proveedor');
+        $productosBuilder->select('ref_producto');
+        $productosBuilder->where('id_proveedor', $pedido->id_proveedor);
+        $productos = $productosBuilder->get()->getResultArray();
+    
         return view('editLineaProveedor', [
             'lineaPedido' => $lineaPedido,
             'productos' => $productos
         ]);
     }
+    
     function _pinta_euro_linea($total_linea)
     {
         return "<div> <b>$total_linea &euro;</b></div>";
