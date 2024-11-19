@@ -359,7 +359,7 @@ class Pedidos_proveedor extends BaseController
             'id_pedido' => $id_pedido,
             'estados' => [
                 "0" => "Pendiente de realizar",
-                "1" => "Pendiente de recibir",
+                "1" => "Enviado",
                 "2" => "Recibido",
                 "6" => "Anulado"
             ]
@@ -410,6 +410,7 @@ class Pedidos_proveedor extends BaseController
         $lineaBuilder = $db->table('linea_pedido_proveedor');
         if ($lineaBuilder->insert($data)) {
             $this->actualizarTotalPedido($data['id_pedido']);
+            $this->actualizarEstadoPedido($data['id_pedido']);
             return $this->response->setJSON(['success' => true]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => 'Error al guardar la línea de pedido']);
@@ -467,6 +468,7 @@ class Pedidos_proveedor extends BaseController
         if ($builder_linea->update($data)) {
             // Actualizar el total del pedido
             $this->actualizarTotalPedido($id_pedido);
+            $this->actualizarEstadoPedido($data['id_pedido']);
 
             return $this->response->setJSON([
                 'success' => true,
@@ -479,6 +481,7 @@ class Pedidos_proveedor extends BaseController
     }
     public function eliminarLinea($id_lineapedido)
     {
+        $data = $this->request->getPost();
         $db = db_connect(usuario_sesion()['new_db']);
         $builder = $db->table('linea_pedido_proveedor');
         $linea = $builder->select('id_pedido')->where('id_lineapedido', $id_lineapedido)->get()->getRow();
@@ -490,6 +493,7 @@ class Pedidos_proveedor extends BaseController
 
                 // Actualiza el total del pedido
                 $this->actualizarTotalPedido($linea->id_pedido);
+                $this->actualizarEstadoPedido($data['id_pedido']);
             }
             return $this->response->setJSON(['success' => true]);
         } else {
@@ -499,36 +503,36 @@ class Pedidos_proveedor extends BaseController
     public function editLineaPedidoForm($id_lineapedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
-    
+
         // Obtener los datos de la línea de pedido
         $lineaBuilder = $db->table('linea_pedido_proveedor');
         $lineaBuilder->where('id_lineapedido', $id_lineapedido);
         $lineaPedido = $lineaBuilder->get()->getRowArray();
-    
+
         if (!$lineaPedido) {
             return redirect()->back()->with('error', 'Línea de pedido no encontrada.');
         }
-    
+
         // Obtener el id_proveedor del pedido asociado
         $pedidoBuilder = $db->table('pedidos_proveedor');
         $pedido = $pedidoBuilder->select('id_proveedor')->where('id_pedido', $lineaPedido['id_pedido'])->get()->getRow();
-    
+
         if (!$pedido) {
             return redirect()->back()->with('error', 'Pedido asociado no encontrado.');
         }
-    
+
         // Filtrar productos que pertenecen al proveedor
         $productosBuilder = $db->table('productos_proveedor');
         $productosBuilder->select('ref_producto');
         $productosBuilder->where('id_proveedor', $pedido->id_proveedor);
         $productos = $productosBuilder->get()->getResultArray();
-    
+
         return view('editLineaProveedor', [
             'lineaPedido' => $lineaPedido,
             'productos' => $productos
         ]);
     }
-    
+
     function _pinta_euro_linea($total_linea)
     {
         return "<div> <b>$total_linea &euro;</b></div>";
@@ -637,6 +641,7 @@ class Pedidos_proveedor extends BaseController
 
         // También actualiza el total del pedido completo
         $this->actualizarTotalPedido($id_pedido);
+        $this->actualizarEstadoPedido($data['id_pedido']);
         return $post_array;
     }
     private function actualizarTotalPedido($idPedido)
