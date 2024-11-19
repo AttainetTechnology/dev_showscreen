@@ -603,7 +603,6 @@ class Pedidos_proveedor extends BaseController
                 $builder_producto->select('precio');
                 $builder_producto->where('id_producto_necesidad', $ref_producto);
                 $builder_producto->where('id_proveedor', $id_proveedor);
-                $builder_producto->where('seleccion_mejor', 1);
                 $query_producto = $builder_producto->get();
 
                 if ($query_producto->getNumRows() > 0) {

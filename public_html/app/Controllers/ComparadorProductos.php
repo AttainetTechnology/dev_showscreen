@@ -6,8 +6,7 @@ use App\Models\ProductosNecesidadModel;
 use App\Models\ProductosProveedorModel;
 
 class ComparadorProductos extends BaseController
-{
-    public function index($id_producto = null)
+{public function index($id_producto = null)
     {
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Productos Necesidad', base_url('/productos_necesidad'));
@@ -19,7 +18,7 @@ class ComparadorProductos extends BaseController
         $productosNecesidadModel = new ProductosNecesidadModel($db);
         $productosProveedorModel = new ProductosProveedorModel($db);
     
-        $productos = $id_producto 
+        $productos = $id_producto
             ? $productosNecesidadModel->where('id_producto', $id_producto)->findAll()
             : $productosNecesidadModel->orderBy('nombre_producto', 'ASC')->findAll();
     
@@ -31,58 +30,58 @@ class ComparadorProductos extends BaseController
                 ->where('id_producto_necesidad', $producto['id_producto'])
                 ->findAll();
     
+            // Determinar el producto "mejor"
+            $idMejor = $producto['mejor']; // ID del mejor producto asociado al producto de necesidad
+    
+            foreach ($ofertas as &$oferta) {
+                $oferta['es_mejor'] = ($oferta['id'] == $idMejor); // Agregar campo que indique si es el mejor
+            }
+    
             $comparador[] = [
                 'producto' => $producto,
-                'ofertas' => $ofertas
+                'ofertas' => $ofertas,
             ];
         }
     
         return view('comparadorProductos', [
             'comparador' => $comparador,
-            'amiga' => $this->getBreadcrumbs(), 
+            'amiga' => $this->getBreadcrumbs(),
         ]);
     }
     
-
     public function seleccionarMejor()
     {
-        $productoIndex = $this->request->getPost('productoIndex');
-        $ofertaIndex = $this->request->getPost('ofertaIndex');
-
+        $productoIndex = $this->request->getPost('productoIndex'); // ID del producto en productos_necesidad
+        $ofertaIndex = $this->request->getPost('ofertaIndex'); // ID del producto en productos_proveedor
+    
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $productosProveedorModel = new ProductosProveedorModel($db);
-
-        $productosProveedorModel->where('id_producto_necesidad', $productoIndex)
-            ->set('seleccion_mejor', null)
-            ->update();
-
-        $productosProveedorModel->where('id', $ofertaIndex)
-            ->set('seleccion_mejor', 1)
-            ->update();
-
+        $productosNecesidadModel = new ProductosNecesidadModel($db);
+    
+        // Actualizar el campo 'mejor' en la tabla productos_necesidad
+        $productosNecesidadModel->update($productoIndex, ['mejor' => $ofertaIndex]);
+    
         $this->logAction("Selección Mejor Oferta", "Seleccion producto: $productoIndex, oferta: $ofertaIndex", $data);
-
+    
         return $this->response->setJSON(['status' => 'success']);
     }
-
+    
     public function deseleccionarMejor()
     {
-        $productoIndex = $this->request->getPost('productoIndex');
-        $ofertaIndex = $this->request->getPost('ofertaIndex');
-
+        $productoIndex = $this->request->getPost('productoIndex'); // ID del producto en productos_necesidad
+    
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $productosProveedorModel = new ProductosProveedorModel($db);
-
-        $productosProveedorModel->where('id', $ofertaIndex)
-            ->set('seleccion_mejor', null)
-            ->update();
-
-        $this->logAction("Deselección Mejor Oferta", "Deseleccion producto: $productoIndex, oferta: $ofertaIndex", $data);
-
+        $productosNecesidadModel = new ProductosNecesidadModel($db);
+    
+        // Limpiar el campo 'mejor' en la tabla productos_necesidad
+        $productosNecesidadModel->update($productoIndex, ['mejor' => null]);
+    
+        $this->logAction("Deselección Mejor Oferta", "Deseleccion producto: $productoIndex", $data);
+    
         return $this->response->setJSON(['status' => 'success']);
     }
+    
 
     public function editarOferta($id_producto = null, $id_oferta = null)
     {

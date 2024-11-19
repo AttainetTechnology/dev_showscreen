@@ -7,5 +7,5 @@ class ProductosProveedorModel extends Model
 {
     protected $table = 'productos_proveedor';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['ref_producto', 'id_producto_necesidad', 'precio', 'id_proveedor', 'seleccion_mejor'];
+    protected $allowedFields = ['ref_producto', 'id_producto_necesidad', 'precio', 'id_proveedor'];
 }
