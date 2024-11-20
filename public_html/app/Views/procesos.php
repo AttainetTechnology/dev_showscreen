@@ -1,66 +1,119 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 
 
-<div class="modal fade" id="processListModal" tabindex="-1" role="dialog" aria-labelledby="processListModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="processListModalLabel">Lista de Procesos</h5>
-                <button type="button" class="btn-close" aria-label="Close" onclick="window.location.href='<?= base_url() ?>'"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3 btnListaProcesos">
-                    <a href="<?= base_url('procesos/add'); ?>" class="btn btn-light addProcesos"> + Añadir</a>
-                    <?php if ($estado_proceso == 1): ?>
-                        <a href="<?= base_url('procesos/inactivos'); ?>" class="btn btn-light btnInactAct">Desactivados</a>
-                    <?php else: ?>
-                        <a href="<?= base_url('procesos'); ?>" class="btn btn-light btnInactAct btnActivos">Activos</a>
-                    <?php endif; ?>
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nombre del Proceso</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($procesos as $proceso): ?>
-                            <tr>
-                                <td><?= esc($proceso['nombre_proceso']); ?></td>
-                                <td>
-                                    <a href="<?= base_url('procesos/restriccion/' . $proceso['id_proceso']); ?>" class="btn btn-light editarProceso">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                            <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-9.29 9.29-.706.354a1 1 0 0 1-.262.104l-3 1a1 1 0 0 1-1.26-1.26l1-3a1 1 0 0 1 .104-.262l.354-.706 9.29-9.29zM11.207 3L13 4.793 14.207 3.5 12.5 1.793 11.207 3zm1.586 1.5L10.5 4.707 4.707 10.5 3.5 12.207 1.793 10.5 3 9.293l5.793-5.793L11.5 4.793zm-7.5 7.793L2 13.207l.207-1.793L3.707 11l-1.293 1.293z" />
-                                        </svg>
-                                    </a>
-                                    <a href="<?= base_url('procesos/cambiaEstado/' . $proceso['id_proceso'] . '/' . $estado_proceso); ?>"
-                                        class="btn btn-light <?= $estado_proceso == 1 ? 'btnInactAct' : 'btnActivar' ?>"
-                                        onclick="return confirm('¿Estás seguro de cambiar el estado de este proceso?')">
-                                        <?= $estado_proceso == 1 ? 'Desactivar' : 'Activar' ?>
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
+<br>
+<div class="container mt-5">
+    <h1 class="mb-4">Lista de Procesos</h1>
+    <div class="mb-3 d-flex justify-content-between">
+    <a href="<?= base_url('procesos/add'); ?>" class="btn btn-primary">+ Añadir Proceso</a>
+    <button id="clear-filters" class="btn btn-secondary">Quitar Filtros</button>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Muestra el modal cuando se carga la página
-        $('#processListModal').modal('show');
+<!-- Botones para alternar entre Activos/Inactivos -->
+<?php if ($estado_proceso == 1): ?>
+    <button id="toggle-status" class="btn btn-secondary" data-estado="0">Ver Desactivados</button>
+<?php else: ?>
+    <button id="toggle-status" class="btn btn-success" data-estado="1">Ver Activos</button>
+<?php endif; ?>
 
-        // Cierra el modal y redirige al inicio si se cierra
-        $('#processListModal').on('hidden.bs.modal', function(e) {
-            window.location.href = '<?= base_url() ?>';
+<div id="gridProcesos" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Definición de columnas
+        const columnDefs = [
+        {
+            headerName: "Acciones",
+            field: "acciones",
+            cellRenderer: params => {
+                const links = params.data.acciones || {};
+                return `
+                    <a href="${links.editar}" class="btn btn-warning btn-sm me-2">Editar</a>
+                    <button class="btn ${params.data.estado_proceso == 1 ? 'btn-danger' : 'btn-success'} btn-sm" onclick="cambiarEstado('${links.cambiar_estado}', '${params.data.estado_proceso}')">
+                        ${params.data.estado_proceso == 1 ? 'Desactivar' : 'Activar'}
+                    </button>
+                `;
+            },
+            minWidth: 250,
+            filter: false,
+            floatingFilter: false,
+        },
+        { headerName: "ID", field: "id_proceso", sortable: true, filter: "agTextColumnFilter", width: 100, hide: true },
+        { headerName: "Restricción", field: "restriccion", sortable: true, filter: "agTextColumnFilter", hide: true },
+        { headerName: "Nombre del Proceso", field: "nombre_proceso", sortable: true, filter: "agTextColumnFilter" },
+    ];
+
+
+        // Opciones del grid
+        const gridOptions = {
+            columnDefs: columnDefs,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                sortable: true,
+                filter: true,
+                floatingFilter: true, // Habilita las cajas de búsqueda
+                resizable: true
+            },
+            rowData: [], // Datos iniciales vacíos
+            pagination: true,
+            paginationPageSize: 10,
+            domLayout: 'autoHeight',
+            onGridReady: function (params) {
+                fetchProcesos(params.api);
+            },
+            rowHeight: 60,
+            localeText: {
+                noRowsToShow: 'No hay registros disponibles.'
+            }
+        };
+
+        // Inicializar el grid
+        const gridDiv = document.querySelector('#gridProcesos');
+        new agGrid.Grid(gridDiv, gridOptions);
+
+        // Fetch para obtener los datos
+        function fetchProcesos(gridApi) {
+            fetch('<?= base_url("procesos/getProcesos") ?>')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Datos cargados:', data);
+                    gridApi.applyTransaction({ add: data }); // Insertar datos en la tabla
+                })
+                .catch(error => console.error('Error al cargar los procesos:', error));
+        }
+
+        // Función para limpiar los filtros
+        document.getElementById('clear-filters').addEventListener('click', () => {
+            gridOptions.api.setFilterModel(null);
+            gridOptions.api.onFilterChanged();
         });
+
+        // Función para cambiar el estado del proceso
+        window.cambiarEstado = function (url, estado) {
+            if (confirm(`¿Estás seguro de que deseas ${estado == 1 ? 'desactivar' : 'activar'} este proceso?`)) {
+                fetch(url, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Estado cambiado correctamente.');
+                            fetchProcesos(gridOptions.api); // Recargar los datos después del cambio
+                        } else {
+                            alert('Error al cambiar el estado del proceso.');
+                        }
+                    })
+                    .catch(() => alert('Error en la solicitud.'));
+            }
+        };
     });
 </script>
 

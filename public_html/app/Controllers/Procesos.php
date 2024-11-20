@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\Proceso;
 use CodeIgniter\Controller;
 
-class Procesos extends BaseControllerGC
+class Procesos extends BaseController
 {
     public function index()
     {
@@ -16,6 +16,31 @@ class Procesos extends BaseControllerGC
         // Pasar estado_proceso a la vista para mostrar botón correcto
         return view('procesos', ['procesos' => $procesos, 'estado_proceso' => 1]);
     }
+public function getProcesos($estado = null)
+{
+    $data = datos_user();
+    $db = db_connect($data['new_db']);
+    $procesoModel = new Proceso($db);
+
+    // Filtrar por estado si se proporciona
+    if ($estado !== null) {
+        $procesos = $procesoModel->where('estado_proceso', $estado)->orderBy('nombre_proceso', 'ASC')->findAll();
+    } else {
+        $procesos = $procesoModel->orderBy('nombre_proceso', 'ASC')->findAll();
+    }
+
+    // Añadir acciones para cada proceso
+    foreach ($procesos as &$proceso) {
+        $proceso['acciones'] = [
+            'editar' => base_url('procesos/restriccion/' . $proceso['id_proceso']),
+            'cambiar_estado' => base_url('procesos/cambiaEstado/' . $proceso['id_proceso'] . '/' . $proceso['estado_proceso']),
+        ];
+    }
+
+    return $this->response->setJSON($procesos);
+}
+
+
     public function add()
     {
         return view('add_procesos');
