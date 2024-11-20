@@ -46,6 +46,28 @@
                         <label for="precio" class="form-label">Precio</label>
                         <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="id_familia" class="form-label">Familia</label>
+                        <select class="form-control" id="id_familia" name="id_familia" required>
+                            <option value="">Seleccione una familia</option>
+                            <!-- Opciones se llenarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="unidad" class="form-label">Unidad</label>
+                        <select class="form-control" id="unidad" name="unidad" required>
+                            <option value="">Seleccione una unidad</option>
+                            <!-- Opciones se llenarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado_producto" class="form-label">Estado</label>
+                        <select class="form-control" id="estado_producto" name="estado_producto" required>
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -224,6 +246,26 @@
             });
         }
     }
+    document.addEventListener('DOMContentLoaded', function () {
+        cargarOpciones('<?= base_url("productos/getUnidades") ?>', 'unidad');
+        cargarOpciones('<?= base_url("productos/getFamilias") ?>', 'id_familia');
+    });
+
+    function cargarOpciones(url, selectId) {
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById(selectId);
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id_unidad || item.id_familia;
+                    option.textContent = item.nombre_unidad || item.nombre;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error cargando opciones:', error));
+    }
+
 </script>
 
 

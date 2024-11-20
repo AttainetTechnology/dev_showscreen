@@ -8,7 +8,7 @@ class Productos_model extends Model
 {
     protected $table = 'productos';
     protected $primaryKey = 'id_producto';
-    protected $allowedFields = ['id_producto', 'nombre_producto', 'id_familia'];
+    protected $allowedFields = ['id_producto', 'nombre_producto', 'id_familia', 'imagen', 'precio', 'unidad', 'estado_producto' ];
 
     public function getProductoConFamilia($id_producto) {
         return $this->select('productos.*, familia_productos.nombre as nombre_familia')

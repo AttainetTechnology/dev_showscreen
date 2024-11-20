@@ -1,6 +1,7 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-
+<?= $this->include('partials/amiga') ?>
+<br>
 <h2>Editar Producto</h2>
 
 <?php if (session()->getFlashdata('success')): ?>
