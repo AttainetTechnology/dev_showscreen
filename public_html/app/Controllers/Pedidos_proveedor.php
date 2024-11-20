@@ -101,24 +101,24 @@ class Pedidos_proveedor extends BaseController
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Pedidos', base_url('/pedidos_proveedor'));
         $this->addBreadcrumb('Editar Pedido');
-    
+
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
         $pedido = $pedidoModel->find($id_pedido);
-    
+
         if (!$pedido) {
             return redirect()->to(base_url('pedidos_proveedor'))->with('error', 'Pedido no encontrado.');
         }
-    
+
         $builder = $db->table('linea_pedido_proveedor');
         $builder->select('linea_pedido_proveedor.*, productos_proveedor.ref_producto');
         $builder->join('productos_proveedor', 'productos_proveedor.ref_producto = linea_pedido_proveedor.ref_producto', 'left');
         $builder->where('linea_pedido_proveedor.id_pedido', $id_pedido);
-    
+
         // Obtener todas las líneas de pedido
         $lineasPedido = $builder->get()->getResultArray();
-    
+
         // Eliminar duplicados basados únicamente en `id_lineapedido`
         $lineasUnicas = [];
         foreach ($lineasPedido as $linea) {
@@ -126,10 +126,10 @@ class Pedidos_proveedor extends BaseController
                 $lineasUnicas[$linea['id_lineapedido']] = $linea;
             }
         }
-    
+
         // Convertir el array asociativo en un array simple
         $lineasPedido = array_values($lineasUnicas);
-    
+
         $proveedores = (new ProveedoresModel($db))->findAll();
         $usuarios = $this->getUsuarios();
         $estados = [
@@ -138,7 +138,7 @@ class Pedidos_proveedor extends BaseController
             "2" => "Recibido",
             "6" => "Anulado"
         ];
-    
+
         return view('editPedidoProveedor', [
             'pedido' => $pedido,
             'proveedores' => $proveedores,
@@ -148,7 +148,7 @@ class Pedidos_proveedor extends BaseController
             'id_pedido' => $id_pedido,
         ]);
     }
-    
+
     public function update($id_pedido)
     {
         $data = usuario_sesion();
@@ -501,17 +501,17 @@ class Pedidos_proveedor extends BaseController
         $db = db_connect(usuario_sesion()['new_db']);
         $builder = $db->table('linea_pedido_proveedor');
         $linea = $builder->select('id_pedido')->where('id_lineapedido', $id_lineapedido)->get()->getRow();
-    
+
         if ($builder->where('id_lineapedido', $id_lineapedido)->delete() && $linea) {
             // Actualizar estado y total del pedido si se elimina correctamente
             $this->actualizarEstadoPedido($linea->id_pedido);
             $this->actualizarTotalPedido($linea->id_pedido);
         }
-    
+
         // Redirigir siempre a la página de edición del pedido
         return redirect()->to(base_url('pedidos_proveedor/editar/' . ($linea->id_pedido ?? '')));
     }
-    
+
     public function editLineaPedidoForm($id_lineapedido)
     {
         $db = db_connect(usuario_sesion()['new_db']);
@@ -637,8 +637,8 @@ class Pedidos_proveedor extends BaseController
             }
         }
         // Calcula el total usando el precio manual o el precio encontrado
-        $precio_compra = is_numeric($precio_compra) ? (float)$precio_compra : 0;
-        $n_piezas = is_numeric($n_piezas) ? (int)$n_piezas : 0;
+        $precio_compra = is_numeric($precio_compra) ? (float) $precio_compra : 0;
+        $n_piezas = is_numeric($n_piezas) ? (int) $n_piezas : 0;
         $total_linea = $n_piezas * $precio_compra;
         $post_array->data['total_linea'] = $total_linea;
         $post_array->data['precio_compra'] = $precio_compra;
@@ -737,6 +737,6 @@ class Pedidos_proveedor extends BaseController
     /* Funciones de salida - Vistas */
     function _output_sencillo($output = null)
     {
-        echo view('sencillo', (array)$output);
+        echo view('sencillo', (array) $output);
     }
 }

@@ -24,7 +24,7 @@
         <label for="imagen" class="form-label">Imagen</label>
         <input type="file" name="imagen" id="imagen" class="form-control">
         <?php if ($producto['imagen']): ?>
-            <p>Imagen actual:
+            <p>
                 <img src="<?= base_url("public/assets/uploads/files/{$id_empresa}/productos_necesidad/{$producto['id_producto']}/" . $producto['imagen']) ?>" height="60">
             </p>
             <button type="button" class="btn btn-danger mt-2" id="eliminarImagenButton">Eliminar Imagen</button>
