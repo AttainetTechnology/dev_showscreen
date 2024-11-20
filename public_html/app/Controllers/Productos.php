@@ -8,7 +8,12 @@ class Productos extends BaseController
 {
     public function index()
     {
-        return view('productos_view'); // Vista principal de productos con ag-Grid
+
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Productos');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('productos_view', ['amiga' => $data['amiga']]);
+
     }
 
     public function getProductos()
