@@ -89,6 +89,11 @@ class Productos extends BaseController
 
     public function editarVista($id)
     {
+        // Añadir migas de pan
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Productos', base_url('/productos'));
+        $this->addBreadcrumb('Editar Producto');
+
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new Productos_model($db);
@@ -108,7 +113,8 @@ class Productos extends BaseController
         return view('editProducto', [
             'producto' => $producto,
             'familias' => $familias,
-            'unidades' => $unidades
+            'unidades' => $unidades,
+            'amiga' => $this->getBreadcrumbs(),
         ]);
     }
 

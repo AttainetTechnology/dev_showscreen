@@ -79,7 +79,7 @@
                 success: function (response) {
                     if (response.success) {
                         alert('Imagen eliminada correctamente');
-                        location.reload(); // Recargar para actualizar el formulario
+                        location.reload(); 
                     } else {
                         alert('Error: ' + response.message);
                     }
