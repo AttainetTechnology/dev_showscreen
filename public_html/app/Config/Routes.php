@@ -105,3 +105,4 @@ $routes->post('contactos/actualizarContacto/(:num)', 'Contactos::actualizarConta
 $routes->post('contactos/eliminarContacto/(:num)', 'Contactos::eliminarContacto/$1');
 $routes->get('contactos/getContacto/(:num)', 'Contactos::getContacto/$1');
 $routes->delete('productos/eliminarImagen/(:num)', 'Productos::eliminarImagen/$1');
+$routes->post('familia_productos/eliminar/(:num)', 'Familia_productos::eliminarFamilia/$1');

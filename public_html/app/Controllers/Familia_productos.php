@@ -1,42 +1,94 @@
-<?php
+<?php 
 
 namespace App\Controllers;
 
-class Familia_productos extends BaseControllerGC
+use App\Models\Familia_productos_model;
+
+class Familia_productos extends BaseController
 {
     public function index()
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Familia Productos');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('familiaProductos', $data);
+    }
 
-    $crud = $this->_getClientDatabase();
+    public function getFamiliasProductos()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Familia_productos_model($db);
+        $familias = $model->findAll();
+        foreach ($familias as &$familia) {
+            $familia['acciones'] = [
+                'editar' => base_url('familia_productos/editar/' . $familia['id_familia']),
+                'eliminar' => base_url('familia_productos/eliminar/' . $familia['id_familia'])
+            ];
+        }
+        return $this->response->setJSON($familias);
+    }
 
-    $crud->setSubject('Familia de productos','Familias de productos');
-    $crud->setTable('familia_productos');
-    $crud->columns(['nombre']);
-    $crud->requiredFields(['nombre']);
-    $crud->editFields(['nombre']);
-    $crud->defaultOrdering('orden','asc');
-    $crud->defaultOrdering('en_menu','desc');
-    // $crud->unsetRead();
-    $crud->setLangString('modal_save', 'Guardar Familia');
+    public function eliminarFamilia($id_familia)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Familia_productos_model($db);
 
-    // Callbacks para registrar las acciones realizadas en LOG
-    $crud->callbackAfterInsert(function ($stateParameters) {
-        $this->logAction('Familia', 'Añade familia', $stateParameters);
-        return $stateParameters;
-    });
-    $crud->callbackAfterUpdate(function ($stateParameters) {
-        $this->logAction('Familia', 'Edita familia, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-        return $stateParameters;
-    });
-    $crud->callbackAfterDelete(function ($stateParameters) {
-        $this->logAction('Familia', 'Elimina familia, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-        return $stateParameters;
-    });
+        $model->delete($id_familia);
 
-    $output = $crud->render();
+        return $this->response->setJSON(['success' => true]);
+    }
 
+    public function actualizarFamilia()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Familia_productos_model($db);
 
-return $this->_GC_output("layouts/main", $output); 
+        $idFamilia = $this->request->getPost('id_familia');
+        $nombre = $this->request->getPost('nombre');
+
+        if (empty($nombre)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'El campo nombre es obligatorio.']);
+        }
+
+        $model->set('nombre', $nombre)
+              ->where('id_familia', $idFamilia)
+              ->update();
+
+        return $this->response->setJSON(['success' => true]);
+    }
+
+    public function editar($id_familia)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Familia_productos_model($db);
+
+        $familia = $model->find($id_familia);
+
+        if (!$familia) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Familia no encontrada.']);
+        }
+
+        return view('editFamiliaProductosModal', ['familia' => $familia]);
+    }
+
+    public function agregarFamilia()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Familia_productos_model($db);
+
+        $nombre = $this->request->getPost('nombre');
+
+        if (empty($nombre)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'El campo nombre es obligatorio.']);
+        }
+
+        $model->insert(['nombre' => $nombre]);
+
+        return $this->response->setJSON(['success' => true]);
     }
 }
-

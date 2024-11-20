@@ -89,7 +89,6 @@
         </button>
     </div>
 </form>
-
 <script>
     function eliminarImagen(idProducto) {
         if (confirm('¿Estás seguro de que deseas eliminar esta imagen?')) {
