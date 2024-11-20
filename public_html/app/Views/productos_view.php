@@ -186,8 +186,12 @@
 
     function imagenRenderer(params) {
         const imagenUrl = params.value;
+        if (!imagenUrl) {
+            return ''; // Devuelve vacío si no hay URL
+        }
         return `<img src="${imagenUrl}" alt="Imagen Producto" style="width: 100px; height: 100px; object-fit: cover;">`;
     }
+
 
     function abrirModalAgregarProducto() {
         // Resetear el formulario y la imagen de vista previa

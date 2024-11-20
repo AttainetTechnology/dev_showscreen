@@ -104,3 +104,4 @@ $routes->post('contactos/agregarContacto', 'Contactos::agregarContacto');
 $routes->post('contactos/actualizarContacto/(:num)', 'Contactos::actualizarContacto/$1');
 $routes->post('contactos/eliminarContacto/(:num)', 'Contactos::eliminarContacto/$1');
 $routes->get('contactos/getContacto/(:num)', 'Contactos::getContacto/$1');
+$routes->delete('productos/eliminarImagen/(:num)', 'Productos::eliminarImagen/$1');

@@ -33,7 +33,7 @@ class Productos extends BaseController
             $producto['estado_nombre'] = $producto['estado_producto'] == 1 ? 'Activo' : 'Inactivo';
             $producto['imagen_url'] = $producto['imagen']
                 ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}")
-                : base_url('public/assets/images/default.png'); // Imagen por defecto si no hay imagen
+                : null;
         }
 
         return $this->response->setJSON($productos);
@@ -145,5 +145,29 @@ class Productos extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar el producto.']);
         }
     }
-
+    public function eliminarImagen($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+    
+        $producto = $productosModel->find($id);
+        if (!$producto || !$producto['imagen']) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Imagen no encontrada.']);
+        }
+    
+        // Ruta de la imagen
+        $rutaImagen = "public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}";
+    
+        // Intentar eliminar la imagen del sistema de archivos
+        if (file_exists($rutaImagen)) {
+            unlink($rutaImagen);
+        }
+    
+        // Eliminar la referencia de la imagen en la base de datos
+        $productosModel->update($id, ['imagen' => null]);
+    
+        return $this->response->setJSON(['success' => true]);
+    }
+    
 }
