@@ -4,13 +4,28 @@
     justify-content: center;
     gap: 4px !important;
     cursor: pointer;
-    padding: 3px 8px 3px 10px;
+    padding: 3px 8px 3px 10px !important;
     margin: 0px;
     border-radius: 5px;
     font-size: 14px !important;
     text-decoration: none !important;
     border: none !important;
 }
+.botonMover {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px !important;
+    cursor: pointer;
+    padding: 8px 15px 8px 15px !important;
+    margin: 0px;
+    border-radius: 5px;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    border: none !important;
+}
+
+
 
 
 
@@ -273,17 +288,17 @@
     height: 18px !important;
 }
 
-.btnMover {
+.btnMover, .botonMover {
     background-color: #37CDED!important;
     color: white !important;
 }
 
-.btnMover:hover {
+.btnMover:hover, .botonMover:hover {
     background-color: #06B0D4 !important;
     color: white;
 }
 
-.btnMover:active {
+.btnMover:active, .botonMover:active {
     background-color:#89DEF0 !important;
     color: white !important;
 }
@@ -291,6 +306,12 @@
 .btnMover svg {
     width: 12px !important;
     height: 12px !important;
+    margin-top: 2px;
+}
+
+.botonMover svg{
+    width: 15px !important;
+    height: 15px !important;
     margin-top: 2px;
 }
 
