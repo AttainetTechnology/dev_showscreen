@@ -1,8 +1,10 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
+
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/botones.css') ?>?v=<?= time() ?>">
-<div class="container mt-5">
+<br> <br>
     <div class="botonSeparados">
         <a href="<?= base_url('procesos/restriccion/' . $previous_proceso_id); ?>" id="prev-link"
             class="botonMover "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -22,7 +24,9 @@
     <form id="edit-form" action="<?= base_url('procesos/restriccion/' . $proceso_principal['id_proceso']); ?>"
         method="post">
         <input type="hidden" name="redirect_url" value="<?= current_url(); ?>">
-        <div class="d-flex justify-content-between mb-3 btnFamiliaProveedor">
+       
+        <h2 class="text-center mb-4"><?= $proceso_principal['nombre_proceso'] ?></h2>
+        <div class="buttonsEditProductProveedAbajo">
             <a href="<?= base_url('procesos'); ?>" class="btn boton volverButton">Volver
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -38,8 +42,6 @@
                 </svg>
             </button>
         </div>
-
-        <h2 class="text-center mb-4"><?= $proceso_principal['nombre_proceso'] ?></h2>
 
         <div class="form-group">
             <label for="nombre_proceso">Nombre del Proceso</label>
@@ -98,9 +100,10 @@
                 </svg>
             </button>
         </div>
+        <br>
 
     </form>
-</div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -9,13 +9,22 @@ class Procesos extends BaseController
 {
     public function index()
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Procesos');
+        
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
         $procesos = $procesoModel->where('estado_proceso', 1)->orderBy('nombre_proceso', 'ASC')->findAll();
-        // Pasar estado_proceso a la vista para mostrar botón correcto
-        return view('procesos', ['procesos' => $procesos, 'estado_proceso' => 1]);
+    
+        // Pasar las migas de pan a la vista
+        return view('procesos', [
+            'procesos' => $procesos,
+            'estado_proceso' => 1,
+            'amiga' => $this->getBreadcrumbs()
+        ]);
     }
+    
     public function getProcesos($estado = null)
     {
         $data = datos_user();
@@ -74,6 +83,9 @@ class Procesos extends BaseController
     }
     public function restriccion($primaryKey)
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Procesos', base_url('procesos'));
+        $this->addBreadcrumb('Editar Proceso');
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
@@ -113,7 +125,8 @@ class Procesos extends BaseController
             'procesos' => $procesos,
             'primaryKey' => $primaryKey,
             'previous_proceso_id' => $previous_proceso_id,
-            'next_proceso_id' => $next_proceso_id
+            'next_proceso_id' => $next_proceso_id,
+            'amiga' => $this->getBreadcrumbs()
         ];
         return view('edit_procesos', $data);
     }

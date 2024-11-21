@@ -9,7 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <br>
-<div class="container mt-5">
+
     <h1 class="mb-4">Lista de Procesos</h1>
     <div class="mb-3 d-flex justify-content-between">
         <a href="<?= base_url('procesos/add'); ?>" class="boton btnAdd">Añadir Proceso
@@ -28,7 +28,7 @@
         </button>
     </div>
     <div id="gridProcesos" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
-</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Definición de columnas

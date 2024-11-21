@@ -106,3 +106,9 @@ $routes->post('contactos/eliminarContacto/(:num)', 'Contactos::eliminarContacto/
 $routes->get('contactos/getContacto/(:num)', 'Contactos::getContacto/$1');
 $routes->delete('productos/eliminarImagen/(:num)', 'Productos::eliminarImagen/$1');
 $routes->post('familia_productos/eliminar/(:num)', 'Familia_productos::eliminarFamilia/$1');
+$routes->get('/maquinas', 'MaquinasController::index');
+$routes->get('/maquinas/getMaquinas', 'MaquinasController::getMaquinas');
+$routes->post('/maquinas/agregarMaquina', 'MaquinasController::agregarMaquina');
+$routes->post('/maquinas/actualizarMaquina', 'MaquinasController::actualizarMaquina');
+$routes->post('/maquinas/eliminar/(:num)', 'MaquinasController::eliminarMaquina/$1');
+$routes->get('/maquinas/editar/(:num)', 'MaquinasController::editar/$1');
