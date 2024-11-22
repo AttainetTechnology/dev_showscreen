@@ -53,17 +53,17 @@ class Usuarios extends BaseController
         }
     }
     public function eliminarUsuario($id)
-{
-    $data = usuario_sesion();
-    $db = db_connect($data['new_db']);
-    $model = new Usuarios2_Model($db);
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Usuarios2_Model($db);
 
-    if ($model->delete($id)) {
-        return $this->response->setJSON(['success' => true, 'message' => 'Usuario eliminado correctamente']);
-    } else {
-        return $this->response->setJSON(['success' => false, 'message' => 'No se pudo eliminar el usuario']);
+        if ($model->delete($id)) {
+            return $this->response->setJSON(['success' => true, 'message' => 'Usuario eliminado correctamente']);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'No se pudo eliminar el usuario']);
+        }
     }
-}
 
     public function crearUsuario()
     {
