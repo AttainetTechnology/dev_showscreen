@@ -112,3 +112,5 @@ $routes->post('/maquinas/agregarMaquina', 'MaquinasController::agregarMaquina');
 $routes->post('/maquinas/actualizarMaquina', 'MaquinasController::actualizarMaquina');
 $routes->post('/maquinas/eliminar/(:num)', 'MaquinasController::eliminarMaquina/$1');
 $routes->get('/maquinas/editar/(:num)', 'MaquinasController::editar/$1');
+$routes->get('productos/procesos/(:num)', 'Productos::verProcesos/$1');
+$routes->post('productos/updateOrder', 'Productos::updateOrder');

@@ -15,9 +15,86 @@ class Productos extends BaseController
         return view('productos_view', ['amiga' => $data['amiga']]);
 
     }
+    public function verProcesos($id_producto)
+    {
+        helper('controlacceso');
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+
+        // Obtener el producto
+        $producto = $db->table('productos')
+            ->where('id_producto', $id_producto)
+            ->get()
+            ->getRow();
+
+        if (!$producto) {
+            return redirect()->to(base_url('productos'))->with('error', 'Producto no encontrado');
+        }
+
+        // Obtener todos los procesos
+        $allProcesses = $db->table('procesos')->get()->getResult();
+
+        // Obtener los procesos asociados al producto
+        $procesos = $db->table('procesos_productos')
+            ->select('procesos_productos.*, procesos.nombre_proceso')
+            ->join('procesos', 'procesos.id_proceso = procesos_productos.id_proceso', 'left')
+            ->where('id_producto', $id_producto)
+            ->orderBy('procesos_productos.orden', 'asc')
+            ->get()
+            ->getResult();
+
+        // Añadir migas de pan
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Productos', base_url('/productos'));
+        $this->addBreadcrumb("Procesos de {$producto->nombre_producto}");
+
+        // Preparar datos para la vista
+        $data['producto'] = $producto;
+        $data['allProcesses'] = $allProcesses;
+        $data['procesos'] = $procesos;
+        $data['amiga'] = $this->getBreadcrumbs();
+
+        return view('procesos_view', $data);
+    }
+
+
+    public function updateOrder()
+    {
+        helper('controlacceso');
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+
+        $jsonData = $this->request->getJSON(); // Decodificar JSON automáticamente
+
+        if (empty($jsonData)) {
+            return $this->response->setStatusCode(400, 'Datos no válidos');
+        }
+
+        $id_producto = $jsonData->id_producto;
+        $procesos = $jsonData->procesos;
+
+        if (empty($id_producto) || empty($procesos)) {
+            return $this->response->setStatusCode(400, 'Datos incompletos');
+        }
+
+        // Eliminar procesos existentes
+        $db->table('procesos_productos')->where('id_producto', $id_producto)->delete();
+
+        // Insertar nuevos procesos con el orden actualizado
+        foreach ($procesos as $proceso) {
+            $db->table('procesos_productos')->insert([
+                'id_producto' => $id_producto,
+                'id_proceso' => $proceso->id_proceso,
+                'orden' => $proceso->orden
+            ]);
+        }
+
+        return $this->response->setJSON(['success' => true, 'message' => 'Orden actualizado correctamente']);
+    }
 
     public function getProductos()
     {
+        // Lógica existente para obtener productos
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new Productos_model($db);
@@ -35,7 +112,6 @@ class Productos extends BaseController
                 ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['id_producto']}/{$producto['imagen']}")
                 : null; // Devuelve null si no hay imagen
         }
-
 
         return $this->response->setJSON($productos);
     }
