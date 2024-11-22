@@ -58,32 +58,26 @@ class Usuarios extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $usuariosModel = new Usuarios1_Model($db);
-
-        // Conexión a la otra base de datos para niveles de acceso
+    
+        // Conexión a la otra base de datos para niveles de acceso y `username`
         $usuariosModel2 = new Usuarios1_Model();
-
-        // Buscar usuario por ID para obtener datos generales
+    
+        // Buscar usuario por ID para obtener datos generales (nombre_usuario)
         $usuario = $usuariosModel->find($id);
-        // Buscar nivel de acceso del usuario desde la base de datos general
+         // Buscar usuario por ID en la base de datos general para obtener `username` y nivel_acceso
         $usuarioConNivel = $usuariosModel2->find($id);
-
         $nivelUsuario = $usuarioConNivel['nivel_acceso'] ?? null;
-        if (!$nivelUsuario) {
-            throw new \Exception("El usuario no tiene asignado un nivel de acceso.");
-        }
-        // Obtener los niveles de acceso desde la base de datos configurada
+            // Obtener los niveles de acceso desde la base de datos configurada
         $nivelesAcceso = $db->table('niveles_acceso')->get()->getResultArray();
-        if (empty($nivelesAcceso)) {
-            throw new \Exception("No hay niveles de acceso en la base de datos.");
-        }
-
-        // Retornar la vista con los datos combinados
+    
+        // Combinar los datos relevantes en un solo array
+        $usuario['username'] = $usuarioConNivel['username'] ?? null;
+    
         return view('datosAcceso', [
-            'user' => $usuario, // Datos del usuario
+            'user' => $usuario, // Datos del usuario combinados
             'niveles_acceso' => $nivelesAcceso, // Lista de niveles de acceso
             'nivel_usuario' => $nivelUsuario, // Nivel actual del usuario
         ]);
     }
-
-
+    
 }
