@@ -114,3 +114,4 @@ $routes->post('/maquinas/eliminar/(:num)', 'MaquinasController::eliminarMaquina/
 $routes->get('/maquinas/editar/(:num)', 'MaquinasController::editar/$1');
 $routes->get('productos/procesos/(:num)', 'Productos::verProcesos/$1');
 $routes->post('productos/updateOrder', 'Productos::updateOrder');
+$routes->get('usuarios/datosAcceso/(:num)', 'Usuarios::datosAcceso/$1');
