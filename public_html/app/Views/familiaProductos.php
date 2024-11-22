@@ -102,10 +102,10 @@
             onGridReady: function (params) {
                 fetchFamilias(params.api);
             },
-            rowHeight: 60,
             localeText: {
                 noRowsToShow: 'No hay registros disponibles.'
-            }
+            },
+            rowHeight: 60,
         };
 
         new agGrid.Grid(document.querySelector('#gridFamilias'), gridOptions);
