@@ -107,6 +107,9 @@ class Lista_produccion extends BaseControllerGC
         if ($estado == '5') {
             $nombre_estado = "Entregado";
         }
+        if ($estado == '6') {
+            $nombre_estado = "Anulado";
+        }
         return "$nombre_estado";
     }
 
