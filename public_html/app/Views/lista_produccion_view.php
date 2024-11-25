@@ -11,7 +11,7 @@
 <h2 class="tituloProveedores"><?= $titulo_pagina ?></h2>
 
 <div class="btnsEditPedido">
-      <button id="clear-filters" class="boton btnEliminarfiltros">
+    <button id="clear-filters" class="boton btnEliminarfiltros">
         Quitar Filtros
         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
             <path
@@ -32,12 +32,12 @@
             maxWidth: 150,
             filter: false,
         },
-        { headerName: "Linea Pedido", field: "id_lineapedido", filter: 'agTextColumnFilter', maxWidth: 120},
+        { headerName: "Linea Pedido", field: "id_lineapedido", filter: 'agTextColumnFilter', maxWidth: 120 },
         { headerName: "ID", field: "id_lineapedido", filter: 'agTextColumnFilter', hide: true },
         { headerName: "Fecha de Entrada", field: "fecha_entrada", filter: 'agDateColumnFilter' },
-        { headerName: "Med Inicial", field: "med_inicial", filter: 'agTextColumnFilter',  maxWidth: 150 },
-        { headerName: "Med Final", field: "med_final", filter: 'agTextColumnFilter',  maxWidth: 150 },
-        { headerName: "Base", field: "nom_base", filter: 'agTextColumnFilter',  maxWidth: 150 },
+        { headerName: "Med Inicial", field: "med_inicial", filter: 'agTextColumnFilter', maxWidth: 150 },
+        { headerName: "Med Final", field: "med_final", filter: 'agTextColumnFilter', maxWidth: 150 },
+        { headerName: "Base", field: "nom_base", filter: 'agTextColumnFilter', maxWidth: 150 },
         { headerName: "Producto", field: "nombre_producto", filter: 'agTextColumnFilter' },
         {
             headerName: "Pedido",
@@ -56,7 +56,7 @@
 
         function renderActions(params) {
             const id = params.data.id_lineapedido;
-            const accionParte = params.data.accion_parte; 
+            const accionParte = params.data.accion_parte;
 
             return `
         <button class="btn boton btnImprimir" onclick="window.open('${accionParte}', '_blank')">
@@ -83,12 +83,15 @@
             rowHeight: 60,
             localeText: { noRowsToShow: 'No hay registros disponibles.' }
         };
-
         const eGridDiv = document.querySelector('#myGrid');
         new agGrid.Grid(eGridDiv, gridOptions);
+
+        document.getElementById('clear-filters').addEventListener('click', function () {
+            gridOptions.api.setFilterModel(null); 
+            gridOptions.api.onFilterChanged(); 
+        });
     });
 
-    // Función para mostrar el modal del parte
     function mostrarParte(id_lineapedido) {
         $.ajax({
             url: '<?= base_url("partes/print/") ?>' + id_lineapedido,
