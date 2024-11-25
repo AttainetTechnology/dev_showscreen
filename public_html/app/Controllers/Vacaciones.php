@@ -9,7 +9,10 @@ class Vacaciones extends BaseController
 {
     public function index()
     {
-        return view('vacaciones_view');
+		$this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Vacaciones');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('vacaciones_view', $data);
     }
 
     public function getVacaciones()
