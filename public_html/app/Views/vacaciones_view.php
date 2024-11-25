@@ -8,7 +8,7 @@
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <br>
 <h2 class="tituloProveedores">Vacaciones</h2>
@@ -81,14 +81,36 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         fetchUsuarios();
-
+        const dateComparator = (filterDate, cellValue) => {
+            if (!cellValue) return -1;
+            // Convierte el valor de la celda de "dd/mm/yyyy" a un objeto Date
+            const [day, month, year] = cellValue.split('/');
+            const cellDate = new Date(year, month - 1, day);
+            if (cellDate < filterDate) return -1;
+            if (cellDate > filterDate) return 1;
+            return 0;
+        };
         const columnDefs = [
-            { headerName: "Acciones", field: "acciones", cellRenderer: actionCellRenderer, filter: false, minWidth: 200 },
+            { headerName: "Acciones", field: "acciones", cellRenderer: actionCellRenderer, filter: false, maxWidth: 250 },
             { headerName: "ID", field: "id", filter: 'agTextColumnFilter', hide: true },
             { headerName: "Usuario", field: "nombre_usuario", filter: 'agTextColumnFilter' },
-            { headerName: "Desde", field: "desde", filter: 'agDateColumnFilter' },
-            { headerName: "Hasta", field: "hasta", filter: 'agDateColumnFilter' },
-            { headerName: "Observaciones", field: "observaciones", filter: 'agTextColumnFilter' }
+            {
+                headerName: "Desde",
+                field: "desde",
+                filter: 'agDateColumnFilter',
+                filterParams: {
+                    comparator: dateComparator,
+                },
+            },
+            {
+                headerName: "Hasta",
+                field: "hasta",
+                filter: 'agDateColumnFilter',
+                filterParams: {
+                    comparator: dateComparator,
+                },
+            },
+            { headerName: "Observaciones", field: "observaciones", filter: 'agTextColumnFilter' },
         ];
         const gridOptions = {
             columnDefs: columnDefs,
@@ -118,13 +140,6 @@
             gridOptions.api.onFilterChanged();
         });
 
-        // Inicializar Flatpickr en los campos de fecha
-        flatpickr("#desde", {
-            dateFormat: "d/m/Y"
-        });
-        flatpickr("#hasta", {
-            dateFormat: "d/m/Y"
-        });
     });
 
     function fetchUsuarios() {
