@@ -64,7 +64,6 @@ class Pedidos extends BaseController
 
 		// Verificar el nivel de acceso para permitir la eliminación
 		$data['allow_delete'] = ($nivel_acceso == 9);
-
 		$data['amiga'] = $this->getBreadcrumbs();
 		// Cargar la vista pasando los datos
 		echo view('mostrarPedido', $data);

@@ -42,6 +42,8 @@ class Lista_produccion extends BaseControllerGC
 
     public function todos($coge_estado, $where_estado, $situacion)
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Partes');
         // Control de login    
         helper('controlacceso');
         $nivel = control_login();
@@ -80,7 +82,7 @@ class Lista_produccion extends BaseControllerGC
         $data['titulo_pagina'] = $titulo_pagina;
         $data['result'] = $result;
 
-
+        $data['amiga'] = $this->getBreadcrumbs();
         echo view('lista_produccion_view', $data);
     }
 

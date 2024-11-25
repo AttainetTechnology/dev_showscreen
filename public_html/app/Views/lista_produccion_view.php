@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
@@ -147,8 +148,6 @@
             gridOptions.api.onFilterChanged();
         });
     });
-
-
     function mostrarParte(id_lineapedido) {
         $.ajax({
             url: '<?= base_url("partes/print/") ?>' + id_lineapedido,
