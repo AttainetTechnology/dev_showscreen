@@ -167,5 +167,4 @@
         });
     }
 </script>
-
 <?= $this->endSection() ?>
