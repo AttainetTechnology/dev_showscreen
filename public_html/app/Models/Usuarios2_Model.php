@@ -12,8 +12,7 @@ class Usuarios2_Model extends Model
 
     public function findUserById($id)
     {
-        log_message('info', 'Buscando usuario con ID: ' . $id);
-        return $this->asArray()
+             return $this->asArray()
                     ->where(['id' => $id])
                     ->first();
     }
