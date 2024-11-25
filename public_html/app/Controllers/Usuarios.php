@@ -9,7 +9,10 @@ class Usuarios extends BaseController
 {
     public function index()
     {
-        return view('usuarios');
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Usuarios');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('usuarios', $data);
     }
 
     public function getUsuarios()
@@ -23,12 +26,16 @@ class Usuarios extends BaseController
 
     public function editar($id)
     {
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Usuarios', base_url('/usuarios'));
+        $this->addBreadcrumb('Editar usuario');
+        $data['amiga'] = $this->getBreadcrumbs();
+        $sessionData = usuario_sesion();
+        $db = db_connect($sessionData['new_db']);
         $model = new Usuarios2_Model($db);
         $usuario = $model->findUserById($id);
 
-        return view('editar_usuarios', ['usuario' => $usuario]);
+        return view('editar_usuarios', ['usuario' => $usuario, 'amiga' => $data['amiga']]);
     }
 
     public function actualizarUsuario()
@@ -52,6 +59,7 @@ class Usuarios extends BaseController
             return redirect()->back()->with('error', 'No se pudo actualizar el usuario.')->withInput();
         }
     }
+
     public function eliminarUsuario($id)
     {
         $data = usuario_sesion();
@@ -76,7 +84,7 @@ class Usuarios extends BaseController
             'apellidos_usuario' => $this->request->getPost('apellidos_usuario'),
             'email' => $this->request->getPost('email'),
             'telefono' => $this->request->getPost('telefono'),
-            'user_activo' => $this->request->getPost('user_activo') ?? 1, // Activo por defecto
+            'user_activo' => $this->request->getPost('user_activo') ?? 1,
         ];
 
         if ($model->insert($data)) {
@@ -88,30 +96,30 @@ class Usuarios extends BaseController
 
     public function datosAcceso($id)
     {
-        // Conexión a la base de datos configurada en $data['new_db']
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Usuarios', base_url('/usuarios'));
+        $this->addBreadcrumb('Editar usuario', base_url('/usuarios/editar/' . $id));
+        $this->addBreadcrumb('Datos de acceso');
+        $breadcrumbs = $this->getBreadcrumbs();
+
+        $sessionData = usuario_sesion();
+        $db = db_connect($sessionData['new_db']);
         $usuariosModel = new Usuarios1_Model($db);
-
-        // Conexión a la otra base de datos para niveles de acceso y `username`
         $usuariosModel2 = new Usuarios1_Model();
-
-        // Buscar usuario por ID para obtener datos generales (nombre_usuario)
         $usuario = $usuariosModel->find($id);
-        // Buscar usuario por ID en la base de datos general para obtener `username` y nivel_acceso
+
         $usuarioConNivel = $usuariosModel2->find($id);
         $nivelUsuario = $usuarioConNivel['nivel_acceso'] ?? null;
-        // Obtener los niveles de acceso desde la base de datos configurada
+
         $nivelesAcceso = $db->table('niveles_acceso')->get()->getResultArray();
 
-        // Combinar los datos relevantes en un solo array
         $usuario['username'] = $usuarioConNivel['username'] ?? null;
 
         return view('datosAcceso', [
-            'user' => $usuario, // Datos del usuario combinados
-            'niveles_acceso' => $nivelesAcceso, // Lista de niveles de acceso
-            'nivel_usuario' => $nivelUsuario, // Nivel actual del usuario
+            'user' => $usuario,
+            'niveles_acceso' => $nivelesAcceso, 
+            'nivel_usuario' => $nivelUsuario, 
+            'amiga' => $breadcrumbs
         ]);
     }
-
 }

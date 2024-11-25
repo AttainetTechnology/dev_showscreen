@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 <div class="container mt-4">
     <h2>Editar Usuario</h2>
     <div class="btnsEditPedido">

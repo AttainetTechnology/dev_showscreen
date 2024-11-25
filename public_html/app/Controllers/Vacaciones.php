@@ -1,44 +1,77 @@
 <?php
 namespace App\Controllers;
 
-class Vacaciones extends BaseControllerGC
+use App\Models\Vacaciones_model;
+use App\Models\Usuarios2_Model;
+use DateTime; // Asegúrate de importar la clase DateTime
+
+class Vacaciones extends BaseController
 {
     public function index()
     {
-        $crud = $this->_getClientDatabase();
-        $crud->setTable('vacaciones');
-        $crud->setSubject('Vacaciones', 'Vacaciones');
-       // $crud->fieldType('user_id', 'dropdown_search');
-	    //$crud->displayAs('user_id','Nombre');
-        $crud->setRelation('user_id', 'users', 'nombre_usuario', ['user_activo' => '1']); 
-	    $crud->unsetSearchColumns(['desde', 'hasta','observaciones']);
-	    $crud->setLangString('modal_save', 'Guardar Vacaciones');
-        $crud->unsetRead();
-        $output = $crud->render();
-        return $this->_GC_output('layouts/main', $output); 
+        return view('vacaciones_view');
     }
-    public function nombre_usuario($id_user)
-	{
-		$nombre_usuario = model('Usuarios_model', true, $db);
-		//$nombre_usuario = new Usuarios_model();
-		$nombre=$nombre_usuario->where('id', $id_user)
-				->findAll();
-		return $nombre[0]['nombre_usuario'];
-		
-	}
-	function usuarios_activos(){
-	 $datos = model('Usuarios_model', true, $db);
-	 helper('controlacceso');
-	 $data=usuario_sesion();
-	 $id_empresa=$data['id_empresa'];
-	 $array = ['user_activo' => '1', 'id_empresa' => $id_empresa];
-	 $users= $datos->where($array)->findAll();
-	 $users_activos= array();
-		if ($users){
-			   foreach ($users as $row) {
-			   $users_activos+=  array($row['id'] => $row['nombre_usuario']." ".$row['apellidos_usuario']);
-			}
-		  return $users_activos;
-		}
-	}
+
+    public function getVacaciones()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Vacaciones_model($db);
+        $vacaciones = $model->findAll();
+
+        // Obtener nombres de usuarios
+        $usuariosModel = new Usuarios2_Model($db);
+        foreach ($vacaciones as &$vacacion) {
+            if (isset($vacacion['user_id'])) {
+                $usuario = $usuariosModel->findUserById($vacacion['user_id']);
+                $vacacion['nombre_usuario'] = $usuario['nombre_usuario'] ?? 'Desconocido';
+            } else {
+                $vacacion['nombre_usuario'] = 'Desconocido';
+            }
+
+            // Convertir fechas al formato dd/mm/yyyy
+            $vacacion['desde'] = DateTime::createFromFormat('Y-m-d', $vacacion['desde'])->format('d/m/Y');
+            $vacacion['hasta'] = DateTime::createFromFormat('Y-m-d', $vacacion['hasta'])->format('d/m/Y');
+        }
+        return $this->response->setJSON($vacaciones);
+    }
+
+    public function getUsuarios()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $usuariosModel = new Usuarios2_Model($db);
+        $usuarios = $usuariosModel->findAll();
+        return $this->response->setJSON($usuarios);
+    }
+
+    public function save()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Vacaciones_model($db);
+        $data = $this->request->getPost();
+
+        // Convertir fechas al formato YYYY-MM-DD
+        $data['desde'] = DateTime::createFromFormat('d/m/Y', $data['desde'])->format('Y-m-d');
+        $data['hasta'] = DateTime::createFromFormat('d/m/Y', $data['hasta'])->format('Y-m-d');
+
+        if ($model->save($data)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al guardar los datos.']);
+        }
+    }
+
+    public function delete($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Vacaciones_model($db);
+        if ($model->delete($id)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar los datos.']);
+        }
+    }
 }

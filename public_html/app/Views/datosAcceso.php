@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/main') ?>
-
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 <div class="container mt-4">
     <h2>Editar datos de acceso</h2>
     <br>

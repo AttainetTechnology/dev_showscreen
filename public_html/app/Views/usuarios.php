@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
@@ -113,7 +114,7 @@
                 domLayout: 'autoHeight',
                 rowHeight: 60,
                 onGridReady: params => {
-                    gridApi = params.api; // Guardar la referencia de la API
+                    gridApi = params.api; 
                     fetchUsuarios(params.api);
                 }
             };
@@ -163,7 +164,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            window.location.reload(); // Recargar la página para actualizar la tabla
+                            window.location.reload(); 
                         } else {
                             console.error('Error al eliminar el usuario:', data.message);
                         }
