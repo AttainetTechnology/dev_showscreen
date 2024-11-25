@@ -25,10 +25,6 @@
     border: none !important;
 }
 
-
-
-
-
 .botonTabla {
     display: inline-flex;
     align-items: center;
@@ -48,6 +44,12 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.botonOrganizador{
+     height: 50px;
+     width: 50px;
+     border:none !important;
 }
 
 .buttonsEditProductProveedAbajo {
@@ -288,18 +290,18 @@
     height: 18px !important;
 }
 
-.btnMover, .botonMover {
-    background-color: #37CDED!important;
+.btnMover, .botonMover, .btnMoverOrg {
+    background-color: #37cded!important;
     color: white !important;
 }
 
-.btnMover:hover, .botonMover:hover {
-    background-color: #06B0D4 !important;
+.btnMover:hover, .botonMover:hover ,.btnMoverOrg:hover {
+    background-color:#06b0d4!important;
     color: white;
 }
 
-.btnMover:active, .botonMover:active {
-    background-color:#89DEF0 !important;
+.btnMover:active, .botonMover:active, .btnMoverOrg:active {
+    background-color:#89def0 !important;
     color: white !important;
 }
 
@@ -307,6 +309,12 @@
     width: 12px !important;
     height: 12px !important;
     margin-top: 2px;
+}
+
+.btnMoverOrg svg {
+    width: 35px !important;
+    height: 35px !important;
+    margin-left: -5px;
 }
 
 .botonMover svg{
@@ -320,4 +328,65 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
+}
+
+.btnRecarga{
+    background-color: #337ab7 !important
+
+}
+.btnRecarga:hover{
+    background-color: #125691 !important;
+}
+.btnRecarga:active{
+    background-color: #6897c0 !important;
+}
+
+.btnGuardarOrg{
+    background-color: #5cb85c !important
+
+}
+.btnGuardarOrg:hover{
+    background-color:#268626 !important;
+}
+.btnGuardarOrg:active{
+    background-color:#8ad18a !important;
+}
+
+.btnTerminOrg{
+    background-color:#448244 !important
+
+}
+.btnTerminOrg:hover{
+    background-color:#045404 !important;
+}
+.btnTerminOrg:active{
+    background-color:#5b8a5b !important;
+}
+
+
+.btnRecarga svg, .btnTerminOrg svg, .btnGuardarOrg svg, .btnImprimOrg svg, .btnRevertirOrg svg{
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.btnImprimOrg{
+    background-color:#e4eff7!important
+
+}
+.btnImprimOrg:hover{
+    background-color:#d0e9fc !important;
+}
+.btnImprimOrg:active{
+    background-color:#fbfdff !important;
+}
+
+.btnRevertirOrg{
+    background-color:#d9534f!important
+
+}
+.btnRevertirOrg:hover{
+    background-color:#ac1e1a !important;
+}
+.btnRevertirOrg:active{
+    background-color:#ed8a87 !important;
 }
