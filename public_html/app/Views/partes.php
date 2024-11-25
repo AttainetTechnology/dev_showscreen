@@ -1,4 +1,5 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/partes.css') ?>?v=<?= time() ?>">
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/botones.css') ?>?v=<?= time() ?>">
 <?php foreach ($lineas as $l) { ?>
     <?php foreach ($productos as $prod) { ?>
         <?php foreach ($pedidos as $p) { ?>

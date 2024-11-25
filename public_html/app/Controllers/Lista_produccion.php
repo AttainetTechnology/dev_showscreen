@@ -68,6 +68,7 @@ class Lista_produccion extends BaseControllerGC
             $row['nombre_familia'] = $familiasModel->find($row['id_familia'])['nombre'] ?? 'Desconocido';
             $row['nombre_producto'] = $productosModel->find($row['id_producto'])['nombre_producto'] ?? 'Desconocido';
             $row['estado'] = $this->_cambia_color_lineas($row['estado']);
+            $row['accion_parte'] = base_url('partes/print/' . $row['id_lineapedido']) . '?volver=' . urlencode(current_url()); // URL para el botón "Parte"
         }
         
 
@@ -78,7 +79,7 @@ class Lista_produccion extends BaseControllerGC
         // Pasar los datos a la vista
         $data['titulo_pagina'] = $titulo_pagina;
         $data['result'] = $result;
-        
+
 
         echo view('lista_produccion_view', $data);
     }
@@ -107,7 +108,8 @@ class Lista_produccion extends BaseControllerGC
         return "$nombre_estado";
     }
 
-    function nombre_cliente($id_pedido) {
+    function nombre_cliente($id_pedido)
+    {
         $Pedidos_model = new Pedidos_model();
         $pedido = $Pedidos_model->find($id_pedido);
         if ($pedido) {
@@ -116,7 +118,7 @@ class Lista_produccion extends BaseControllerGC
         }
         return "Desconocido";
     }
-    
+
 
     public function actualiza_linea($id_lineapedido, $estado)
     {
@@ -154,7 +156,6 @@ class Lista_produccion extends BaseControllerGC
                 break;
             }
         }
-
         // Si todas las líneas de pedido están en estado 5, actualizar el estado del pedido a 5
         if ($allInState5) {
             $builder = $db->table('pedidos');
@@ -170,5 +171,5 @@ class Lista_produccion extends BaseControllerGC
         helper('url');
         return redirect()->to($volver);
     }
-    
+
 }
