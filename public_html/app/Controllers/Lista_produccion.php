@@ -69,9 +69,12 @@ class Lista_produccion extends BaseControllerGC
             $row['nombre_cliente'] = $cliente;
             $row['nombre_familia'] = $familiasModel->find($row['id_familia'])['nombre'] ?? 'Desconocido';
             $row['nombre_producto'] = $productosModel->find($row['id_producto'])['nombre_producto'] ?? 'Desconocido';
-            $row['estado'] = $this->_cambia_color_lineas($row['estado']);
+            $estado = $this->asignaEstado($row['estado']);
+            $row['estado'] = $estado['nombre_estado'];
+            $row['estado_clase'] = $estado['estado_clase']; // Asigna la clase correspondiente
             $row['accion_parte'] = base_url('partes/print/' . $row['id_lineapedido']) . '?volver=' . urlencode(current_url()); // URL para el botón "Parte"
         }
+        
         
 
         // Definimos el título de la tabla
@@ -86,32 +89,49 @@ class Lista_produccion extends BaseControllerGC
         echo view('lista_produccion_view', $data);
     }
 
-    function _cambia_color_lineas($estado)
+    function asignaEstado($estado)
     {
+        $estado_clase = "";
         $nombre_estado = "";
-        if ($estado == '0') {
-            $nombre_estado = "Pendiente de material";
+        
+        switch ($estado) {
+            case '0':
+                $nombre_estado = "Pendiente de material";
+                $estado_clase = "estado1"; // Clase para el estado 1
+                break;
+            case '1':
+                $nombre_estado = "Falta material";
+                $estado_clase = "estado2"; // Clase para el estado 2
+                break;
+            case '2':
+                $nombre_estado = "Material recibido";
+                $estado_clase = "estado3"; // Clase para el estado 3
+                break;
+            case '3':
+                $nombre_estado = "En máquinas";
+                $estado_clase = "estado4"; // Clase para el estado 4
+                break;
+            case '4':
+                $nombre_estado = "Terminado";
+                $estado_clase = "estado5"; // Clase para el estado 5
+                break;
+            case '5':
+                $nombre_estado = "Entregado";
+                $estado_clase = "estado6"; // Clase para el estado 6
+                break;
+            case '6':
+                $nombre_estado = "Anulado";
+                $estado_clase = "estado7"; // Clase para el estado 7 (si lo necesitas)
+                break;
+            default:
+                $nombre_estado = "Desconocido";
+                $estado_clase = "estado-default"; // Clase por defecto
+                break;
         }
-        if ($estado == '1') {
-            $nombre_estado = "Falta material";
-        }
-        if ($estado == '2') {
-            $nombre_estado = "Material recibido";
-        }
-        if ($estado == '3') {
-            $nombre_estado = "En máquinas";
-        }
-        if ($estado == '4') {
-            $nombre_estado = "Terminado";
-        }
-        if ($estado == '5') {
-            $nombre_estado = "Entregado";
-        }
-        if ($estado == '6') {
-            $nombre_estado = "Anulado";
-        }
-        return "$nombre_estado";
+    
+        return ['nombre_estado' => $nombre_estado, 'estado_clase' => $estado_clase];
     }
+    
 
     function nombre_cliente($id_pedido)
     {

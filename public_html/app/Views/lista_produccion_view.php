@@ -8,6 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
 <br>
 <h2 class="tituloProveedores"><?= $titulo_pagina ?></h2>
 
@@ -24,9 +25,8 @@
 <br>
 <div id="myGrid" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const columnDefs = [
-            {
+    document.addEventListener('DOMContentLoaded', function() {
+        const columnDefs = [{
                 headerName: 'Acciones',
                 field: 'acciones',
                 cellRenderer: renderActions,
@@ -109,6 +109,7 @@
         </svg>
         </button>`;
         }
+
         function formatDate(dateString) {
             if (!dateString) return '';
             const [year, month, day] = dateString.split('-');
@@ -137,28 +138,36 @@
             paginationPageSize: 10,
             domLayout: 'autoHeight',
             rowHeight: 60,
-            localeText: { noRowsToShow: 'No hay registros disponibles.' }
+            localeText: {
+                noRowsToShow: 'No hay registros disponibles.'
+            },
+            getRowClass: function(params) {
+                const rowClass = params.data.estado_clase;
+                return rowClass;
+            }
+
         };
 
         const eGridDiv = document.querySelector('#myGrid');
         new agGrid.Grid(eGridDiv, gridOptions);
 
-        document.getElementById('clear-filters').addEventListener('click', function () {
+        document.getElementById('clear-filters').addEventListener('click', function() {
             gridOptions.api.setFilterModel(null);
             gridOptions.api.onFilterChanged();
         });
     });
+
     function mostrarParte(id_lineapedido) {
         $.ajax({
             url: '<?= base_url("partes/print/") ?>' + id_lineapedido,
             type: 'GET',
-            success: function (data) {
+            success: function(data) {
                 $('#modalParteContent').html(data);
                 $('#parteModal').modal('show');
                 sessionStorage.setItem('modalParteAbierto', 'true');
                 sessionStorage.setItem('modalParteId', id_lineapedido);
             },
-            error: function () {
+            error: function() {
                 $('#modalParteContent').html('<p class="text-danger">Error al cargar el parte.</p>');
                 $('#parteModal').modal('show');
                 sessionStorage.setItem('modalParteAbierto', 'true');
