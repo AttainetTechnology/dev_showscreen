@@ -11,7 +11,7 @@
 		if (!in_array($r['poblacion'], $poblaciones)){
 			$poblaciones[] = $r['poblacion'];
 		}
-		if ($r['recogida_entrega']=='0'){
+		if ($r['recogida_entrega']=='1'){
 			$recogidas[] = $r['poblacion'];
 		}
 		else{
