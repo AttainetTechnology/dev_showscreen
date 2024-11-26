@@ -56,6 +56,7 @@ class Lista_produccion extends BaseControllerGC
         $builder = $db->table('v_linea_pedidos_con_familia');
         $builder->select('id_lineapedido, fecha_entrada, med_inicial, med_final, id_cliente, nom_base, id_producto, id_pedido, estado, id_familia');
         $builder->where($coge_estado . $where_estado);
+        $builder->orderBy('fecha_entrada', 'DESC');
         $query = $builder->get();
         $result = $query->getResultArray();
 
