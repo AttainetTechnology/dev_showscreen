@@ -12,7 +12,11 @@ class Rutas_model extends Model
  // Obtener rutas según el filtro de estado
  public function getRutas($coge_estado, $where_estado)
  {
-     return $this->where($coge_estado . $where_estado)->findAll();
+     if (empty($coge_estado) || empty($where_estado)) {
+         throw new \InvalidArgumentException('Los parámetros "coge_estado" y "where_estado" son requeridos.');
+     }
+
+     return $this->where($coge_estado, $where_estado)->findAll();
  }
 
  // Obtener información de una ruta por su ID

@@ -1,101 +1,98 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Rutas</title>
+<?= $this->extend('layouts/main') ?>
+<?= $this->section('content') ?>
 
-    <!-- Incluir las dependencias de ag-Grid -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
-    
-    <!-- Estilos personalizados -->
-    <style>
-        .ag-theme-alpine {
-            height: 500px;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Gestión de Rutas</h1>
-        
-        <!-- Contenedor de la tabla con ag-Grid -->
-        <div id="myGrid" class="ag-theme-alpine"></div>
-    </div>
+<h2>Gestión de Rutas</h2>
 
-    <script>
-        // Datos de las rutas pasados desde el controlador
-        const rutasData = <?php echo json_encode($rutas); ?>;
+<div id="gridRutas" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
 
-        // Definición de las columnas de la tabla
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const estado = <?= $estado ?>;
+
         const columnDefs = [
             { headerName: "Fecha", field: "fecha_ruta", sortable: true, filter: true },
-            { 
-                headerName: "Estado", 
-                field: "estado_ruta", 
-                sortable: true, 
-                filter: true,
-                cellRenderer: function(params) {
-                    if (params.value == '2') {
-                        return params.data.recogida_entrega == '1' ? "Recogido" : "Entregado";
-                    } else if (params.value == '1') {
-                        return "No preparado";
-                    } else {
-                        return "Pendiente";
-                    }
-                }
-            },
-            { 
-                headerName: "Cliente", 
-                field: "id_cliente", 
-                sortable: true, 
-                filter: true,
-                cellRenderer: function(params) {
-                    return "<a href='" + '<?php echo base_url(); ?>/Pedidos/edit/" + params.value + "'>Ver Cliente</a>";
-                }
-            },
+            { headerName: "Estado", field: "estado_ruta", sortable: true, filter: true },
+            { headerName: "Cliente", field: "id_cliente", sortable: true, filter: true },
             { headerName: "Población", field: "poblacion", sortable: true, filter: true },
             { headerName: "Lugar", field: "lugar", sortable: true, filter: true },
-            { 
-                headerName: "Recogida/Entrega", 
-                field: "recogida_entrega", 
-                sortable: true, 
-                filter: true,
-                cellRenderer: function(params) {
-                    return params.value == '1' ? "Recogida" : "Entrega";
-                }
-            },
             { headerName: "Transportista", field: "transportista", sortable: true, filter: true },
-            { 
-                headerName: "Pedido", 
-                field: "id_pedido", 
-                sortable: true, 
-                filter: true,
-                cellRenderer: function(params) {
-                    return "<a href='" + '<?php echo base_url(); ?>/Pedidos/edit/" + params.value + "'>Ver Pedido</a>";
-                }
+            { headerName: "Pedido", field: "id_pedido", sortable: true, filter: true },
+            {
+                headerName: "Acciones",
+                cellRenderer: params => `
+                    <button onclick="editRuta(${params.data.id_ruta})">Editar</button>
+                    <button onclick="deleteRuta(${params.data.id_ruta})">Eliminar</button>
+                `
             }
         ];
 
-        // Configuración de ag-Grid
         const gridOptions = {
             columnDefs: columnDefs,
-            rowData: rutasData,
+            defaultColDef: {
+                sortable: true,
+                filter: true,
+                floatingFilter: true,
+                resizable: true,
+            },
+            rowData: [], // Inicializa con datos vacíos
             pagination: true,
-            paginationPageSize: 10,
-            suppressPaginationPanel: false // Para permitir la paginación
         };
 
-        // Inicializar ag-Grid
-        document.addEventListener('DOMContentLoaded', function() {
-            const gridDiv = document.querySelector('#myGrid');
-            new agGrid.Grid(gridDiv, gridOptions);
-        });
-    </script>
+        const gridDiv = document.querySelector('#gridRutas');
 
-</body>
-</html>
+        // Usa createGrid para inicializar ag-Grid
+        const gridApi = agGrid.createGrid(gridDiv, gridOptions);
+
+        // Fetch rutas with estado
+        fetch('/rutas/getRutas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                coge_estado: estado.condicion,
+                where_estado: estado.valor,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // Usa applyTransaction para establecer los datos en la cuadrícula
+                    gridApi.applyTransaction({ add: data.data });
+                } else {
+                    console.error('Error al cargar rutas:', data.message);
+                }
+            })
+            .catch((error) => console.error('Error en la solicitud:', error));
+
+        window.editRuta = function (id) {
+            alert('Editar ruta ' + id); // Implementa lógica para editar.
+        };
+
+        window.deleteRuta = function (id) {
+            if (confirm('¿Estás seguro de eliminar esta ruta?')) {
+                fetch(`/rutas/deleteRuta/${id}`, { method: 'DELETE' })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            alert('Ruta eliminada');
+                            // Usa applyTransaction para eliminar la fila
+                            gridApi.applyTransaction({
+                                remove: [gridApi.getRowNode(id).data],
+                            });
+                        } else {
+                            alert('Error al eliminar');
+                        }
+                    });
+            }
+        };
+    });
+</script>
+
+
+<?= $this->endSection() ?>
