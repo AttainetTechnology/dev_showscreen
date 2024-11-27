@@ -28,6 +28,8 @@ class Productos_necesidad extends BaseController
         $db = db_connect($data['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
         $familiaModel = new FamiliaProveedorModel($db);
+        $productosProveedorModel = new \App\Models\ProductosProveedorModel($db);
+
         $productos = $productosModel->findAll();
         foreach ($productos as &$producto) {
             $familia = $familiaModel->find($producto['id_familia']);
@@ -39,9 +41,30 @@ class Productos_necesidad extends BaseController
                 'editar' => base_url("productos_necesidad/edit/{$producto['id_producto']}"),
                 'eliminar' => base_url("productos_necesidad/delete/{$producto['id_producto']}")
             ];
+
+            // Obtener el precio según el proveedor con mejor oferta
+            if (!empty($producto['mejor'])) {
+                // Buscar el precio del proveedor con la mejor oferta
+                $precio = $productosProveedorModel
+                    ->where('id_producto_necesidad', $producto['id_producto'])
+                    ->where('id', $producto['mejor'])
+                    ->select('precio')
+                    ->get()
+                    ->getRow();
+            } else {
+                // Tomar cualquier precio disponible
+                $precio = $productosProveedorModel
+                    ->where('id_producto_necesidad', $producto['id_producto'])
+                    ->select('precio')
+                    ->get()
+                    ->getRow();
+            }
+
+            $producto['precio'] = $precio ? $precio->precio : ' ';
         }
         return $this->response->setJSON($productos);
     }
+
 
     private function getImageUrl($imageName, $idEmpresa, $idProducto)
     {
