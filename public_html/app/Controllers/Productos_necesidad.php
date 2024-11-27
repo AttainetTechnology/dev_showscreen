@@ -27,24 +27,28 @@ class Productos_necesidad extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
-        $familiaModel = new FamiliaProveedorModel($db);
         $productosProveedorModel = new \App\Models\ProductosProveedorModel($db);
-
+        $productosVentaModel = new \App\Models\Productos_model($db); // Modelo para obtener precio de venta
+    
         $productos = $productosModel->findAll();
         foreach ($productos as &$producto) {
-            $familia = $familiaModel->find($producto['id_familia']);
+            // Obtener la familia
+            $familia = (new FamiliaProveedorModel($db))->find($producto['id_familia']);
             $producto['nombre_familia'] = $familia ? $familia['nombre'] : 'Sin familia';
+    
+            // Imagen
             $producto['imagen'] = $this->getImageUrl($producto['imagen'], $data['id_empresa'], $producto['id_producto']);
+    
+            // Acciones
             $producto['acciones'] = [
                 'precio' => base_url("comparadorproductos/{$producto['id_producto']}"),
                 'verProductos' => base_url("productos_necesidad/verProductos/{$producto['id_producto']}"),
                 'editar' => base_url("productos_necesidad/edit/{$producto['id_producto']}"),
                 'eliminar' => base_url("productos_necesidad/delete/{$producto['id_producto']}")
             ];
-
-            // Obtener el precio según el proveedor con mejor oferta
+    
+            // Precio de compra
             if (!empty($producto['mejor'])) {
-                // Buscar el precio del proveedor con la mejor oferta
                 $precio = $productosProveedorModel
                     ->where('id_producto_necesidad', $producto['id_producto'])
                     ->where('id', $producto['mejor'])
@@ -52,20 +56,25 @@ class Productos_necesidad extends BaseController
                     ->get()
                     ->getRow();
             } else {
-                // Tomar cualquier precio disponible
                 $precio = $productosProveedorModel
                     ->where('id_producto_necesidad', $producto['id_producto'])
                     ->select('precio')
                     ->get()
                     ->getRow();
             }
-
-            $producto['precio'] = $precio ? $precio->precio : ' ';
+            $producto['precio'] = $precio ? $precio->precio : 'No disponible';
+    
+            // Precio de venta
+            if (!empty($producto['id_producto_venta'])) {
+                $productoVenta = $productosVentaModel->find($producto['id_producto_venta']);
+                $producto['precio_venta'] = $productoVenta ? $productoVenta['precio'] : ' ';
+            } else {
+                $producto['precio_venta'] = ' ';
+            }
         }
         return $this->response->setJSON($productos);
     }
-
-
+    
     private function getImageUrl($imageName, $idEmpresa, $idProducto)
     {
         $path = "public/assets/uploads/files/{$idEmpresa}/productos_necesidad/{$idProducto}/";
