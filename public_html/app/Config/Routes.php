@@ -116,3 +116,8 @@ $routes->get('productos/procesos/(:num)', 'Productos::verProcesos/$1');
 $routes->post('productos/updateOrder', 'Productos::updateOrder');
 $routes->get('usuarios/datosAcceso/(:num)', 'Usuarios::datosAcceso/$1');
 $routes->delete('usuarios/eliminar/(:num)', 'Usuarios::eliminarUsuario/$1');
+$routes->get('editar_rutas/(:num)', 'Rutas::editar_ruta/$1');
+$routes->post('rutas/updateRuta/(:num)', 'Rutas::updateRuta/$1');
+$routes->get('rutas/add_ruta', 'Rutas::add_ruta');
+$routes->post('rutas/addRuta', 'Rutas::addRuta');
+

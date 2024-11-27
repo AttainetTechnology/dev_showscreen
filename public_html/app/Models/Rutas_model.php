@@ -24,6 +24,27 @@ class Rutas_model extends Model
  {
      return $this->find($id_ruta);
  }
+ 
+ public function getRutasWithCliente($coge_estado, $where_estado)
+ {
+     $this->select('rutas.*, clientes.nombre_cliente');
+     $this->join('clientes', 'rutas.id_cliente = clientes.id_cliente', 'left');
+     $this->where($coge_estado, $where_estado);
+     return $this->findAll();
+ }
+ public function getRutasWithDetails($coge_estado, $where_estado)
+ {
+     $this->select('rutas.*, 
+                    clientes.nombre_cliente, 
+                    poblaciones_rutas.poblacion AS nombre_poblacion, 
+                    CONCAT(users.nombre_usuario, " ", users.apellidos_usuario) AS nombre_transportista');
+     $this->join('clientes', 'rutas.id_cliente = clientes.id_cliente', 'left');
+     $this->join('poblaciones_rutas', 'rutas.poblacion = poblaciones_rutas.id_poblacion', 'left');
+     $this->join('users', 'rutas.transportista = users.id', 'left'); // Ajusta 'users' al nombre correcto de la tabla
+     $this->where($coge_estado, $where_estado);
+     return $this->findAll();
+ }
+ 
 
  // Obtener el nombre del cliente por el ID del pedido
  public function getNombreClienteByPedido($id_pedido)
