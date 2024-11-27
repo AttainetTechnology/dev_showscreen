@@ -64,6 +64,18 @@ class Productos_necesidad extends BaseController
         $productoNecesidad = $productosNecesidadModel->find($id_producto);
         $idProductoVentaSeleccionado = $productoNecesidad['id_producto_venta'];
 
+        // Mover el producto seleccionado al principio de la lista
+        if ($idProductoVentaSeleccionado) {
+            usort($productos, function ($a, $b) use ($idProductoVentaSeleccionado) {
+                if ($a['id_producto'] == $idProductoVentaSeleccionado) {
+                    return -1; // El producto seleccionado va primero
+                } elseif ($b['id_producto'] == $idProductoVentaSeleccionado) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
+
         return view('selectProducto', [
             'productos' => $productos,
             'familias' => $familias,
@@ -71,6 +83,7 @@ class Productos_necesidad extends BaseController
             'id_producto_venta' => $idProductoVentaSeleccionado
         ]);
     }
+
 
     public function actualizarProductoVenta()
     {
