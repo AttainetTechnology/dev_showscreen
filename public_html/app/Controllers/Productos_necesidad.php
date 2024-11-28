@@ -67,10 +67,10 @@ class Productos_necesidad extends BaseController
                 $producto['precio'] = $precioProveedor->precio;
                 // Obtener el nombre del proveedor
                 $proveedor = (new \App\Models\ProveedoresModel($db))->find($precioProveedor->id_proveedor);
-                $producto['nombre_proveedor'] = $proveedor ? $proveedor['nombre_proveedor'] : 'Proveedor no disponible';
+                $producto['nombre_proveedor'] = $proveedor ? $proveedor['nombre_proveedor'] : ' ';
             } else {
-                $producto['precio'] = 'No disponible';
-                $producto['nombre_proveedor'] = 'Proveedor no disponible';
+                $producto['precio'] = ' ';
+                $producto['nombre_proveedor'] = ' ';
             }
 
             // Precio de venta
