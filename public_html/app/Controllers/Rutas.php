@@ -7,21 +7,22 @@ use App\Models\Rutas_model;
 class Rutas extends BaseController
 {
 
-
 	public function todas($coge_estado, $where_estado)
 	{
 		$this->addBreadcrumb('Inicio', base_url('/'));
-        $this->addBreadcrumb('Familia Productos');
-        $data['amiga'] = $this->getBreadcrumbs();
+		$this->addBreadcrumb('Rutas');
+		$data['amiga'] = $this->getBreadcrumbs();
 
 		return view('mostrarRutas', [
 			'estado' => json_encode([
 				'condicion' => $coge_estado,
 				'valor' => $where_estado,
-				$data
-			])
+			]),
+			'amiga' => $data['amiga']  // Pasar amiga a la vista
 		]);
 	}
+
+
 
 	public function index()
 	{
@@ -70,19 +71,31 @@ class Rutas extends BaseController
 
 	public function add_ruta()
 	{
-		$data = usuario_sesion();
-		$db = db_connect($data['new_db']);
+		// Añadir breadcrumb
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Rutas', base_url('/rutas'));
+		$this->addBreadcrumb('Añadir ruta');
+		$data['amiga'] = $this->getBreadcrumbs();
+
+		// Obtener datos de sesión
+		$userData = usuario_sesion();
+		$db = db_connect($userData['new_db']);
+
+		// Inicializar los modelos
 		$clientesModel = new \App\Models\ClienteModel($db);
 		$poblacionesModel = new \App\Models\PoblacionesModel($db);
 
+		// Obtener datos de clientes, poblaciones y transportistas
 		$clientes = $clientesModel->findAll();
 		$poblaciones = $poblacionesModel->findAll();
 		$transportistas = $this->getTransportistas();
 
-		// Formatear fecha actual
+		// Formatear la fecha actual
 		$fechaHoy = date('d-m-y');
 
+		// Pasar todos los datos necesarios a la vista, incluyendo 'amiga'
 		return view('add_ruta', [
+			'amiga' => $data['amiga'],  // Pasamos 'amiga' aquí
 			'clientes' => $clientes,
 			'poblaciones' => $poblaciones,
 			'transportistas' => $transportistas,
@@ -98,12 +111,12 @@ class Rutas extends BaseController
 		$data = $this->request->getPost();
 
 		if ($model->insert($data)) {
-			return redirect()->to('/rutas/enmarcha'); // Redirige a la URL deseada
+			return redirect()->to('/rutas/enmarcha');
 		} else {
-			return redirect()->back()->with('error', 'Error al añadir la ruta'); // Redirige al formulario con un mensaje de error
+			return redirect()->back()->with('error', 'Error al añadir la ruta');
 		}
 	}
-	
+
 	public function obtenerNombreTransportistaPorId($id_transportista)
 	{
 		$db_cliente = db_connect(usuario_sesion()['new_db']);
@@ -117,13 +130,17 @@ class Rutas extends BaseController
 			return $result->nombre_usuario . ' ' . $result->apellidos_usuario;
 		}
 	}
-
-
-
 	public function editar_ruta($id)
 	{
-		$data = usuario_sesion();
-		$db = db_connect($data['new_db']);
+
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Rutas', base_url('/rutas'));
+		$this->addBreadcrumb('Editar ruta');
+		$data['amiga'] = $this->getBreadcrumbs();
+
+		// Obtener datos de sesión
+		$userData = usuario_sesion();
+		$db = db_connect($userData['new_db']);
 		$model = new Rutas_model($db);
 
 		try {
@@ -132,15 +149,16 @@ class Rutas extends BaseController
 				throw new \Exception('Ruta no encontrada');
 			}
 
+			// Inicializar otros modelos
 			$clientesModel = new \App\Models\ClienteModel($db);
 			$poblacionesModel = new \App\Models\PoblacionesModel($db);
 
-			// Obtener listas para los selects
 			$clientes = $clientesModel->findAll();
 			$poblaciones = $poblacionesModel->findAll();
 			$transportistas = $this->getTransportistas();
 
 			return view('editar_rutas', [
+				'amiga' => $data['amiga'],
 				'ruta' => $ruta,
 				'clientes' => $clientes,
 				'poblaciones' => $poblaciones,
@@ -150,6 +168,7 @@ class Rutas extends BaseController
 			return redirect()->back()->with('error', $e->getMessage());
 		}
 	}
+
 	public function updateRuta($id)
 	{
 		$data = usuario_sesion();
@@ -169,8 +188,6 @@ class Rutas extends BaseController
 		}
 	}
 
-
-
 	public function deleteRuta($id)
 	{
 		$data = usuario_sesion();
@@ -186,20 +203,15 @@ class Rutas extends BaseController
 
 	function getTransportistas()
 	{
-		// Conexión a la base de datos original
-		$db_original = \Config\Database::connect();
 
-		// Conexión a la base de datos del cliente
+		$db_original = \Config\Database::connect();
 		$data = usuario_sesion();
 		$db_cliente = db_connect($data['new_db']);
-
-		// Obtener nivel_acceso de la base de datos original
 		$builder_original = $db_original->table('users');
 		$builder_original->select('id, nivel_acceso');
 		$builder_original->where('nivel_acceso', '1');
 		$query_original = $builder_original->get();
 
-		// Verificar si la consulta fue exitosa
 		if (!$query_original) {
 			log_message('error', 'Error en la consulta a la base de datos original: ' . $db_original->error());
 			return [];
@@ -207,12 +219,10 @@ class Rutas extends BaseController
 
 		$transportistas_original = $query_original->getResultArray();
 
-		// Obtener nombre y apellidos de la base de datos del cliente
 		$builder_cliente = $db_cliente->table('users');
 		$builder_cliente->select('id, nombre_usuario, apellidos_usuario');
 		$query_cliente = $builder_cliente->get();
 
-		// Verificar si la consulta fue exitosa
 		if (!$query_cliente) {
 			log_message('error', 'Error en la consulta a la base de datos del cliente: ' . $db_cliente->error());
 			return [];
@@ -220,7 +230,6 @@ class Rutas extends BaseController
 
 		$transportistas_cliente = $query_cliente->getResultArray();
 
-		// Combinar los datos
 		$transport = [];
 		foreach ($transportistas_original as $trans_original) {
 			foreach ($transportistas_cliente as $trans_cliente) {

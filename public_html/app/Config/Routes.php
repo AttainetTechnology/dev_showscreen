@@ -120,4 +120,5 @@ $routes->get('editar_rutas/(:num)', 'Rutas::editar_ruta/$1');
 $routes->post('rutas/updateRuta/(:num)', 'Rutas::updateRuta/$1');
 $routes->get('rutas/add_ruta', 'Rutas::add_ruta');
 $routes->post('rutas/addRuta', 'Rutas::addRuta');
+$routes->delete('poblaciones_rutas/eliminar/(:num)', 'Poblaciones_rutas::eliminarPoblacion/$1');
 

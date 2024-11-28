@@ -1,8 +1,9 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-
+<?= $this->include('partials/amiga') ?>
+<br>
 <h2>Añadir Ruta</h2>
-
+<br>
 <form id="add-form" action="<?= base_url('rutas/addRuta') ?>" method="POST">
     <div class="form-group">
         <label>*Cliente:</label>
