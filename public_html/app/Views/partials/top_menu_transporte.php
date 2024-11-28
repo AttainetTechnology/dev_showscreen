@@ -66,8 +66,6 @@
                 </div>
             <?php } // Fin de la condición 
             ?>
-
-
         </div>
     </div>
 </div>

@@ -103,6 +103,21 @@ class Rutas extends BaseController
 			return redirect()->back()->with('error', 'Error al añadir la ruta'); // Redirige al formulario con un mensaje de error
 		}
 	}
+	
+	public function obtenerNombreTransportistaPorId($id_transportista)
+	{
+		$db_cliente = db_connect(usuario_sesion()['new_db']);
+		$builder = $db_cliente->table('users');
+		$builder->select('nombre_usuario, apellidos_usuario');
+		$builder->where('id', $id_transportista);
+		$query = $builder->get();
+
+		if ($query->getNumRows() > 0) {
+			$result = $query->getRow();
+			return $result->nombre_usuario . ' ' . $result->apellidos_usuario;
+		}
+	}
+
 
 
 	public function editar_ruta($id)
