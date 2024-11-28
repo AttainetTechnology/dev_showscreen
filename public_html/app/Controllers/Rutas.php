@@ -26,12 +26,12 @@ class Rutas extends BaseController
 
 	public function index()
 	{
-		return $this->todas('estado_ruta!=', '9'); // Asegura que usa "todas".
+		return $this->todas('estado_ruta!=', '9');
 	}
 
 	public function enmarcha()
 	{
-		return $this->todas('estado_ruta!=', '2'); // Asegura que usa "todas".
+		return $this->todas('estado_ruta!=', '2');
 	}
 
 
@@ -241,4 +241,55 @@ class Rutas extends BaseController
 
 		return $transport;
 	}
+	public function preparado($id_ruta)
+	{
+		$data = usuario_sesion(); // Obtener los datos de la sesión
+		$db = db_connect($data['new_db']); // Conectar a la base de datos
+		$rutas_model = new Rutas_model($db);
+
+		$data = [
+			'estado_ruta' => '0' // Cambiar el estado a 'En progreso'
+		];
+		$rutas_model->update($id_ruta, $data);
+		$this->enmarcha(); // Redirigir a la página de rutas 'En progreso'
+
+		$post_array = ['action' => 'Actualizar "No preparado"', 'id_ruta' => $id_ruta];
+		$this->logAction('Rutas', 'Actualizar "No preparado"', $post_array);
+	}
+
+	public function cambiarEstado($idRuta)
+	{
+		$nuevoEstado = $this->request->getJSON()->estado;
+	
+		// Verificamos si el nuevo estado es válido
+		if (empty($nuevoEstado) || !in_array($nuevoEstado, ['0', '1', '2', '3'])) {
+			return $this->response->setJSON([
+				'success' => false,
+				'message' => 'Estado inválido'
+			])->setStatusCode(400);
+		}
+	
+		// Si el estado es 2, cambiamos a 0 automáticamente
+		if ($nuevoEstado == '2') {
+			$nuevoEstado = '0';
+		}
+	
+		// Obtenemos la conexión y el modelo para actualizar la ruta
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$model = new Rutas_model($db);
+	
+		try {
+			// Actualizamos el estado de la ruta
+			$model->update($idRuta, ['estado_ruta' => $nuevoEstado]);
+	
+			return $this->response->setJSON(['success' => true]);
+		} catch (\Exception $e) {
+			return $this->response->setJSON([
+				'success' => false,
+				'message' => 'Error al actualizar el estado: ' . $e->getMessage()
+			])->setStatusCode(500);
+		}
+	}
+	
 }
