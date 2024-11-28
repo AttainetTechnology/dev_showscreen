@@ -90,15 +90,21 @@
             filter: 'agTextColumnFilter'
         },
         {
-        headerName: "Precio Compra", 
-        field: "precio",
-        filter: 'agNumberColumnFilter'
-    },
-    {
-        headerName: "Precio Venta", 
-        field: "precio_venta", 
-        filter: 'agNumberColumnFilter'
-    }
+            headerName: "Proveedor",
+            field: "nombre_proveedor",
+            filter: 'agTextColumnFilter'
+        },
+        {
+            headerName: "Precio Compra",
+            field: "precio",
+            filter: 'agNumberColumnFilter'
+        },
+        {
+            headerName: "Precio Venta",
+            field: "precio_venta",
+            filter: 'agNumberColumnFilter'
+        },
+
         ];
 
         const gridOptions = {
