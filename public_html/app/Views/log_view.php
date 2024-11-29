@@ -81,11 +81,11 @@
             onGridReady: function (params) {
                 const gridApi = params.api;
                 const gridColumnApi = params.columnApi;
-                fetchLogsData(gridApi); 
+                fetchLogsData(gridApi);
                 window.addEventListener('resize', function () {
-                    gridApi.sizeColumnsToFit(); 
+                    gridApi.sizeColumnsToFit();
                 });
-                gridApi.sizeColumnsToFit(); 
+                gridApi.sizeColumnsToFit();
             },
             rowHeight: 60,
             localeText: {
@@ -105,12 +105,12 @@
 
     function fetchLogsData(gridApi) {
         fetch('<?= base_url("log/getLogs") ?>')
-            .then(response => response.text()) 
+            .then(response => response.text())
             .then(text => {
                 try {
                     const data = JSON.parse(text);
                     if (Array.isArray(data)) {
-                        gridApi.setRowData(data); 
+                        gridApi.setRowData(data);
                     }
                 } catch (e) {
                     console.error('Error al parsear JSON:', e);
