@@ -9,20 +9,27 @@ class Usuarios extends BaseController
 {
     public function index()
     {
+
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Usuarios');
         $data['amiga'] = $this->getBreadcrumbs();
         return view('usuarios', $data);
     }
-
     public function getUsuarios()
     {
-        $data = usuario_sesion();
+        $data = usuario_sesion(); // Recuperas la sesión del usuario
         $db = db_connect($data['new_db']);
         $model = new Usuarios2_Model($db);
         $usuarios = $model->findAll();
+
+        // Asegúrate de incluir id_empresa en cada usuario
+        foreach ($usuarios as &$usuario) {
+            $usuario['id_empresa'] = $data['id_empresa']; // Añadir id_empresa al dato del usuario
+        }
+
         return $this->response->setJSON($usuarios);
     }
+
 
     public function editar($id)
     {
@@ -37,7 +44,6 @@ class Usuarios extends BaseController
 
         return view('editar_usuarios', ['usuario' => $usuario, 'amiga' => $data['amiga']]);
     }
-
     public function actualizarUsuario()
     {
         $data = usuario_sesion();
@@ -45,20 +51,47 @@ class Usuarios extends BaseController
         $model = new Usuarios2_Model($db);
         $id = $this->request->getPost('id');
 
+        // Datos del formulario
         $data = [
             'nombre_usuario' => $this->request->getPost('nombre_usuario'),
             'apellidos_usuario' => $this->request->getPost('apellidos_usuario'),
             'email' => $this->request->getPost('email'),
             'telefono' => $this->request->getPost('telefono'),
             'user_activo' => $this->request->getPost('user_activo'),
+            'id_empresa' => $data['id_empresa'],
         ];
 
+        // Si se ha subido una nueva foto
+        if ($this->request->getFile('userfoto')->isValid()) {
+            $userfoto = $this->request->getFile('userfoto');
+            $id_empresa = $data['id_empresa'];
+            $user_id = $id;
+            $uploadPath = ROOTPATH . 'public/assets/uploads/files/' . $id_empresa . '/usuarios/' . $user_id . '/';
+
+            // Crear el directorio si no existe
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            // Si ya hay imágenes en la carpeta, eliminarlas
+            $this->eliminarImagenesExistentes($uploadPath);
+
+            // Mover la nueva imagen
+            $originalName = $userfoto->getName();
+            $userfoto->move($uploadPath, $originalName);
+
+            // Guardar la ruta de la imagen en la base de datos
+            $data['userfoto'] = $user_id . '/' . $originalName;
+        }
+
+        // Actualizar los datos del usuario
         if ($model->update($id, $data)) {
             return redirect()->to('/usuarios')->with('success', 'Usuario actualizado correctamente.');
         } else {
             return redirect()->back()->with('error', 'No se pudo actualizar el usuario.')->withInput();
         }
     }
+
 
     public function eliminarUsuario($id)
     {
@@ -117,9 +150,36 @@ class Usuarios extends BaseController
 
         return view('datosAcceso', [
             'user' => $usuario,
-            'niveles_acceso' => $nivelesAcceso, 
-            'nivel_usuario' => $nivelUsuario, 
+            'niveles_acceso' => $nivelesAcceso,
+            'nivel_usuario' => $nivelUsuario,
             'amiga' => $breadcrumbs
         ]);
+    }
+    public function eliminarFoto($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Usuarios2_Model($db);
+        $usuario = $model->find($id);
+        if ($usuario && !empty($usuario['userfoto'])) {
+            $path = ROOTPATH . 'public/assets/uploads/files/' . $data['id_empresa'] . '/usuarios/' . $usuario['userfoto'];
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            $model->update($id, ['userfoto' => null]);
+            return redirect()->to('/usuarios/editar/' . $id)->with('success', 'Foto eliminada correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'No se pudo eliminar la foto.');
+        }
+    }
+    private function eliminarImagenesExistentes($uploadPath)
+    {
+        $archivos = glob($uploadPath . '*');
+
+        foreach ($archivos as $archivo) {
+            if (is_file($archivo)) {
+                unlink($archivo);
+            }
+        }
     }
 }

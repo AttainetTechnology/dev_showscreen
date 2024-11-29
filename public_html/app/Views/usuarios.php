@@ -97,6 +97,20 @@
                 { headerName: "Apellidos", field: "apellidos_usuario", sortable: true, filter: true },
                 { headerName: "Email", field: "email", sortable: true, filter: true },
                 { headerName: "Teléfono", field: "telefono", sortable: true, filter: true },
+                {
+                    headerName: "Foto",
+                    field: "userfoto",
+                    cellRenderer: params => {
+                        if (params.value) {
+                            // Asegúrate de que el id_empresa esté disponible en los datos
+                            const idEmpresa = params.data.id_empresa || ''; // Si no existe id_empresa, usará un string vacío
+                            return `<img src="/public/assets/uploads/files/${idEmpresa}/usuarios/${params.value}" height="60">`;
+                        }
+                        return " ";
+                    },
+                    sortable: true,
+                    filter: true
+                },
             ];
 
             const gridOptions = {
@@ -114,7 +128,7 @@
                 domLayout: 'autoHeight',
                 rowHeight: 60,
                 onGridReady: params => {
-                    gridApi = params.api; 
+                    gridApi = params.api;
                     fetchUsuarios(params.api);
                 }
             };
@@ -164,7 +178,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            window.location.reload(); 
+                            window.location.reload();
                         } else {
                             console.error('Error al eliminar el usuario:', data.message);
                         }
