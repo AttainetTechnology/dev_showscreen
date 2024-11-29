@@ -124,7 +124,6 @@
                     filter: true
                 },
             ];
-
             const gridOptions = {
                 columnDefs: columnDefs,
                 defaultColDef: {

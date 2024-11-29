@@ -123,4 +123,7 @@ $routes->get('rutas/add_ruta', 'Rutas::add_ruta');
 $routes->post('rutas/addRuta', 'Rutas::addRuta');
 $routes->delete('poblaciones_rutas/eliminar/(:num)', 'Poblaciones_rutas::eliminarPoblacion/$1');
 $routes->post('/rutas/cambiarEstado/(:num)', 'Rutas::cambiarEstado/$1');
+$routes->get('log', 'Log::index');
+$routes->get('log/getLogs', 'Log::getLogs');
+$routes->post('log/deleteLog/(:num)', 'Log::deleteLog/$1');
 
