@@ -37,6 +37,13 @@
                 value="<?= esc($usuario['telefono']) ?>">
         </div>
         <div class="form-group">
+            <label for="user_activo">Activo:</label>
+            <select class="form-control" id="user_activo" name="user_activo">
+                <option value="1" <?= $usuario['user_activo'] == 1 ? 'selected' : '' ?>>Sí</option>
+                <option value="0" <?= $usuario['user_activo'] == 0 ? 'selected' : '' ?>>No</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="userfoto">Foto de Usuario:</label>
             <input type="file" class="form-control" id="userfoto" name="userfoto" accept="image/*">
             <?php if (!empty($usuario['userfoto'])): ?>
@@ -52,14 +59,6 @@
                 </div>
             <?php endif; ?>
         </div>
-        <div class="form-group">
-            <label for="user_activo">Activo:</label>
-            <select class="form-control" id="user_activo" name="user_activo">
-                <option value="1" <?= $usuario['user_activo'] == 1 ? 'selected' : '' ?>>Sí</option>
-                <option value="0" <?= $usuario['user_activo'] == 0 ? 'selected' : '' ?>>No</option>
-            </select>
-        </div>
-
         <div class="buttonsEditProductProveedAbajo">
             <a href="<?= base_url('usuarios') ?>" type="button" class="boton volverButton">
                 Volver
