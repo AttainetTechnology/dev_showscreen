@@ -125,5 +125,6 @@ $routes->delete('poblaciones_rutas/eliminar/(:num)', 'Poblaciones_rutas::elimina
 $routes->post('/rutas/cambiarEstado/(:num)', 'Rutas::cambiarEstado/$1');
 $routes->get('log', 'Log::index');
 $routes->get('log/getLogs', 'Log::getLogs');
-$routes->post('log/deleteLog/(:num)', 'Log::deleteLog/$1');
-
+$routes->get('niveles_acceso', 'Niveles_acceso::index');
+$routes->get('niveles_acceso/getLogs', 'Niveles_acceso::getLogs');
+$routes->post('niveles_acceso/deleteNievel/(:num)', 'Niveles_acceso::deleteNievel/$1');
