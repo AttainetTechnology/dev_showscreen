@@ -182,21 +182,22 @@
         });
 
         function eliminarUsuario(id) {
-            if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
-                fetch(`/usuarios/eliminar/${id}`, {
-                    method: 'DELETE'
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            window.location.reload();
-                        } else {
-                            console.error('Error al eliminar el usuario:', data.message);
-                        }
-                    })
-                    .catch(error => console.error('Error al eliminar usuario:', error));
+    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+        fetch(`/usuarios/eliminar/${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                console.error('Error al eliminar el usuario:', data.message);
             }
-        }
+        })
+        .catch(error => console.error('Error al eliminar usuario:', error));
+    }
+}
+
 
     </script>
 

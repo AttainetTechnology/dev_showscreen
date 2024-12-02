@@ -92,17 +92,25 @@ class Usuarios extends BaseController
         }
     }
 
-
     public function eliminarUsuario($id)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $model = new Usuarios2_Model($db);
 
-        if ($model->delete($id)) {
-            return $this->response->setJSON(['success' => true, 'message' => 'Usuario eliminado correctamente']);
+        $modelUsuarios2 = new Usuarios2_Model($db);
+        $modelUsuarios1 = new Usuarios1_Model();
+
+        $usuario = $modelUsuarios2->find($id);
+        if ($usuario) {
+            $id_acceso = $usuario['id_acceso'];
+            $modelUsuarios1->where('id', $id_acceso)->delete();
+            if ($modelUsuarios2->delete($id)) {
+                return $this->response->setJSON(['success' => true, 'message' => 'Usuario y su acceso eliminados correctamente']);
+            } else {
+                return $this->response->setJSON(['success' => false, 'message' => 'No se pudo eliminar el usuario de Usuarios2_Model']);
+            }
         } else {
-            return $this->response->setJSON(['success' => false, 'message' => 'No se pudo eliminar el usuario']);
+            return $this->response->setJSON(['success' => false, 'message' => 'No se encontró el usuario en Usuarios2_Model']);
         }
     }
 

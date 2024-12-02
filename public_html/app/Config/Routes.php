@@ -115,7 +115,7 @@ $routes->get('/maquinas/editar/(:num)', 'MaquinasController::editar/$1');
 $routes->get('productos/procesos/(:num)', 'Productos::verProcesos/$1');
 $routes->post('produc/datosAcceso/(:num)', 'Usuarios::datosAcceso/$1');
 $routes->delete('usuartos/updateOrder', 'Productos::updateOrder');
-$routes->get('usuariosios/eliminar/(:num)', 'Usuarios::eliminarUsuario/$1');
+$routes->delete('usuarios/eliminar/(:num)', 'Usuarios::eliminarUsuario/$1');
 $routes->get('usuarios/eliminarFoto/(:num)', 'Usuarios::eliminarFoto/$1');
 $routes->get('editar_rutas/(:num)', 'Rutas::editar_ruta/$1');
 $routes->post('rutas/updateRuta/(:num)', 'Rutas::updateRuta/$1');
