@@ -130,3 +130,4 @@ $routes->post('log/deleteLog/(:num)', 'Log::deleteLog/$1');
 $routes->get('niveles_acceso', 'Niveles_acceso::index');
 $routes->get('niveles_acceso/getLogs', 'Niveles_acceso::getLogs');
 $routes->post('niveles_acceso/deleteNievel/(:num)', 'Niveles_acceso::deleteNievel/$1');
+$routes->post('menu/add', 'Menu::add');

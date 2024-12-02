@@ -230,7 +230,7 @@
         console.log("ID del log a eliminar:", logId); // Verifica el ID en la consola
         if (confirm("¿Estás seguro de eliminar este log?")) {
             $.ajax({
-                url: '<?= base_url("log/deleteLog") ?>/' + logId,  
+                url: '<?= base_url("log/deleteLog") ?>/' + logId,
                 type: 'DELETE',
                 success: function (response) {
                     if (response.success) {
