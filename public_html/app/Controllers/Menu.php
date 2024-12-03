@@ -49,11 +49,9 @@ class Menu extends BaseController
 			}
 			$nivelesMap[$nivel->id_nivel] = $nivel->nombre_nivel;
 		}
-
 		foreach ($menus as &$menu) {
 			$menu['nivel'] = $nivelesMap[$menu['nivel']] ?? 'Desconocido';
 		}
-
 		return [
 			'sin_dependencia' => $menus
 		];
@@ -72,12 +70,12 @@ class Menu extends BaseController
 			'submenus' => $submenus
 		];
 	}
-
 	public function submenus($id)
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$menuModel = new MenuModel($db);
+		$nivelModel = new Nivel_model($db);
 
 		// Obtener los submenús que tienen este ID como dependencia
 		$submenus = $this->getSubmenus($id);
@@ -85,12 +83,18 @@ class Menu extends BaseController
 		// Obtener el título del menú principal para mostrarlo en el encabezado
 		$menu = $menuModel->find($id);
 		$data['titulo'] = $menu ? $menu['titulo'] : 'Menú';
+		$data['id'] = $id;
 
-		// Pasar los submenús a la vista
-		$data['submenus'] = $submenus['submenus'];
+		// Obtener los niveles
+		$data['niveles'] = $nivelModel->findAll();
+
+		// Pasar los submenús y niveles a la vista
+		$data['menus'] = $submenus;
 
 		return view('submenu_view', $data);
 	}
+
+
 
 	public function delete($id)
 	{
@@ -135,6 +139,36 @@ class Menu extends BaseController
 			return $this->response->setJSON(['success' => false, 'message' => 'Error al añadir el menú.']);
 		}
 	}
+	public function addSubmenu()
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$menuModel = new MenuModel($db);
+
+		// Recoger datos del formulario
+		$formData = [
+			'posicion' => $this->request->getPost('posicion'),
+			'titulo' => $this->request->getPost('titulo'),
+			'enlace' => $this->request->getPost('enlace'), // Recoger el enlace
+			'nivel' => $this->request->getPost('nivel'),
+			'activo' => $this->request->getPost('activo'),
+			'url_especial' => $this->request->getPost('url_especial'),
+			'nueva_pestana' => $this->request->getPost('nueva_pestana'),
+			'dependencia' => $this->request->getPost('dependencia'),
+		];
+
+		if (empty($formData['posicion']) || !is_numeric($formData['posicion'])) {
+			return $this->response->setJSON(['success' => false, 'message' => 'La posición debe ser un número válido.']);
+		}
+
+		// Insertar el nuevo submenú en la base de datos
+		if ($menuModel->insert($formData)) {
+			return $this->response->setJSON(['success' => true]);
+		} else {
+			return $this->response->setJSON(['success' => false, 'message' => 'Error al añadir el submenú.']);
+		}
+	}
+
 	public function edit($id)
 	{
 		$data = usuario_sesion();
@@ -164,12 +198,9 @@ class Menu extends BaseController
 		$formData = [
 			'posicion' => $this->request->getPost('posicion'),
 			'titulo' => $this->request->getPost('titulo'),
-			'enlace' => $this->request->getPost('enlace'),
 			'nivel' => $this->request->getPost('nivel'),
 			'activo' => $this->request->getPost('activo'),
-			'estilo' => $this->request->getPost('estilo'),
 			'url_especial' => $this->request->getPost('url_especial'),
-			'separador' => $this->request->getPost('separador'),
 			'nueva_pestana' => $this->request->getPost('nueva_pestana'),
 		];
 
@@ -180,5 +211,31 @@ class Menu extends BaseController
 			return $this->response->setJSON(['success' => false, 'message' => 'Error al actualizar el menú.']);
 		}
 	}
+
+	public function updateSubmenu($id)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$menuModel = new MenuModel($db);
+
+		// Recoger los datos del formulario
+		$formData = [
+			'posicion' => $this->request->getPost('posicion'),
+			'titulo' => $this->request->getPost('titulo'),
+			'enlace' => $this->request->getPost('enlace'),
+			'nivel' => $this->request->getPost('nivel'),
+			'activo' => $this->request->getPost('activo'),
+			'url_especial' => $this->request->getPost('url_especial'),
+			'nueva_pestana' => $this->request->getPost('nueva_pestana'),
+		];
+
+		// Actualizar el menú en la base de datos
+		if ($menuModel->update($id, $formData)) {
+			return $this->response->setJSON(['success' => true]);
+		} else {
+			return $this->response->setJSON(['success' => false, 'message' => 'Error al actualizar el menú.']);
+		}
+	}
+
 
 }
