@@ -1,9 +1,9 @@
-<?php 
+<?php
 namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Fichajes extends Model
+class FichajesModel extends Model
 {
     protected $table = 'fichajes';
     protected $primaryKey = 'id';

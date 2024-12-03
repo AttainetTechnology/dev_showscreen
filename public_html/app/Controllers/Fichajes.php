@@ -1,107 +1,30 @@
 <?php
-
 namespace App\Controllers;
-// use App\Libraries\GroceryCrud;
 
-class Fichajes extends BaseControllerGC
+use App\Models\FichajesModel;
+use App\Models\Usuarios2_Model;
+
+class Fichajes extends BaseController
 {
-
     public function index()
     {
-        //Control de login	
-        helper('controlacceso');
-        $nivel = control_login();
-        //Fin Control de Login
-        $this->SacaFichajes(
-            'Fichaje',
-            'Fichajes',
-            '',
-            ''
-        );
-    }
-    public function incidencias()
-    {
-        $this->SacaFichajes(
-            'Incidencia',
-            'Incidencias',
-            'fichajes.incidencia NOT LIKE ?',
-            ''
-        );
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Fichajes');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('fichajes_view', $data);
     }
 
-    public function extras()
+    // Esta es la función que convierte la diferencia de horas
+    private function Pasa_a_Horas($entrada, $salida)
     {
-        $this->SacaFichajes(
-            'Extra',
-            'Extras',
-            'fichajes.extras',
-            '1'
-        );
-    }
-    public function SacaFichajes($titulo, $titulos, $comparador, $valor)
-    {
-
-        $crud = $this->_getClientDatabase();
-
-        $crud->setSubject($titulo, $titulos);
-        $crud->setTable('fichajes');
-        $crud->columns(['id_usuario', 'entrada', 'salida', 'total', 'incidencia', 'extras']);
-        $this->groceryCRUDAddExtraColumn($crud, 'fecha');
-        if ($comparador != '') {
-            $crud->where([
-                $comparador => $valor
-            ]);
-        }
-        $crud->setRelation('id_usuario', 'users', 'nombre_usuario');
-        $crud->displayAs('total', 'Horas');
-        $crud->displayAs('id_usuario', 'Nombre');
-        //$crud->displayAs('id','Fecha');
-        $crud->fieldType('extras', 'dropdown', [
-            '1' => 'Sí',
-            '0' => ' '
-        ]);
-        $crud->fieldType('incidencia', 'dropdown', [
-            ' '    => ' ',
-            'No 8 horas' => 'Menos de 8H',
-            'sin cerrar' => 'Sin cerrar',
-            'Ausencia' => 'Ausencia'
-        ]);
-
-        $crud->callbackColumn('total', array($this, 'Pasa_a_Horas'));
-        $crud->unsetRead();
-        $crud->unsetSearchColumns(['entrada', 'salida', 'total']);
-        $crud->setLangString('modal_save', 'Guardar Fichaje');
-        $output = $crud->render();
-
-        if ($output->isJSONResponse) {
-            header('Content-Type: application/json; charset=utf-8');
-            echo $output->output;
-            exit;
-        }
-        //Paso las fechas de búsqueda
-        // $output->data['inicio'] = "01/01/2022";
-        // $output->data['fin'] = "02/01/2022";
-
-        echo view('layouts/main', (array)$output);
-    }
-
-    function groceryCRUDAddExtraColumn($crud, $columnName)
-    {
-        $crud->fieldTypeColumn($columnName, 'varchar');
-        $crud->mapColumn($columnName, 'id');
-    }
-
-
-    function Pasa_a_Horas($value, $row)
-    {
-        // Verifica que los valores de entrada y salida estén definidos
-        if (!isset($row->entrada) || !isset($row->salida)) {
-            return 'Datos insuficientes';
+        // Si la salida es '0' o vacía, retornar una cadena vacía
+        if (empty($salida) || $salida == '0000-00-00 00:00:00' || $salida == '00:00:00') {
+            return ''; // Devolver vacío en lugar de calcular la diferencia
         }
 
         // Convertir las fechas y horas a objetos DateTime
-        $entrada = new \DateTime($row->entrada);
-        $salida = new \DateTime($row->salida);
+        $entrada = new \DateTime($entrada);
+        $salida = new \DateTime($salida);
 
         // Calcular la diferencia
         $intervalo = $entrada->diff($salida);
@@ -128,4 +51,42 @@ class Fichajes extends BaseControllerGC
 
         return trim($resultado);
     }
+    public function getFichajes()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $fichajesModel = new FichajesModel($db);
+        $usuariosModel = new Usuarios2_Model($db);
+    
+        // Obtener todos los fichajes
+        $fichajes = $fichajesModel->findAll();
+    
+        // Reemplazar el id_user por el nombre y apellidos y calcular el total
+        foreach ($fichajes as &$fichaje) {
+            $usuario = $usuariosModel->findUserById($fichaje['id_usuario']);
+            if ($usuario) {
+                // Concatenar nombre y apellidos del usuario
+                $fichaje['nombre_usuario'] = $usuario['nombre_usuario'] . ' ' . $usuario['apellidos_usuario'];
+            } else {
+                // Si no se encuentra el usuario, asignar un valor por defecto
+                $fichaje['nombre_usuario'] = 'Usuario no encontrado';
+            }
+    
+            // Calcular el total en horas usando la función Pasa_a_Horas
+            $fichaje['salida'] = ($fichaje['salida'] == '0000-00-00 00:00:00' || empty($fichaje['salida'])) ? '' : $fichaje['salida'];
+            $fichaje['total'] = $this->Pasa_a_Horas($fichaje['entrada'], $fichaje['salida']);
+    
+            // Convertir el valor de extras de 0/1 a No/Sí
+            $fichaje['extras'] = ($fichaje['extras'] == 1) ? 'Sí' : 'No';
+    
+            // Agregar las acciones (editar, eliminar)
+            $fichaje['acciones'] = [
+                'editar' => base_url('fichajes/editar/' . $fichaje['id']),
+                'eliminar' => base_url('fichajes/eliminar/' . $fichaje['id'])
+            ];
+        }
+    
+        return $this->response->setJSON($fichajes);
+    }
+    
 }
