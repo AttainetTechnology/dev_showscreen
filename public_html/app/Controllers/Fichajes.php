@@ -88,5 +88,76 @@ class Fichajes extends BaseController
     
         return $this->response->setJSON($fichajes);
     }
+    public function editar($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $fichajesModel = new FichajesModel($db);
+        $usuariosModel = new Usuarios2_Model($db); // Modelo para obtener los usuarios
+    
+        $fichaje = $fichajesModel->find($id);
+        if (!$fichaje) {
+            return $this->response->setJSON(['error' => 'Fichaje no encontrado']);
+        }
+    
+        // Obtener todos los usuarios para el select
+        $usuarios = $usuariosModel->findAll();
+    
+        // Pasar el fichaje y los usuarios a la vista
+        return $this->response->setJSON([
+            'fichaje' => $fichaje,
+            'usuarios' => $usuarios // Lista de usuarios
+        ]);
+    }
+    
+    public function actualizar()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $fichajesModel = new FichajesModel($db);
+    
+        // Recoger los datos del formulario
+        $id = $this->request->getPost('id');
+        $entrada = $this->request->getPost('entrada');
+        $salida = $this->request->getPost('salida');
+        $incidencia = $this->request->getPost('incidencia');
+        $extras = $this->request->getPost('extras');
+        $id_usuario = $this->request->getPost('nombre');
+    
+        // Verificar si el fichaje existe
+        $fichaje = $fichajesModel->find($id);
+        if (!$fichaje) {
+            return $this->response->setJSON(['error' => 'Fichaje no encontrado']);
+        }
+    
+        // Actualizar los datos en la base de datos
+        $fichajesModel->update($id, [
+            'entrada' => $entrada,
+            'salida' => $salida,
+            'incidencia' => $incidencia,
+            'extras' => $extras,
+            'id_usuario' => $id_usuario
+        ]);
+    
+        return $this->response->setJSON(['success' => true]);
+    }
+    
+     // Acción para eliminar un fichaje
+     public function eliminar($id)
+     {
+         $data = usuario_sesion();
+         $db = db_connect($data['new_db']);
+         $fichajesModel = new FichajesModel($db);
+ 
+         $fichaje = $fichajesModel->find($id);
+         if (!$fichaje) {
+             return $this->response->setJSON(['error' => 'Fichaje no encontrado']);
+         }
+ 
+         // Eliminar el fichaje
+         $fichajesModel->delete($id);
+ 
+         return $this->response->setJSON(['success' => true]);
+     }
     
 }
