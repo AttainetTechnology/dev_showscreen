@@ -28,6 +28,16 @@
                 value="<?= esc($usuario['apellidos_usuario']) ?>">
         </div>
         <div class="form-group">
+            <label for="dni">DNI:</label>
+            <input type="text" class="form-control" id="dni" name="dni"
+                value="<?= esc($usuario['dni']) ?>">
+        </div>
+        <div class="form-group">
+            <label for="seguridad_social">Seguridad Social</label>
+            <input type="text" class="form-control" id="seguridad_social" name="seguridad_social"
+                value="<?= esc($usuario['seguridad_social']) ?>">
+        </div>
+        <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" class="form-control" id="email" name="email" value="<?= esc($usuario['email']) ?>">
         </div>

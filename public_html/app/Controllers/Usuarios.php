@@ -59,6 +59,9 @@ class Usuarios extends BaseController
             'telefono' => $this->request->getPost('telefono'),
             'user_activo' => $this->request->getPost('user_activo'),
             'id_empresa' => $data['id_empresa'],
+            'dni' => $this->request->getPost('dni'),
+            'seguridad_social' => $this->request->getPost('seguridad_social'),
+
         ];
 
         // Si se ha subido una nueva foto
@@ -123,6 +126,8 @@ class Usuarios extends BaseController
         $data = [
             'nombre_usuario' => $this->request->getPost('nombre_usuario'),
             'apellidos_usuario' => $this->request->getPost('apellidos_usuario'),
+            'dni' => $this->request->getPost('dni'),
+            'seguridad_social' => $this->request->getPost('seguridad_social'),
             'email' => $this->request->getPost('email'),
             'telefono' => $this->request->getPost('telefono'),
             'user_activo' => $this->request->getPost('user_activo') ?? 1,

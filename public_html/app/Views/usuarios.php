@@ -56,6 +56,15 @@
                                 required>
                         </div>
                         <div class="form-group">
+                            <label for="dni">DNI</label>
+                            <input type="text" class="form-control" id="dni" name="dni" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="seguridad_social">Nº Seguridad Social</label>
+                            <input type="text" class="form-control" id="seguridad_social" name="seguridad_social"
+                                required>
+                        </div>
+                        <div class="form-group">
                             <label for="email">Email:</label>
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
@@ -107,6 +116,8 @@
                 },
                 { headerName: "Nombre", field: "nombre_usuario", sortable: true, filter: true },
                 { headerName: "Apellidos", field: "apellidos_usuario", sortable: true, filter: true },
+                { headerName: "DNI", field: "dni", sortable: true, filter: true },
+                { headerName: "Seguridad Social", field: "seguridad_social", sortable: true, filter: true },
                 { headerName: "Email", field: "email", sortable: true, filter: true },
                 { headerName: "Teléfono", field: "telefono", sortable: true, filter: true },
                 {
