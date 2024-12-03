@@ -93,19 +93,19 @@
 }
 
 .volverButton,
-.volverButtonTabla {
+.volverButtonTabla, .btnSubmenu {
     background-color: #337AB7 !important;
     color: white !important;
 }
 
 .volverButton:hover,
-.volverButtonTabla:hover {
+.volverButtonTabla:hover, .btnSubmenu:hover {
     background-color: #125692 !important;
     color: white;
 }
 
 .volverButton:active,
-.volverButtonTabla:active {
+.volverButtonTabla:active, .btnSubmenu:active {
     background-color: #6897C0 !important;
     color: white !important;
 }
@@ -118,6 +118,11 @@
 
 .volverButtonTabla svg {
     width: 15px;
+    height: auto;
+    color: white;
+}
+.btnSubmenu svg{
+    width: 18px;
     height: auto;
     color: white;
 }
@@ -247,6 +252,7 @@
 .btnEliminarTabla {
     background-color: #D9534F !important;
     color: white !important;
+
 }
 
 .btnEliminar:hover,
@@ -475,4 +481,7 @@
 .btnRutaFinaliza {
     background-color:#5b8a5b!important;
     color: white !important;
+}
+button.btn.botonTabla.btnEditarTabla {
+    height: 27px;
 }

@@ -173,13 +173,24 @@
             `;
                 }
             },
-            { headerName: "Posición", field: "posicion" },
-            { headerName: "Título", field: "titulo" },
-            { headerName: "Enlace", field: "enlace" },
-            { headerName: "Nivel", field: "nivel" },
-            { headerName: "Activo", field: "activo", valueFormatter: (params) => params.value === '1' ? 'Activo' : 'Desactivado' }
-        ];
+            { headerName: "Posición", field: "posicion", filter: 'agTextColumnFilter' },
+            { headerName: "Título", field: "titulo", filter: 'agTextColumnFilter' },
+            { headerName: "Enlace", field: "enlace", filter: 'agTextColumnFilter' },
+            { headerName: "Nivel", field: "nivel", filter: 'agTextColumnFilter' },
+            {
+                headerName: "Activo",
+                field: "activo",
+                valueGetter: (params) => {
+                    return params.data.activo === 1 ? 'Desactivado' : 'Activo'; 
+                },
+                filter: 'agTextColumnFilter', 
+                filterParams: {
+                    filterOptions: ['contains'], 
+                    debounceMs: 500
+                }
+            }
 
+        ];
 
         const gridOptions = {
             columnDefs: columnDefs,
