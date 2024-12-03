@@ -232,8 +232,8 @@
                     $('#editActivo').val(response.menu.activo);
                     $('#editUrlEspecial').val(response.menu.url_especial);
                     $('#editNuevaPestana').val(response.menu.nueva_pestana);
+                    $('#editEnlace').val(response.menu.enlace);
 
-                    // Mostrar el modal
                     $('#editSubMenuModal').modal('show');
                 } else {
                     alert('Error al cargar los datos del menú.');
@@ -246,31 +246,31 @@
     }
 
     $('#editSubMenuForm').on('submit', function (event) {
-    event.preventDefault();
+        event.preventDefault();
 
-    const formData = new FormData(this);
-    const id = $('#editSubMenuId').val(); // Obtener el ID del menú
+        const formData = new FormData(this);
+        const id = $('#editSubMenuId').val();
 
-    $.ajax({
-        url: `<?= base_url('menu/updateSubmenu') ?>/${id}`, // Cambiar a la ruta de actualización
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-            if (response.success) {
-                alert('Menú actualizado con éxito.');
-                $('#editSubMenuModal').modal('hide');
-                location.reload();
-            } else {
-                alert('Error al actualizar el menú: ' + response.message);
+        $.ajax({
+            url: `<?= base_url('menu/updateSubmenu') ?>/${id}`,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
+                    alert('Menú actualizado con éxito.');
+                    $('#editSubMenuModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert('Error al actualizar el menú: ' + response.message);
+                }
+            },
+            error: function () {
+                alert('Error en la solicitud.');
             }
-        },
-        error: function () {
-            alert('Error en la solicitud.');
-        }
+        });
     });
-});
 
 
     function deleteSubMenu(id) {
@@ -292,37 +292,37 @@
             });
         }
     }
- 
+
     // Manejo de la creación de nuevo menú
     document.getElementById('addSubMenuForm').addEventListener('submit', function (event) {
-    event.preventDefault();
+        event.preventDefault();
 
-    // Recoger los datos del formulario
-    const formData = new FormData(this);
-    const data = {};
-    formData.forEach((value, key) => {
-        data[key] = value;
-    });
+        // Recoger los datos del formulario
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
 
-    // Realizar la solicitud AJAX para añadir el submenú
-    $.ajax({
-        url: '<?= base_url('menu/addSubmenu') ?>',
-        type: 'POST',
-        data: data,
-        success: function (response) {
-            if (response.success) {
-                alert('Menú añadido con éxito.');
-                $('#menuModal').modal('hide'); // Cerrar el modal
-                location.reload(); // Recargar la página
-            } else {
-                alert('Error al añadir el submenú.');
+        // Realizar la solicitud AJAX para añadir el submenú
+        $.ajax({
+            url: '<?= base_url('menu/addSubmenu') ?>',
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                if (response.success) {
+                    alert('Menú añadido con éxito.');
+                    $('#menuModal').modal('hide'); // Cerrar el modal
+                    location.reload(); // Recargar la página
+                } else {
+                    alert('Error al añadir el submenú.');
+                }
+            },
+            error: function () {
+                alert('Error en la solicitud. Por favor, inténtelo de nuevo.');
             }
-        },
-        error: function () {
-            alert('Error en la solicitud. Por favor, inténtelo de nuevo.');
-        }
+        });
     });
-});
 
 
 </script>

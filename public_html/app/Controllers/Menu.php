@@ -56,20 +56,33 @@ class Menu extends BaseController
 			'sin_dependencia' => $menus
 		];
 	}
-
 	public function getSubmenus($id)
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$menuModel = new MenuModel($db);
-
-		// Obtener los menús que tienen como dependencia el ID pasado
+		$nivelModel = new Nivel_model($db);
+	
+		// Obtener los submenús que tienen este ID como dependencia
 		$submenus = $menuModel->where('dependencia', $id)->findAll();
-
+	
+		// Obtener los niveles y mapearlos
+		$niveles = $nivelModel->findAll();
+		$nivelesMap = [];
+		foreach ($niveles as $nivel) {
+			$nivelesMap[$nivel['id_nivel']] = $nivel['nombre_nivel'];
+		}
+	
+		// Reemplazar el ID de nivel por el nombre en los submenús
+		foreach ($submenus as &$submenu) {
+			$submenu['nivel'] = $nivelesMap[$submenu['nivel']] ?? 'Desconocido';  // Mapeo
+		}
+	
 		return [
 			'submenus' => $submenus
 		];
 	}
+	
 	public function submenus($id)
 	{
 		$data = usuario_sesion();
