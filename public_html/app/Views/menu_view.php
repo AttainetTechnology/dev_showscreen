@@ -3,7 +3,7 @@
 <!-- Estilos de AG-Grid -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
-
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <!-- Estilos de Bootstrap (si no se han incluido globalmente) -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -64,8 +64,12 @@
                     </div>
                     <div class="form-group">
                         <label for="url_especial">URL Especial</label>
-                        <input type="text" class="form-control" name="url_especial" id="editUrlEspecial">
+                        <select class="form-control" name="url_especial" id="editUrlEspecial">
+                            <option value="0">No, url genérica.</option>
+                            <option value="1">Sí, url personalizada.</option>
+                        </select>
                     </div>
+
                     <div class="form-group">
                         <label for="nueva_pestana">Nueva Pestaña</label>
                         <select class="form-control" name="nueva_pestana" id="editNuevaPestana">
@@ -118,8 +122,12 @@
                     </div>
                     <div class="form-group">
                         <label for="url_especial">URL Especial</label>
-                        <input type="text" class="form-control" name="url_especial" id="addUrlEspecial">
+                        <select class="form-control" name="url_especial" id="addUrlEspecial">
+                            <option value="0">No, url genérica.</option>
+                            <option value="1">Sí, url personalizada.</option>
+                        </select>
                     </div>
+
                     <div class="form-group">
                         <label for="nueva_pestana">Nueva Pestaña</label>
                         <select class="form-control" name="nueva_pestana" id="addNuevaPestana">
@@ -144,22 +152,22 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Definir columnas para el AG-Grid
         const columnDefs = [
-    {
-        headerName: "Acciones", 
-        cellRenderer: function (params) {
-            return ` 
+            {
+                headerName: "Acciones",
+                cellRenderer: function (params) {
+                    return ` 
                 <button onclick="editMenu(${params.data.id})" class="btn btn-warning btn-sm">Editar</button>
                 <button onclick="deleteMenu(${params.data.id})" class="btn btn-danger btn-sm">Eliminar</button>
                 <a href="<?= base_url('menu/submenus') ?>/${params.data.id}" class="btn btn-info btn-sm">Submenú</a>
             `;
-        }
-    },
-    { headerName: "Posición", field: "posicion" },
-    { headerName: "Título", field: "titulo" },
-    { headerName: "Enlace", field: "enlace" },
-    { headerName: "Nivel", field: "nivel" },
-    { headerName: "Activo", field: "activo", valueFormatter: (params) => params.value === '1' ? 'Activo' : 'Desactivado' }
-];
+                }
+            },
+            { headerName: "Posición", field: "posicion" },
+            { headerName: "Título", field: "titulo" },
+            { headerName: "Enlace", field: "enlace" },
+            { headerName: "Nivel", field: "nivel" },
+            { headerName: "Activo", field: "activo", valueFormatter: (params) => params.value === '1' ? 'Activo' : 'Desactivado' }
+        ];
 
 
         const gridOptions = {
@@ -168,53 +176,72 @@
             pagination: true,
             paginationPageSize: 10,
             domLayout: 'autoHeight',
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                sortable: true,
+                floatingFilter: true,
+                resizable: true
+            },
+            pagination: true,
+            paginationPageSize: 10,
+            domLayout: 'autoHeight',
+            onGridReady: function (params) {
+                const gridApi = params.api;
+                fetchEmpresasData(gridApi);
+            },
+            rowHeight: 60,
+            localeText: {
+                noRowsToShow: 'No hay registros disponibles.'
+            }
         };
 
         const eGridDiv = document.querySelector('#menuGrid');
         new agGrid.Grid(eGridDiv, gridOptions);
     });
+
     function editMenu(id) {
+        if (isNaN(id) || id <= 0) {
+            alert('ID no válido');
+            return;
+        }
 
-    if (isNaN(id) || id <= 0) {
-        alert('ID no válido');
-        return;
-    }
+        console.log('ID del menú:', id);
 
-    $.ajax({
-        url: '<?= base_url('menu/edit') ?>/' + id,
-        type: 'GET',
-        success: function (response) {
-            if (response.success) {
+        $.ajax({
+            url: '<?= base_url('menu/edit') ?>/' + id,
+            type: 'GET',
+            success: function (response) {
+                if (response.success) {
+                    $('#editMenuId').val(response.menu.id);
+                    $('#editPosicion').val(response.menu.posicion);
+                    $('#editTitulo').val(response.menu.titulo);
+                    $('#editNivel').val(response.menu.nivel);
+                    $('#editActivo').val(response.menu.activo);
+                    $('#editUrlEspecial').val(response.menu.url_especial);
+                    $('#editNuevaPestana').val(response.menu.nueva_pestana);
 
-                // Rellenar los campos del modal con los datos
-                $('#editMenuId').val(response.menu.id);
-                $('#editPosicion').val(response.menu.posicion);
-                $('#editTitulo').val(response.menu.titulo);
-                $('#editNivel').val(response.menu.nivel);
-                $('#editActivo').val(response.menu.activo);
-                $('#editUrlEspecial').val(response.menu.url_especial);
-                $('#editNuevaPestana').val(response.menu.nueva_pestana);
-
-                // Mostrar el modal
-                $('#editMenuModal').modal('show');
-            } else {
+                    // Mostrar el modal
+                    $('#editMenuModal').modal('show');
+                } else {
+                    alert('Error al cargar los datos del menú.');
+                }
+            },
+            error: function () {
                 alert('Error al cargar los datos del menú.');
             }
-        },
-        error: function () {
-            alert('Error al cargar los datos del menú.');
-        }
-    });
-}
+        });
+    }
 
     // Guardar cambios de menú
     $('#editMenuForm').on('submit', function (event) {
         event.preventDefault();
 
         const formData = new FormData(this);
+        const id = $('#editMenuId').val(); // Obtener el ID del menú
 
         $.ajax({
-            url: '<?= base_url('menu/edit') ?>',
+            url: `<?= base_url('menu/update') ?>/${id}`, // Cambiar a la ruta de actualización
             type: 'POST',
             data: formData,
             processData: false,
@@ -225,7 +252,7 @@
                     $('#editMenuModal').modal('hide');
                     location.reload();
                 } else {
-                    alert('Error al actualizar el menú.');
+                    alert('Error al actualizar el menú: ' + response.message);
                 }
             },
             error: function () {
@@ -233,7 +260,8 @@
             }
         });
     });
- 
+
+
     function deleteMenu(id) {
         if (confirm('¿Estás seguro de que quieres eliminar este menú?')) {
             $.ajax({

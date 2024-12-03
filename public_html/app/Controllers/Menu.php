@@ -36,15 +36,28 @@ class Menu extends BaseController
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$menuModel = new MenuModel($db);
+		$nivelModel = new Nivel_model($db);
 
-		// Obtener solo los menús sin dependencia
-		$menusSinDependencia = $menuModel->where('dependencia', 0)->findAll();
+		// Obtener menús con nivel
+		$menus = $menuModel->where('dependencia', 0)->findAll();
+
+		// Mapear los nombres de niveles
+		$niveles = $nivelModel->findAll();
+		$nivelesMap = [];
+		foreach ($niveles as $nivel) {
+			$nivelesMap[$nivel->id_nivel] = $nivel->nombre_nivel;
+		}
+
+
+		// Reemplazar el ID de nivel con su nombre
+		foreach ($menus as &$menu) {
+			$menu['nivel'] = $nivelesMap[$menu['nivel']] ?? 'Desconocido';
+		}
 
 		return [
-			'sin_dependencia' => $menusSinDependencia
+			'sin_dependencia' => $menus
 		];
 	}
-
 
 	public function getSubmenus($id)
 	{
@@ -110,6 +123,11 @@ class Menu extends BaseController
 			'dependencia' => 0, // Menú sin dependencia
 		];
 
+		// Validar que el campo 'posicion' no esté vacío y sea un número
+		if (empty($formData['posicion']) || !is_numeric($formData['posicion'])) {
+			return $this->response->setJSON(['success' => false, 'message' => 'La posición debe ser un número válido.']);
+		}
+
 		// Insertar el nuevo menú en la base de datos
 		if ($menuModel->insert($formData)) {
 			return $this->response->setJSON(['success' => true]);
@@ -118,24 +136,23 @@ class Menu extends BaseController
 		}
 	}
 	public function edit($id)
-{
-    $data = usuario_sesion();
-    $db = db_connect($data['new_db']);
-    $menuModel = new MenuModel($db);
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$menuModel = new MenuModel($db);
 
-    // Obtener el menú con el ID proporcionado
-    $menu = $menuModel->find($id);
+		// Obtener el menú con el ID proporcionado
+		$menu = $menuModel->find($id);
 
-    if (!$menu) {
-        return $this->response->setJSON(['success' => false, 'message' => 'Menú no encontrado']);
-    }
+		if (!$menu) {
+			return $this->response->setJSON(['success' => false, 'message' => 'Menú no encontrado']);
+		}
 
-    return $this->response->setJSON([
-        'success' => true,
-        'menu' => $menu
-    ]);
-}
-
+		return $this->response->setJSON([
+			'success' => true,
+			'menu' => $menu
+		]);
+	}
 
 	public function update($id)
 	{

@@ -31,8 +31,8 @@ $routes->get('welcome/index', 'Welcome::index');
 
 
 
-$routes->get('login/'          , 'Login::index'                   );
-$routes->get('Verifylogin'     , 'Verifylogin::index'             );
+$routes->get('login/', 'Login::index');
+$routes->get('Verifylogin', 'Verifylogin::index');
 $routes->post('Verifylogin', 'Verifylogin::index');
 
 $routes->post('familia_productos/add_familia_producto', 'FamiliaProductos::add_familia_producto');
@@ -40,19 +40,19 @@ $routes->get('/productos/(:num)', 'Productos::show/$1');
 
 //Rutas fichajes
 
-$routes->get('presentes/(:num)'             , 'Fichar::index/$1'        );
-$routes->get('ausentes'             , 'Fichar::ausentes'        );
-$routes->get('entrar/(:num)'        , 'Fichar::entrar/$1'       );
-$routes->get('entra/(:num)'         , 'Fichar::entra/$1'        );
-$routes->get('entraextras/(:num)'   , 'Fichar::entraextras/$1'  );
-$routes->get('salir/(:num)'         , 'Fichar::salir/$1'        );
-$routes->get('sal/(:num)'           , 'Fichar::sal/$1'          );
+$routes->get('presentes/(:num)', 'Fichar::index/$1');
+$routes->get('ausentes', 'Fichar::ausentes');
+$routes->get('entrar/(:num)', 'Fichar::entrar/$1');
+$routes->get('entra/(:num)', 'Fichar::entra/$1');
+$routes->get('entraextras/(:num)', 'Fichar::entraextras/$1');
+$routes->get('salir/(:num)', 'Fichar::salir/$1');
+$routes->get('sal/(:num)', 'Fichar::sal/$1');
 //END Fichajes
-$routes->get('login/'                                , 'Login::index'                   );
-$routes->get('password/edit/(:num)/(:num)'           , 'Password::edit/$1/$2'          );
-$routes->get('Contactos_empresa/borrar/(:num)'       , 'Contactos_empresa::borrar/$1'   );
-$routes->get('Contactos_empresa/add/(:num)'              , 'Contactos_empresa::add/$1'    );
-$routes->get('Contactos_empresa/add/'                    , 'Contactos_empresa::add/*'    );
+$routes->get('login/', 'Login::index');
+$routes->get('password/edit/(:num)/(:num)', 'Password::edit/$1/$2');
+$routes->get('Contactos_empresa/borrar/(:num)', 'Contactos_empresa::borrar/$1');
+$routes->get('Contactos_empresa/add/(:num)', 'Contactos_empresa::add/$1');
+$routes->get('Contactos_empresa/add/', 'Contactos_empresa::add/*');
 
 $routes->add('partes/print/(\d+)', 'Partes_controller::parte_print/$1');
 $routes->add('pedidos/imprimir_parte/(:num)', 'Pedidos::imprimir_parte/$1');
@@ -131,3 +131,6 @@ $routes->get('niveles_acceso', 'Niveles_acceso::index');
 $routes->get('niveles_acceso/getLogs', 'Niveles_acceso::getLogs');
 $routes->post('niveles_acceso/deleteNievel/(:num)', 'Niveles_acceso::deleteNievel/$1');
 $routes->post('menu/add', 'Menu::add');
+$routes->get('menu/edit/(:num)', 'Menu::edit/$1');  
+$routes->post('menu/update/(:num)', 'Menu::update/$1');
+
