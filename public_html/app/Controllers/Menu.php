@@ -41,15 +41,15 @@ class Menu extends BaseController
 		// Obtener menús con nivel
 		$menus = $menuModel->where('dependencia', 0)->findAll();
 
-		// Mapear los nombres de niveles
 		$niveles = $nivelModel->findAll();
 		$nivelesMap = [];
 		foreach ($niveles as $nivel) {
+			if (is_array($nivel)) {
+				$nivel = (object) $nivel;  // Convertir el array en un objeto
+			}
 			$nivelesMap[$nivel->id_nivel] = $nivel->nombre_nivel;
 		}
 
-
-		// Reemplazar el ID de nivel con su nombre
 		foreach ($menus as &$menu) {
 			$menu['nivel'] = $nivelesMap[$menu['nivel']] ?? 'Desconocido';
 		}

@@ -51,8 +51,9 @@
                         <select class="form-control" name="nivel" id="editNivel" required>
                             <option value="">Selecciona un nivel</option>
                             <?php foreach ($niveles as $nivel): ?>
-                                <option value="<?= $nivel->id_nivel ?>"><?= $nivel->nombre_nivel ?></option>
+                                <option value="<?= $nivel['id_nivel'] ?>"><?= $nivel['nombre_nivel'] ?></option>
                             <?php endforeach; ?>
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -109,7 +110,7 @@
                         <select class="form-control" name="nivel" id="addNivel" required>
                             <option value="">Selecciona un nivel</option>
                             <?php foreach ($niveles as $nivel): ?>
-                                <option value="<?= $nivel->id_nivel ?>"><?= $nivel->nombre_nivel ?></option>
+                                <option value="<?= $nivel['id_nivel'] ?>"><?= $nivel['nombre_nivel'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

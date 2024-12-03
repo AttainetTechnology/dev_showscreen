@@ -34,7 +34,7 @@
 
         const gridOptions = {
             columnDefs: columnDefs,
-            rowData: <?= json_encode($submenus); ?>, // Submenús obtenidos desde el controlador
+            rowData: <?= json_encode($submenus); ?>,
             pagination: true,
             paginationPageSize: 10,
             domLayout: 'autoHeight',
