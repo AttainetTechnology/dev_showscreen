@@ -9,6 +9,9 @@ class Menu extends BaseController
 {
 	public function index()
 	{
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Menú');
+		$data['amiga'] = $this->getBreadcrumbs();
 		$nivel = control_login();
 		if ($nivel < '9') {
 			header('Location: ' . base_url());
@@ -62,29 +65,30 @@ class Menu extends BaseController
 		$db = db_connect($data['new_db']);
 		$menuModel = new MenuModel($db);
 		$nivelModel = new Nivel_model($db);
-	
+
 		// Obtener los submenús que tienen este ID como dependencia
 		$submenus = $menuModel->where('dependencia', $id)->findAll();
-	
+
 		// Obtener los niveles y mapearlos
 		$niveles = $nivelModel->findAll();
 		$nivelesMap = [];
 		foreach ($niveles as $nivel) {
 			$nivelesMap[$nivel['id_nivel']] = $nivel['nombre_nivel'];
 		}
-	
+
 		// Reemplazar el ID de nivel por el nombre en los submenús
 		foreach ($submenus as &$submenu) {
 			$submenu['nivel'] = $nivelesMap[$submenu['nivel']] ?? 'Desconocido';  // Mapeo
 		}
-	
+
 		return [
 			'submenus' => $submenus
 		];
 	}
-	
+
 	public function submenus($id)
 	{
+
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$menuModel = new MenuModel($db);
@@ -103,6 +107,10 @@ class Menu extends BaseController
 
 		// Pasar los submenús y niveles a la vista
 		$data['menus'] = $submenus;
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Menú', base_url('/menu'));
+		$this->addBreadcrumb('Submenú');
+		$data['amiga'] = $this->getBreadcrumbs();
 
 		return view('submenu_view', $data);
 	}
@@ -112,26 +120,26 @@ class Menu extends BaseController
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$menuModel = new MenuModel($db);
-	
+
 		// Comenzamos la transacción
 		$db->transStart();
-	
+
 		// 1. Eliminar el menú principal
 		$menuModel->delete($id);
-	
+
 		// 2. Buscar los menús dependientes (donde 'dependencia' sea igual al ID del menú eliminado)
 		$dependentMenus = $menuModel->where('dependencia', $id)->findAll();
-	
+
 		if ($dependentMenus) {
 			// 3. Eliminar los menús dependientes
 			foreach ($dependentMenus as $menu) {
 				$menuModel->delete($menu['id']);
 			}
 		}
-	
+
 		// Si todo salió bien, confirmamos la transacción
 		$db->transComplete();
-	
+
 		// Verificamos si la transacción fue exitosa
 		if ($db->transStatus() === FALSE) {
 			return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar el menú y sus dependencias.']);
@@ -139,7 +147,7 @@ class Menu extends BaseController
 			return $this->response->setJSON(['success' => true]);
 		}
 	}
-	
+
 	public function add()
 	{
 		$data = usuario_sesion();

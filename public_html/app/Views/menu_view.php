@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 
 <!-- Estilos de AG-Grid -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
@@ -169,7 +170,7 @@
                                     fill="white" />
                             </svg></button>
                     </div>
-                 </form>
+                </form>
             </div>
         </div>
     </div>
@@ -332,7 +333,6 @@
                 type: 'DELETE',
                 success: function (response) {
                     if (response.success) {
-                        alert('Menú y dependencias eliminados con éxito.');
                         location.reload(); // Recargar la página para reflejar los cambios
                     } else {
                         alert('Error al eliminar el menú.');

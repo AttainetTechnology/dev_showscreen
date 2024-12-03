@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
+<?= $this->include('partials/amiga') ?>
 <!-- Estilos de AG-Grid -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
@@ -324,7 +325,6 @@
             contentType: false,
             success: function (response) {
                 if (response.success) {
-                    alert('Menú actualizado con éxito.');
                     $('#editSubMenuModal').modal('hide');
                     location.reload();
                 } else {
@@ -345,7 +345,6 @@
                 type: 'DELETE',
                 success: function (response) {
                     if (response.success) {
-                        alert('Menú eliminado con éxito.');
                         location.reload();
                     } else {
                         alert('Error al eliminar el menú.');
