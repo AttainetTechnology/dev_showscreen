@@ -3,7 +3,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class festivos extends Model{
+class FestivosModel extends Model{
     protected $table = 'festivos';
     protected $primaryKey='id';
     protected $allowedFields= ['id','festivo','fecha','tipo_festivo'];

@@ -1,51 +1,89 @@
 <?php
 
 namespace App\Controllers;
-// use App\Libraries\GroceryCrud;
-use CodeIgniter\Model;
-setlocale(LC_ALL, 'spanish');
-class Festivos extends BaseControllerGC
+
+use App\Models\FestivosModel;
+
+class Festivos extends BaseController
 {
-	
+	public function index()
+	{
+		helper('controlacceso');
+		$nivel = control_login();
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
 
-public function index()
-{
-//Control de login	
-helper('controlacceso');
-$nivel=control_login();
-//Fin Control de Login
+		// Breadcrumbs
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Festivos');
+		$data['amiga'] = $this->getBreadcrumbs();
 
-$crud = $this->_getClientDatabase();
-$crud->setSubject('Festivo', 'Festivos');
-$crud->setTable('festivos');
-$crud->requiredFields(['festivo', 'fecha','tipo_festivo']);
-$crud->unsetRead();
-$crud->setLangString('modal_save', 'Guardar festivo');
-$crud->fieldType('tipo_festivo', 'dropdown', [
-	'1' => 'Se repite anualmente',
-	'0' => 'Varía anualmente'
-]);
-$crud->callbackColumn('fecha',function($value, $row){
-if ($row->tipo_festivo=='1'){
+		$festivoModel = new FestivosModel($db);
+		$festivos = $festivoModel->findAll();
+		return view('festivos_view', ['festivos' => $festivos, 'amiga' => $data['amiga']]);
+	}
 
-$fecha2 = $value;
-$fecha_festivo= date_create ($fecha2);
-$fecha_festivo=date_format($fecha_festivo, 'd M');
-return $fecha_festivo;}
-else {
-	$fecha2 = $value;
-	$fecha_festivo= date_create ($fecha2);
-	$fecha_festivo=date_format($fecha_festivo, 'd/m/Y');
-	return $fecha_festivo;}
-});
-$output = $crud->render();
-if ($output->isJSONResponse) {
-	header('Content-Type: application/json; charset=utf-8');
-	echo $output->output;
-	exit;
-}
-echo view('layouts/main', (array)$output);  
+	public function getFestivos()
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$model = new FestivosModel($db);
+		$festivos = $model->findAll();
+		return $this->response->setJSON($festivos);
+	}
 
-}
+	public function agregarFestivo()
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$model = new FestivosModel($db);
+		$data = $this->request->getPost();
 
+		if ($model->insert($data)) {
+			return $this->response->setJSON(['success' => true]);
+		} else {
+			return $this->response->setJSON(['success' => false, 'message' => 'Error al agregar festivo.']);
+		}
+	}
+
+	public function getFestivo($id)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$model = new FestivosModel($db);
+		$festivo = $model->find($id);
+
+		if ($festivo) {
+			return $this->response->setJSON($festivo);
+		} else {
+			return $this->response->setJSON(['success' => false, 'message' => 'Festivo no encontrado'], 404);
+		}
+	}
+
+	public function actualizarFestivo($id)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$model = new FestivosModel($db);
+		$data = $this->request->getPost();
+
+		if ($model->update($id, $data)) {
+			return $this->response->setJSON(['success' => true]);
+		} else {
+			return $this->response->setJSON(['success' => false, 'message' => 'Error al actualizar festivo.']);
+		}
+	}
+
+	public function eliminarFestivo($id)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$model = new FestivosModel($db);
+
+		if ($model->delete($id)) {
+			return $this->response->setJSON(['success' => true]);
+		} else {
+			return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar festivo.']);
+		}
+	}
 }
