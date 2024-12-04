@@ -1,64 +1,57 @@
 <?php
 
 namespace App\Controllers;
-// use App\Libraries\GroceryCrud;
-use CodeIgniter\Model;
-setlocale(LC_ALL, 'spanish');
-class Laborables extends BaseControllerGC
+
+use App\Models\Laborables_model;
+
+class Laborables extends BaseController
 {
-	
-public function index()
-{
-//Control de login	
-helper('controlacceso');
-$nivel=control_login();
-//Fin Control de Log
+	public function index()
+	{
+		helper('controlacceso');
+		$nivel = control_login();
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
 
-$crud = $this->_getClientDatabase();
-$crud->setLanguage('Spanish');
-$crud->setSubject('Laborables', 'Laborables');
-$crud->setTable('laborables');
-$crud->unsetOperations();
-$crud->setEdit();
-$crud->setLangString('modal_save', 'Guardar laborable');
-$crud->fieldType('lunes', 		'dropdown', [
-	'1' => 'Laborable',
-	'' => 'No laborable'
-]);
-$crud->fieldType('martes', 		'dropdown', [
-	'2' => 'Laborable',
-	'' => 'No laborable'
-]);
-$crud->fieldType('miercoles', 	'dropdown', [
-	'3' => 'Laborable',
-	'' => 'No laborable'
-]);
-$crud->fieldType('jueves', 		'dropdown', [
-	'4' => 'Laborable',
-	'' => 'No laborable'
-]);
-$crud->fieldType('viernes', 	'dropdown', [
-	'5' => 'Laborable',
-	'' => 'No laborable'
-]);
-$crud->fieldType('sabado', 		'dropdown', [
-	'6' => 'Laborable',
-	'' => 'No laborable'
-]);
-$crud->fieldType('domingo', 	'dropdown', [
-	'7' => 'Laborable',
-	'' => 'No laborable'
-]);
-$crud->Where('id',1);
-$output = $crud->render();
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Laborables');
+		$data['amiga'] = $this->getBreadcrumbs();
 
-if ($output->isJSONResponse) {
-	header('Content-Type: application/json; charset=utf-8');
-	echo $output->output;
-	exit;
-}
-echo view('layouts/main', (array)$output);  
+		$laborablesModel = new Laborables_model($db);
+		$laborables = $laborablesModel->find(1);
 
-}
+		return view('laborables_view', ['laborables' => $laborables, 'amiga' => $data['amiga']]);
+	}
+	public function actualizarLaborables()
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$model = new Laborables_model($db);
+		$postData = $this->request->getPost();
+
+		$diasLaborables = [
+			'lunes' => 1,
+			'martes' => 2,
+			'miercoles' => 3,
+			'jueves' => 4,
+			'viernes' => 5,
+			'sabado' => 6,
+			'domingo' => 7
+		];
+
+		foreach ($postData as $key => $value) {
+			if (isset($diasLaborables[$key]) && $value == $diasLaborables[$key]) {
+				$postData[$key] = $diasLaborables[$key];
+			} else {
+				$postData[$key] = 0;
+			}
+		}
+
+		if ($model->update(1, $postData)) {
+			return $this->response->setJSON(['success' => true]);
+		} else {
+			return $this->response->setJSON(['success' => false, 'message' => 'Error al actualizar los días laborables.']);
+		}
+	}
 
 }
