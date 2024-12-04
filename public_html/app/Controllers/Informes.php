@@ -1,55 +1,89 @@
 <?php
 
 namespace App\Controllers;
-// use App\Libraries\GroceryCrud;
-use CodeIgniter\Model;
 
-class Informes extends BaseControllerGC
+use App\Models\Informe_model;
+
+class Informes extends BaseController
 {
-    
-public function index()
-{
-//Control de login	
-helper('controlacceso');
-$nivel=control_login();
-//Fin Control de Login
+    public function index()
+    {
+        helper('controlacceso');
+        $nivel = control_login();
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
 
-$crud = $this->_getClientDatabase();
-$crud->setSubject('Informe', 'Informes');
-$crud->setTable('informes');
-$crud->requiredFields(['titulo','desde','hasta']);
-$crud->columns(['titulo','desde','hasta']);
-$crud->unsetRead();
-$crud->setLangString('modal_save', 'Guardar Informe');
-$crud->fieldType('extras', 'dropdown', [
-	'0' => 'No',
-	'1' => 'Sí',
-]);
-$crud->fieldType('vacaciones', 'dropdown', [
-	'0' => 'No',
-	'1' => 'Sí',
-]);
-$crud->fieldType('incidencias', 'dropdown', [
-	'0' => 'No',
-	'1' => 'Sí',
-]);
-$crud->fieldType('ausencias', 'dropdown', [
-	'0' => 'No',
-	'1' => 'Sí',
-]);
-$crud->setActionButton('Abrir', 'fa fa-doc', function ($row) {
-	return base_url().'/informe_detalle/' . $row->id_informe;
-}, true);
-$crud->unsetSearchColumns(['vacaciones','incidencias','extras','desde','hasta','ausencias']);
-$output = $crud->render();
-if ($output->isJSONResponse) {
-	header('Content-Type: application/json; charset=utf-8');
-	echo $output->output;
-	exit;
+        // Breadcrumbs
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Informes');
+        $data['amiga'] = $this->getBreadcrumbs();
+
+        $informeModel = new Informe_model($db);
+        $informes = $informeModel->findAll();
+        return view('informe_view', ['informes' => $informes, 'amiga' => $data['amiga']]);
+    }
+
+    public function getInformes()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Informe_model($db);
+        $informes = $model->findAll();
+        return $this->response->setJSON($informes);
+    }
+
+    public function agregarInforme()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Informe_model($db);
+        $data = $this->request->getPost();
+
+        if ($model->insert($data)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al agregar informe.']);
+        }
+    }
+
+    public function getInforme($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Informe_model($db);
+        $informe = $model->find($id);
+
+        if ($informe) {
+            return $this->response->setJSON($informe);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Informe no encontrado'], 404);
+        }
+    }
+
+    public function actualizarInforme($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Informe_model($db);
+        $data = $this->request->getPost();
+
+        if ($model->update($id, $data)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al actualizar informe.']);
+        }
+    }
+
+    public function eliminarInforme($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Informe_model($db);
+
+        if ($model->delete($id)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar informe.']);
+        }
+    }
 }
-echo view('layouts/main', (array)$output);  
-
-}
-
-}
-
