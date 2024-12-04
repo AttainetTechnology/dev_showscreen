@@ -20,10 +20,13 @@
             <label for="ref_producto">Referencia del Proveedor</label>
             <input type="text" name="ref_producto" id="ref_producto" class="form-control" required>
         </div>
+
         <div class="form-group mb-3">
             <label for="precio">Precio</label>
-            <input type="text" name="precio" id="precio" class="form-control" required>
+            <!-- Deja el campo de precio vacío para que el usuario pueda dejarlo vacío -->
+            <input type="text" name="precio" id="precio" class="form-control">
         </div>
+        
         <div style="text-align: right;">
             <button type="submit" class="boton btnGuardar">
                 Asociar Proveedor
@@ -34,9 +37,20 @@
         </div>
     </form>
 </div>
+
 <script>
+    // Asegura que el valor de precio sea un número, y si está vacío, se coloca '0'.
+    document.getElementById('formElegirProveedor').addEventListener('submit', function(event) {
+        var precioInput = document.getElementById('precio');
+        if (precioInput.value.trim() === '') {
+            precioInput.value = '0';
+        }
+        // Reemplaza las comas por puntos en el campo de precio
+        precioInput.value = precioInput.value.replace(',', '.');
+    });
+
+    // Reemplaza las comas con puntos mientras el usuario escribe
     document.getElementById('precio').addEventListener('input', function (event) {
-        // Reemplaza las comas con puntos en el campo de precio
         this.value = this.value.replace(',', '.');
     });
 </script>

@@ -221,21 +221,38 @@ class Proveedores extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new ProductosProveedorModel($db);
+    
+        // Obtener los datos del formulario
         $id_producto = $this->request->getPost('id_producto');
         $id_proveedor = $this->request->getPost('id_proveedor');
         $ref_producto = $this->request->getPost('ref_producto');
         $precio = $this->request->getPost('precio');
-        if (empty($id_producto) || empty($id_proveedor) || empty($ref_producto) || empty($precio)) {
-            return redirect()->back()->with('error', 'Todos los campos son obligatorios.');
+    
+        // Validar que los campos obligatorios no estén vacíos
+        if (empty($id_producto) || empty($id_proveedor) || empty($ref_producto)) {
+            return redirect()->back()->with('error', 'Todos los campos son obligatorios excepto el precio.');
         }
+    
+        // Si el campo precio está vacío, asignamos 0
+        if (empty($precio)) {
+            $precio = 0;
+        } else {
+            // Asegurarse de que el precio sea un número válido
+            $precio = (float) str_replace(',', '.', $precio); // Reemplaza comas por puntos y convierte a float
+        }
+    
+        // Insertar los datos en la base de datos
         $model->insert([
             'id_producto_necesidad' => $id_producto,
             'id_proveedor' => $id_proveedor,
             'ref_producto' => $ref_producto,
             'precio' => $precio,
         ]);
+    
+        // Redirigir con un mensaje de éxito
         return redirect()->to(base_url('comparadorproductos/' . $id_producto))->with('message', 'Proveedor asociado exitosamente.');
     }
+    
     public function elegirProveedor($id_producto)
     {
         $data = usuario_sesion();
