@@ -26,55 +26,55 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
-    <form id="editFichajeForm">
-        <input type="hidden" id="fichajeId" name="id">
-        
-        <!-- Campo Nombre Usuario (ahora es un select) -->
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <select class="form-control" id="nombre" name="nombre">
-                <!-- Las opciones se rellenarán con JavaScript -->
-            </select>
-        </div>
+                <form id="editFichajeForm">
+                    <input type="hidden" id="fichajeId" name="id">
 
-        <div class="mb-3">
-    <label for="entrada" class="form-label">Entrada</label>
-    <input type="datetime-local" class="form-control" id="entrada" name="entrada">
-</div>
+                    <!-- Campo Nombre Usuario (ahora es un select) -->
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <select class="form-control" id="nombre" name="nombre">
+                            <!-- Las opciones se rellenarán con JavaScript -->
+                        </select>
+                    </div>
 
-<div class="mb-3">
-    <label for="salida" class="form-label">Salida</label>
-    <input type="datetime-local" class="form-control" id="salida" name="salida">
-</div>
+                    <div class="mb-3">
+                        <label for="entrada" class="form-label">Entrada</label>
+                        <input type="datetime-local" class="form-control" id="entrada" name="entrada">
+                    </div>
 
-        <div class="mb-3">
-            <label for="incidencia" class="form-label">Incidencia</label>
-            <input type="text" class="form-control" id="incidencia" name="incidencia">
-        </div>
+                    <div class="mb-3">
+                        <label for="salida" class="form-label">Salida</label>
+                        <input type="datetime-local" class="form-control" id="salida" name="salida">
+                    </div>
 
-        <div class="mb-3">
-            <label for="extras" class="form-label">Extras</label>
-            <select class="form-control" id="extras" name="extras">
-                <option value="1">Sí</option>
-                <option value="0">No</option>
-            </select>
-        </div>
-        <button type="button" class="btn btn-primary" id="saveBtn">Guardar cambios</button>
+                    <div class="mb-3">
+                        <label for="incidencia" class="form-label">Incidencia</label>
+                        <input type="text" class="form-control" id="incidencia" name="incidencia">
+                    </div>
 
-    </form>
-</div>
+                    <div class="mb-3">
+                        <label for="extras" class="form-label">Extras</label>
+                        <select class="form-control" id="extras" name="extras">
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="saveBtn">Guardar cambios</button>
+
+                </form>
+            </div>
 
         </div>
     </div>
 </div>
 
-<div id="myGrid" class="ag-theme-alpine" ></div>
+<div id="myGrid" class="ag-theme-alpine"></div>
 <br>
 
 <script>
-let isEditing = false;
-document.addEventListener('DOMContentLoaded', function () {
-    const columnDefs = [{
+    let isEditing = false;
+    document.addEventListener('DOMContentLoaded', function () {
+        const columnDefs = [{
             headerName: "Acciones",
             field: "acciones",
             cellRenderer: params => {
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headerName: "Entrada",
             field: "entrada",
             filter: 'agTextColumnFilter',
-            cellRenderer: function(params) {
+            cellRenderer: function (params) {
                 return formatDateTime(params.value);
             }
         },
@@ -108,10 +108,10 @@ document.addEventListener('DOMContentLoaded', function () {
             headerName: "Salida",
             field: "salida",
             filter: 'agTextColumnFilter',
-            cellRenderer: function(params) {
+            cellRenderer: function (params) {
                 return formatDateTime(params.value);
             }
-        },       
+        },
 
         {
             headerName: "Total",
@@ -126,63 +126,62 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             headerName: "Extras",
             field: "extras",
-            filter: 'agTextColumnFilter', 
-            cellRenderer: function(params) {
+            filter: 'agTextColumnFilter',
+            cellRenderer: function (params) {
                 return params.value === 'Sí' ? 'Sí' : 'No';
             },
             filterParams: {
-                values: ['Sí', 'No'], 
+                values: ['Sí', 'No'],
             }
         }
-    ];
+        ];
 
-    const gridOptions = {
-        columnDefs: columnDefs,
-        defaultColDef: {
-            flex: 1,
-            minWidth: 100,
-            sortable: true,
-            floatingFilter: true,
-            resizable: true
-        },
-        rowData: [],
-        pagination: true,
-        paginationPageSize: 10,
-        domLayout: 'autoHeight',
-        onGridReady: function (params) {
-            const gridApi = params.api;
-            fetchData(gridApi);
-        },
-        rowHeight: 60,
-        localeText: {
-            noRowsToShow: 'No hay registros disponibles.'
-        }
-    };
+        const gridOptions = {
+            columnDefs: columnDefs,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                sortable: true,
+                floatingFilter: true,
+                resizable: true
+            },
+            rowData: [],
+            pagination: true,
+            paginationPageSize: 10,
+            domLayout: 'autoHeight',
+            onGridReady: function (params) {
+                const gridApi = params.api;
+                fetchData(gridApi);
+            },
+            rowHeight: 60,
+            localeText: {
+                noRowsToShow: 'No hay registros disponibles.'
+            }
+        };
 
-    const eGridDiv = document.querySelector('#myGrid');
-    new agGrid.Grid(eGridDiv, gridOptions);
+        const eGridDiv = document.querySelector('#myGrid');
+        new agGrid.Grid(eGridDiv, gridOptions);
 
-    document.getElementById('clear-filters').addEventListener('click', () => {
-        gridOptions.api.setFilterModel(null);
-        gridOptions.api.onFilterChanged();
+        document.getElementById('clear-filters').addEventListener('click', () => {
+            gridOptions.api.setFilterModel(null);
+            gridOptions.api.onFilterChanged();
+        });
     });
-});
+  // Función para formatear fechas al formato de la tabla
 function formatDateTime(dateTimeStr) {
     if (!dateTimeStr) return '';
 
-    const date = new Date(dateTimeStr); // Parse the date
+    const date = new Date(dateTimeStr);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = String(date.getFullYear()).slice(-2); // Last 2 digits of the year
+    const year = String(date.getFullYear()).slice(-2); // Últimos 2 dígitos
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
-    return `${day}/${month}/${year}, ${hours}:${minutes}`; // Formato de tabla
+    return `${day}/${month}/${year}, ${hours}:${minutes}`;
 }
-document.getElementById('entrada').value = formatToDateTimeLocal(fichaje.entrada);
-document.getElementById('salida').value = formatToDateTimeLocal(fichaje.salida);
 
-// Función para convertir las fechas a formato `yyyy-mm-ddThh:mm`
+// Función para convertir fechas al formato 'yyyy-mm-ddThh:mm' para inputs
 function formatToDateTimeLocal(dateTimeStr) {
     if (!dateTimeStr) return '';
 
@@ -193,21 +192,19 @@ function formatToDateTimeLocal(dateTimeStr) {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
-    return `${year}-${month}-${day}T${hours}:${minutes}`; // Formato para datetime-local
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
-
-
+// Función para cargar los datos en la tabla
 function fetchData(gridApi) {
     fetch('<?= base_url("fichajes/getFichajes") ?>')
         .then(response => response.json())
-        .then(data => gridApi.applyTransaction({
-            add: data
-        }))
+        .then(data => gridApi.applyTransaction({ add: data }))
         .catch(error => console.error('Error al cargar los datos:', error));
 }
-function editarFichaje(editarUrl, nombre, id) {
-    // Obtener los datos del registro a editar
+
+// Función para abrir el modal y rellenar los datos
+function editarFichaje(editarUrl) {
     fetch(editarUrl)
         .then(response => response.json())
         .then(data => {
@@ -216,73 +213,83 @@ function editarFichaje(editarUrl, nombre, id) {
                 return;
             }
 
-            const fichaje = data.fichaje; // Fichaje a editar
-            const usuarios = data.usuarios; // Lista de usuarios
+            const { fichaje, usuarios } = data;
 
-            // Rellenar el formulario del modal
+            // Rellenar el formulario con los datos del fichaje
             document.getElementById('fichajeId').value = fichaje.id;
             document.getElementById('entrada').value = formatToDateTimeLocal(fichaje.entrada);
             document.getElementById('salida').value = formatToDateTimeLocal(fichaje.salida);
             document.getElementById('incidencia').value = fichaje.incidencia;
             document.getElementById('extras').value = fichaje.extras === 'Sí' ? '1' : '0';
 
-            // Rellenar el select de nombre con los usuarios
+            // Rellenar el select de usuarios
             const nombreSelect = document.getElementById('nombre');
-            nombreSelect.innerHTML = ''; // Limpiar el select antes de llenarlo
+            nombreSelect.innerHTML = '';
             usuarios.forEach(usuario => {
                 const option = document.createElement('option');
-                option.value = usuario.id; // Asignar el id como valor
+                option.value = usuario.id;
                 option.text = `${usuario.nombre_usuario} ${usuario.apellidos_usuario}`;
                 if (usuario.id === fichaje.id_usuario) {
-                    option.selected = true; // Marcar como seleccionado el usuario actual
+                    option.selected = true;
                 }
                 nombreSelect.appendChild(option);
             });
+
             // Mostrar el modal
             $('#editModal').modal('show');
         })
         .catch(error => console.error('Error al obtener los datos:', error));
 }
-document.getElementById('saveBtn').addEventListener('click', function () {
-    const form = document.getElementById('editFichajeForm');
-    const formData = new FormData(form);  // Recoge todos los datos del formulario
 
-    // Enviar la actualización de los datos al servidor
-    fetch('<?= base_url('fichajes/actualizar') ?>', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            location.reload();  // Recargar la página para ver los cambios
-            $('#editModal').modal('hide');  // Cerrar el modal
-        } else {
-            alert('Error al actualizar');
-        }
-    })
-    .catch(error => console.error('Error al actualizar el fichaje:', error));
+// Esperar a que el DOM esté completamente cargado
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Asignar evento al botón "Guardar cambios"
+    const saveBtn = document.getElementById('saveBtn');
+    if (!saveBtn) {
+        console.error('El botón "Guardar cambios" no se encontró en el DOM.');
+        return;
+    }
+
+    saveBtn.addEventListener('click', function () {
+
+        const form = document.getElementById('editFichajeForm');
+        const formData = new FormData(form);
+
+        // Enviar datos al servidor
+        fetch('<?= base_url("fichajes/actualizar") ?>', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#editModal').modal('hide');
+                    location.reload();
+                } else {
+                    console.error('Error en la actualización:', data);
+                    alert(data.message || 'Error al actualizar el fichaje.');
+                }
+            })
+            .catch(error => console.error('Error durante el fetch:', error));
+    });
 });
 
-
+// Función para eliminar un fichaje
 function eliminarFamilia(eliminarUrl) {
-    if (confirm("¿Estás seguro de que quieres eliminar este fichaje?")) {
-        fetch(eliminarUrl, {
-            method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Error al eliminar');
-            }
-        })
-        .catch(error => console.error('Error al eliminar el fichaje:', error));
+    if (confirm('¿Estás seguro de que quieres eliminar este fichaje?')) {
+        fetch(eliminarUrl, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error al eliminar el fichaje.');
+                }
+            })
+            .catch(error => console.error('Error al eliminar el fichaje:', error));
     }
 }
-
-
 
 </script>
 <?= $this->endSection() ?>
