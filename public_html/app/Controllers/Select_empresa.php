@@ -2,7 +2,10 @@
 
 namespace App\Controllers;
 
-class Select_empresa extends CrudAcceso
+use App\Models\DbConnections_Model;
+use CodeIgniter\Files\File;
+
+class Select_empresa extends BaseController
 {
     public function index()
     {
@@ -10,72 +13,79 @@ class Select_empresa extends CrudAcceso
         $nivel = control_login();
         $data = datos_user();
 
+        // Verificar el nivel de acceso
         if ($nivel < '9') {
-            header('Location: ' . base_url());
-            exit();
+            return redirect()->to(base_url());
         } else {
-            $crud = $this->_getGroceryCrudEnterprise();
+            // Acceso directo a la base de datos para obtener la información
+            $db = \Config\Database::connect();
+            $builder = $db->table('dbconnections');
+            $query = $builder->get();
+            $data['empresas'] = $query->getResult();
 
-            $crud->setSubject('Empresa', 'Selecciona la Empresa');
-            $crud->setTable('dbconnections');
-            $crud->columns(['id', 'nombre_empresa']);
-            $crud->unsetDelete();
-            $crud->unsetSettings();
-            $crud->unsetPrint();
-            $crud->unsetExport();
-            $crud->unsetExportExcel();
-            $crud->unsetFilters();
-            $crud->fieldType('id', 'hidden');
-            $crud->unsetSearchColumns(['id', 'nombre_empresa']);
-            $crud->setActionButton('Acceder', '', function ($row) {
-                return  base_url('/Acceso/') . $row->id; 
-            }, false);
+            return view('selectempresa', $data);
+        }
+    }
 
-            $globalUploadPath = 'public/assets/uploads/files/';
-            $crud->addFields(['id', 'nombre_empresa', 'db_name', 'db_user', 'db_password']);
-            $crud->editFields(['id', 'nombre_empresa', 'db_name', 'db_user', 'db_password', 'NIF','logo_empresa', 'favicon', 'logo_fichajes']);
+    // Método para obtener los datos de la empresa para editar
+    public function get_empresa($id)
+    {
+        $empresaModel = new DbConnections_Model();
+        $empresa = $empresaModel->find($id);
+        return $this->response->setJSON($empresa);
+    }
 
-            $crud->setFieldUpload('logo_empresa', $globalUploadPath, $globalUploadPath);
-            $crud->setFieldUpload('logo_fichajes', $globalUploadPath, $globalUploadPath);
-            $crud->setFieldUpload('favicon', $globalUploadPath, $globalUploadPath);
+    // Método para editar la empresa
+    public function editar()
+    {
+        if ($this->request->getMethod() === 'post') {
+            $empresaModel = new DbConnections_Model();
+            $id = $this->request->getPost('id_empresa');
+            
+            // Cargar imágenes si están presentes
+            $logo_empresa = $this->request->getFile('logo_empresa');
+            $favicon = $this->request->getFile('favicon');
+            $logo_fichajes = $this->request->getFile('logo_fichajes');
 
-            $crud->displayAs('nombre_empresa', 'Empresa');
-            $crud->displayAs('id', ' ');
-
-            $crud->callbackEditField('id', function ($fieldValue, $primaryKeyValue, $rowData) {
-                $_SESSION['empresa_actual'] = $fieldValue;
-                return '<input name="id" value="' . $fieldValue . '" type="hidden"/>';
-            });
-
-            $crud->callbackBeforeUpload(function ($uploadData) {
-                $empresa = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_SESSION['empresa_actual'] ?? '');
-                $Path = $uploadData->uploadPath;
-
-                $NewPath = $Path . $empresa . "/logos/";
-                if (!is_dir($NewPath)) {
-                    mkdir($NewPath, 0755, true);
-                }
-                $uploadData->uploadPath = $NewPath;
-                return $uploadData;
-            });
-
-            $crud->callbackAfterUpload(function ($result) {
-                $fileName = $result->uploadResult;
-                $empresa = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_SESSION['empresa_actual'] ?? '');
-                $Newname = $empresa . "/logos/" . $fileName;
-                $result->uploadResult = $Newname;
-                return $result;
-            });
-
-            $output = $crud->render();
-
-            if ($output->isJSONResponse) {
-                header('Content-Type: application/json; charset=utf-8');
-                echo $output->output;
-                exit();
+            // Validar y mover las imágenes a la carpeta correspondiente
+            if ($logo_empresa && $logo_empresa->isValid()) {
+                $logo_empresa->move("public/assets/uploads/files/{$id}/logos");
+                $logo_empresa = $logo_empresa->getName();  // Obtener el nombre del archivo
+            } else {
+                $logo_empresa = $this->request->getPost('current_logo_empresa');
             }
 
-            echo view('selectempresa', (array)$output);
+            if ($favicon && $favicon->isValid()) {
+                $favicon->move("public/assets/uploads/files/{$id}/logos");
+                $favicon = $favicon->getName();  // Obtener el nombre del archivo
+            } else {
+                $favicon = $this->request->getPost('current_favicon');
+            }
+
+            if ($logo_fichajes && $logo_fichajes->isValid()) {
+                $logo_fichajes->move("public/assets/uploads/files/{$id}/logos");
+                $logo_fichajes = $logo_fichajes->getName();  // Obtener el nombre del archivo
+            } else {
+                $logo_fichajes = $this->request->getPost('current_logo_fichajes');
+            }
+
+            // Actualizar los datos
+            $data = [
+                'id' => $id,
+                'nombre_empresa' => $this->request->getPost('nombre_empresa'),
+                'db_name' => $this->request->getPost('db_name'),
+                'db_user' => $this->request->getPost('db_user'),
+                'db_password' => $this->request->getPost('db_password'),
+                'NIF' => $this->request->getPost('NIF'),
+                'logo_empresa' => $logo_empresa,
+                'favicon' => $favicon,
+                'logo_fichajes' => $logo_fichajes,
+            ];
+
+            $empresaModel->update($id, $data);
+
+            // Redirigir a la vista principal después de la edición
+            return redirect()->to(base_url('select_empresa'));
         }
     }
 }
