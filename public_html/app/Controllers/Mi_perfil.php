@@ -127,7 +127,9 @@ class Mi_perfil extends BaseController
     }
 
     public function edit($id = null)
-    {   
+    {  
+
+        
         if ($id === null) {
             return redirect()->to('/');
         }
@@ -154,6 +156,9 @@ class Mi_perfil extends BaseController
             $imageNameWithoutPrefix = substr($userClient->userfoto, $slashPosition + 1);
             $user->imagePath = $specificPath . $imageNameWithoutPrefix;
         }
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Mi perfil');
+        $data['amiga'] = $this->getBreadcrumbs();
 
         $data['user'] = $user;
         return view('edit_mi_perfil', $data);
