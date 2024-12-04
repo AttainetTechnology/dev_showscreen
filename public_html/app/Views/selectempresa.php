@@ -73,10 +73,8 @@
                 field: "acciones",
                 cellRenderer: params => {
                     return `
-                        <button class="btn botonTabla btnEditarTabla" onclick="editarEmpresa(${params.data.id})" title="Editar">
-                            Editar
-                        </button>
-                        <button onclick="accederEmpresa(${params.data.id})" class="btn botonTabla">Acceder</button>
+
+                        <button onclick="accederEmpresa(${params.data.id})" class="btn botonTabla btnMover">Acceder</button>
                     `;
                 },
                 filter: false,
