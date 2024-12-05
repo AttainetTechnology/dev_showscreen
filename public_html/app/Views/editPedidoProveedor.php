@@ -210,7 +210,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         const estadosTexto = <?= json_encode($estados) ?>;
         const lineasPedido = <?= json_encode($lineasPedido) ?> || [];
-        console.log("Datos de lineasPedido:", lineasPedido);
 
         const columnDefs = [{
             headerName: "Acciones",
@@ -235,6 +234,13 @@
             filter: "agTextColumnFilter",
             floatingFilter: true
         },
+        {
+        headerName: "Nombre del Producto",
+        field: "nombre_producto", // Proporcionado desde el backend
+        flex: 2,
+        filter: "agTextColumnFilter",
+        floatingFilter: true,
+    },
         {
             headerName: "Referencia Producto",
             field: "ref_producto",
@@ -278,6 +284,7 @@
             floatingFilter: true,
             valueFormatter: params => `${params.value !== null ? params.value : 0} €`
         },
+
         ];
 
         function renderActions(params) {

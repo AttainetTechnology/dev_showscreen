@@ -18,6 +18,11 @@
             <?php endforeach; ?>
         </select>
     </div>
+    
+    <div class="form-group">
+        <label for="observaciones">Modelo</label>
+        <textarea name="observaciones" class="form-control"><?= isset($lineaPedido['observaciones']) ? $lineaPedido['observaciones'] : '' ?></textarea>
+    </div>
     <div class="form-group">
         <label for="n_piezas">Cantidad (Uds.)</label>
         <input type="number" name="n_piezas" class="form-control"
@@ -31,11 +36,6 @@
     </div>
 
     <div class="form-group">
-        <label for="unidad_precio">Unidad de Precio</label>
-        <input type="text" name="unidad_precio" id="unidad_precio" class="form-control"
-            value="<?= isset($lineaPedido['unidad_precio']) ? $lineaPedido['unidad_precio'] : '' ?>">
-    </div>
-    <div class="form-group">
         <label for="estado">Estado</label>
         <select name="estado" class="form-control" required>
             <option value="0" <?= isset($lineaPedido['estado']) && $lineaPedido['estado'] == 0 ? 'selected' : '' ?>>Pendiente de realizar</option>
@@ -43,10 +43,5 @@
             <option value="2" <?= isset($lineaPedido['estado']) && $lineaPedido['estado'] == 2 ? 'selected' : '' ?>>Recibido</option>
             <option value="6" <?= isset($lineaPedido['estado']) && $lineaPedido['estado'] == 6 ? 'selected' : '' ?>>Anulado</option>
         </select>
-    </div>
-
-    <div class="form-group">
-        <label for="observaciones">Observaciones</label>
-        <textarea name="observaciones" class="form-control"><?= isset($lineaPedido['observaciones']) ? $lineaPedido['observaciones'] : '' ?></textarea>
     </div>
 </form>
