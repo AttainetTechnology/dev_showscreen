@@ -1,25 +1,49 @@
-.estado1, .ag-row.estado1 {
+.estado1{
     background-color: #ff9933 !important;
 }
 
-.estado2, .ag-row.estado2 {
+.estado2{
     background-color: #fff3cd !important;
 }
 
-.estado3, .ag-row.estado3 {
+.estado3{
     background-color: #fcebfa !important;
 }
 
-.estado4, .ag-row.estado4 {
+.estado4 {
     background-color: #dff0d8 !important;
 }
 
-.estado5, .ag-row.estado5 {
+.estado5{
     background-color: #50b752b0 !important;
     color: #ffffff !important;
 }
 
-.estado6, .ag-row.estado6 {
+.estado6 {
+    background-color: #ff6c6ccc !important;
+    color: #ffffff !important;
+}
+ .ag-row.estado1 {
+    background-color: #ff9933 !important;
+}
+
+ .ag-row.estado2 {
+    background-color: #fff3cd !important;
+}
+
+ .ag-row.estado3 {
+    background-color: #fcebfa !important;
+}
+
+ .ag-row.estado4 {
+    background-color: #dff0d8 !important;
+}
+.ag-row.estado5 {
+    background-color: #50b752b0 !important;
+    color: #ffffff !important;
+}
+
+.ag-row.estado6 {
     background-color: #ff6c6ccc !important;
     color: #ffffff !important;
 }

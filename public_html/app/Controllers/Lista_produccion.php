@@ -98,31 +98,31 @@ class Lista_produccion extends BaseControllerGC
         switch ($estado) {
             case '0':
                 $nombre_estado = "Pendiente de material";
-                $estado_clase = "estado1"; // Clase para el estado 1
+                $estado_clase = "estado0"; // Clase para el estado 1
                 break;
             case '1':
                 $nombre_estado = "Falta material";
-                $estado_clase = "estado2"; // Clase para el estado 2
+                $estado_clase = "estado1"; // Clase para el estado 2
                 break;
             case '2':
                 $nombre_estado = "Material recibido";
-                $estado_clase = "estado3"; // Clase para el estado 3
+                $estado_clase = "estado2"; // Clase para el estado 3
                 break;
             case '3':
                 $nombre_estado = "En máquinas";
-                $estado_clase = "estado4"; // Clase para el estado 4
+                $estado_clase = "estado3"; // Clase para el estado 4
                 break;
             case '4':
                 $nombre_estado = "Terminado";
-                $estado_clase = "estado5"; // Clase para el estado 5
+                $estado_clase = "estado4"; // Clase para el estado 5
                 break;
             case '5':
                 $nombre_estado = "Entregado";
-                $estado_clase = "estado6"; // Clase para el estado 6
+                $estado_clase = "estado5"; // Clase para el estado 6
                 break;
             case '6':
                 $nombre_estado = "Anulado";
-                $estado_clase = "estado7"; // Clase para el estado 7 (si lo necesitas)
+                $estado_clase = "estado6"; // Clase para el estado 7 (si lo necesitas)
                 break;
             default:
                 $nombre_estado = "Desconocido";

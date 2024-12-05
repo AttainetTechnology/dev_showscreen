@@ -213,5 +213,25 @@ class Lineaspedido_model extends Model
 			return redirect()->to(base_url('/error_page'))->with('error', 'Valor inválido recibido.');
 		}
 	}
+    
+    public function anular_lineas ($id_pedido)
+    {
+                    //Si se marca el pedido como anulado se anulan todas las lineas
+                    $data = array('estado' => '6');
+
+                    helper('controlacceso');
+                    $data2= usuario_sesion(); 
+                    $db = db_connect($data2['new_db']);
+                    $builder = $db->table('linea_pedidos');
+                    $builder->set($data);
+                    $builder->where('id_pedido', $id_pedido);
+                    $builder->update();
+
+                    $builder = $db->table('pedidos');
+                    $builder->set($data);
+                    $builder->where('id_pedido', $id_pedido);
+                    return $builder->update();
+    
+    }
 
 }
