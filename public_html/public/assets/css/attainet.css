@@ -14,11 +14,11 @@ div#report-success,
 
 
 a {
-	color: #006192 !Important
+	color: #006192 !important;
 }
 
 .gc-container .btn-outline-dark:hover {
-	color: #fff !Important;
+	color: #fff !important;
 }
 
 #visor {
@@ -1014,4 +1014,28 @@ input[type=number] {
 	margin-bottom: -20px;
 }
 
+.enCola{
+	background-color: #D8EDF7 !important;
+}
+.enMaquina{
+	background-color: #FDF0AB !important;
 
+}
+.enTerminados{
+	background-color: #DFEFD8 !important;
+}
+.enEntregados{
+	background-color: #69C869 !important;
+}
+.enAnulados{
+	background-color: #EBAAAA !important;
+}
+.enAnulados svg{
+    margin: 12px;
+	margin-top:16px;
+}
+
+.enEntregados svg{
+	color:#006192 !important;
+	margin-top: -10px !important;
+}
