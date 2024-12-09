@@ -1,0 +1,1899 @@
+[33mcommit 80d9681b8e6825d18cb837db602c8c1941c93d0c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Oct 3 08:23:36 2024 +0200
+
+    Muestra tabla con libreria
+
+[33mcommit 439f34c008474ffe49fb2948dd832b34262cc3e5[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Oct 1 14:03:52 2024 +0200
+
+    Intento passar rutas sin GC
+
+[33mcommit 69ed18d994c1dd9162755d320bbe3eb4bdfdfa83[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Oct 1 13:44:47 2024 +0200
+
+    Linea pedido con estilos
+
+[33mcommit e3056eb8e8f9cfec73a2cab10c10a0d7819789b5[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Oct 1 10:00:06 2024 +0200
+
+    Maria: muestraPedido css perfecto
+
+[33mcommit 1a6bf7b16549c8f075bc53a5142e065114abe6a9[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 30 14:03:55 2024 +0200
+
+    Maria: estilos liena pedido casi termiandos
+
+[33mcommit 1dcce8dc3f8477d7c3e862cf8221588d88593c2f[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 30 13:27:09 2024 +0200
+
+    Maria: add estilos a mostrarpedido
+
+[33mcommit 4429565f293b3ad32b463a6b4cde2f590704c84b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 30 09:41:33 2024 +0200
+
+    Maria: rutas trasnporte funciona
+
+[33mcommit d9357ea1b4e65efe7b5133525bb5e515fb4d90c4[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 30 08:36:01 2024 +0200
+
+    Boton addLiensPedido funciona bien
+
+[33mcommit d8c24eb0f71a8506ada5a8948449e2a92e0bcf76[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 30 08:14:35 2024 +0200
+
+    Abre el modal addPedido
+
+[33mcommit d1435563e2bf286f369416b09e1c2b4b6457f058[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 27 13:49:37 2024 +0200
+
+    Muestro users
+
+[33mcommit 485ba0f19db534176448dd8814ef05d6f7ec79bc[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 26 14:05:57 2024 +0200
+
+    Maria: añadimos colores a los pedidos
+
+[33mcommit 1393f214f8e17d0f3986a4966f1f4acce5bf65ad[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 26 13:09:18 2024 +0200
+
+    Mareia: pedidos con libreria filtra bien estados
+
+[33mcommit 39069d6af26fedc10bfad0b8d622066bd717d3e5[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 26 09:03:10 2024 +0200
+
+    Maria: mejoro proveedores
+
+[33mcommit 2eeb6df1ddf3d58a1d1edbb50a56e6cbd8616166[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Sep 25 14:02:51 2024 +0200
+
+    Maria: libreria nueva pedidos
+
+[33mcommit c819e8216876c8ac9de1a2153ccbf1cb0b1dfa3c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Sep 25 11:01:34 2024 +0200
+
+    Maria: biblioteca nueva pedidos
+
+[33mcommit e1e5637090fdb0ed058f716abbb37fc4d686086e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Sep 25 08:33:47 2024 +0200
+
+    Maria: pedidos carga rapido
+
+[33mcommit 2d905baf31a9cc056ea4a1a2931b596d7a19bdcc[m
+Author: espadan360 <espadan360@gmail.com>
+Date:   Tue Sep 24 16:50:08 2024 +0200
+
+    Maria: funcionLineaPedido
+
+[33mcommit 10907cb3f68df651979b60314c0471d938f259ec[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 24 14:06:12 2024 +0200
+
+    Maria: muestro pedidos a traves de bilbioteca sencills
+
+[33mcommit e2863b2839ded8560a83c8e9d27a43dcba15d6e2[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 24 11:57:35 2024 +0200
+
+    Maria: add col medFInal y medInicial en produccion
+
+[33mcommit 6ad5f2132064425bbf4814f8137562adf197cc65[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 24 11:54:09 2024 +0200
+
+    Maria: add col medFInal y medInicial en produccion
+
+[33mcommit a32698e0182f825d2f55146a14902513f7cae496[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 24 11:33:26 2024 +0200
+
+    Maria: pedidos cambia tabla procesos_pedido
+
+[33mcommit ae027fffe1ebace07ce35776e2217bfc8ae5c634[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 24 11:18:24 2024 +0200
+
+    Organizador funciona
+
+[33mcommit c475e2bf9afa38351f7fb097f3c28bdd066abb35[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 23 13:58:16 2024 +0200
+
+    Maria: linea de pedios se elimina
+
+[33mcommit 4016abbf425369318282eaf6a329d0214f74c708[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 23 13:51:21 2024 +0200
+
+    Maria: boton parte funciona
+
+[33mcommit 95bfa1f19affd449a61583daae527ad1ccc88839[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 23 13:19:58 2024 +0200
+
+    Maria: cambia estados pedido
+
+[33mcommit c08530d4a381ff808f175a58b31d69782c26f7ae[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 23 12:39:57 2024 +0200
+
+    Maria: calcula precioTotal pedido
+
+[33mcommit ab07b1b53c6851bc3ab04da201899202525310bf[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 23 11:55:00 2024 +0200
+
+    Maria: pedidos mejora
+
+[33mcommit 8d63263a228fb3452c6b6ba64886fbf2195d38ef[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 23 09:55:28 2024 +0200
+
+    Maria: añadir lineaPedido
+
+[33mcommit 0168846ddd3741a51dc6d695341c0392bc100aeb[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 23 08:11:13 2024 +0200
+
+    Maria: ordeno tabla procesosPedidos imprimir
+
+[33mcommit e2f1c16f5f9a886db0d7ea737297dc88fddd5153[m
+Author: espadan360 <espadan360@gmail.com>
+Date:   Fri Sep 20 12:45:03 2024 +0200
+
+    Maria: soluciono error imprimir pedidos largos
+
+[33mcommit 94d868c31f0d6e98b96962716b5c844a7e950016[m
+Author: espadan360 <espadan360@gmail.com>
+Date:   Thu Sep 19 16:27:38 2024 +0200
+
+    Maria: add view AddLineaPedido
+
+[33mcommit a8ca92c17c3b916a10497f5b6f38061286947210[m
+Author: espadan360 <espadan360@gmail.com>
+Date:   Thu Sep 19 11:37:47 2024 +0200
+
+    Maria: boton guardar pedido redirige a form edit pedido
+
+[33mcommit 9385cee8248e27a3a53d0d710a3171c846182019[m
+Author: espadan360 <espadan360@gmail.com>
+Date:   Thu Sep 19 11:32:59 2024 +0200
+
+    Maria: muestra lineaPedido y modificarla
+
+[33mcommit 866120eccd345f2aa0cfdf50261c9147cfe77718[m
+Author: espadan360 <espadan360@gmail.com>
+Date:   Thu Sep 19 10:02:55 2024 +0200
+
+    Maria: pedidos funciona bien
+
+[33mcommit 5f3bda712f2026b743ee27ea2b068d97c9a83499[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 13:50:58 2024 +0200
+
+    Maria: modifico css fichaje
+
+[33mcommit 868880b774319c038ebb2b3207387f306d18805e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 13:31:00 2024 +0200
+
+    Maria: pedidos avanzado
+
+[33mcommit 8c668089a546dec3a5f539c060e857399351aa12[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 12:16:52 2024 +0200
+
+    Maria: format document parte_complejo
+
+[33mcommit 88cef1db6c89d43efe44877f7ede680368ed9860[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 12:11:03 2024 +0200
+
+    Maria: muestro img partes
+
+[33mcommit 97548a0a1d986287855f73185025ed86f1e07b24[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 11:59:28 2024 +0200
+
+    Maria: llamo actualizarOrden al principio del script
+
+[33mcommit 88a4610baedd3c02bef1229de5a85a466949125e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 11:42:00 2024 +0200
+
+    Maria: modifico actualizarTotalPedido
+
+[33mcommit d2e87eda42b7a615dae3eea0da1d41e304292f7c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 09:46:54 2024 +0200
+
+    Maria add editPedido
+
+[33mcommit 7a6bdd20c4a7721fac8b9387f5af4d73cf039414[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 08:56:54 2024 +0200
+
+    Maria: no dejo add puntos en nombre proceso
+
+[33mcommit 9a8548e9c224bf22af14b1691eaffc44c2be7031[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 17 08:54:28 2024 +0200
+
+    Maria: no dejo add puntos en nombre proceso
+
+[33mcommit bbdb8fc002f75560684d70e742e3c15fce8d71a4[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Mon Sep 16 17:01:07 2024 +0200
+
+    Solucion conflicto nombre procesos
+
+[33mcommit caa8eb5cb35943f879359f1816f5e0bc10151a6b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 16 14:09:19 2024 +0200
+
+    Maria: soluciono estado ruta desde pedidos
+
+[33mcommit 7543bbb2ae814b1f31b2600fc928f477f0f26945[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 16 12:31:39 2024 +0200
+
+    Modifico archivo recarga_hora
+
+[33mcommit cb64918321d0451db6f005a6cceca09a0dfd3b0b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 16 11:58:02 2024 +0200
+
+    Maria: boton add pedido funciona desde menu
+
+[33mcommit d4d7c0d85ad9e247f2432ca4af8cb9bb487ea8a2[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 16 10:13:21 2024 +0200
+
+    Mejoro estilos de pedido y soluciono filtro de por Estado
+
+[33mcommit 96293f2d954389c572fa77361d9d2a05c5d63767[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 16 09:37:23 2024 +0200
+
+    Añado en fichar que mas de 8horas sea a partir de las 10 horas
+
+[33mcommit 902522387024b4eba53bd27d8f1f8d3d933c2c89[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 16 09:29:20 2024 +0200
+
+    Maria: mejoro parte hoja 2
+
+[33mcommit 5eaa9f2c7d4a91d29f1f10c705dde3f5e6686c9c[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Mon Sep 16 07:37:47 2024 +0200
+
+    Soluciono problema procesos_productos
+
+[33mcommit 6aa99f54e1eb643084c1cf5c344087a27bccec63[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 13 13:44:21 2024 +0200
+
+    Maria: modificaciones organizador
+
+[33mcommit 680bca0c81a9bfea8ac0e04b7681e6db6eb5a4f9[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 13 13:05:22 2024 +0200
+
+    Maria: add nuevo pedido
+
+[33mcommit b5a82e9ba64df2743b9f39c4bfec3a247b130b0c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 13 11:34:08 2024 +0200
+
+    Maria: muestro tabla pedidos nuevo
+
+[33mcommit cf17f1bbc3824ea539d8fa4ae75d70358eda2fc0[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 13 11:17:26 2024 +0200
+
+    Maria: modifico pedidos2
+
+[33mcommit 534d866409c80312b8d3969388b261b969dbb1c8[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 13 10:24:04 2024 +0200
+
+    Maria: dejo añadir parentesis en nombres de procesos
+
+[33mcommit a588b9bbdee21d48dfbd091e7cb8a5f7453a4dd6[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 13 09:16:36 2024 +0200
+
+    Maria: add lineapedido en columna
+
+[33mcommit 89d8b1b803eeb8238dab2b802195cfcc162e2a4b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 13 08:56:07 2024 +0200
+
+    Maria: boton ver procesos en editProcesos
+
+[33mcommit 39c17b70a394fe7f702c67adb3def50412e8769b[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Sep 12 14:12:39 2024 +0200
+
+    Maria: lista prod add base
+
+[33mcommit b50b8d4c7af82c6074d082f53b36cbabe6642dfb[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Sep 12 12:51:19 2024 +0200
+
+    Maria: elimino boton eliminar nivel_acceso diferente 9
+
+[33mcommit 31f64fa8d11977f9df32f6990484e9156ef9d1ea[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Sep 12 12:02:14 2024 +0200
+
+    Cambia estado procesos_pedido
+
+[33mcommit 5b1c1af3dcf413b8d103ffcc190d13c754ea05bb[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Sep 12 10:34:25 2024 +0200
+
+    Maria: unidades no required en linea pedido
+
+[33mcommit d93d4cd2de16aedb66569cbaf07c751011daf536[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Sep 12 10:15:40 2024 +0200
+
+    Maria: soluciono cambio de estado desde pedidos
+
+[33mcommit 92a710f80663acc1734b4296ac1548bf8fb418ee[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Sep 12 08:58:16 2024 +0200
+
+    Columna todos procesos vacia sin filtros
+
+[33mcommit a4ac7ced6cc3cb04d1ab0731d59368cfebe7408c[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 11 17:38:54 2024 +0200
+
+    Maria: procesos ordenan despues de acciones
+
+[33mcommit 6a30275dfbfc9c566d9a5767d8304006c0a7acb3[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 11 16:32:55 2024 +0200
+
+    Organizador sin logs
+
+[33mcommit 5735aced4efc7650423501e2218082c4ebd648d7[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 11 15:46:25 2024 +0200
+
+    Maria: solucion guardado procesos_view
+
+[33mcommit d8b036fc3e4cf46f1bc9ae6e239d2912b4165896[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 11 15:24:30 2024 +0200
+
+    Maria: añadir valores por defecto rutas_pedido
+
+[33mcommit 5833539db4d046aa49297ef8d1abad978d1320c9[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 11 13:32:39 2024 +0200
+
+    Maria: form add rutas valores predeterminados
+
+[33mcommit b95f6016abbb309fd9c3fec05dc3a07d1f5c0a4c[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 11 13:02:22 2024 +0200
+
+    Maria: impresion de partes nos e corta
+
+[33mcommit 2e93129c161ddca924717404624ab23fed0aac59[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 11 12:06:54 2024 +0200
+
+    Maria: impresion de partes nos e corta
+
+[33mcommit 075e8e7e6387fa984321a4e03058b8719d20468e[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Sep 10 17:56:14 2024 +0200
+
+    Muestro logo en partes
+
+[33mcommit 34718397fea9ac351c39640b8a1d90a86e5225a8[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Sep 10 16:52:09 2024 +0200
+
+    Maria: modifico boton cerrar
+
+[33mcommit 1731fbdc44f661230b3f2c4a58770cbdca997c6e[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Sep 10 15:53:31 2024 +0200
+
+    Maria: elimino save change de empresas_contactos
+
+[33mcommit 55221fc89e2abddefed961ccca0eb1e18deb9d1b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 10 12:39:34 2024 +0200
+
+    Maria: mejoro procesosproductos
+
+[33mcommit d2c9a97782998ce8514ab6671059cf94699c73f3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 10 10:33:03 2024 +0200
+
+    Maria: elimino debug fichar
+
+[33mcommit d9802e50da68aae9d57d8380b9d12a7383cfa5a3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 10 10:09:51 2024 +0200
+
+    Maria: modal procesos productos
+
+[33mcommit 407a7fa0ada92be23c5e1da723a562cdc731106d[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 6 09:05:40 2024 +0200
+
+    Maria: añadir alert para seleccionar mejor oferta de producto
+
+[33mcommit 860a6f0038df94ac6d2012385ea32fc72ae7c828[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 6 08:49:41 2024 +0200
+
+    Maria: modifico colores procesos
+
+[33mcommit 34146f32b528d080b5d865cd1c4c61e182e2e4b6[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Sep 6 08:17:34 2024 +0200
+
+    Maria: Añado nombre titulo en restricciones de proceso y filtro de busqueda
+
+[33mcommit 5918369a4f07457f76992c40cb440f1859f8fd3f[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Sep 5 17:10:39 2024 +0200
+
+    Maria: modal productos_procesos no cierra tras guardar
+
+[33mcommit 04f0671702f280a001b20f1c02fbd7c0a7da9962[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 5 14:01:52 2024 +0200
+
+    Maria: estilo organizador mejorado
+
+[33mcommit 8469fb46bd6094e3e38b536671f07cfe5a5294b3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 5 12:10:10 2024 +0200
+
+    Maria: elimino bugs
+
+[33mcommit e0d40aa1ea8d2b244f90bcadb8a7275a66ce5e1b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 5 11:38:44 2024 +0200
+
+    Maria: elimino log de pedidos2 y PedidosProveedor
+
+[33mcommit 9231003f75ddd0dc5ba642275b55c260059ef0d7[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 5 11:32:25 2024 +0200
+
+    Maria: añado logs apartado proveedores
+
+[33mcommit e2e5718201fb23230375460d2cc80ed183548d8a[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 5 10:10:02 2024 +0200
+
+    Maria: soluciono bug add productos_proveedor
+
+[33mcommit 5fd8135bd6856382211e789abcbc3cfde3e968e8[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 5 09:49:33 2024 +0200
+
+    Maria: Añade precio linea pedido solo
+
+[33mcommit 1e233f10903178c7744967126711a0ed674a6ad0[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Sep 5 08:47:32 2024 +0200
+
+    Maria: funciona boton anular
+
+[33mcommit 2ba90e33d2e1e06e17abb740bfc30d5bb51361d4[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 4 17:10:16 2024 +0200
+
+    Maria: Elimino botones y funciones inecesarias
+
+[33mcommit c434e3701c0f794f348eb346b1bbc627f0346854[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Sep 4 16:13:13 2024 +0200
+
+    Maria: modifico el parte de proveedores
+
+[33mcommit 6beed685ffbe84977f0a5913633abdf2a7f15466[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Sep 4 13:22:37 2024 +0200
+
+    Maria: añado modal new pedido
+
+[33mcommit c0dbf8155e35acdbaba9567339b1532b0ff499b6[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Sep 4 13:10:44 2024 +0200
+
+    Maria: funciona pedidos proveedor
+
+[33mcommit c2f89a542c5026b739620c76b5a3fe4acc74b47c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Sep 4 08:35:09 2024 +0200
+
+    Maria: filtros para selectProductos
+
+[33mcommit d828b2d1e5d40187026e927343f9eb5a9c57a97e[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Sep 3 17:31:31 2024 +0200
+
+    Maria: Edito estilos modifico funcion compatadorProductos
+
+[33mcommit 1736027a0b4d556be4264bb453b06ba577a059f7[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 3 13:56:05 2024 +0200
+
+    Maria: asociamos productos de venta a productos de compra
+
+[33mcommit 52609412441eb1eef31f1f34857f15f897fee004[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 3 13:10:12 2024 +0200
+
+    Maria: Precio de productos funciona
+
+[33mcommit 589e789b8cb9303c10bd862f8cb05b1f42b18c95[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 3 12:27:39 2024 +0200
+
+    Maria: Familia funciona y filtra productos
+
+[33mcommit 01d30144a429660b159b28a12cc52ff00c2257b5[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 3 12:27:01 2024 +0200
+
+    Maria: Familia funciona y filtra productos
+
+[33mcommit 0d03ad124772a453e53be811a789f7b7c859dd84[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 3 11:23:06 2024 +0200
+
+    Maria: antes de add familia
+
+[33mcommit cbb3629e297c57368e2d84766f7bdb31b9ece1d4[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 3 09:48:33 2024 +0200
+
+    Maria: Asocia productos a proveedores
+
+[33mcommit e7372e431c9f09a92022c895b0932f37d8a11f1e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Sep 3 08:44:28 2024 +0200
+
+    Maria: muestra lista productos asociados a proveedores
+
+[33mcommit fa977d9a07cc9a439405c46149c5b0e4624f7f69[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 2 14:03:04 2024 +0200
+
+    Maria: se ve formulario productos
+
+[33mcommit 3895615a7a31f3fc58f1c5f245651b6e86cad681[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Sep 2 13:16:34 2024 +0200
+
+    Maria: add proveedores y productos_necesidad
+
+[33mcommit 1bd6a1e78ec534b09bcfca76be3f7355e04e5430[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 13:10:06 2024 +0200
+
+    Maria: css organizador
+
+[33mcommit 70d84c723f7fc400ae2e527531876c9ba948b092[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 12:46:57 2024 +0200
+
+    Maria: Filtro y orden en procesos_productos
+
+[33mcommit 464a49b4a123358ae05062d8c38533ba07a8452a[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 12:22:25 2024 +0200
+
+    Maria: css organizador
+
+[33mcommit b9924dbbb2fa20e8bb618ba75d1f2f28d7622650[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 11:22:00 2024 +0200
+
+    Maria: Cambio Rafa añadido
+
+[33mcommit 30662459beeaa13e5325a58cbbf07f14d9f9d135[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 10:42:23 2024 +0200
+
+    Maria: Añado base de BBDD
+
+[33mcommit 264973875a623cd4cc4e7c60cc31f1fc65d24fa1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 09:57:44 2024 +0200
+
+    Maria: añadir Logs Procesos
+
+[33mcommit 5556f6ab76634754c664c80a15aa26c019f86e49[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 09:47:32 2024 +0200
+
+    Maria: Estilo log
+
+[33mcommit 35691aa81a3ab322507b55f8d7433e9d60f341db[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 09:46:42 2024 +0200
+
+    Maria: Procesos desactivados se eliminan lista procesos-productos
+
+[33mcommit 4387f405bcc7d2712d3d6eff0948c4c38a37170c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 30 08:36:58 2024 +0200
+
+    Maria: Elimino zip
+
+[33mcommit 56b5eafa89ba3bc49e7cb03b7c6fda107fef1c47[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Aug 29 16:57:02 2024 +0200
+
+    Maria: Procesos Activos e Inactivos funciona
+
+[33mcommit 78329c4cdc847ef860e0571449090d8ece00343c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 14:00:20 2024 +0200
+
+    Maria: Elimino procesos de lista de productos estado 0
+
+[33mcommit b589f6a6cecc7a92c18af6c73888b48e62064658[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 13:55:03 2024 +0200
+
+    Maria: procesos inactivos no aparecen en ninguna lista
+
+[33mcommit a4f9d9c3954add8c39115f778579ff02718ebe61[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 13:30:02 2024 +0200
+
+    Maria: procesos inactivos no salen en lista restricciones
+
+[33mcommit bbe394f64170da886a55c3d28c0158dac6c95408[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 13:21:32 2024 +0200
+
+    Maria: elimino campos Tabla Familia
+
+[33mcommit bdef8937d62bd8cbc620ec4d505a35d3f0533035[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 13:06:55 2024 +0200
+
+    Maria: elimino cruz from y orden alfabético Procesos Restricciones
+
+[33mcommit 64268d64c44f62ebb99e67333107d86ed16e5a7c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 12:34:30 2024 +0200
+
+    Maria: Cambio mensaje incidencia
+
+[33mcommit 1177b770b47bc145c2d0cbf7499593dd87eeb4d9[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 12:20:26 2024 +0200
+
+    Maria: Boton guardar doble
+
+[33mcommit 38316d86107458c57cfd4b288ba23f4fa4f69cea[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 11:07:15 2024 +0200
+
+    Maria: Log Orden procesos a producto
+
+[33mcommit ffc55d0f0be5838048c9dbd0cccb7bbcc52b8edd[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 11:01:16 2024 +0200
+
+    Maria: Log en restriccion de procesos
+
+[33mcommit ea23365f6151d967891fd306a8ba2aa520276177[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 10:47:20 2024 +0200
+
+    Maria: Lgo add pedido
+
+[33mcommit cea3109da396988443e9d5562ea2390b9b3f6eef[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 10:22:35 2024 +0200
+
+    Maria: Log en revertir estado organizador
+
+[33mcommit 14837e5eaf345a96f3efc2d2e42ccb1cf9eb83b0[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 29 10:18:01 2024 +0200
+
+    Maria: Log termiando organizador
+
+[33mcommit e5e99b6f4bdb4c9c14d9c5371449bd7fb70e168e[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Aug 28 17:05:53 2024 +0200
+
+    Maria: elimino conflicto css
+
+[33mcommit d801d27dddae0088bb9e7383527890a0edc5fccc[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Aug 28 16:40:29 2024 +0200
+
+    Maria: añado bbdd principal de produccion
+
+[33mcommit 61a774bacaf52327f43bff2f0e3b2ee607b6db26[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Aug 27 16:52:26 2024 +0200
+
+    Maria: Añadir esapcio en EliminarFiltros
+
+[33mcommit 7e692576085a00fbcd6caae131ab25568dabd914[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 27 13:17:35 2024 +0200
+
+    Maria: recarpa pagina despues de avisar restricciones
+
+[33mcommit 53b4cd96f40255f41f0e3720298b95b11f8421b3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 27 12:22:32 2024 +0200
+
+    Maria: Procesos estado 4, cambio de estado funcionando
+
+[33mcommit 8ade43fe619a4f9fb307b313b5ebed8a394b743a[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 26 14:09:16 2024 +0200
+
+    Maria: modal procesos terminados
+
+[33mcommit e10f333fb307bb94a5a7251bb6292852b1fcb0e2[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 26 09:30:23 2024 +0200
+
+    Maria: Add boton procesos terminados
+
+[33mcommit 3cbf51483959a0102e5dc3090a26676f935a9fff[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 26 09:17:34 2024 +0200
+
+    Maria: Eliminia procesos estado=5 procesos_pedido
+
+[33mcommit e681df8bdbe088fb15807c1210e66c2f8a8cccd3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 26 08:40:03 2024 +0200
+
+    Maria: No saca parte si hay un proceso en estado=4
+
+[33mcommit bca62c5035d2168bfae9ac93ccbcd1e3323d59e0[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Fri Aug 23 12:50:45 2024 +0200
+
+    Maria: Orden alfabetico procesos
+
+[33mcommit d7b638762c90e6f3519d907031fa936a3484d845[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Fri Aug 23 12:33:41 2024 +0200
+
+    Maria: elimino error partes
+
+[33mcommit 92371c9a21fe00940da0b64371c77b632d0f6655[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 12:42:50 2024 +0200
+
+    Maria: Partes con dos paginas
+
+[33mcommit 6a8036223bab220198bd6cec933bd877f3cd2933[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 12:29:42 2024 +0200
+
+    maria: Elimino procesos del form productos
+
+[33mcommit e00f690f99c0e4a425df66efa100a1bd56a3b55d[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 12:18:48 2024 +0200
+
+    Maria: Elimino una comilla
+
+[33mcommit 46e2f74a0e5c35a7e2b60d9849d203ebe0e521bc[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 12:13:28 2024 +0200
+
+    Maria: no se eliminan procesos con estado=4
+
+[33mcommit 718ad40203a604ed79aa8c90f618a2083d3cbfb3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 11:47:44 2024 +0200
+
+    Maria: select deselecciona al cambiar de maquina o proceso
+
+[33mcommit 9df431bc7ec14e5984d5594398cf20624f638a4e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 11:25:16 2024 +0200
+
+    Maria: Select funciona bien
+
+[33mcommit facfc506380524096dd9b6a4703104cf21bb23a1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 11:12:38 2024 +0200
+
+    Maria: filtros ID organizador
+
+[33mcommit b1165f0f199f8beeee1ec609687ad1aa95b1671c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 09:20:24 2024 +0200
+
+    Maria: Listas Orden alfabético
+
+[33mcommit edaf88d2ef365f3c66e40e3c46872496d1835bb9[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 22 09:09:39 2024 +0200
+
+    Maria: Add colors organizador
+
+[33mcommit 2eaff88210708eeb7f45bbbfdf945cd11cb04780[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Aug 21 14:07:58 2024 +0200
+
+    Maria:attainet
+
+[33mcommit fb0d2dd5d3d8da6940efe4cc96662b0178d9d1c1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Aug 21 13:00:51 2024 +0200
+
+    'Maria:organizador'
+
+[33mcommit c9d43cd0e8450705b1d85ad616f83ac9458127e9[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Aug 21 12:43:06 2024 +0200
+
+    Maria: css organizador
+
+[33mcommit a552e60fbd6d3c52767575b7e8ae3ed67c36a0b1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Aug 21 11:32:16 2024 +0200
+
+    Maria: css organizador
+
+[33mcommit 4899985897a72d2a9df7f48715a3e68f9542de20[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Aug 21 09:19:35 2024 +0200
+
+    Maria: No admite caracteres especiales nombre procesos
+
+[33mcommit f08589645afa3366414bccfd87de0f526fe4874a[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Aug 21 09:10:17 2024 +0200
+
+    Maria: Añadir proceso en inactivo
+
+[33mcommit 54d771fdb9d246ac04559c97a3e1335114886210[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Aug 21 09:04:23 2024 +0200
+
+    Mejoro procesos
+
+[33mcommit e9c93d104094874c2648fe58c83bf917dd0e1350[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Aug 21 08:26:11 2024 +0200
+
+    Maria: mejoro desplegable trasportista
+
+[33mcommit 5d50028dd652be36f5435b37901211f81ca40dc2[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 20 12:25:41 2024 +0200
+
+    Maria: solucion users
+
+[33mcommit 75e2977446deee12d35ec002baea17347d3284a1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 20 11:54:30 2024 +0200
+
+    Maria: Muetsro incidencias en pantalla index
+
+[33mcommit 8495ce030839c16b66d57177259011e8a3f074da[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 20 10:09:56 2024 +0200
+
+    Maria: elimino boton cerrar
+
+[33mcommit 9f4ad347efa0bb553b43dc5f9274798dd30825f6[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 20 09:40:29 2024 +0200
+
+    Maria: Prueba cierre fichajess
+
+[33mcommit 0cc41fc4227fc6adca1bd542514cd86150c223e1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 20 09:17:12 2024 +0200
+
+    Maria:css
+
+[33mcommit 2430fd6819c89fe0612a5a6f0320258515361d04[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 20 08:36:23 2024 +0200
+
+    Maria: Solucion conflicto
+
+[33mcommit 6daaac0213038bc6c8fa1cce8e4de8189d816833[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 20 08:04:31 2024 +0200
+
+    Conflicto
+
+[33mcommit c81b53ee9e65c70bd29a247318ebb4486b241626[m
+Merge: df9ace0d bf56a777
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Aug 20 08:02:08 2024 +0200
+
+    Conflicto
+
+[33mcommit bf56a77726e11c22b7f328793308c469caa6decc[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Aug 14 16:56:12 2024 +0200
+
+    Maria: añadir log addPedidoModal
+
+[33mcommit 65b0a491cf75f43fee27100009623355ed22c90e[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Aug 14 12:43:30 2024 +0200
+
+    Maria: Estilos a impresion de organizacion
+
+[33mcommit 00e4aaf77a8ddc0c17be06c2e35015d28676d07a[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Aug 14 12:28:17 2024 +0200
+
+    Maria: botones de accion en  movil 3
+
+[33mcommit 0ade554bfdc25b04d28478e0b538bbb9e1a52801[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Aug 14 10:57:43 2024 +0200
+
+    Maria: No imprime procesos con retsriccion
+
+[33mcommit 3bdf39f8c6d664db06c1835f817a601c19a2f4d3[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Aug 13 13:41:25 2024 +0200
+
+    Maria: muestra mensaje de que procesos restringen si se intenta terminar
+
+[33mcommit 868203fc506ca1d46aa8f2de92aa648e835ccb11[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Aug 13 13:21:04 2024 +0200
+
+    Maria: no se permite terminar procesos con retsricciones
+
+[33mcommit 79d4be7985daf195979d6ce2bd453b41a7df53d3[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Aug 13 13:02:17 2024 +0200
+
+    Maria: Se elimina retsricciones si proceso termina
+
+[33mcommit 7e45c2b20c2ad0a7686a8a8056be8ddaccd64c34[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Aug 13 11:24:39 2024 +0200
+
+    Maria: organizador reconoce procesos con restricciones
+
+[33mcommit df9ace0db8eea675972bc2ed1e92a820221bbcd6[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 9 14:04:59 2024 +0200
+
+    Maria: Desde el organizador se actualiza la columna restriccion
+
+[33mcommit ca6e0f0b0ab2d7280d809cc901b8ccd3075ef594[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 9 12:14:02 2024 +0200
+
+    Maria: Modal add_procesos cierra en procesos
+
+[33mcommit d494d308da967d9bbfefc46f88daec532d1dadfd[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 9 12:02:34 2024 +0200
+
+    Maria: Procesos actualiza procesos_productos
+
+[33mcommit fa6b47afaee9659f0499334b5bb7b86830c846cb[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 9 11:54:12 2024 +0200
+
+    Maria: Navegación entre procesos y boton guardar actualizado
+
+[33mcommit b695204a41f76216633417727cfb638729a77909[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 9 11:12:12 2024 +0200
+
+    Maria: Al ordenar procesos se añade restriccion
+
+[33mcommit 419df61a94f87888df0a17146544bdbb120c36d3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 9 09:54:11 2024 +0200
+
+    Maria: Procesos modificado
+
+[33mcommit 59ae525ea9ad5aab94df6ac98211e3b9aa057039[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Aug 9 08:46:19 2024 +0200
+
+    Maria: form restricciones funciona
+
+[33mcommit 59b56f4a58f5b15c5f9d7d0ac78c2fddd9f1971f[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Aug 8 17:44:03 2024 +0200
+
+    Maria:elimino funciones de procesos antiguas
+
+[33mcommit df5411db8deeca32e3b388db0d2e7fa842d4c701[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Aug 8 17:02:43 2024 +0200
+
+    Maria: procesos_view modificada y mejorada
+
+[33mcommit 62262788449a27eff05dcb301043d925deecb13d[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 8 13:52:44 2024 +0200
+
+    Maria: Mejoramos funcionalidad restricciones
+
+[33mcommit 236b5a44ca5f156d89d98fa6b7578def15d89ab2[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 8 12:10:30 2024 +0200
+
+    Maria: Se añade procesos a columna restriccion
+
+[33mcommit da1e1f5d5cc5a582e22c7e93aa8f7bd41f65b938[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 8 10:52:26 2024 +0200
+
+    Maria: en nuevo pedido por defecto sin empresa
+
+[33mcommit d638adf153e0ea57213b1a97e2585b37c13c579a[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 8 10:15:35 2024 +0200
+
+    Maria: total_pedido se actualiza a la primera
+
+[33mcommit 81fbf9c4eccfd6e43811e2d49923bda5947b00e3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 13:13:32 2024 +0200
+
+    Maria: Modal productos deja ver la app de fondo
+
+[33mcommit ab10b57ad22441400eaf28dc7e57d2e9e05329b9[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 13:03:55 2024 +0200
+
+    Maria: Procesos de productos predefinidos se muestran
+
+[33mcommit e9dabf96432ea7e0936a52adb4957bcaf8be877c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 12:52:35 2024 +0200
+
+    Maria: Filtra y ordena bien procesos
+
+[33mcommit 61c2e65f0180b3f8b2e7aae2c285cf8d86bf63d5[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 12:05:20 2024 +0200
+
+    FIltra por producto
+
+[33mcommit 4db45e2341cca7aedffc545ad675eeb258953fd3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 11:47:06 2024 +0200
+
+    Maria: respeta filtro cliente con maquina
+
+[33mcommit 9575e8877aca62674f713d07496ad1d7f0d8e739[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 09:47:59 2024 +0200
+
+    Maria: Orden por medidas funcionando
+
+[33mcommit 483f2d7d07331a7c0b07cf4e072cc31e0bc1bdd1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 09:13:20 2024 +0200
+
+    Maria: Elimina filtros de seleccion de maquina
+
+[33mcommit 5c60d859fc45167c4610108594ce4e09a2499f8c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 09:04:36 2024 +0200
+
+    Maria: documento formateado
+
+[33mcommit 36410a9b21cadea6cf709570daa5cfcfd5642a49[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 09:03:49 2024 +0200
+
+    Maria: respeta maquina seleccionada al recargar la pagina
+
+[33mcommit e27d64fbea9f7a04031603f70234a0ddb24bc2b4[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Aug 5 09:01:09 2024 +0200
+
+    Maria: organizador FUNCIONA
+
+[33mcommit 442a8f257321fabbd0a8171d29e0150a5fe69421[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Aug 1 16:51:22 2024 +0200
+
+    Maria: boostrap en lista de maquinas
+
+[33mcommit 2aaa393d4c1743b8e843267f6437432d2b738c67[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Aug 1 16:36:22 2024 +0200
+
+    Maria: Checkbox selecciona toda columna
+
+[33mcommit a09df7e1c9d2bf679834d8acae08ad9adb473e20[m
+Merge: eda3c604 d0b98aa3
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Aug 1 15:50:35 2024 +0200
+
+    Maria: Solucion conflicto
+
+[33mcommit eda3c604c69083865c8435837c7327e83d8b9bac[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Aug 1 15:40:11 2024 +0200
+
+    Maria: Solucion conflicto
+
+[33mcommit d0b98aa39d1b71467a63ba0d5f8c4bbe22fe836d[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 1 13:59:01 2024 +0200
+
+    Maria: Permite arratrar procesos si hay maquina seleccioanda
+
+[33mcommit afe1353fd01d7edd1991d1d374e928501644ed0b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 1 13:50:59 2024 +0200
+
+    Maria: Los procesos se mueven de columna al seleccioanr maquia
+
+[33mcommit 4c8702b00645cddb5b0ad2636c6e4b692d469579[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 1 12:35:41 2024 +0200
+
+    Maria: Parte se ve bien y abre en otra ventana
+
+[33mcommit 51d1ff9ecb512d2d3fe5c67b0055adfb29c426c1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Aug 1 11:43:11 2024 +0200
+
+    Maria: Elimino errores
+
+[33mcommit 8d9b0c533b0d4f10258f4966776f5a076bf73d1b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 31 12:12:35 2024 +0200
+
+    Maria: subir a prod
+
+[33mcommit f6a47a26d9a75f9ee8f25334c8ae40e0976875a9[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 31 09:43:01 2024 +0200
+
+    Maria: sin justificacion
+
+[33mcommit 65214218025611f253f31f5514b38b55908be3c3[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 30 14:05:47 2024 +0200
+
+    Maria: antes de ir a casa
+
+[33mcommit f32d45a30d456ded83504acba0d6f881e5c4123d[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 30 12:12:40 2024 +0200
+
+    Maria: ausencias respeta festivos y vacaciones
+
+[33mcommit 7e9ac5adc990f16472028af8c45b0e3fc4094ea6[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 30 12:05:08 2024 +0200
+
+    Maria: modifico boton y mensaje de no justificacion
+
+[33mcommit d87f94613b8b634488b5876444e2a356aa1f84fd[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 30 10:35:17 2024 +0200
+
+    Maria: Justificacion funcionando
+
+[33mcommit a266082fffd3cc451b4750a1a0d7fcb6dd6034aa[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 30 10:00:26 2024 +0200
+
+    Maria: Mostrar columna Justificacion
+
+[33mcommit 353661f71d60f0eeb997ff1c5628df1af7da764b[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 30 09:28:11 2024 +0200
+
+    Maria: Justificacion funcion en editIncidencias
+
+[33mcommit 4493845919a56bf56e0e96e8e47bf5af8e02e794[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Mon Jul 29 17:20:48 2024 +0200
+
+    Maria: el formulario cmabia el estado de la incidencia
+
+[33mcommit ccfcff96ee46adf107c04a04fd4817e1093d592e[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Mon Jul 29 16:42:20 2024 +0200
+
+    Maaria: muestro fromstadisticas
+
+[33mcommit 59efbefbb546aeba9112130a89a9e11049de88e0[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Mon Jul 29 16:33:57 2024 +0200
+
+    Maria: añado form
+
+[33mcommit 0d63cb85ca63deaed581bee8aa26ac746306df93[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 29 14:00:55 2024 +0200
+
+    Maria: alado modal
+
+[33mcommit 9bdb9d6db32e7fda5269fa13904a31d5818d8ce1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 29 13:44:59 2024 +0200
+
+    Maria: Cambio de color los procesos
+
+[33mcommit 7444fa89e5b20369d040b2f38dc391483cb71a17[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 29 13:40:51 2024 +0200
+
+    Maria: Cambio de color los procesos
+
+[33mcommit a8e2567d57e7a2410b8c09a7dfaf506ed426b36a[m
+Merge: 9c1b7526 f1069c26
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 29 13:21:05 2024 +0200
+
+    Merge branch 'main' of https://github.com/MariaAttainet/dev_showscreen
+
+[33mcommit 9c1b752691575e7d270b52e0e4bacfdc013834f9[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 29 13:20:54 2024 +0200
+
+    Maria: Muestro incidencias en pantalla principal
+
+[33mcommit f1069c267fef837a4aeea64d566b6f1ec8e9a914[m
+Author: ATTAINET TECHNOLOGY <165309264+attainet@users.noreply.github.com>
+Date:   Mon Jul 29 11:15:01 2024 +0200
+
+    Modifico el estilo de las cabeceras y layout
+
+[33mcommit 67cc2d0df65a7d60ce7beb5aeba6dfe456539968[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 29 10:50:42 2024 +0200
+
+    Maria: imprimir abre en otra ventana
+
+[33mcommit 48f0818122c28c494423cde3736e7b3f06813f87[m
+Merge: dfb05d40 065b4cbd
+Author: ATTAINET TECHNOLOGY <165309264+attainet@users.noreply.github.com>
+Date:   Mon Jul 29 10:34:25 2024 +0200
+
+    Merge branch 'main' of github.com:MariaAttainet/dev_showscreen
+
+[33mcommit 065b4cbda76df476f18b19becea714a05b0fe0be[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 29 10:27:25 2024 +0200
+
+    Maria: Modificar css
+
+[33mcommit f20dad65f385fcbf4c30cf460723c8d49a9dc1a8[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 29 08:16:01 2024 +0200
+
+    Maria: NuevoPedido en modal
+
+[33mcommit 450a899f66880603d476bc61ad4f969835692184[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Jul 26 14:20:00 2024 +0200
+
+    Maria: estilos a titulos
+
+[33mcommit d79b7eaf284180f952b409d52d0f330bd2560383[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Jul 26 14:06:09 2024 +0200
+
+    Maria: Estilo boton fichar
+
+[33mcommit 560c1bdc16274b7ba7497e5574823cec47dca30e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Jul 26 13:42:22 2024 +0200
+
+    Maria: Boton cerrar modal
+
+[33mcommit 465f585f961ebee939ae68d0385df52a21692032[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Jul 26 13:13:45 2024 +0200
+
+    Maria: Estilos vista transportista
+
+[33mcommit bbf6d86cc44035321cbdd757e0df2a59c520fa49[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Jul 26 11:40:17 2024 +0200
+
+    Maria: estilo formulario transportista
+
+[33mcommit bbf89e679143eee55fbce53b4fccab9b22eb5920[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Jul 26 10:57:45 2024 +0200
+
+    Maria: Estilo mi perfil
+
+[33mcommit 5d1e416221b4b00a232061db44fdee39830a17c7[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Jul 26 08:55:36 2024 +0200
+
+    Maria: Mejorar informe de fichajes
+
+[33mcommit 3ffb18f2b46a4b5915c959847eac1aceea58bb33[m
+Author: Attainet <msancho@attainet.es>
+Date:   Fri Jul 26 08:30:00 2024 +0200
+
+    Maria: mi perfil funcionando
+
+[33mcommit e3968e5f3320106a009aed240754363aa2a59d26[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 25 13:57:58 2024 +0200
+
+    Maria: Furm editTransporte con fondo trasnparente
+
+[33mcommit c572abe5da610798bcc302764a09012ce4497dea[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 25 13:52:50 2024 +0200
+
+    Maria: Form editUser con menu lateral de fondo
+
+[33mcommit 711ba7058ffcc5b9570ac609c600513291f05c31[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 25 13:38:25 2024 +0200
+
+    Maria: Form nuevo pedido con menu lateral visible
+
+[33mcommit 06262d4737da193cc46adacdc291e7630c9c33d0[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 25 13:02:49 2024 +0200
+
+    Maria: añadir nuevo pedido form a medida
+
+[33mcommit 6c1496c83d3a658de4ef16a441ce4f15878c5074[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 25 08:13:17 2024 +0200
+
+    Maria: Comento mensajes que salen en fichar
+
+[33mcommit 030c132f2ba4a69f77621e20b721ca107c50c775[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 25 08:09:56 2024 +0200
+
+    Maria: reserva primeros 10 ids para super-admin
+
+[33mcommit 0762a3923ced97db22a00d124003091f22935804[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 24 11:15:32 2024 +0200
+
+    maria_ elimino conflicto
+
+[33mcommit c164aead0c5ded718da24a95f3ea394b0bf74df4[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 24 10:33:13 2024 +0200
+
+    Maria: elimino bug fichar en OFFERTILES
+
+[33mcommit 253ba593d897171cf652ead4d82290eaa4719d05[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 24 09:41:56 2024 +0200
+
+    Maria: añadir fichaje de manera dinamica
+
+[33mcommit 7bcea24e9779e4e7180ab155d46f13e63ca008be[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 23 10:08:57 2024 +0200
+
+    maria: soluciono conflicto al no tener acceso a la app un usuario y fichar igual
+
+[33mcommit dfb05d40c993dc781d63824788776fd142bde8a3[m
+Author: ATTAINET TECHNOLOGY <165309264+attainet@users.noreply.github.com>
+Date:   Mon Jul 22 13:19:11 2024 +0200
+
+    arreglo otro enlace en menu_lateral
+
+[33mcommit 8400f223c295a5a57dfd182acbf8d2960c504831[m
+Author: ATTAINET TECHNOLOGY <165309264+attainet@users.noreply.github.com>
+Date:   Mon Jul 22 13:15:36 2024 +0200
+
+    Arreglo enlace de fichajes en menú lateral
+
+[33mcommit 5eb14a99e158d38b616bb2363e9dbe5aad8813bb[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Fri Jul 19 10:59:06 2024 +0200
+
+    Maria: modifico margin de titulos de editar
+
+[33mcommit 378fc9b1a0fe32380054b3695f4396d31d0dd94b[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Fri Jul 19 10:44:06 2024 +0200
+
+    Maria: Archivos recarga y recarga_hora funcionando
+
+[33mcommit abb5bd71e83ab3d806f7c04bcf1f9d33f1d10075[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Fri Jul 19 09:21:23 2024 +0200
+
+    Maria: Se recarga la pagina fichar sin problemas
+
+[33mcommit 7a3149546438b61ca3ea9c31d97ca676e89bcdf3[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Fri Jul 19 08:57:52 2024 +0200
+
+    Cuadrado check mas pequeño
+
+[33mcommit 69ffeb711ef4abcc04554a471ce7d2715c1ee5ae[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Fri Jul 19 08:56:52 2024 +0200
+
+    Maria: check activo al darle al proceso en organizador
+
+[33mcommit 654adecdae6d64b0be16c4476474f252598b45b0[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 13:56:41 2024 +0200
+
+    Maria: mejoro productosProcesos
+
+[33mcommit 2c561f230a8587d8c6d0d3bc86550f7c4a82afb0[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 13:55:58 2024 +0200
+
+    Maria: mejoro productosProcesdosd
+
+[33mcommit af1744090f5e44863325056920058aa10d7142ff[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 13:49:07 2024 +0200
+
+    Maria: funciona tactil en orden de procesos por productos
+
+[33mcommit 90a72b9bf6351013997baac74076a54cca485b6a[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 13:42:05 2024 +0200
+
+    Maria: modifico footer menu lateral que me molesta
+
+[33mcommit 473fa705a143b73df9167fa76cc571c6fe3fb4bb[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 13:04:34 2024 +0200
+
+    Maria: funciona entrar a usuario en presentes
+
+[33mcommit 889374aeadfa8cfaeda3b11204faa00f895d2c42[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 12:11:18 2024 +0200
+
+    Maria: modifico tamaño del select de organizador
+
+[33mcommit 3a2a17dc479f570c3f34c74c2a7cd5660ad6fa4c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 10:20:55 2024 +0200
+
+    Maria: Parte elimino linea pedido del parte en la informacion
+
+[33mcommit 7d45b6544d0c371fd06a2cc138e4e288af83373f[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 09:58:03 2024 +0200
+
+    Maria: Botones guardar modificados
+
+[33mcommit f7ad96a1ea1c9f6bbc4978539dfd8af7aa2917d8[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 08:29:33 2024 +0200
+
+    Maria: titulos de edicion con estilo
+
+[33mcommit 130cb20c369705ee10c03f6f56f6c25de34097bd[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 18 08:28:25 2024 +0200
+
+    Maria: titulos de edicion con estilo
+
+[33mcommit 3afb9d13ae14c48c254af7821a91077b7c1dc532[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Jul 17 15:48:30 2024 +0200
+
+    Maria: Boton Volver de Fichar funciona
+
+[33mcommit aa69692a8cf14402944528378bdb7629627f5cc1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 13:56:39 2024 +0200
+
+    Maria: modifico url fichajes
+
+[33mcommit 8559608d89e9c7ae3c72a83b2185f565460c7d2e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 13:48:58 2024 +0200
+
+    Maria: Imagen de fichar solucionado
+
+[33mcommit 6d419cc82b1c36ebf2b70e5e6e9377a6c8585d41[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 13:10:34 2024 +0200
+
+    Maria: precio total pedido solucionado
+
+[33mcommit de2e8607a67f7151a4c22e3272c05bba59c1630e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 12:40:40 2024 +0200
+
+    Maria: Parte complejo abre en ventana nueva
+
+[33mcommit 7beddddf0927af2609ee48d1fc49441a492d23db[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 12:35:31 2024 +0200
+
+    Parte complejo funciona bien ususario
+
+[33mcommit 0dc56b1f84e07e10eb3e24ecd25bb98eb793d551[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 12:22:29 2024 +0200
+
+    Maria: añadir user en imprimirPedido
+
+[33mcommit 41adfefc4d6eb5169fff5e5d0597498145343996[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 12:18:11 2024 +0200
+
+    Maria: imagenes en parteComplejo
+
+[33mcommit e02f5dbb987901de0b48c712a422908d13aba196[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 10:38:42 2024 +0200
+
+    Maria: Funcionan colores
+
+[33mcommit 6556f01a32fed9145657ddfbcba642abc7241594[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 10:19:03 2024 +0200
+
+    Maria: Lista_produccion filtra bien
+
+[33mcommit a82eb0889e24a3036820b1a06241caa63961d227[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 10:04:43 2024 +0200
+
+    Maria: Añado NIF para la edicion de selectEmpresa
+
+[33mcommit f764a60a2de5f8def20612bca216e627e505a228[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 09:58:17 2024 +0200
+
+    Maria: Transportista edita contraseña segura
+
+[33mcommit 43b39936950163241d8b7823e203da085e89c454[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 09:20:44 2024 +0200
+
+    EditUser se abre solo cuando el css esta cragado
+
+[33mcommit 7c049bd60e1cff841cdb870c38548808111cbf7f[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 09:16:20 2024 +0200
+
+    Maria: MiPerfil cambia contraseña segura
+
+[33mcommit afcfefc7b6343fe812bcce5cf459c3835e7e3699[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 17 08:13:47 2024 +0200
+
+    Maria: Acceso se rellena por defecto
+
+[33mcommit 8d3c0563f6595028e76ca248a6a7e5649cc3ba4e[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Jul 16 17:31:17 2024 +0200
+
+    Maria: Mejora de produccion
+
+[33mcommit 2537e735a70412b0a1e7ea6f92a7dd9921a9db7c[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Jul 16 16:22:42 2024 +0200
+
+    Maria: Produccion con filtro idFamilia
+
+[33mcommit 42f30f86cb324a5b3fe1bbe42e5089e2c52d4d9a[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Jul 16 16:20:01 2024 +0200
+
+    Maria: Produccion con filtro idFamilia
+
+[33mcommit 7022cb2ab7193171181f4ccc23d0d2facaf26add[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 16 14:04:15 2024 +0200
+
+    Maria: contraseñas seguras
+
+[33mcommit 473a32b87672f07a25b077392a9a0fb68da65008[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 16 11:33:32 2024 +0200
+
+    Maria: manejo error fichaje al cambiar de empresa
+
+[33mcommit 97b0769081d5d9c1ba1435b0c0ab3d47bba067b7[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 16 10:52:11 2024 +0200
+
+    Maria: modifico ruta img productos
+
+[33mcommit 64fe0a14bd0681576266cb0aa037f92e5825e810[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 16 10:43:47 2024 +0200
+
+    Maria: solucion HorasExtras
+
+[33mcommit 3b67656a190246950b92b7b66a158f9f394c3772[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 16 10:31:50 2024 +0200
+
+    Maria: Edito enlace de la estadisticas
+
+[33mcommit c85432b49930fe16838c4b1cd5ee6670421d6331[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 16 10:27:50 2024 +0200
+
+    Maria: añado public en todas las imagenes
+
+[33mcommit fc987702d97cc51883d7fd7a86529ef0909a4f1c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 16 10:25:08 2024 +0200
+
+    Maria: añado public en todas las imagenes
+
+[33mcommit 8e6aae86fc405856d430be4bb218b8861989cc64[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 15 13:14:44 2024 +0200
+
+    Maria: soluciono error de carga al entrar a pedidos enmarcha desde produccion
+
+[33mcommit 25caab89235fc0e212cf4b71b8d23497f2947477[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 15 13:04:00 2024 +0200
+
+    Maria: Elimino error de consola
+
+[33mcommit 10ee288b7d1f2037b39c93554156215cdfe557d1[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 15 12:35:18 2024 +0200
+
+    Maria: organizador mas preciso
+
+[33mcommit ef4073ae6dff40d5917e310bbac93da14c0d5d15[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Jul 11 16:38:44 2024 +0200
+
+    Boton terminado respeta maquina seleccioanda
+
+[33mcommit 60bfd94f114c0622d696101cc24f7d30c67d7308[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Thu Jul 11 15:40:19 2024 +0200
+
+    modifica url logo
+
+[33mcommit 43d1d7a6f639bcc5adde1c77fd830990acad7668[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 11 13:35:03 2024 +0200
+
+    Maria: Solucion log anclaje
+
+[33mcommit b4afc368cb3d549739480eb52a1367defb99a59f[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 11 13:13:51 2024 +0200
+
+    Maria: los procesos guardados no estan anclados a los no guardados
+
+[33mcommit 8938a97bb2111d7e21a7dfcb2edce7d8b1a78a8c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 11 12:46:26 2024 +0200
+
+    Maria: Añadir fondo rojo a lineas no guardadas
+
+[33mcommit 0fd6b57a06261adf7ea2acc254ce3e0834ac4946[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 11 12:19:56 2024 +0200
+
+    Maria: ProcesosPedidos mejorado
+
+[33mcommit 4a33b2e072fb40fb0799ed1c64c2ff7c306cf9ef[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 11 12:10:06 2024 +0200
+
+    Maria: añadir public a vista transportista
+
+[33mcommit aea90210c51523c4315038b648ab4ffa7955c69c[m
+Author: Attainet <msancho@attainet.es>
+Date:   Thu Jul 11 12:07:04 2024 +0200
+
+    Maria: ListasProcesos actualizada
+
+[33mcommit 67c55d82b43fd2f1b6513ee45aad76d99958a5e9[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Wed Jul 10 16:48:15 2024 +0200
+
+    Mejoro js de procesosPedidos
+
+[33mcommit f317b5ea29463e344e0681f23721f97628bb3696[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 10 13:38:54 2024 +0200
+
+    Maria: Elimino submenus de produccion
+
+[33mcommit 5c881e7938048279f4f6258e8160f0dcaed72447[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 10 12:48:39 2024 +0200
+
+    Maria: respeta orden al guardar procesos
+
+[33mcommit 650f3cec8f41ca9bcb0cf76e9d8cda7e65dfaf0d[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 10 09:55:51 2024 +0200
+
+    Maria: error MiPerfil solucionado
+
+[33mcommit ab4b50dda345c99b529d07149addb670df1897c4[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 10 09:47:14 2024 +0200
+
+    Filtros col2 se respetan
+
+[33mcommit c409da5ceef19b709be617bf9c8e5b4e40e9a103[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 10 09:21:58 2024 +0200
+
+    Maria: color verde en procesos funciona
+
+[33mcommit 14650aff9953b67ae0a6801cb1daf3dc11abb146[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 10 08:34:05 2024 +0200
+
+    Maria: Solucion dobles tablas en submenu
+
+[33mcommit a945df32ad1460b8ef84405756815b15166b86a4[m
+Author: Attainet <msancho@attainet.es>
+Date:   Wed Jul 10 08:31:02 2024 +0200
+
+    Maria: soluciono error editarProducto
+
+[33mcommit b2cbb78dd138453cd1f99100864d4304f1594782[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Jul 9 17:06:30 2024 +0200
+
+    Maria: modifico js de boton terminado
+
+[33mcommit 8a75ad12af19729ff0c92e6986a1a4c99d2bfeee[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Tue Jul 9 16:49:04 2024 +0200
+
+    Maria: Tengo conflicto
+
+[33mcommit 4adce512414362b076031402bdc9f1dfe3731ac8[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 13:52:49 2024 +0200
+
+    Maria: añadir public a css de Fichar
+
+[33mcommit 2ab093b765c4ddbf186675faefdfcfb4c8eceb7e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 13:37:53 2024 +0200
+
+    Maria: al darle al boton guardar respeta la maquina seleccionada
+
+[33mcommit e83a04df7c5b02fcc3855a254f1978cc77460234[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 13:13:51 2024 +0200
+
+    Maria: al darle al boton guardar respeta la maquina seleccionada
+
+[33mcommit c372341b13d1ea45375f387df1f635b9bef41007[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 09:49:30 2024 +0200
+
+    Maria: se imprime solo maquina seleccionada
+
+[33mcommit 8bcdcd9ee33243717ec5376e43c653c3c96c75b2[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 09:03:47 2024 +0200
+
+    Maria: soluciono seleccion maquina
+
+[33mcommit 3f30814a4f2c63a7d333892cc0189cf319c9f471[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 08:38:58 2024 +0200
+
+    Maria: Boton terminar funciona
+
+[33mcommit 0f5bc2eceebeb0f965ee622a2fc3a5a853a1d509[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 08:18:43 2024 +0200
+
+    Maria: Añado public a partes_header
+
+[33mcommit 77ed21d5a39b984bfba7cb4e862e5655342f3684[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 08:16:40 2024 +0200
+
+    Elimino error Rutas de transporte
+
+[33mcommit 54b039caa139775492b4e7e56ed2200861b81d9f[m
+Author: Attainet <msancho@attainet.es>
+Date:   Tue Jul 9 08:12:16 2024 +0200
+
+    Maria: soluciono error LineaPedido
+
+[33mcommit 47756787c63dfcaa56c9997c31e3da5af6476bb5[m
+Author: MariaAttainet <msancho@attainet.es>
+Date:   Mon Jul 8 16:42:56 2024 +0200
+
+    Maria: error get
+
+[33mcommit fbe9bbe72ac096b9168c438077eebe161fecf643[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 8 13:59:27 2024 +0200
+
+    Maria: Soluciono error emrpesas-contacto
+
+[33mcommit 4d8816ef729e8b8a3784297c20bb8cd417a16be5[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 8 13:06:38 2024 +0200
+
+    añadido: public
+
+[33mcommit 4b05c1978e7ea89f0b0d158b3c80c6a129a2434e[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 8 12:18:55 2024 +0200
+
+    Cambios Rafa
+
+[33mcommit f6ef2abd42cc4846c4bd07de313abeeb17c2734a[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Attainet <msancho@attainet.es>
+Date:   Mon Jul 8 08:04:11 2024 +0200
+
+    primer commit
