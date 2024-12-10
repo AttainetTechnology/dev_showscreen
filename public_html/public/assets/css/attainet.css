@@ -14,11 +14,11 @@ div#report-success,
 
 
 a {
-	color: #006192 !Important
+	color: #006192 !important;
 }
 
 .gc-container .btn-outline-dark:hover {
-	color: #fff !Important;
+	color: #fff !important;
 }
 
 #visor {
@@ -129,14 +129,14 @@ tr:has(.estado1) {
 }
 
 tr:has(.estado2) {
-	background-color: #fff3cd !Important;
+	background-color: #d8edf7 !Important;
 }
 
 tr:has(.estado3) {
-	background-color: #fcebfa !Important;
+	background-color: #fdf0ab !Important;
 }
 tr:has(.estado4) {
-	background-color: #dff0d8 !Important;
+	background-color: #dfefd8!Important;
 }
 
 tr:has(.estado4) a {
@@ -145,8 +145,8 @@ tr:has(.estado4) a {
 }
 
 tr:has(.estado5) {
-	background-color: #50b752 !Important;
-	color: #ffffff !Important;
+	background-color: #69c869!Important;
+
 }
 
 tr:has(.estado5) a {
@@ -156,7 +156,7 @@ tr:has(.estado5) a {
 
 tr:has(.estado6) {
 	
-	background-color: #ff6c6ccc !Important;
+	background-color: #ebaaaa !Important;
 	color: #ffffff !Important;
 }
 
@@ -1014,4 +1014,28 @@ input[type=number] {
 	margin-bottom: -20px;
 }
 
+.enCola{
+	background-color: #D8EDF7 !important;
+}
+.enMaquina{
+	background-color: #FDF0AB !important;
 
+}
+.enTerminados{
+	background: #DFEFD8!important;
+}
+.enEntregados{
+	background-color: #69C869 !important;
+}
+.enAnulados{
+	background-color: #EBAAAA !important;
+}
+.enAnulados svg{
+    margin: 12px;
+	margin-top:16px;
+}
+
+.enEntregados svg{
+	color:#006192 !important;
+	margin-top: -10px !important;
+}
