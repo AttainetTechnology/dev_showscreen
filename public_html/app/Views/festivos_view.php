@@ -2,12 +2,6 @@
 <?= $this->section('content') ?>
 <?= $this->include('partials/amiga') ?>
 <br>
-<!-- ag-Grid CSS -->
-<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
-<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
-
-<!-- ag-Grid JS -->
-<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <h2>Festivos</h2>
 <br>

@@ -3,12 +3,6 @@
 <?= $this->include('partials/amiga') ?>
 <!-- Cargar estilos para ag-Grid -->
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
-<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/botones.css') ?>?v=<?= time() ?>">
-<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
-<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
-<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://unpkg.com/ag-grid-community@28.2.0/dist/ag-grid-community.noStyle.js"></script>
 <br>
 <h2 class="tituloEmpresas">Logs</h2>
 <div class="buttonsEditProductProveedAbajo">

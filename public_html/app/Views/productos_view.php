@@ -3,13 +3,10 @@
 <?= $this->include('partials/amiga') ?>
 
 <title>Productos</title>
-<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
-<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
+
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <br>
 <h2>Productos</h2>
-
-
 <div class="botonSeparados">
     <button class="btn boton btnAdd" onclick="abrirModalAgregarProducto()">Añadir Producto
         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
@@ -93,9 +90,6 @@
 </div>
 
 <div id="productosGrid" class="ag-theme-alpine" style="height: 500px; width: 100%;"></div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
