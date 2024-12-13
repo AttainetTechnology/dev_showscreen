@@ -133,4 +133,5 @@ $routes->post('niveles_acceso/deleteNievel/(:num)', 'Niveles_acceso::deleteNieve
 $routes->post('menu/add', 'Menu::add');
 $routes->get('menu/edit/(:num)', 'Menu::edit/$1');  
 $routes->post('menu/update/(:num)', 'Menu::update/$1');
+$routes->get('empresas/editForm/(:num)', 'Empresas::editForm/$1');
 

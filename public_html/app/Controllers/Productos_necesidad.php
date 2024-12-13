@@ -28,7 +28,7 @@ class Productos_necesidad extends BaseController
         $db = db_connect($data['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
         $productosProveedorModel = new \App\Models\ProductosProveedorModel($db);
-        $productosVentaModel = new \App\Models\Productos_model($db); // Modelo para obtener precio de venta
+        $productosVentaModel = new \App\Models\Productos_model($db); 
 
         $productos = $productosModel->findAll();
         foreach ($productos as &$producto) {
