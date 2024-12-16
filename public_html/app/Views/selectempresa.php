@@ -18,7 +18,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formEditarEmpresa" method="POST" action="<?= base_url('select_empresa/editar') ?>" enctype="multipart/form-data">
+                <form id="formEditarEmpresa" method="POST" action="<?= base_url('select_empresa/editar') ?>"
+                    enctype="multipart/form-data">
                     <input type="hidden" id="id_empresa" name="id_empresa">
                     <div class="mb-3">
                         <label for="nombre_empresa" class="form-label">Nombre de la Empresa</label>
@@ -115,21 +116,19 @@
     });
 
     function editarEmpresa(id) {
-        // Aquí se realiza la lógica para cargar los datos de la empresa en el formulario del modal
         fetch(`<?= base_url('select_empresa/get_empresa') ?>/${id}`)
             .then(response => response.json())
             .then(data => {
-                // Llenar el formulario con los datos obtenidos
                 document.getElementById('id_empresa').value = data.id;
                 document.getElementById('nombre_empresa').value = data.nombre_empresa;
                 document.getElementById('db_name').value = data.db_name;
                 document.getElementById('db_user').value = data.db_user;
                 document.getElementById('db_password').value = data.db_password;
                 document.getElementById('NIF').value = data.NIF;
-                document.getElementById('logo_empresa').value = ''; // Para limpiar el input de imagen
-                document.getElementById('favicon').value = ''; // Para limpiar el input de imagen
-                document.getElementById('logo_fichajes').value = ''; // Para limpiar el input de imagen
-                
+                document.getElementById('logo_empresa').value = '';
+                document.getElementById('favicon').value = '';
+                document.getElementById('logo_fichajes').value = '';
+
                 // Mostrar imágenes actuales
                 document.getElementById('current_logo_empresa').innerHTML = data.logo_empresa ? `<img src="public/assets/uploads/files/${data.id}/logos/${data.logo_empresa}" width="100" alt="Logo Empresa">` : 'No hay logo';
                 document.getElementById('current_favicon').innerHTML = data.favicon ? `<img src="public/assets/uploads/files/${data.id}/logos/${data.favicon}" width="50" alt="Favicon">` : 'No hay favicon';
