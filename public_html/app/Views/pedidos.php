@@ -1,6 +1,6 @@
 <style>
     #printableArea {
-        font-size: 25px !important;
+        font-size: 30px !important;
     }
 </style>
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/botones.css') ?>?v=<?= time() ?>">
@@ -60,7 +60,7 @@ foreach ($pedido as $ped) { ?>
 
             <div class="row">
                 <div class="col-xs-12 table-responsive" id="tabla_tipopieza">
-                    <table class="table" style=" font-size:16px !important;">
+                    <table class="table" style=" font-size:20px !important;">
                         <thead>
                             <tr>
                                 <th>Unidades</th>
@@ -71,18 +71,18 @@ foreach ($pedido as $ped) { ?>
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody style=" font-size:35px !important;">
+                        <tbody style=" font-size:40px !important;">
                             <?php $total = 0; ?>
                             <?php
                             $lineas_pag1 = array_slice($lineas, 0);
                             foreach ($lineas_pag1 as $l) { ?>
                                 <tr>
-                                    <td style=" font-size:16px !important;"><b><?php echo $l->n_piezas; ?> </b></td>
-                                    <td style=" font-size:16px !important;"><b><?php echo $l->nombre_producto; ?> </b></td>
-                                    <td style=" font-size:16px !important;"><b><?php echo $l->nom_base; ?></b></td>
-                                    <td style=" font-size:16px !important;"><b><?php echo $l->med_inicial; ?></b></td>
-                                    <td style=" font-size:16px !important;"><b><?php echo $l->med_final; ?></b></td>
-                                    <td style=" font-size:16px !important;"><b><?php echo $l->total_linea; ?></b> &euro;</td>
+                                    <td style=" font-size:20px !important;"><b><?php echo $l->n_piezas; ?> </b></td>
+                                    <td style=" font-size:20px !important;"><b><?php echo $l->nombre_producto; ?> </b></td>
+                                    <td style=" font-size:20px !important;"><b><?php echo $l->nom_base; ?></b></td>
+                                    <td style=" font-size:20px !important;"><b><?php echo $l->med_inicial; ?></b></td>
+                                    <td style=" font-size:20px !important;"><b><?php echo $l->med_final; ?></b></td>
+                                    <td style=" font-size:20px !important;"><b><?php echo $l->total_linea; ?></b> &euro;</td>
                                     <?php $total += $l->total_linea; ?>
                                 </tr>
                             <?php } ?>
@@ -108,17 +108,17 @@ foreach ($pedido as $ped) { ?>
                                     <th>Total</th>
                                 </tr>
                             </thead>
-                            <tbody style=" font-size:35px !important;">
+                            <tbody style=" font-size:40px !important;">
                                 <?php
                                 $lineas_pag2 = array_slice($lineas, 9); // Registros desde el noveno en adelante
                                 foreach ($lineas_pag2 as $l) { ?>
                                     <tr>
-                                        <td style=" font-size:16px !important;"><b><?php echo $l->n_piezas; ?> </b></td>
-                                        <td style=" font-size:16px !important;"><b><?php echo $l->nombre_producto; ?> </b></td>
-                                        <td style=" font-size:16px !important;"><b><?php echo $l->nom_base; ?></b></td>
-                                        <td style=" font-size:16px !important;"><b><?php echo $l->med_inicial; ?></b></td>
-                                        <td style=" font-size:16px !important;"><b><?php echo $l->med_final; ?></b></td>
-                                        <td style=" font-size:16px !important;"><b><?php echo $l->total_linea; ?></b> &euro;</td>
+                                        <td style=" font-size:20px !important;"><b><?php echo $l->n_piezas; ?> </b></td>
+                                        <td style=" font-size:20px !important;"><b><?php echo $l->nombre_producto; ?> </b></td>
+                                        <td style=" font-size:20px !important;"><b><?php echo $l->nom_base; ?></b></td>
+                                        <td style=" font-size:20px !important;"><b><?php echo $l->med_inicial; ?></b></td>
+                                        <td style=" font-size:20px !important;"><b><?php echo $l->med_final; ?></b></td>
+                                        <td style=" font-size:20px !important;"><b><?php echo $l->total_linea; ?></b> &euro;</td>
                                         <?php $total += $l->total_linea; ?>
                                     </tr>
                                 <?php } ?>
