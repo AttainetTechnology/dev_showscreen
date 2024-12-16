@@ -133,7 +133,7 @@
                             <?php
                             $i = '1';
                             foreach ($procesos as $proc) { ?>
-                                <?php if ($i == '7') { ?><div class="detalles-pie">
+                                <?php if ($i == '6') { ?><div class="detalles-pie">
 
                                         Entrada: <? echo date("d-m-Y", strtotime($p->fecha_entrada)); ?> &nbsp;
                                         Entrega:
