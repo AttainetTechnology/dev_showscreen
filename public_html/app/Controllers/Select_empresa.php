@@ -11,7 +11,10 @@ class Select_empresa extends BaseController
         helper('controlacceso');
         $nivel = control_login();
         $data = datos_user();
-
+        // Añadir migas de pan
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Empresas');
+        $data['amiga'] = $this->getBreadcrumbs();
         if ($nivel < '9') {
             return redirect()->to(base_url());
         } else {

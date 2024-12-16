@@ -73,14 +73,14 @@ $estadoMap = [
             {
                 headerName: "Fecha Entrada",
                 field: "fecha_entrada",
-                filter: 'agDateColumnFilter',
+                 filter: 'agTextColumnFilter',
                 flex: 1,    
                 valueFormatter: formatDate
             },
             {
                 headerName: "Fecha Entrega",
                 field: "fecha_entrega",
-                filter: 'agDateColumnFilter',
+                filter: 'agTextColumnFilter',
                 flex: 1,
                 valueFormatter: formatDate
             },
