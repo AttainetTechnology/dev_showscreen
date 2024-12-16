@@ -1,6 +1,5 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <style>
     .titleeditEmpresa {
