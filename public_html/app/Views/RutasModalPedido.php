@@ -91,7 +91,6 @@
             $('#addRutaForm').hide(); 
             $('#gridRutas').show(); 
             $('#botonesRuta').show();
-            console.log("Volver a la tabla, botones y tabla mostrados.");
         });
         // Enviar el formulario sin recargar la página
         $('#formNuevaRuta').on('submit', function(event) {

@@ -9,13 +9,14 @@
 	<meta name="author" content="">
 	<title>ATTAINET - INTRANET</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
-<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.3.1/dist/ag-grid-community.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
+	<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.3.1/dist/ag-grid-community.min.js"></script>
 
 
 	<!-- Cargamos Bootstrap v5.02 -->
-	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"
+		integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -23,7 +24,8 @@
 
 
 	<!-- Cargamos Bootstrap v5.02 -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<!-- Otros Css -->
 
 	<!-- Incluir Select2 CSS y JS -->
@@ -35,7 +37,8 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/custom.css') ?>?v=<?= time() ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/attainet.css') ?>?v=<?= time() ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/layout.css') ?>?v=<?= time() ?>">
-	<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/ocultar_botones.css') ?>?v=<?= time() ?>">
+	<link rel="stylesheet" type="text/css"
+		href="<?= base_url('public/assets/css/ocultar_botones.css') ?>?v=<?= time() ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/botones.css') ?>?v=<?= time() ?>">
 	<!-- Cargo FAVICON  -->
 	<?php
@@ -84,7 +87,7 @@
 	if (!empty($js_files)) {
 		foreach ($js_files as $file) { ?>
 			<script src="<?php echo $file; ?>"></script>
-	<?php }
+		<?php }
 	}
 	?>
 

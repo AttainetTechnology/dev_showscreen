@@ -2,8 +2,8 @@
 <?= $this->section('content') ?>
 <?= $this->include('partials/amiga') ?>
 
-<!-- Estilos y Scripts -->
 
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <br>
 <h2 class="tituloEmpresas">Empresas</h2>
 <br>

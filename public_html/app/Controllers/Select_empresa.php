@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Models\DbConnections_Model;
@@ -12,12 +11,13 @@ class Select_empresa extends BaseController
         helper('controlacceso');
         $nivel = control_login();
         $data = datos_user();
-
-        // Verificar el nivel de acceso
+        // Añadir migas de pan
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Empresas');
+        $data['amiga'] = $this->getBreadcrumbs();
         if ($nivel < '9') {
             return redirect()->to(base_url());
         } else {
-            // Acceso directo a la base de datos para obtener la información
             $db = \Config\Database::connect();
             $builder = $db->table('dbconnections');
             $query = $builder->get();
@@ -27,65 +27,100 @@ class Select_empresa extends BaseController
         }
     }
 
-    // Método para obtener los datos de la empresa para editar
     public function get_empresa($id)
     {
         $empresaModel = new DbConnections_Model();
         $empresa = $empresaModel->find($id);
         return $this->response->setJSON($empresa);
     }
-
-    // Método para editar la empresa
     public function editar()
     {
-        if ($this->request->getMethod() === 'post') {
-            $empresaModel = new DbConnections_Model();
-            $id = $this->request->getPost('id_empresa');
-            
-            // Cargar imágenes si están presentes
-            $logo_empresa = $this->request->getFile('logo_empresa');
-            $favicon = $this->request->getFile('favicon');
-            $logo_fichajes = $this->request->getFile('logo_fichajes');
+        $empresaModel = new DbConnections_Model();
 
-            // Validar y mover las imágenes a la carpeta correspondiente
-            if ($logo_empresa && $logo_empresa->isValid()) {
-                $logo_empresa->move("public/assets/uploads/files/{$id}/logos");
-                $logo_empresa = $logo_empresa->getName();  // Obtener el nombre del archivo
-            } else {
-                $logo_empresa = $this->request->getPost('current_logo_empresa');
-            }
+        $id = $this->request->getPost('id_empresa');
+        $data = [
+            'nombre_empresa' => $this->request->getPost('nombre_empresa'),
+            'db_name' => $this->request->getPost('db_name'),
+            'db_user' => $this->request->getPost('db_user'),
+            'db_password' => $this->request->getPost('db_password'),
+            'NIF' => $this->request->getPost('NIF'),
+        ];
 
-            if ($favicon && $favicon->isValid()) {
-                $favicon->move("public/assets/uploads/files/{$id}/logos");
-                $favicon = $favicon->getName();  // Obtener el nombre del archivo
-            } else {
-                $favicon = $this->request->getPost('current_favicon');
-            }
+        // Ruta base para los archivos públicos
+        $uploadPath = FCPATH . 'public/assets/uploads/files/' . $id . '/logos/';
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true); // Crear directorio si no existe
+        }
 
-            if ($logo_fichajes && $logo_fichajes->isValid()) {
-                $logo_fichajes->move("public/assets/uploads/files/{$id}/logos");
-                $logo_fichajes = $logo_fichajes->getName();  // Obtener el nombre del archivo
-            } else {
-                $logo_fichajes = $this->request->getPost('current_logo_fichajes');
-            }
+        // Procesar logo de empresa
+        $logoEmpresa = $this->request->getFile('logo_empresa');
+        if ($logoEmpresa && $logoEmpresa->isValid()) {
+            $filePath = $id . '/logos/' . $logoEmpresa->getName();
+            $logoEmpresa->move($uploadPath, $logoEmpresa->getName());
+            $data['logo_empresa'] = $filePath;
+        }
 
-            // Actualizar los datos
-            $data = [
-                'id' => $id,
-                'nombre_empresa' => $this->request->getPost('nombre_empresa'),
-                'db_name' => $this->request->getPost('db_name'),
-                'db_user' => $this->request->getPost('db_user'),
-                'db_password' => $this->request->getPost('db_password'),
-                'NIF' => $this->request->getPost('NIF'),
-                'logo_empresa' => $logo_empresa,
-                'favicon' => $favicon,
-                'logo_fichajes' => $logo_fichajes,
-            ];
+        // Procesar favicon
+        $favicon = $this->request->getFile('favicon');
+        if ($favicon && $favicon->isValid()) {
+            $filePath = $id . '/logos/' . $favicon->getName();
+            $favicon->move($uploadPath, $favicon->getName());
+            $data['favicon'] = $filePath;
+        }
 
+        // Procesar logo de fichajes
+        $logoFichajes = $this->request->getFile('logo_fichajes');
+        if ($logoFichajes && $logoFichajes->isValid()) {
+            $filePath = $id . '/logos/' . $logoFichajes->getName();
+            $logoFichajes->move($uploadPath, $logoFichajes->getName());
+            $data['logo_fichajes'] = $filePath;
+        }
+
+        if (!empty($id)) {
             $empresaModel->update($id, $data);
+        } else {
+            $empresaModel->insert($data);
+        }
 
-            // Redirigir a la vista principal después de la edición
-            return redirect()->to(base_url('select_empresa'));
+        return redirect()->to(base_url('select_empresa'));
+    }
+    public function eliminar($id)
+    {
+        $empresaModel = new DbConnections_Model();
+
+        // Eliminar el registro de la base de datos
+        if ($empresaModel->delete($id)) {
+            // Opcional: Eliminar archivos asociados a la empresa
+            $uploadPath = FCPATH . 'public/assets/uploads/files/' . $id;
+            if (is_dir($uploadPath)) {
+                $this->deleteDirectory($uploadPath);
+            }
+
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Empresa eliminada correctamente.']);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'No se pudo eliminar la empresa.']);
         }
     }
+
+    // Método auxiliar para eliminar un directorio y su contenido
+    private function deleteDirectory($dir)
+    {
+        if (!is_dir($dir)) {
+            return false;
+        }
+
+        foreach (scandir($dir) as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            if (is_dir("$dir/$item")) {
+                $this->deleteDirectory("$dir/$item");
+            } else {
+                unlink("$dir/$item");
+            }
+        }
+        return rmdir($dir);
+    }
+
+
 }

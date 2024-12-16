@@ -80,7 +80,7 @@
             <textarea name="observaciones" class="form-control" rows="3"><?= esc($linea_pedido['observaciones']) ?></textarea>
         </div>
         <br>
-        <div class="modal-footer">
+        <div class="buttonsEditProductProveedAbajo">
             <button type="button" class="boton volverButton" data-bs-dismiss="modal">
                 Cerrar
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
