@@ -71,10 +71,12 @@
                 field: "acciones",
                 cellRenderer: params => {
                     return `
-
-                        <button onclick="accederEmpresa(${params.data.id})" class="btn botonTabla btnMover">Acceder</button>
-                    `;
+        <button onclick="editarEmpresa(${params.data.id})" class="btn botonTabla btnMover">Editar</button>
+        <button onclick="accederEmpresa(${params.data.id})" class="btn botonTabla btnMover">Acceder</button>
+        <button onclick="eliminarEmpresa(${params.data.id})" class="btn botonTabla btnEliminar">Eliminar</button>
+    `;
                 },
+
                 filter: false,
                 maxWidth: 200
             },
@@ -114,7 +116,6 @@
         const eGridDiv = document.querySelector('#myGrid');
         new agGrid.Grid(eGridDiv, gridOptions);
     });
-
     function editarEmpresa(id) {
         fetch(`<?= base_url('select_empresa/get_empresa') ?>/${id}`)
             .then(response => response.json())
@@ -125,18 +126,58 @@
                 document.getElementById('db_user').value = data.db_user;
                 document.getElementById('db_password').value = data.db_password;
                 document.getElementById('NIF').value = data.NIF;
-                document.getElementById('logo_empresa').value = '';
-                document.getElementById('favicon').value = '';
-                document.getElementById('logo_fichajes').value = '';
 
-                // Mostrar imágenes actuales
-                document.getElementById('current_logo_empresa').innerHTML = data.logo_empresa ? `<img src="public/assets/uploads/files/${data.id}/logos/${data.logo_empresa}" width="100" alt="Logo Empresa">` : 'No hay logo';
-                document.getElementById('current_favicon').innerHTML = data.favicon ? `<img src="public/assets/uploads/files/${data.id}/logos/${data.favicon}" width="50" alt="Favicon">` : 'No hay favicon';
-                document.getElementById('current_logo_fichajes').innerHTML = data.logo_fichajes ? `<img src="public/assets/uploads/files/${data.id}/logos/${data.logo_fichajes}" width="100" alt="Logo Fichajes">` : 'No hay logo de fichajes';
+                // Construir rutas absolutas para las imágenes
+                const baseUrl = '<?= base_url('public/assets/uploads/files') ?>';
+                document.getElementById('current_logo_empresa').innerHTML = data.logo_empresa
+                    ? `<img src="${baseUrl}/${data.logo_empresa}" width="100" alt="Logo Empresa">`
+                    : 'No hay logo';
+                document.getElementById('current_favicon').innerHTML = data.favicon
+                    ? `<img src="${baseUrl}/${data.favicon}" width="50" alt="Favicon">`
+                    : 'No hay favicon';
+                document.getElementById('current_logo_fichajes').innerHTML = data.logo_fichajes
+                    ? `<img src="${baseUrl}/${data.logo_fichajes}" width="100" alt="Logo Fichajes">`
+                    : 'No hay logo de fichajes';
 
-                // Mostrar el modal
+                document.getElementById('modalEditarLabel').textContent = 'Editar Empresa';
+
                 $('#modalEditar').modal('show');
             });
+    }
+
+    function abrirModalAgregar() {
+        // Limpia los campos del formulario
+        document.getElementById('formEditarEmpresa').reset();
+        document.getElementById('id_empresa').value = '';
+        document.getElementById('current_logo_empresa').innerHTML = '';
+        document.getElementById('current_favicon').innerHTML = '';
+        document.getElementById('current_logo_fichajes').innerHTML = '';
+
+        // Cambiar el título del modal
+        document.getElementById('modalEditarLabel').textContent = 'Añadir Empresa';
+
+        // Mostrar el modal
+        $('#modalEditar').modal('show');
+    }
+    function eliminarEmpresa(id) {
+        if (confirm('¿Estás seguro de que deseas eliminar esta empresa?')) {
+            fetch(`<?= base_url('select_empresa/eliminar') ?>/${id}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Empresa eliminada correctamente.');
+                        // Recargar la página o actualizar la tabla
+                        location.reload();
+                    } else {
+                        alert('Hubo un problema al eliminar la empresa.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Hubo un error en la conexión con el servidor.');
+                });
+        }
     }
 
     function accederEmpresa(id) {
