@@ -43,24 +43,32 @@ class Lista_produccion extends BaseControllerGC
     public function todos($coge_estado, $where_estado, $situacion)
     {
         $this->addBreadcrumb('Inicio', base_url('/'));
-		$this->addBreadcrumb('Partes');
-        // Control de login    
+        $this->addBreadcrumb('Partes');
+    
+        // Control de login
         helper('controlacceso');
         $nivel = control_login();
-
+    
         // Conectar a la base de datos
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-
-        // Obtener los datos de la tabla
+    
+        // Configuración de paginación
+        $perPage = 2000; // Número de registros cargados
+        $page = $this->request->getVar('page') ?? 1; 
+        $offset = ($page - 1) * $perPage;
+    
+        // Obtener los datos paginados de la tabla
         $builder = $db->table('v_linea_pedidos_con_familia');
         $builder->select('id_lineapedido, fecha_entrada, med_inicial, med_final, id_cliente, nom_base, id_producto, id_pedido, estado, id_familia');
         $builder->where($coge_estado . $where_estado);
         $builder->orderBy('fecha_entrada', 'DESC');
-        $query = $builder->get();
+    
+        $total = $builder->countAllResults(false); 
+        $query = $builder->limit($perPage, $offset)->get();
         $result = $query->getResultArray();
-
-        // Obtener nombres de relaciones
+    
+        // Procesar relaciones (igual que antes)
         $clientesModel = new \App\Models\ClienteModel($db);
         $familiasModel = new \App\Models\Familia_productos_model($db);
         $productosModel = new \App\Models\Productos_model($db);
@@ -72,23 +80,23 @@ class Lista_produccion extends BaseControllerGC
             $row['nombre_producto'] = $productosModel->find($row['id_producto'])['nombre_producto'] ?? 'Desconocido';
             $estado = $this->asignaEstado($row['estado']);
             $row['estado'] = $estado['nombre_estado'];
-            $row['estado_clase'] = $estado['estado_clase']; // Asigna la clase correspondiente
-            $row['accion_parte'] = base_url('partes/print/' . $row['id_lineapedido']) . '?volver=' . urlencode(current_url()); // URL para el botón "Parte"
+            $row['estado_clase'] = $estado['estado_clase'];
+            $row['accion_parte'] = base_url('partes/print/' . $row['id_lineapedido']) . '?volver=' . urlencode(current_url());
         }
-        
-        
 
-        // Definimos el título de la tabla
         $ahora = date('d-m-y');
         $titulo_pagina = "Partes " . $situacion . " - fecha: " . $ahora;
-
-        // Pasar los datos a la vista
+ 
         $data['titulo_pagina'] = $titulo_pagina;
         $data['result'] = $result;
-
         $data['amiga'] = $this->getBreadcrumbs();
+
+        $pager = \Config\Services::pager();
+        $data['pager'] = $pager->makeLinks($page, $perPage, $total);
+    
         echo view('lista_produccion_view', $data);
     }
+    
 
     function asignaEstado($estado)
     {
