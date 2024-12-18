@@ -35,6 +35,12 @@ class Lista_produccion extends BaseControllerGC
         $this->todos('estado=', '5', 'Entregados');
     }
 
+    public function anulados()
+    {
+        $this->todos('estado=', '6', 'Anulados');
+    }
+
+
     public function todoslospartes()
     {
         $this->todos('estado<', '7', '(Todos)');

@@ -117,7 +117,7 @@ use App\Models\Menu_familias_model; ?>
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-2">
-			<a href="<?php echo site_url('Lista_produccion/todoslospartes') ?>">
+			<a href="<?php echo site_url('Lista_produccion/entregados') ?>">
 				<div class="panel enEntregados">
 					<div class="panel-heading">
 						<div class="row">
@@ -147,7 +147,7 @@ use App\Models\Menu_familias_model; ?>
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-2">
-			<a href="<?php echo site_url('Lista_produccion/todoslospartes') ?>">
+			<a href="<?php echo site_url('Lista_produccion/anulados') ?>">
 				<div class="panel enAnulados">
 					<div class="panel-heading">
 						<div class="row">
