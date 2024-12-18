@@ -21,10 +21,8 @@ class Vacaciones extends BaseController
     $db = db_connect($data['new_db']);
     $model = new Vacaciones_model($db);
 
-    // Ordenar los registros por el campo 'id' de manera descendente, asumiendo que los registros más recientes tienen el mayor ID
     $vacaciones = $model->orderBy('id', 'DESC')->findAll();
 
-    // Obtener nombres de usuarios
     $usuariosModel = new Usuarios2_Model($db);
     foreach ($vacaciones as &$vacacion) {
         if (isset($vacacion['user_id'])) {
@@ -34,13 +32,11 @@ class Vacaciones extends BaseController
             $vacacion['nombre_usuario'] = 'Desconocido';
         }
 
-        // Convertir fechas al formato dd/mm/yyyy
         $vacacion['desde'] = DateTime::createFromFormat('Y-m-d', $vacacion['desde'])->format('d/m/Y');
         $vacacion['hasta'] = DateTime::createFromFormat('Y-m-d', $vacacion['hasta'])->format('d/m/Y');
     }
     return $this->response->setJSON($vacaciones);
 }
-
 
     public function getUsuarios()
     {

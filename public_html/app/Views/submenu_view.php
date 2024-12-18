@@ -2,18 +2,9 @@
 <?= $this->section('content') ?>
 <?= $this->include('partials/amiga') ?>
 <!-- Estilos de AG-Grid -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
+
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
-<!-- Estilos de Bootstrap (si no se han incluido globalmente) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Scripts de jQuery y Bootstrap JS (si no se han incluido globalmente) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Estilos y Scripts de AG-Grid -->
-<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
 <br>
 <h2>Menú de la aplicación</h2>
 <br>
@@ -199,10 +190,6 @@
 </div>
 
 </div>
-<!-- Estilos y Scripts de AG-Grid -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
-<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
