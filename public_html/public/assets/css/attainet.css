@@ -12,7 +12,6 @@ div#report-success,
 	font-size: 13px !important;
 }
 
-
 a {
 	color: #006192 !important;
 }
@@ -1032,7 +1031,7 @@ input[type=number] {
 }
 .enAnulados svg{
     margin: 12px;
-	margin-top:16px;
+	margin-top:10px;
 }
 
 .enEntregados svg{
