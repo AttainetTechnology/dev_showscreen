@@ -55,9 +55,10 @@
                     </svg></button>
                 `,
                 filter: false,
-                floatingFilter: false
+                floatingFilter: false,
+                minWidth: 190,
             },
-            { headerName: "Fecha", field: "fecha_ruta", sortable: true, filter: 'agDateColumnFilter' },
+            { headerName: "Fecha", field: "fecha_ruta", sortable: true, filter: true,},
             {
                 headerName: "Estado",
                 field: "estado_ruta",

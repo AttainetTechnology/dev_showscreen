@@ -98,11 +98,22 @@
                     const date = new Date(params.value);
                     const day = String(date.getDate()).padStart(2, '0');
                     const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const year = date.getFullYear().toString().slice(-2); // Tomar solo los últimos dos dígitos del año
+                    const year = date.getFullYear().toString().slice(-2);
                     return `${day}/${month}/${year}`;
                 }
             },
-            { headerName: "Tipo", field: "tipo_festivo", filter: 'agTextColumnFilter', minWidth: 120 },
+            {
+                headerName: "Tipo",
+                field: "tipo_festivo",
+                filter: 'agTextColumnFilter',
+                minWidth: 120,
+                valueFormatter: params => {
+                    if (params.value === '1') return 'Se repite anualmente';
+                    if (params.value === '0') return 'Varía anualmente';
+                    return params.value; 
+                }
+            },
+
 
         ];
         const gridOptions = {

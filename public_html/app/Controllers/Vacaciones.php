@@ -16,28 +16,31 @@ class Vacaciones extends BaseController
     }
 
     public function getVacaciones()
-    {
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
-        $model = new Vacaciones_model($db);
-        $vacaciones = $model->findAll();
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $model = new Vacaciones_model($db);
 
-        // Obtener nombres de usuarios
-        $usuariosModel = new Usuarios2_Model($db);
-        foreach ($vacaciones as &$vacacion) {
-            if (isset($vacacion['user_id'])) {
-                $usuario = $usuariosModel->findUserById($vacacion['user_id']);
-                $vacacion['nombre_usuario'] = $usuario['nombre_usuario'] ?? 'Desconocido';
-            } else {
-                $vacacion['nombre_usuario'] = 'Desconocido';
-            }
+    // Ordenar los registros por el campo 'id' de manera descendente, asumiendo que los registros más recientes tienen el mayor ID
+    $vacaciones = $model->orderBy('id', 'DESC')->findAll();
 
-            // Convertir fechas al formato dd/mm/yyyy
-            $vacacion['desde'] = DateTime::createFromFormat('Y-m-d', $vacacion['desde'])->format('d/m/Y');
-            $vacacion['hasta'] = DateTime::createFromFormat('Y-m-d', $vacacion['hasta'])->format('d/m/Y');
+    // Obtener nombres de usuarios
+    $usuariosModel = new Usuarios2_Model($db);
+    foreach ($vacaciones as &$vacacion) {
+        if (isset($vacacion['user_id'])) {
+            $usuario = $usuariosModel->findUserById($vacacion['user_id']);
+            $vacacion['nombre_usuario'] = $usuario['nombre_usuario'] ?? 'Desconocido';
+        } else {
+            $vacacion['nombre_usuario'] = 'Desconocido';
         }
-        return $this->response->setJSON($vacaciones);
+
+        // Convertir fechas al formato dd/mm/yyyy
+        $vacacion['desde'] = DateTime::createFromFormat('Y-m-d', $vacacion['desde'])->format('d/m/Y');
+        $vacacion['hasta'] = DateTime::createFromFormat('Y-m-d', $vacacion['hasta'])->format('d/m/Y');
     }
+    return $this->response->setJSON($vacaciones);
+}
+
 
     public function getUsuarios()
     {
