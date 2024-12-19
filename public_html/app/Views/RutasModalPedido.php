@@ -123,5 +123,10 @@
                 window.gridApiRutas.onFilterChanged();
             }
         });
+            // Recarga la página al cerrar el modal
+    $('#myModal').on('hidden.bs.modal', function () {
+        location.reload();
+    });
+
     });
 </script>
