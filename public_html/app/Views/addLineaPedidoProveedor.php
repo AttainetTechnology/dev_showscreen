@@ -28,6 +28,4 @@
         <label for="n_piezas">Número de Piezas</label>
         <input type="number" name="n_piezas" id="n_piezas" class="form-control" required>
     </div>
-
-
 </form>
