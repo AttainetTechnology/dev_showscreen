@@ -1,5 +1,26 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<style>
+    .select2-container {
+    width: 100% !important; /* Asegura que el ancho coincida con el input */
+}
+
+.select2-container .select2-selection--single {
+    height: calc(2.25rem + 2px); /* Ajustar altura para que coincida con Bootstrap */
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+}
+
+.select2-dropdown {
+    z-index: 1055; /* Asegura que el dropdown se muestre sobre el modal */
+}
+
+</style>
 <div class="modal-header">
     <h5 class="modal-title" id="addLineaPedidoLabel" style="margin-left: 0px;">Editar Línea de Pedido</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -17,15 +38,17 @@
             </button>
         </div>
         <div class="form-group">
-            <label for="id_producto">Producto:</label>
-            <select name="id_producto" class="form-control" required>
-                <?php foreach ($productos as $producto): ?>
-                    <option value="<?= esc($producto['id_producto']) ?>" <?= ($producto['id_producto'] == $linea_pedido['id_producto']) ? 'selected' : '' ?>>
-                        <?= esc($producto['nombre_producto']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+    <label for="id_producto">Producto:</label>
+    <select name="id_producto" id="id_producto" class="form-control" required>
+        <option value="">Selecciona un producto</option>
+        <?php foreach ($productos as $producto): ?>
+            <option value="<?= esc($producto['id_producto']) ?>" <?= ($producto['id_producto'] == $linea_pedido['id_producto']) ? 'selected' : '' ?>>
+                <?= esc($producto['nombre_producto']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
         <div class="form-group">
             <label for="n_piezas">Cantidad:</label>
             <input type="number" name="n_piezas" class="form-control" value="<?= esc($linea_pedido['n_piezas']) ?>" required>
@@ -55,18 +78,17 @@
             <input type="text" name="distancia" class="form-control" value="<?= esc($linea_pedido['distancia']) ?>">
         </div>
         <div class="form-group">
-            <label for="estado">Estado:</label>
-            <select name="estado" class="form-control" required>
-                <?php foreach ($estados as $estado): ?>
-                    <?php if ($estado['id_estado'] != 3):
-                    ?>
-                        <option value="<?= esc($estado['id_estado']) ?>" <?= ($estado['id_estado'] == $linea_pedido['estado']) ? 'selected' : '' ?>>
-                            <?= esc($estado['nombre_estado']) ?>
-                        </option>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </select>
-        </div>
+    <label for="id_producto">Producto:</label>
+    <select name="id_producto" id="id_producto" class="form-control" required>
+        <option value="">Selecciona un producto</option>
+        <?php foreach ($productos as $producto): ?>
+            <option value="<?= esc($producto['id_producto']) ?>" <?= ($producto['id_producto'] == $linea_pedido['id_producto']) ? 'selected' : '' ?>>
+                <?= esc($producto['nombre_producto']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
         <div class="form-group">
             <label for="fecha_entrada">Fecha de Entrada:</label>
             <input type="date" name="fecha_entrada" class="form-control" value="<?= esc($linea_pedido['fecha_entrada']) ?>">
@@ -97,29 +119,47 @@
     </form>
 </div>
 <script>
-    $(document).ready(function() {
-        $('.editLineaForm').on('submit', function(e) {
-            e.preventDefault();
-            var form = $(this);
-            var url = form.attr('action');
-            var lineaId = form.data('linea-id');
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: form.serialize(),
-                success: function(response) {
-                    if (response.success) {
-                        $('#editarLineaModal' + lineaId).modal('hide');
-                        location.reload();
-                    } else {
-                        alert(response.error || 'Hubo un error al actualizar la línea de pedido.');
-                    }
-                },
-                error: function(response) {
-                    console.error('Error al enviar la solicitud:', response);
-                    alert('Hubo un error al actualizar la línea de pedido.');
-                }
-            });
+  $(document).ready(function () {
+    // Inicializar Select2 para mostrar todos los productos por defecto y permitir filtrado
+    $('#id_producto').select2({
+        placeholder: "Selecciona un producto",
+        allowClear: true, // Permitir limpiar la selección
+        dropdownParent: $('.content-body'), // Asegurar que el dropdown se renderice en el modal
+    });
+
+    // Reconfigurar Select2 al abrir el modal (opcional)
+    $('#editarLineaModal').on('shown.bs.modal', function () {
+        $('#id_producto').select2({
+            placeholder: "Selecciona un producto",
+            allowClear: true,
+            dropdownParent: $('.content-body'),
         });
     });
+
+    // Manejo de envío de formulario
+    $('.editLineaForm').on('submit', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function (response) {
+                if (response.success) {
+                    $('#editarLineaModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert(response.error || 'Hubo un error al actualizar la línea de pedido.');
+                }
+            },
+            error: function (response) {
+                console.error('Error al enviar la solicitud:', response);
+                alert('Hubo un error al actualizar la línea de pedido.');
+            }
+        });
+    });
+});
+
 </script>
