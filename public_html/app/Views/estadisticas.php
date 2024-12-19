@@ -15,7 +15,7 @@ use App\Models\Menu_familias_model; ?>
 		<div class="col-lg-2 col-md-2 col-sm-2">
 			<a href="<?php echo site_url('Lista_produccion/pendientes') ?>">
 				<div class="panel panel-default">
-					<div class="panel-heading">
+					<div class="panel-heading" style="font-size: 15px !important;">
 						<div class="row">
 							<div class="col-xs-3">
 								<i class="fa fa-clock-o fa-5x"></i>
@@ -180,7 +180,7 @@ use App\Models\Menu_familias_model; ?>
 	<div class="row">
 		<div class="col-lg-8">
 			<div class="panel panel-default <? echo $clase; ?>">
-				<div class="panel-heading">
+				<div class="panel-heading" style="font-size: 15px !important;">
 					<i class="fa fa-bar-chart-o fa-fw"></i> <? echo $titulo; ?>
 					<div class="pull-right">
 						<div class="btn-group">
@@ -254,7 +254,7 @@ use App\Models\Menu_familias_model; ?>
 		<div class="col-lg-4">
 			<? if (isset($rutas)): ?>
 				<div class="panel panel-default">
-					<div class="panel-heading">
+					<div class="panel-heading" style="font-size: 15px !important;">
 						<i class="fa fa-truck fa-fw"></i> Rutas de Transporte
 					</div>
 					<div class="panel-body">
@@ -263,7 +263,7 @@ use App\Models\Menu_familias_model; ?>
 				</div>
 			<? endif; ?>
 			<div class="panel panel-default">
-				<div class="panel-heading">
+				<div class="panel-heading" style="font-size: 15px !important;">
 					<i class="fa fa-users fa-fw"></i> Incidencias
 				</div>
 				<!-- /.panel-heading -->
