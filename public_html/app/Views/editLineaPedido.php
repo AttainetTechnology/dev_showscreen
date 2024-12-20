@@ -58,8 +58,7 @@
             <label for="estado">Estado:</label>
             <select name="estado" class="form-control" required>
                 <?php foreach ($estados as $estado): ?>
-                    <?php if ($estado['id_estado'] != 3):
-                    ?>
+                    <?php if ($estado['id_estado'] != 3 || $linea_pedido['estado'] == 3): ?>
                         <option value="<?= esc($estado['id_estado']) ?>" <?= ($estado['id_estado'] == $linea_pedido['estado']) ? 'selected' : '' ?>>
                             <?= esc($estado['nombre_estado']) ?>
                         </option>
@@ -67,6 +66,7 @@
                 <?php endforeach; ?>
             </select>
         </div>
+
         <div class="form-group">
             <label for="fecha_entrada">Fecha de Entrada:</label>
             <input type="date" name="fecha_entrada" class="form-control" value="<?= esc($linea_pedido['fecha_entrada']) ?>">

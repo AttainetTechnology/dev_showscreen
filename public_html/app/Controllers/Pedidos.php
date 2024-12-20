@@ -221,6 +221,7 @@ class Pedidos extends BaseController
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
+	
 		// Validación básica de datos
 		if (!$this->validate([
 			'id_cliente' => 'required',
@@ -229,6 +230,14 @@ class Pedidos extends BaseController
 		])) {
 			return redirect()->back()->with('error', 'Faltan datos obligatorios');
 		}
+	
+		// Obtener el pedido actual para mantener su estado
+		$pedido = $pedidoModel->find($id_pedido);
+		if (!$pedido) {
+			return redirect()->back()->with('error', 'Pedido no encontrado');
+		}
+	
+		// Preparar los datos para actualizar el pedido
 		$updateData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
@@ -236,15 +245,19 @@ class Pedidos extends BaseController
 			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
-			'estado' => $this->request->getPost('estado'),
 		];
-
+	
+		// Mantener el estado original del pedido, no modificarlo
+		$updateData['estado'] = $pedido->estado; // Usar notación de objeto ->
+	
+		// Actualizar el pedido
 		if ($pedidoModel->update($id_pedido, $updateData)) {
 			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Pedido actualizado correctamente');
 		} else {
 			return redirect()->back()->with('error', 'No se pudo actualizar el pedido');
 		}
 	}
+	
 
 	function imprimir_parte($row)
 	{
@@ -412,18 +425,28 @@ class Pedidos extends BaseController
 		$estadoModel = new EstadoModel($db);
 		$lineaPedidoModel = new LineaPedido($db);
 		$linea_pedido = $lineaPedidoModel->find($id_lineapedido);
+	
 		if (!$linea_pedido) {
 			return $this->response->setStatusCode(404, 'Línea de pedido no encontrada');
 		}
+	
+		// Verificar si el estado de la línea es "en cola"
+		$isEstadoEnCola = ($linea_pedido['estado'] === 'en cola');
+	
+		// Pasar datos a la vista
 		$data['productos'] = $productosModel->findAll();
 		$data['estados'] = $estadoModel->findAll();
 		$data['linea_pedido'] = $linea_pedido;
+		$data['isEstadoEnCola'] = $isEstadoEnCola;  // Variable adicional para controlar la visibilidad
+	
+		// Renderizar la vista dependiendo de si es AJAX o no
 		if ($this->request->isAJAX()) {
 			return view('editLineaPedido', $data);
 		} else {
 			return redirect()->back()->with('error', 'Acción no permitida');
 		}
 	}
+	
 	public function mostrarFormularioAddLineaPedido($id_pedido)
 	{
 		$data = usuario_sesion();

@@ -1,0 +1,857 @@
+AWSTATS DATA FILE 7.7 (build 20161204)
+# If you remove this file, all statistics for date 202408 will be lost/reset.
+# Last config file used to build this data file was /etc/awstats/awstats.dev.showscreen.app.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2001                
+POS_TIME 2695                
+POS_VISITOR 9149                
+POS_DAY 10779               
+POS_DOMAIN 3452                
+POS_LOGIN 3700                
+POS_ROBOT 3855                
+POS_WORMS 4025                
+POS_EMAILSENDER 4156                
+POS_EMAILRECEIVER 4299                
+POS_SESSION 11436               
+POS_SIDER 11643               
+POS_FILETYPES 4434                
+POS_DOWNLOADS 4679                
+POS_OS 4727                
+POS_BROWSER 4882                
+POS_SCREENSIZE 5138                
+POS_UNKNOWNREFERER 5212                
+POS_UNKNOWNREFERERBROWSER 5299                
+POS_ORIGIN 5381                
+POS_SEREFERRALS 5527                
+POS_PAGEREFS 5721                
+POS_SEARCHWORDS 5898                
+POS_KEYWORDS 6050                
+POS_MISC 2357                
+POS_ERRORS 6109                
+POS_CLUSTER 3556                
+POS_SIDER_404 6276                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20240902060828 68948 22967788 15962850115774
+FirstTime 20240801072010
+LastTime 20240830121016
+LastUpdate 20240903043456 68948 68913 0 0 34
+TotalVisits 79                  
+TotalUnique 37                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 37                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+PDFSupport 0 0 0
+RealPlayerSupport 0 0 0
+JavaEnabled 0 0 0
+QuickTimeSupport 0 0 0
+JavascriptDisabled 0 0 0
+DirectorSupport 0 0 0
+FlashSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+TotalMisc 0 0 0
+AddToFavourites 0 819 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 0 0 0
+1 0 0 0 0 0 0
+2 0 0 0 0 0 0
+3 0 0 0 0 0 0
+4 0 0 0 0 0 0
+5 17 35 180467 4 5 44652
+6 3534 6748 61206945 297 1037 14042761
+7 5583 10697 94017737 298 1333 12111701
+8 3097 5860 56734322 290 1183 7541238
+9 4596 9029 86171556 180 726 14385757
+10 6255 12525 111929605 277 1731 16468645
+11 6135 12599 136118821 300 1615 29850155
+12 534 1075 9163722 22 75 3209433
+13 481 1009 7125968 52 234 2077899
+14 1886 3961 33763883 81 274 3787076
+15 478 1011 7545235 27 82 1480874
+16 133 267 1921889 25 54 133605
+17 0 0 0 0 0 0
+18 0 0 0 0 0 0
+19 1 2 5025 0 1 5430
+20 30 79 830961 3 34 329848
+21 0 0 0 0 0 0
+22 0 0 0 0 0 0
+23 0 0 0 0 0 0
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 2
+es 32759 64896 606714631
+us 1 1 1505
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 1
+no_user_agent 1 3448 20240816150110 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 8
+html 15531 276924801 0 0
+woff2 366 28646088 0 0
+jpeg 437 2743924 0 0
+js 2698 126384526 0 0
+png 1358 11409543 0 0
+Unknown 16863 116771878 0 0
+css 27634 43740240 0 0
+jpg 10 95136 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 6
+win8.1 1 1
+win7 2 1
+linuxandroid 273 150
+ios_iphone 6 3
+macosx 2033 854
+win10 62582 31751
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 10
+chrome125.0.0.0 2 1
+chrome109.0.0.0 2 1
+safari 6 3
+chrome121.0.0.0 4 2
+chrome126.0.0.0 172 89
+chrome128.0.0.0 15490 6965
+firefox129.0 95 55
+chrome127.0.0.0 49124 25642
+chrome120.0.0.0 1 1
+firefox110.0 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 0
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 520 525
+From1 2 2
+From2 18 18
+From3 11 11
+From4 32209 64341
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 3
+google_com 4 4
+google_es 2 2
+www_google_com 12 12
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 1
+https://showscreen.app 11 11
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 6
+500 5330 79296890
+403 336 3812889
+404 791 681157
+301 1 24
+302 1094 14879483
+400 12 2348013
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 29
+/assets/css/attainet.css 147 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/9/logos/acdc_logo-25122.png 1 https://dev.showscreen.app/Select_empresa/
+/Index 10 -
+/publicpublic/assets/uploads/favicon9/logos/acdc_logo-25122-2e65d.png 3 -
+/productos/updateProcessRestriction 3 https://dev.showscreen.app/productos/10
+/Select_empresa/public/assets/uploads/files/2/logos/offertiles_logo-966b1.png 2 https://dev.showscreen.app/Select_empresa/
+/publicpublic/assets/uploads/favicon7/logos/favicon_attainet.png 251 https://dev.showscreen.app/presentes
+/publicpublic/assets/uploads/favicon7/logos/offertiles_logo-04b4b.png 43 https://dev.showscreen.app/presentes
+/publicpublic/assets/uploads/favicon2/logos/favicon_attainet_04-1.png 25 https://dev.showscreen.app/presentes
+/publicpublic/assets/uploads/favicon7/logos/offertiles_logo-733b3.png 1 https://dev.showscreen.app/presentes
+/publicpublic/assets/uploads/favicon2/logos/offertiles_logo-966b1.png 9 -
+/procesos_pedidos/index 46 https://dev.showscreen.app/Index
+/procesos/restriccion/1 3 https://dev.showscreen.app/procesos
+/actualizar-procesos 1 https://dev.showscreen.app/procesos_pedidos/index
+/procesos/edit/1 1 https://dev.showscreen.app/procesos
+/Select_empresa/public/assets/uploads/files/2/logos/offertiles_logo-967c3.png 2 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/7/logos/AttainetLogo-efdc8.png 6 https://dev.showscreen.app/Select_empresa/
+/edit_procesos 3 https://dev.showscreen.app/procesos
+/Select_empresa/public/assets/uploads/files/7/logos/AttainetLogo-c7e48.png 6 https://dev.showscreen.app/Select_empresa/
+/publicpublic/assets/uploads/favicon 2 https://dev.showscreen.app/presentes
+/Select_empresa/public/assets/uploads/files/2/logos/offertiles_logo.png 2 https://dev.showscreen.app/Select_empresa/
+/procesos/delete 2 https://dev.showscreen.app/productos/10
+/procesos/updateRestriction 1 https://dev.showscreen.app/productos/10
+/Select_empresa/public/assets/uploads/files/7/logos/favicon_attainet.png 6 https://dev.showscreen.app/Select_empresa/
+//assets/js/functions.js 211 https://dev.showscreen.app/partes/print/200
+/Select_empresa/public/assets/uploads/files/9/logos/acdc_logo-25122-2e65d.png 1 https://dev.showscreen.app/Select_empresa/
+/publicpublic/assets/uploads/favicon9/logos/acdc_logo-25122-91586.png 1 https://dev.showscreen.app/presentes
+/Select_empresa/public/assets/uploads/files/9/logos/acdc_logo-25122-2e731.png 1 https://dev.showscreen.app/Select_empresa/
+/Index/ 1 https://dev.showscreen.app/Index/
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 37
+170.253.56.119 7713 12787 139659764 20240828120056
+170.253.60.70 5759 14176 107946828 20240809122152
+170.253.53.129 5614 12452 99029764 20240830121016
+170.253.48.39 4167 7889 76818775 20240821120547
+170.253.55.139 3571 6159 75396505 20240806093428
+88.21.29.172 2033 3876 33857908 20240821142252
+79.117.235.9 1313 2026 34550097 20240805145220
+88.21.176.115 910 2226 12126554 20240829145927
+84.78.254.140 411 787 4262409 20240814151800
+88.21.28.196 393 711 5785978 20240823114310
+90.160.195.4 1 2 5025 20240801082030
+79.117.255.135 3 6 15075 20240823112843
+31.4.135.156 23 52 329262 20240814102720
+46.6.63.24 2 4 10050 20240802065411
+31.4.147.139 12 27 160334 20240814074432
+212.89.24.4 1 2 5025 20240807164602
+31.4.147.145 3 9 44857 20240814074448
+185.49.170.196 1 2 5025 20240801072547
+31.4.135.141 81 180 1007440 20240814103554
+31.4.147.159 3 4 46940 20240814084522
+178.60.128.7 1 2 5025 20240813063734
+31.4.135.252 8 14 84414 20240814074444
+212.142.160.102 2 4 10050 20240808103342
+31.4.135.195 39 86 921655 20240814081728
+212.142.160.4 1 2 5025 20240821135457
+88.21.177.179 115 230 1734730 20240807164804
+31.4.135.131 147 321 2604731 20240814104004
+46.222.62.190 11 37 554521 20240808102629
+79.117.235.58 90 264 1388616 20240812063438
+212.142.160.198 1 2 5025 20240819102156
+31.4.135.214 5 11 66129 20240814102512
+52.11.171.106 1 1 1505 20240822123405
+31.4.147.133 200 387 2271766 20240814102137
+176.83.7.242 120 151 5942316 20240802091233
+176.87.5.123 1 2 5025 20240813191641
+79.117.255.132 1 2 5025 20240826060402
+31.4.147.154 3 4 46963 20240814084722
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 21
+20240801 1420 2474 34906954 6
+20240802 617 880 25094103 5
+20240805 2971 4992 55915661 4
+20240806 2 2 2350 2
+20240807 117 233 1740930 3
+20240808 3231 7884 65615197 4
+20240809 3041 7598 55727289 1
+20240812 103 301 1572380 4
+20240813 980 1485 11930618 5
+20240814 905 1803 11015939 16
+20240816 235 461 2683272 2
+20240819 157 349 3519494 4
+20240820 1070 2044 15223286 3
+20240821 3278 6210 65155048 3
+20240822 2163 4388 66172904 2
+20240823 394 713 5791003 2
+20240826 1561 2770 22148100 3
+20240827 3749 5145 46571077 2
+20240828 623 1202 9172786 5
+20240829 3870 8887 68854660 2
+20240830 2273 5076 37903085 1
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 7
+15mn-30mn 5
+5mn-15mn 8
+0s-30s 33
+2mn-5mn 1
+30mn-1h 4
+30s-2mn 1
+1h+ 27
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 509
+/ 14859 273425106 39 52
+/procesos_pedidos/index 2216 52630870 8 1
+/pedidos2/enmarcha 1974 8982847 2 4
+/productos 1911 7208950 0 1
+/procesos 893 6511003 0 1
+/Select_empresa/ 474 1551187 2 2
+/Index 413 4273485 15 2
+/pedidos2 411 1961616 1 1
+/procesos_pedidos/marcarTerminado 394 37999 0 1
+/procesos_pedidos/actualizarOrdenProcesos 371 98057 0 2
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1251 1 74 0 0
+/procesos/inactivos 69 682808 0 0
+/Pedidos2/Linea_pedidos/23 3 12498 0 0
+//partes/print/198 1 8019 0 0
+/partes/print/40938 1 8177 0 0
+/Index/pendientes 1 10742 0 0
+/Pedidos2/Linea_pedidos/103 15 44401 0 0
+/rutas_transporte/rutas 46 473839 0 0
+/Ruta_pedido/rutas/16777/2891 3 26533 0 0
+//partes/print/212 2 16659 0 0
+/laborables 3 13223 0 0
+/Ruta_pedido/rutas/135/5 6 20654 0 0
+/Contactos_empresa/add/2950 4 10579 0 0
+/productos/23 3 24377 0 0
+/Ruta_pedido/rutas/129/5 3 10332 0 0
+/productos/16 3 35370 0 0
+/Pedidos2/Linea_pedidos/undefined 5 9710 0 0
+/partes/print/138 2 15294 0 0
+/Pedidos2/Linea_pedidos/137 53 166362 0 0
+/Pedidos2/Linea_pedidos/42 9 12561 0 0
+/entrar/5 4 28097 0 0
+/Ruta_pedido/rutas/112/6 6 20644 0 0
+/productos/getEstadoProceso/6 5 170 0 0
+/Password/getNivelAcceso/3 3 96 0 0
+/Pedidos2/Linea_pedidos/135 19 45586 0 0
+/Contactos_empresa/add/1708 3 10472 0 0
+/Pedidos2/Linea_pedidos/16724 13 51878 0 0
+//partes/print/131 1 7700 0 0
+/usuarios/11 2 20499 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/undefined 5 234 0 0
+/Fichar 6 41687 0 0
+//informe_detalle/7 2 14071 0 0
+/presentes/53793568 1 6893 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1182 1 74 0 0
+/Pedidos2/Linea_pedidos/16728 3 12836 0 0
+/Pedidos2/Linea_pedidos/131 78 161362 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1178 2 147 0 0
+/Ruta_pedido/rutas/87/6 6 20628 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1184 1 74 0 0
+//Partes_controller/verificarEstadoProcesos/244 4 120 0 0
+//partes/print/256 7 58212 0 0
+/partes/print/40939 1 8180 0 0
+/Pedidos2/Linea_pedidos/16786 54 206616 0 0
+/ausentes 43 306052 0 0
+/productos/20 1 11748 0 0
+/procesos/restriccion/8 24 252714 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1245 1 74 0 0
+/Pedidos2/Linea_pedidos/125 9 22518 0 0
+/Pedidos2/Linea_pedidos/96 39 91406 0 0
+/Pedidos2/Linea_pedidos/123 12 33489 0 0
+//partes/print/224 1 8315 0 0
+/productos/35 1 8128 0 0
+//partes/print/232 1 8315 0 0
+/partes/print/210 1 8128 0 0
+/lista_produccion/todoslospartes 66 350711 0 0
+/Contactos_empresa/add/1705 3 10485 0 0
+//partes/print/253 1 8321 0 0
+/procesos_pedidos/actualizarEstadoProcesos 296 17168 0 0
+/procesos/restriccion/10 6 64298 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1179 3 222 0 0
+/Pedidos2/Linea_pedidos/102 17 34742 0 0
+/pedidos2/entregados 75 388930 0 0
+/pedidos/print/134 1 7147 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1187 8 518 0 0
+/Pedidos2/Linea_pedidos/16782 17 64693 0 0
+/procesos/restriccion/5 19 201470 0 0
+//partes/print/227 1 8313 0 0
+/Ruta_pedido/rutas/16788/1708 3 26533 0 0
+//Partes_controller/verificarEstadoProcesos/227 1 30 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1210 1 74 0 0
+//partes/print/185 1 8017 0 0
+/password/save/3 1 1175 1 1
+/Pedidos2/Linea_pedidos/16742 4 13031 0 0
+//partes/print/251 1 8345 0 0
+/Ruta_pedido/rutas/16743/2636 3 26689 0 0
+/Pedidos2/Linea_pedidos/124 34 90500 0 0
+//Partes_controller/verificarEstadoProcesos/221 1 30 0 0
+//Partes_controller/verificarEstadoProcesos/242 1 30 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1250 1 74 0 0
+//Partes_controller/verificarEstadoProcesos/213 1 30 0 0
+/productos/10 254 2941764 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1176 1 73 0 0
+/Contactos_empresa/add/2949 18 42717 0 0
+//partes/print/192 1 7700 0 0
+/Ruta_pedido/rutas/86/6 21 72203 0 0
+//partes/print/207 2 16156 0 0
+//Partes_controller/verificarEstadoProcesos/240 1 30 0 0
+//partes/print/218 1 8393 0 0
+/procesos/restriccion/17 6 63837 0 0
+/Pedidos2/Linea_pedidos/16727 12 38722 0 0
+//partes/print/204 2 16247 0 0
+/informes 27 83015 0 0
+/festivos 9 39766 0 0
+/procesos/ 4 13626 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1177 1 73 0 0
+//Partes_controller/verificarEstadoProcesos/243 1 30 0 0
+//partes/print/238 1 8329 0 0
+/Ruta_pedido/rutas/102/6 9 30949 0 0
+/Rutas/preparado/7207 4 30182 0 0
+//Partes_controller/verificarEstadoProcesos/220 1 30 0 0
+/productos/getEstadoProceso/4 5 170 0 0
+//Partes_controller/verificarEstadoProcesos/252 1 30 0 0
+/Ruta_pedido/rutas/136/6 9 30988 0 0
+/Password/getNombreUsuario/5 1 64 0 0
+/Ruta_pedido/rutas/42/7 3 10426 0 0
+/Index/terminados 1 10738 0 0
+/Password/getNombreUsuario/101 2 86 0 0
+//partes/print/245 1 8329 0 0
+/Ruta_pedido/rutas/40/5 3 10426 0 0
+//partes/print/250 2 16628 0 0
+/Ruta_pedido/rutas/134/6 48 165291 0 0
+/pedidos/print/20 1 7195 0 0
+/productos/getEstadoProceso/2 5 170 0 0
+/Pedidos2/Linea_pedidos/43 6 22021 0 0
+/Password/getNivelAcceso/56 1 45 0 0
+/Pedidos2/Linea_pedidos/122 25 77511 0 0
+/productos/13 34 401237 0 0
+/contactos 68 285405 0 0
+/Ruta_pedido/rutas/119/6 9 30999 0 0
+//Partes_controller/verificarEstadoProcesos/211 3 136 0 0
+/Ruta_pedido/rutas/93/7 15 51569 0 0
+/lista_produccion/pendientes 199 1767996 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1207 3 222 0 0
+/Ruta_pedido/rutas/53/5 21 72992 0 0
+/Ruta_pedido/rutas/137/6 42 144647 0 0
+/Ruta_pedido/rutas/41/6 3 10435 0 0
+/Pedidos2/Linea_pedidos/16780 3 12853 0 0
+//partes/print/196 2 16094 0 0
+/Pedidos2/Linea_pedidos/110 57 167393 0 0
+//informe_detalle/9 1 7330 0 0
+//partes/print/231 1 8314 0 0
+/Ruta_pedido/rutas/89/5 6 20629 0 0
+/Pedidos2/Linea_pedidos/16715 3 12802 0 0
+//partes/print/42994 2 15310 0 0
+/pedidos2/terminados 142 747359 0 0
+/Pedidos2/Linea_pedidos/91 12 23164 0 0
+/Pedidos2/Linea_pedidos/0 15 53630 0 0
+/Pedidos2/Linea_pedidos/99 12 13037 0 0
+/Ruta_pedido/rutas/97/7 9 30948 0 0
+/procesos/restriccion/11 5 52886 0 0
+/usuarios/5 1 10268 0 0
+//partes/print/193 3 24072 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1181 2 148 0 0
+//Partes_controller/verificarEstadoProcesos/212 2 108 0 0
+/usuarios/53 3 30853 0 0
+//partes/print/42987 2 15678 0 0
+//partes/print/210 18 145951 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1206 5 370 0 0
+/presentes/53793567 10 69130 0 0
+/google_login 16 928 0 0
+//Partes_controller/verificarEstadoProcesos/256 1 30 0 0
+/partes/print/40934 27 219792 0 0
+//partes/print/225 1 8315 0 0
+/Ruta_pedido/rutas/130/7 9 30993 0 0
+/Ruta_pedido/rutas/83/7 6 20627 0 0
+/partes/print/134 1 7647 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1243 1 74 0 0
+/procesos/restriccion/9 15 159113 0 0
+/Ruta_pedido/rutas/115/8 12 41296 0 0
+/pedidos/print/120 2 14305 0 0
+/procesos/restriccion/6 38 404294 0 0
+/Ruta_pedido/rutas/109/7 15 51579 0 0
+/salir/1 6 42208 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1205 3 222 0 0
+//partes/print/230 1 8312 0 0
+/Rutas_transporte/rutas 4 41123 0 0
+/Ruta_pedido/rutas/96/6 24 82513 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1198 1 74 0 0
+/entrar/1 6 42195 0 0
+/Pedidos2/Linea_pedidos/90 12 23166 0 0
+/fichajes 111 473754 0 0
+/Pedidos2/Linea_pedidos/80 17 24436 0 0
+/Pedidos2/Linea_pedidos/98 30 57981 0 0
+/Ruta_pedido/rutas/126/8 3 10330 0 0
+//partes/print/211 3 24979 0 0
+/Pedidos2/Linea_pedidos/134 165 532180 0 0
+/productos/updateProcessRestriction 10 0 0 0
+/procesos/restriccion/19 4 41195 0 0
+//partes/print/43134 2 15866 0 0
+/empresas 220 1037089 0 0
+/familia_productos 32 130855 0 0
+/Pedidos2/Linea_pedidos/118 33 100596 0 0
+//partes/print/244 4 33314 0 0
+/Ruta_pedido/rutas/123/8 6 20658 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1193 5 370 0 0
+/Pedidos2/Linea_pedidos/83 12 23168 0 0
+/Ruta_pedido/rutas/134/7 93 320266 0 0
+//partes/print/190 1 7729 0 0
+/Ruta_pedido/rutas/133/5 3 10327 0 0
+//partes/print/247 2 16663 0 0
+/procesos_pedidos/getProcesosEstado4 239 52861 0 0
+/Contactos_empresa/add/1703 30 105214 0 0
+/Ruta_pedido/rutas/94/5 9 30945 0 0
+/Pedidos2/Linea_pedidos/82 21 46014 0 0
+/Password/getNivelAcceso/5 1 32 0 0
+/Pedidos2/Linea_pedidos/120 92 288991 0 0
+/Pedidos2/Linea_pedidos/40 9 12368 0 0
+/Pedidos2/Linea_pedidos/109 49 133983 0 0
+//partes/print/213 1 8331 0 0
+//partes/print/239 1 8337 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1212 2 148 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1208 4 296 0 0
+/Pedidos2/Linea_pedidos/16725 21 52982 0 0
+/vendor/grocery-crud/icons/font-awesome-v5/webfonts/fa-solid-900.woff2 366 28646088 0 0
+/procesos/restriccion/1 81 859720 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1192 6 370 0 0
+/Pedidos2/Linea_pedidos/73 15 34274 0 0
+//partes/print/216 1 8386 0 0
+//Partes_controller/verificarEstadoProcesos/251 1 30 0 0
+/Password/getNombreUsuario/56 1 49 0 0
+/Contactos_empresa/add/8 12 21636 0 0
+//partes/print/187 1 7700 0 0
+/Pedidos2/Linea_pedidos/111 15 44378 0 0
+/Ruta_pedido/rutas/16727/1703 6 52960 0 0
+//partes/print/191 1 7717 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1183 1 74 0 0
+//Partes_controller/verificarEstadoProcesos/250 2 60 0 0
+//partes/print/236 1 8329 0 0
+//partes/print/219 2 16663 0 0
+//Partes_controller/verificarEstadoProcesos/214 2 108 0 0
+/procesos/restriccion/22 2 20549 0 0
+/procesos/restriccion/7 31 325133 0 0
+/procesos/restriccion/28 3 30941 0 0
+/pedidos2/add 76 1012464 0 0
+//partes/print/184 2 15671 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1175 10 734 0 0
+//partes/print/252 1 8355 0 0
+/salir/11 3 21094 0 0
+/productos/28 1 8122 0 0
+/Pedidos2/Linea_pedidos/108 28 57638 0 0
+//Partes_controller/verificarEstadoProcesos/233 1 30 0 0
+/Pedidos2/Linea_pedidos/15937 23 91274 0 0
+/Pedidos2/Linea_pedidos/112 12 33420 0 0
+//partes/print/205 1 8108 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1194 4 222 0 0
+/productos/getEstadoProceso/1 5 170 0 0
+/Mi_perfil/getUserData/3 4 496 0 0
+//partes/print/233 1 8327 0 0
+//Partes_controller/verificarEstadoProcesos/210 3 228 0 0
+//Partes_controller/verificarEstadoProcesos/234 1 30 0 0
+/procesos/restriccion/14 8 83376 0 0
+//Partes_controller/verificarEstadoProcesos/238 1 30 0 0
+/procesos/restriccion/32 8 71951 0 0
+/procesos/restriccion/13 3 31530 0 0
+//Partes_controller/verificarEstadoProcesos/226 1 30 0 0
+/productos/7 1 11560 0 0
+/Pedidos2/Linea_pedidos/89 17 34454 0 0
+/Password/getNombreUsuario/53 3 123 0 0
+/Pedidos2/Linea_pedidos/93 27 57163 0 0
+/Ruta_pedido/rutas/84/7 24 82512 0 0
+/Ruta_pedido/rutas/99/6 3 10312 0 0
+//Partes_controller/verificarEstadoProcesos/229 1 30 0 0
+//Partes_controller/verificarEstadoProcesos/219 3 60 0 0
+/Pedidos2/Linea_pedidos/129 9 22512 0 0
+//partes/print/189 1 8023 0 0
+//partes/print/214 2 16668 0 0
+/Pedidos2/Linea_pedidos/115 21 45685 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1188 5 296 0 0
+/Pedidos2/Linea_pedidos/16789 50 188915 0 1
+/productos/19 2 22906 0 0
+//Partes_controller/verificarEstadoProcesos/247 2 108 0 0
+/Password/getNivelAcceso/101 2 77 0 0
+//partes/print/217 1 8348 0 0
+/Ruta_pedido/rutas/80/7 6 20862 0 0
+/Ruta_pedido/rutas/100/7 18 61876 0 0
+/Ruta_pedido/rutas/121/7 227 812041 0 0
+/procesos/restriccion/21 5 51477 0 0
+/productos/11 27 300232 0 0
+/Pedidos2/Linea_pedidos/136 15 43950 0 0
+/Contactos_empresa/add/1707 3 10483 0 0
+//partes/print/243 1 8328 0 0
+/pedidos/print/112 1 7159 0 0
+//Partes_controller/verificarEstadoProcesos/225 1 30 0 0
+/rutas/enmarcha 3 30008 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1246 1 74 0 0
+//Partes_controller/verificarEstadoProcesos/248 1 30 0 0
+//Partes_controller/verificarEstadoProcesos/217 1 30 0 0
+/lista_produccion/terminados 117 564770 0 0
+/Ruta_pedido/rutas/16789/1713 3 26529 0 0
+/Ruta_pedido/rutas/16782/2689 3 26686 0 0
+/procesos/restriccion/31 8 82266 0 0
+/pedidos/print/16790 2 14242 0 0
+/rutas 4 14096 0 0
+/Pedidos2/Linea_pedidos/84 38 91027 0 0
+//partes/print/246 1 8328 0 0
+/Pedidos2/Linea_pedidos/92 12 23162 0 0
+/Pedidos2/Linea_pedidos/119 21 56268 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1189 10 740 0 0
+/Ruta_pedido/rutas/73/7 9 30937 0 0
+/Pedidos2/Linea_pedidos/105 9 22472 0 0
+/partes/print/40941 1 8177 0 0
+/usuarios 235 683491 2 4
+/Pedidos2/Linea_pedidos/97 16 34478 0 0
+/Password/getNombreUsuario/3 3 195 0 0
+//informe_detalle/6 1 7006 0 0
+//Partes_controller/verificarEstadoProcesos/254 1 30 0 0
+//partes/print/249 2 16624 0 0
+/Ruta_pedido/rutas/104/5 3 10314 0 0
+/Ruta_pedido/rutas/128/6 3 10334 0 0
+/Ruta_pedido/rutas/122/8 15 51645 0 0
+//Partes_controller/verificarEstadoProcesos/232 1 30 0 0
+//Partes_controller/verificarEstadoProcesos/245 1 30 0 0
+//partes/print/109 1 7710 0 0
+//Partes_controller/verificarEstadoProcesos/224 1 30 0 0
+//partes/print/237 1 8329 0 0
+//informe_detalle/5 4 27906 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1209 2 148 0 0
+/Ruta_pedido/rutas/85/7 9 30937 0 0
+//partes/print/186 1 8018 0 0
+/procesos/restriccion/29 29 298046 0 0
+/Ruta_pedido/rutas/127/6 12 41328 0 0
+/Pedidos2/Linea_pedidos/16788 134 405332 0 0
+/Ruta_pedido/rutas/92/7 6 20633 0 0
+//partes/print/234 2 16627 0 0
+/Pedidos2/Linea_pedidos/126 15 34367 0 0
+//partes/print/222 2 16658 0 0
+/procesos_pedidos/actualizarEstadoLineaPedido 295 21240 0 0
+//Partes_controller/verificarEstadoProcesos/241 1 30 0 0
+/Ruta_pedido/rutas/107/7 6 20632 0 0
+/procesos/restriccion/3 38 400190 0 0
+//Partes_controller/verificarEstadoProcesos/216 1 30 0 0
+/Pedidos2/Linea_pedidos/121 184 580244 0 0
+/productos/getEstadoProceso/8 5 170 0 0
+//partes/print/43122 1 8410 0 0
+/procesos/restriccion/4 18 190627 0 0
+/Password/getNivelAcceso/11 2 90 0 0
+/Ruta_pedido/rutas/91/5 6 20626 0 0
+//partes/print/43040 1 8395 0 0
+/Ruta_pedido/rutas/125/5 3 10327 0 0
+/salir/5 4 28103 0 0
+/productos/4 27 309379 0 0
+/Pedidos2/Linea_pedidos/16748 4 13150 0 0
+/Pedidos2/Linea_pedidos/16777 6 25699 0 0
+/Pedidos2/Linea_pedidos/88 6 11522 0 0
+/productos/updateOrder 97 0 0 0
+//partes/print/255 1 7594 0 0
+/procesos/restriccion/2 70 731923 1 0
+//partes/print/142 1 8046 0 0
+/productos/getEstadoProceso/3 5 170 0 0
+/Ruta_pedido/rutas/108/7 6 20632 0 0
+/Acceso/7 2 2350 2 2
+/Password/getNombreUsuario/2 1 63 0 0
+//partes/print/197 1 8045 0 0
+//partes/print/240 1 8400 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1211 2 148 0 0
+/Ruta_pedido/rutas/106/7 6 20632 0 0
+/Acceso/2 1 1175 1 1
+//partes/print/194 3 23105 0 0
+/Ruta_pedido/rutas/118/5 15 51651 0 0
+/Ruta_pedido/rutas/43/6 6 20630 0 0
+/Ruta_pedido/rutas/16790/1711 12 106123 0 0
+/procesos_pedidos/revertirEstadoProcesos 113 7910 0 0
+/productos/updateRestriction 26 0 0 0
+/procesos/restriccion/36 5 53639 0 0
+/Ruta_pedido/rutas/88/7 3 10315 0 0
+/productos/172 1 8118 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1186 8 592 0 0
+/Pedidos2/Linea_pedidos/100 32 68357 0 0
+/Pedidos2/Linea_pedidos/16719 3 12801 0 0
+/procesos/restriccion/18 15 159312 0 0
+//partes/print/228 1 8314 0 0
+/procesos/restriccion/12 4 42254 0 0
+/procesos/restriccion/33 8 71962 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1249 1 74 0 0
+/Ruta_pedido/rutas/16719/2680 3 26654 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1242 1 74 0 0
+/Ruta_pedido/rutas/120/6 60 206733 0 0
+/Password/getNivelAcceso/2 1 45 0 0
+/Contactos_empresa/add/1709 3 10476 0 0
+/Pedidos2/Linea_pedidos/16790 40 139257 0 0
+/procesos/restriccion/26 5 51423 0 0
+/Password/getNombreUsuario/11 2 100 0 0
+/productos/21 3 35245 0 0
+/Pedidos2/Linea_pedidos/127 29 79076 0 0
+/Pedidos2/Linea_pedidos/86 35 79632 0 0
+/productos/9 1 11553 0 0
+/Lista_produccion/enmaquina/0 3 13861 0 0
+//partes/print/241 1 8329 0 0
+//Partes_controller/verificarEstadoProcesos/237 1 30 0 0
+/Ruta_pedido/rutas/131/8 6 20661 0 0
+//Partes_controller/verificarEstadoProcesos/246 1 30 0 0
+/procesos/restriccion/24 44 469298 0 0
+//Partes_controller/verificarEstadoProcesos/235 1 30 0 0
+/procesos/restriccion/23 5 52841 0 0
+/Pedidos2/Linea_pedidos/106 13 33537 0 0
+/Ruta_pedido/rutas/124/7 15 51651 0 0
+//Fichar 36 253215 0 0
+//partes/print/206 1 8095 0 0
+//partes/print/43005 1 8393 0 0
+/log 268 922433 1 1
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1191 5 370 0 0
+/usuarios/101 2 19348 0 0
+/Pedidos2/Linea_pedidos/128 9 22519 0 0
+/Pedidos2/Linea_pedidos/101 76 159217 0 0
+//partes/print/221 1 8324 0 0
+/productos/12 21 242592 0 0
+/usuarios/56 1 10252 0 0
+/partes/print/40936 1 7763 0 0
+//Partes_controller/verificarEstadoProcesos/255 1 30 0 0
+//partes/print/40934 7 56598 0 0
+/entrar/3 8 56320 0 0
+/Ruta_pedido/rutas/103/6 9 30944 0 0
+/partes/print/40935 6 49199 0 0
+/Pedidos2/Linea_pedidos/104 9 22468 0 0
+/maquinas 9 38784 0 0
+//partes/print/235 1 8358 0 0
+//Partes_controller/CambiaEstado/210 2 11369 0 0
+/Ruta_pedido/rutas/16723/1703 3 26479 0 0
+/Ruta_pedido/rutas/82/6 12 41252 0 0
+//Partes_controller/verificarEstadoProcesos/230 1 30 0 0
+//Partes_controller/verificarEstadoProcesos/231 1 30 0 0
+//partes/print/248 1 8334 0 0
+/Mi_perfil/index/3 4 43982 0 0
+/lista_produccion/enmaquina 39 218309 0 0
+/lista_produccion/enmarcha 36 239006 0 0
+/Ruta_pedido/rutas/95/6 15 51565 0 0
+/Ruta_pedido/rutas/16715/1756 3 26630 0 0
+/procesos/restriccion/30 9 93362 0 0
+//partes/print/220 1 8386 0 0
+//Partes_controller/verificarEstadoProcesos/236 1 30 0 0
+/Ruta_pedido/rutas/121/your-endpoint-url 10 14650 0 0
+/Pedidos2/Linea_pedidos/87 12 23151 0 0
+/procesos/restriccion/25 16 168593 0 0
+/partes/print/139 1 7646 0 0
+/Ruta_pedido/rutas/23/2213 3 26530 0 0
+/partes/print/200 4 30857 0 0
+/Pedidos2/Linea_pedidos/41 3 10994 0 0
+/Contactos_empresa/add/5 30 95571 0 0
+//partes/print/215 1 8323 0 0
+/Pedidos2/Linea_pedidos/133 9 22520 0 0
+//Partes_controller/verificarEstadoProcesos/222 2 108 0 0
+/presentes/53793566 32 223206 0 0
+//Partes_controller/verificarEstadoProcesos/223 1 30 0 0
+/Pedidos2/Linea_pedidos/85 16 34211 0 0
+/Ruta_pedido/rutas/111/7 9 30960 0 0
+/procesos/updateRestriction 83 0 0 0
+/presentes 29 202411 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1185 16 1184 0 0
+/procesos/restriccion/20 2 20570 0 0
+//partes/print/188 2 16046 0 0
+/Pedidos2/Linea_pedidos/132 93 268989 0 0
+//partes/print/209 9 72329 0 0
+/procesos/edit/1 3 20859 0 0
+/productos/getEstadoProceso/7 5 170 0 0
+/usuarios/ 12 41895 0 0
+/pedidos/print/111 1 7140 0 0
+/Pedidos2/Linea_pedidos/16743 9 26452 0 0
+/salir/3 4 28139 0 0
+//partes/print/43039 1 7754 0 0
+//Partes_controller/verificarEstadoProcesos/228 1 30 0 0
+/Pedidos2/Linea_pedidos/94 16 34109 0 0
+/usuarios/2 1 9672 0 0
+/usuarios/3 3 30835 0 0
+//Partes_controller/verificarEstadoProcesos/239 1 30 0 0
+/partes/print/199 1 7687 0 0
+/productos/getEstadoProceso/13 5 170 0 0
+/Index/ 180 1871613 3 1
+/Pedidos2/Linea_pedidos/130 148 248120 0 0
+/login 20 24184 1 1
+//partes/print/155 1 7972 0 0
+/Ruta_pedido/rutas/15937/1717 18 159751 0 0
+//partes/print/242 1 8393 0 0
+/entrar/24 2 14068 0 0
+/productos/25 6 48693 0 0
+/Ruta_pedido/rutas/98/6 15 51573 0 0
+/productos/getEstadoProceso/24 3 102 0 0
+//Partes_controller/verificarEstadoProcesos/253 1 30 0 0
+/Pedidos2/Linea_pedidos/53 25 78323 0 0
+/Ruta_pedido/rutas/110/6 18 61888 0 0
+/Ruta_pedido/rutas/101/7 42 144429 0 0
+//partes/print/94 1 7691 0 0
+//Partes_controller/verificarEstadoProcesos/249 2 108 0 0
+//Partes_controller/verificarEstadoProcesos/218 1 30 0 0
+/procesos/restriccion/27 2 20627 0 0
+//partes/print/229 1 8314 0 0
+/Pedidos2/Linea_pedidos/107 15 44385 0 0
+/Pedidos2/Linea_pedidos/16723 6 25565 0 0
+/index/ 2 21374 0 0
+//Partes_controller/verificarEstadoProcesos/215 1 30 0 0
+/Contactos_empresa/add/1710 3 10395 0 0
+/Ruta_pedido/rutas/105/7 3 10313 0 0
+//partes/print/141 1 7714 0 0
+/pedidos/parte_complejo/96 1 7044 0 0
+/Pedidos2/Linea_pedidos/16785 9 38186 0 0
+//partes/print/226 1 8314 0 0
+/Ruta_pedido/rutas/90/7 6 20627 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1190 5 370 0 0
+/Ruta_pedido/rutas/16724/1721 6 52957 0 0
+/productos/22 3 35310 0 0
+/Ruta_pedido/rutas/132/6 63 216973 0 0
+//partes/print/195 7 56328 0 0
+/entrar/11 6 42153 0 0
+/procesos/add 32 316003 0 0
+//partes/print/223 1 8314 0 0
+/Pedidos2/Linea_pedidos/95 30 58318 0 0
+/Password/getNivelAcceso/53 3 135 0 0
+/productos/getEstadoProceso/5 5 170 0 0
+//partes/print/254 1 8313 0 0
+/procesos_pedidos/actualizarEstadoYEliminarRestricciones/1213 3 222 0 0
+END_SIDER

@@ -1,0 +1,760 @@
+AWSTATS DATA FILE 7.7 (build 20161204)
+# If you remove this file, all statistics for date 202412 will be lost/reset.
+# Last config file used to build this data file was /etc/awstats/awstats.dev.showscreen.app.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2001                
+POS_TIME 2683                
+POS_VISITOR 10703               
+POS_DAY 11447               
+POS_DOMAIN 3434                
+POS_LOGIN 3682                
+POS_ROBOT 3837                
+POS_WORMS 3969                
+POS_EMAILSENDER 4100                
+POS_EMAILRECEIVER 4243                
+POS_SESSION 11919               
+POS_SIDER 12114               
+POS_FILETYPES 4378                
+POS_DOWNLOADS 4608                
+POS_OS 4656                
+POS_BROWSER 4809                
+POS_SCREENSIZE 4947                
+POS_UNKNOWNREFERER 5021                
+POS_UNKNOWNREFERERBROWSER 5148                
+POS_ORIGIN 5230                
+POS_SEREFERRALS 5376                
+POS_PAGEREFS 5554                
+POS_SEARCHWORDS 5731                
+POS_KEYWORDS 5883                
+POS_MISC 2346                
+POS_ERRORS 5942                
+POS_CLUSTER 3538                
+POS_SIDER_404 6116                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20241219145725 85428 28286279 0
+FirstTime 20241202070503
+LastTime 20241219145725
+LastUpdate 20241220042857 85428 80241 5181 0 6
+TotalVisits 45                  
+TotalUnique 16                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 16                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+PDFSupport 0 0 0
+JavascriptDisabled 0 0 0
+AddToFavourites 0 55 0
+TotalMisc 0 0 0
+QuickTimeSupport 0 0 0
+RealPlayerSupport 0 0 0
+DirectorSupport 0 0 0
+JavaEnabled 0 0 0
+FlashSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 0 0 0
+1 0 0 0 0 0 0
+2 1 1 1505 1 3 6187
+3 0 0 0 0 0 0
+4 0 0 0 0 0 0
+5 10 32 160456 4 6 45542
+6 131 191 1394229 16 208 357942
+7 1069 3381 27305158 353 939 3740671
+8 2050 6618 51070719 276 1395 16413394
+9 2398 7920 59089566 482 1698 21776126
+10 2516 7790 58136238 558 1845 16245900
+11 1791 5765 45956910 472 1318 10498560
+12 641 2055 18494919 89 520 6572210
+13 66 225 2553679 6 40 37026
+14 381 1120 9833055 21 38 880945
+15 32 103 480393 5 6 71757
+16 38 130 588613 8 19 75886
+17 9 25 407922 1 5 2648
+18 1 1 1175 0 0 0
+19 33 104 664349 4 4 66327
+20 1 1 1175 0 0 0
+21 27 96 534426 2 2 44218
+22 0 0 0 0 0 0
+23 0 0 0 0 0 0
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 2
+es 11193 35556 276671477
+us 2 2 3010
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 8
+js 9 579703 0 0
+Unknown 4788 85179330 0 0
+html 6406 111427866 0 0
+jpeg 313 50872050 0 0
+png 548 2344064 0 0
+css 23488 25659148 0 0
+jpg 5 534058 0 0
+woff2 1 78268 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 6
+linuxandroid 11 4
+macosx 129 38
+Unknown 1 1
+win8.1 1 1
+ios_iphone 2 2
+win10 35414 11149
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 5
+firefox110.0 1 1
+chrome131.0.0.0 35548 11188
+chrome129.0.0.0 6 3
+safari 2 2
+mozilla 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 1
+Mozilla/5.0_(compatible) 20241214020029
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 162 162
+From1 0 0
+From2 11 11
+From3 18 18
+From4 11004 35367
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 2
+www_google_com 6 6
+google_com 5 5
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 1
+https://showscreen.app 18 18
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 7
+403 1552 14358216
+500 5828 57065207
+301 3 309
+302 415 4952416
+404 174 93366
+503 1 82
+400 18 67093
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 52
+/menu/edit/2 1 https://dev.showscreen.app/menu/submenus/1
+/menu/updateSubmenu/90 1 https://dev.showscreen.app/menu/submenus/86
+/menu/submenus/22 1 https://dev.showscreen.app/menu
+/Select_empresa/public/assets/uploads/files/9/logos/9/logos/logo_offertiles_web.png 5 https://dev.showscreen.app/Select_empresa/
+/select_empresa/guardar 1 https://dev.showscreen.app/Select_empresa/
+/assets/css/attainet.css 12 https://dev.showscreen.app/Select_empresa/
+/api/cargar-paginado 1 https://dev.showscreen.app/lista_produccion/todoslospartes
+/contactos/listar 2 https://dev.showscreen.app/contactos
+/Select_empresa/public/assets/uploads/files/7/logos/7/logos/offertiles_logo-04c22.png 2 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/7/logos/ 1 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/9/logos/ 1 https://dev.showscreen.app/Select_empresa/
+/publicpublic/assets/uploads/favicon7/logos/favicon_attainet.png 5 -
+/menu/submenus/4 1 https://dev.showscreen.app/menu
+/Select_empresa/public/assets/uploads/files/11/logos/11/logos/logo_attainet_web-4e82d-15be4.png 3 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/7/logos 2 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/8/logos/8/logos/offertiles_logo-b512e.png 3 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/9/logos/logo_offertiles-1.png 1 https://dev.showscreen.app/Select_empresa/
+/menu/submenus/24 1 https://dev.showscreen.app/menu
+/addMenu 4 https://dev.showscreen.app/menu
+/menu/edit/1 6 https://dev.showscreen.app/menu
+/lista-produccion/todos 4 https://dev.showscreen.app/lista_produccion/todoslospartes
+/ads.txt 1 -
+/api/lineas-paginadas 1 https://dev.showscreen.app/lista_produccion/todoslospartes
+/pedidos2/enmarcha 3 https://dev.showscreen.app/Index
+/Select_empresa/public/assets/uploads/files/7/logos/7/logos/offertiles_logo.png 1 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/8/logos/8/logos/offertiles_logo-b5211.png 3 https://dev.showscreen.app/Select_empresa/
+/usuarios/eliminar/111 4 https://dev.showscreen.app/usuarios
+/menu/create 6 https://dev.showscreen.app/menu/submenus/1
+/publicpublic/assets/uploads/favicon9/logos/favicon-1788f.png 1 https://dev.showscreen.app/presentes
+/menu/submenus/17 1 https://dev.showscreen.app/menu
+/menu/submenus/10 1 https://dev.showscreen.app/menu
+/undefined 12 https://dev.showscreen.app/empresas
+/submenu/97 2 https://dev.showscreen.app/menu/submenus/97
+/pedidos2/terminados 1 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/9/logos/favicon-1788f.png 1 https://dev.showscreen.app/Select_empresa/
+/usuarios/eliminar/59 1 https://dev.showscreen.app/usuarios
+/Select_empresa/public/assets/uploads/files/9/logos/9/logos/favicon-1788f.png 8 https://dev.showscreen.app/Select_empresa/
+/usuarios/eliminar/57 1 https://dev.showscreen.app/usuarios
+//assets/js/functions.js 34 https://dev.showscreen.app/pedidos_proveedor/print/122
+/Select_empresa/public/assets/uploads/files/9/logos 2 https://dev.showscreen.app/Select_empresa/
+/submenus/97 1 https://dev.showscreen.app/menu/submenus/97
+/Select_empresa/public/assets/uploads/files/9/logos/9/logos/logo_offertiles-1.png 8 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/7/logos/7/logos/offertiles_logo-04b4b.png 2 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/8/logos/8/logos/offertiles_logo.png 2 https://dev.showscreen.app/Select_empresa/
+/publicpublic/assets/uploads/favicon7/logos/offertiles_logo-04b4b.png 8 -
+/select_empresa/get_empresa/2 1 https://dev.showscreen.app/Select_empresa/
+/Select_empresa/public/assets/uploads/files/11/logos/11/logos/favicon_attainet_04.png 3 https://dev.showscreen.app/Select_empresa/
+/pedidos2 1 https://dev.showscreen.app/Index
+/usuarios/eliminar/58 3 https://dev.showscreen.app/usuarios
+/Select_empresa/public/assets/uploads/files/11/logos/11/logos/logo_attainet_web-4e82d.png 1 https://dev.showscreen.app/Select_empresa/
+/publicpublic/assets/uploads/favicon 1 https://dev.showscreen.app/presentes
+/menu/addForm 1 https://dev.showscreen.app/menu
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 16
+170.253.36.75 7467 23817 175754255 20241219125150
+79.117.235.60 1678 5395 46408524 20241219145725 20241219141355 /
+170.253.39.232 1433 4447 35943135 20241202130052
+79.117.235.27 483 1704 17174558 20241205125708
+95.62.181.206 115 152 1241861 20241205065557
+176.83.122.24 4 11 52062 20241217152332
+88.21.176.153 4 15 66758 20241205160833
+212.142.160.197 2 4 10050 20241216070110
+46.6.56.152 2 2 116 20241205062341
+77.26.255.5 1 2 5025 20241216072313
+165.227.85.2 1 1 1505 20241214020029
+90.160.195.7 1 2 5025 20241212084714
+52.11.171.106 1 1 1505 20241210135547
+77.26.12.4 1 2 5025 20241218150059
+79.117.255.134 1 2 5025 20241204102104
+188.26.219.154 1 1 58 20241204165512
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 15
+20241202 1433 4447 35943135 1
+20241203 1528 4890 35552332 2
+20241204 1541 4694 35504096 5
+20241205 584 1819 18507708 8
+20241209 378 1245 8507929 4
+20241210 282 934 14403316 2
+20241211 274 977 5560315 2
+20241212 457 1486 9564343 2
+20241213 215 638 5711991 2
+20241214 1 1 1505 1
+20241215 1 1 1175 1
+20241216 2002 6124 47870426 5
+20241217 399 1350 12265114 4
+20241218 586 1922 10978723 4
+20241219 1514 5030 36302379 2
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 6
+2mn-5mn 3
+0s-30s 19
+1h+ 16
+30s-2mn 1
+5mn-15mn 2
+30mn-1h 3
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 422
+/ 6059 107771658 27 34
+/menu 374 4661184 0 0
+/Index 281 3279700 5 1
+/Select_empresa/ 165 1814866 0 0
+/Index/ 157 1534063 0 0
+/fichajes 155 1567236 0 0
+/lista_produccion/todoslospartes 115 13808775 0 1
+/contactos 102 3143749 1 0
+/fichajes/getFichajes 101 45879 0 1
+/Mi_perfil/index/3 95 1169153 0 0
+/login 15 18165 0 0
+/contactos/getContacto/2610 1 109 0 0
+/empresas/add 2 90 0 0
+/contactos/agregar 1 155 0 0
+/pedidos/edit/17508 1 40693 0 0
+/fichajes/eliminar/232 1 25 0 0
+/usuarios/datosAcceso/58 5 59177 0 0
+/menu/delete/85 1 25 0 0
+/productos/getProductos 15 76605 0 0
+/pedidos/print/39 5 39938 0 0
+/fichajes/actualizar 28 700 0 0
+/menu/edit/23 1 152 0 0
+/procesos_pedidos/actualizarEstadoLineaPedido 32 2304 0 0
+/Lista_produccion/enmarcha/0 4 54876 0 0
+/pedidos_proveedor/print/131 2 15915 0 0
+/menu/submenus/93 2 24025 0 0
+/pedidos/edit/182 1 40564 0 0
+/Mi_perfil/getUserData/3 92 11411 0 0
+/menu/delete/84 1 25 0 0
+/rutas/getRutas 64 3602011 0 0
+/Ruta_pedido/mostrarFormulario/56/1705 15 42329 0 0
+/fichajes/eliminar/241 1 25 0 0
+/pedidos/parte_complejo/59 1 7967 0 0
+/menu/delete/78 1 25 0 0
+/pedidos/mostrarFormularioAddLineaPedido/57 2 8782 0 0
+/rutas/enmarcha 31 410113 0 0
+/entrar/16 1 6980 0 0
+/api/lineas-paginadas 2 1158 0 0
+/contactos/actualizarContacto/4 1 25 0 0
+/laborables 72 766353 0 0
+//Partes_controller/verificarEstadoProcesos/135 1 30 0 0
+/procesos/restriccion/54 2 27619 0 0
+/pedidos/edit/17407 9 365174 0 0
+/log/getLogs 51 900385 0 0
+/productos/editarVista/4 7 94594 0 0
+/menu/edit/80 1 151 0 0
+/entrar/3 2 13960 0 0
+/informe_detalle/9 1 7293 0 0
+/log/deleteLog/8 1 25 0 0
+/pedidos/terminados 11 166263 0 0
+/Index/enmarcha 7 89148 0 0
+/partes/print/43766 1 3562 0 0
+/select_empresa/get_empresa/13 1 144 0 0
+/pedidos/edit/17050 3 80666 0 0
+/poblaciones_rutas/agregarPoblacion 2 89 0 0
+/contactos/eliminarContacto/2610 1 25 0 0
+/menu/edit/98 11 1804 0 0
+/fichajes/editar/237 7 3521 0 0
+/procesos/getProcesos 17 18506 0 0
+/vacaciones/getVacaciones 16 4793 0 0
+/usuarios/editar/112 1 11941 0 0
+/festivos/getFestivos 39 3922 0 0
+/pedidos/updateLineaPedido/44796 1 68 0 0
+/select_empresa/get_empresa/12 4 447 0 0
+/Ruta_pedido/rutas/41/1713 1 234 0 0
+/menu/delete/67 1 25 0 0
+/empresas/addForm 10 53530 0 0
+/procesos_pedidos/index 77 3634409 0 0
+/menu/delete/71 1 25 0 0
+/pedidos_proveedor/editar/127 1 19174 0 0
+/entrar/23 1 6990 0 0
+/pedidos/edit/17041 1 40504 0 0
+/select_empresa/get_empresa/7 18 3596 0 0
+/menu/edit/10 4 640 0 0
+/productos/getFamilias 24 6984 0 0
+/menu/delete/70 1 25 0 0
+/log/ 25 307279 0 0
+/Acceso/7 1 1175 1 1
+/familiaProveedor/getFamiliasProveedores 5 930 0 0
+/usuarios/datosAcceso/111 1 11736 0 0
+//Partes_controller/verificarEstadoProcesos/137 1 30 0 0
+/salir/3 1 6985 0 0
+/fichajes/eliminar/234 1 25 0 0
+/select_empresa/editar 2 11292 0 0
+/usuarios/datosAcceso/112 1 11738 0 0
+/contactos/eliminarContacto/14 1 25 0 0
+/partes/print/138 2 6491 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/143 2 9583 0 0
+/pedidos/edit/54 5 201620 0 0
+/informe_detalle/7 1 6802 0 0
+/menu/submenus/4 19 261899 1 0
+/menu/delete/90 1 25 0 0
+/pedidos_proveedor/actualizarLinea/227 1 90 0 0
+/fichajes/editar/235 11 5616 0 0
+/pedidos/edit/59 94 3811804 0 0
+/productos_necesidad/add 4 45047 0 0
+/usuarios/eliminar/114 1 68 0 0
+/pedidos_proveedor/editar/120 2 38125 0 0
+/pedidos/edit/17467 1 40932 0 0
+/procesos/restriccion/53 4 55300 0 0
+/pedidos/add 9 255502 0 0
+/usuarios/datosAcceso/114 1 11735 0 0
+/usuarios/editar/111 1 11941 0 0
+/usuarios/editar/59 1 12031 0 0
+/editar_rutas/8769 2 58984 0 0
+/partes/print/140 1 3946 0 0
+/menu/update/86 1 25 0 0
+/menu/edit/90 6 961 0 0
+/lista_produccion/enmaquina 25 391849 0 0
+/comparadorproductos/25 25 361097 0 0
+/Ruta_pedido/rutas/58/1707 1 118 0 0
+/informes/getInformes 36 8466 0 0
+/menu/submenus/86 20 240236 0 0
+/usuarios/eliminar/112 1 68 0 0
+/menu/edit/88 1 156 0 0
+/menu/delete/69 1 25 0 0
+/procesos_pedidos/actualizarEstadoProcesos 32 1856 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/133 1 4792 0 0
+/comparadorproductos/26 2 29829 0 0
+/Ruta_pedido/mostrarFormulario/17049/1703 1 2956 0 0
+/productos_necesidad 29 400749 0 0
+/informe_detalle/6 3 21018 0 0
+/menu/submenus/23 2 24140 0 0
+/familia_proveedor 4 59659 0 0
+/menu/delete/66 1 25 0 0
+/informes/getInforme/8 1 117 0 0
+/api/cargar-paginado 1 272 0 0
+/fichajes/eliminar/240 1 25 0 0
+/pedidos_proveedor/addpedido 8 93270 0 0
+/pedidos_proveedor/editar/121 1 19053 0 0
+//Partes_controller/verificarEstadoProcesos/43803 1 30 0 0
+/informes/getInforme/6 1 121 0 0
+/Lista_produccion/terminados 1 15689 0 0
+/pedidos/parte_complejo/57 1 7973 0 0
+/procesos/add 1 10219 0 0
+/entrar/19 1 6987 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/142 4 19252 0 0
+/Index/pendientes 10 127057 0 0
+/menu/submenus/97 15 240569 0 0
+/log/deleteLog/9 1 25 0 0
+/Niveles_acceso/actualizarNivel/0 2 50 0 0
+/contactos/actualizarContacto/2610 1 25 0 0
+/fichajes/editar/232 23 10636 0 0
+/informes/eliminarInforme/11 1 25 0 0
+/select_empresa/eliminar/14 1 66 0 0
+/menu/update/82 1 25 0 0
+/pedidos/mostrarFormularioAddLineaPedido/58 4 17978 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/120 2 9562 0 0
+/productos/procesos/4 1 14142 0 0
+/productos/editarVista/5 2 27033 0 0
+/empresas/getContactosPorEmpresa/1705 1 2 0 0
+/usuarios/datosAcceso/1 4 47197 0 0
+/pedidos_proveedor/print/122 1 7912 0 0
+/pedidos/mostrarFormularioAddLineaPedido/39 2 8828 0 0
+/comparadorProductos/editarOferta 1 30 0 0
+/log/deleteLog/undefined 20 688 0 0
+/pedidos/updateLineaPedido/140 1 68 0 0
+/contactos/getContacto/4 2 268 0 0
+/fichajes/editar/243 1 500 0 0
+/entrar/4 1 6982 0 0
+/usuarios/editar/3 2 25733 0 0
+/menu/delete/95 1 25 0 0
+/pedidos/edit/17049 24 971621 0 0
+/Index/terminados 11 140044 0 0
+/Niveles_acceso/agregarNivel 1 25 0 0
+/menu/submenus/22 2 28251 0 0
+/partes/print/135 28 93136 0 0
+/select_empresa/guardar 3 16935 0 0
+/menu/edit/69 1 5699 0 0
+/pedidos/edit/53 13 526927 0 0
+/menu/delete/75 1 25 0 0
+/partes/print/120 2 8098 0 0
+/entrar/12 1 6984 0 0
+/lista_produccion/pendientes 25 225755 1 1
+/vacaciones/delete/5 1 25 0 0
+/menu/edit/86 1 157 0 0
+/menu/submenus/24 5 66661 0 0
+/empresas/getContacto/15 1 155 0 0
+/Ruta_pedido/rutas/17508/1949 1 426 0 0
+/partes/print/106 6 24281 0 0
+/informe_detalle/5 3 20934 0 0
+/menu/delete/74 1 25 0 0
+/pedidos/mostrarFormularioAddLineaPedido/59 16 70788 0 0
+/pedidos/edit/17030 2 81248 0 0
+/menu/delete/88 1 25 0 0
+/menu/edit/72 2 304 0 0
+/menu/getMenus 8 45168 0 0
+/Ruta_pedido/mostrarFormulario/59/1705 46 138768 0 0
+/informes 40 536398 0 0
+/pedidos 44 8486821 2 0
+/Ruta_pedido/rutas/57/1707 7 1291 0 0
+/familia_productos/getFamiliasProductos 9 4563 0 0
+/lista_produccion/enmarcha 24 321143 0 0
+/menu/submenus/10 8 99647 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/106 3 14301 0 0
+/procesos/restriccion/14 2 27364 0 0
+/pedidos/edit/58 15 567420 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/139 2 10394 0 0
+/productos_necesidad/verProductos/25 1 3593 0 0
+/partes/print/44796 1 3526 0 0
+/informe_detalle/10 1 7051 0 0
+/pedidos/edit/17525 2 81356 0 0
+/ausentes 14 100052 0 0
+/menu/delete/81 1 25 0 0
+/pedidos_proveedor/editar/130 1 19180 0 0
+/Ruta_pedido/obtenerRuta/8781 1 146 0 0
+/pedidos_proveedor/editar/126 6 114294 0 0
+/menu/delete/80 1 25 0 0
+/entrar/20 1 6962 0 0
+/fichajes/editar/234 5 2485 0 0
+/log/deleteLog/6 1 25 0 0
+/usuarios/datosAcceso/59 1 11840 0 0
+/contactos/agregarContacto 2 50 0 0
+/poblaciones_rutas/eliminar/8 1 25 0 0
+/partes/print/143 1 3268 0 0
+/Niveles_acceso/deleteNivel/0 2 118 0 0
+/pedidos/print/53 2 15852 0 0
+/pedidos/edit/17438 4 162579 0 0
+/menu/update/90 2 50 0 0
+/presentes/53793566 3 20366 0 0
+/niveles_acceso 15 227610 0 0
+//Partes_controller/CambiaEstado/137 1 21 0 0
+/maquinasController/getMaquinas 7 2811 0 0
+/proveedores/add 1 14297 0 0
+/menu/updateSubmenu/91 1 25 0 0
+/partes/print/137 1 4049 0 0
+/menu/edit/1 53 7950 0 0
+/pedidos/entregados 30 1699430 0 0
+/Ruta_pedido/obtenerRuta/17 2 282 0 0
+/menu/delete/79 1 25 0 0
+/usuarios/editar/58 7 84148 0 0
+/pedidos/edit/241 2 81083 0 0
+/pedidos/edit/39 25 1012883 0 0
+/menu/edit/85 3 461 0 0
+/proveedores/getProveedores 7 2331 0 0
+/pedidos/mostrarFormularioAddLineaPedido/56 1 4407 0 0
+/Lista_produccion/anulados 1 13171 0 0
+/rutas 43 566039 0 0
+/menu/delete/86 1 25 0 0
+/menu/delete/97 1 25 0 0
+/procesos_pedidos/marcarTerminado 5 686 0 0
+/menu/submenus/17 9 106709 0 0
+/contactos/eliminarContacto/16 1 25 0 0
+/lista_produccion/terminados 8 118234 0 0
+/menu/submenus/52 1 10505 0 0
+/pedidos/edit/17446 3 121614 0 0
+/niveles_acceso/getNievel 15 2015 0 0
+/vacaciones/getUsuarios 21 15484 0 0
+/Ruta_pedido/rutas/17041/1709 1 392 0 0
+/menu/delete/72 1 25 0 0
+/pedidos_proveedor/editLineaPedidoForm/226 3 1696 0 0
+/procesos/restriccion/10 1 13749 0 0
+/festivos/eliminarFestivo/4 1 25 0 0
+/entrar/107 1 6982 0 0
+//Partes_controller/CambiaEstado/135 1 21 0 0
+/Ruta_pedido/guardarRuta 7 175 0 0
+/pedidos/edit/55 1 40501 0 0
+/usuarios/getUsuarios 82 91711 0 0
+/Niveles_acceso/getNivel/0 2 95 0 0
+/procesos 25 333414 0 0
+/procesos/restriccion/9 5 68822 0 0
+/editar_rutas/1 7 205703 0 0
+/select_empresa/get_empresa/2 24 3672 0 0
+/pedidos/updateLineaPedido/136 10 680 0 0
+/usuarios/eliminar/58 1 68 0 0
+/Niveles_acceso/getNivel/14 2 98 0 0
+/Pedidos_proveedor/add 7 10978 0 0
+/proveedores 8 108040 0 0
+/pedidos/edit/17441 1 40812 0 0
+/pedidos/updateLineaPedido/142 3 204 0 0
+/comparadorProductos/editarOferta/25/54 3 3568 0 0
+/productos_necesidad/getProductos 20 8668 0 0
+/entrar/22 1 6989 0 0
+/informes/getInforme/11 1 120 0 0
+/fichajes/editar/239 1 493 0 0
+/menu/edit/76 2 304 0 0
+/usuarios 83 1269268 0 0
+/menu/update/85 1 25 0 0
+/menu/submenus/95 2 24024 0 0
+/festivos/getFestivo/1 10 896 0 0
+/rutas_transporte/rutas 14 190719 0 0
+/pedidos_proveedor/addLineaPedidoForm/131 30 16118 0 0
+/menu/delete/83 1 25 0 0
+/fichajes/editar/236 5 2511 0 0
+/partes/print/43803 10 39235 0 0
+/empresas/editForm/1705 1 19541 0 0
+/pedidos/edit/40 2 81163 0 0
+/Ruta_pedido/mostrarFormulario/58/1707 1 2864 0 0
+/menu/edit/82 9 1359 0 0
+/pedidos_proveedor/editLineaPedidoForm/227 1 563 0 0
+/menu/delete/77 1 25 0 0
+/Ruta_pedido/rutas/56/1705 31 7021 0 0
+/Ruta_pedido/mostrarFormulario/57/1707 2 5632 0 0
+/pedidos_proveedor/editar/124 1 19052 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/136 16 76572 0 0
+/partes/print/136 1 4017 0 0
+/pedidos_proveedor/crearLinea 3 75 0 0
+/rutas/add_ruta 6 168057 0 0
+/empresas/getProvincias 10 5690 0 0
+/usuarios/crearUsuario 7 413 0 0
+/menu/addSubmenu 6 150 0 0
+//Fichar 12 84097 0 0
+/log/deleteLog/7 1 25 0 0
+/festivos/actualizarFestivo/1 6 150 0 0
+/menu/create 16 159965 0 0
+/vacaciones 21 335524 0 0
+/Ruta_pedido/obtenerRuta/14 3 450 0 0
+/vacaciones/save 3 75 0 0
+/Index/enmaquina 6 76182 0 0
+/usuarios/editar/60 2 24182 0 0
+/select_empresa/get_empresa/9 11 2134 0 0
+/partes/print/44982 1 3532 0 0
+/Niveles_acceso/actualizarNivel/14 1 25 0 0
+/pedidos_proveedor/editar/129 5 96475 0 0
+/partes/print/44717 4 16024 0 0
+/partes/print/139 1 4398 0 0
+/empresas/editForm/1703 14 275071 0 0
+/pedidos_proveedor/editar/122 1 19174 0 0
+/productos/getUnidades 22 1383 0 0
+/pedidos/parte_complejo/56 4 31925 0 0
+/informes/getInforme/5 13 1495 0 0
+/proveedores/edit/10 3 37334 0 0
+/comparadorproductos/27 1 15058 0 0
+/menu/delete/68 1 25 0 0
+/partes/print/43802 1 3478 0 0
+/partes/print/133 5 22594 0 0
+/menu/updateSubmenu/90 2 50 0 0
+/menu/edit/17 1 165 0 0
+/pedidos_proveedor 26 388935 0 0
+/Ruta_pedido/obtenerRuta/15 1 141 0 0
+/menu/delete/73 1 25 0 0
+/festivos/agregarFestivo 1 25 0 0
+/Pedidos_proveedor/addPedido 5 59397 0 0
+/festivos 52 589864 0 0
+/contactos/getContacto/1704 1 125 0 0
+/select_empresa/get_empresa/11 4 772 0 0
+/google_login 17 928 3 2
+/pedidos/mostrarFormularioAddLineaPedido/51 5 21931 0 0
+/pedidos/updateLineaPedido/139 1 68 0 0
+/menu/delete/87 1 25 0 0
+/Ruta_pedido/rutas/59/1705 54 8325 0 0
+/pedidos/edit/0 2 80982 0 0
+/pedidos/print/57 3 23735 0 0
+/rutas/cambiarEstado/1 2 50 0 0
+/poblaciones_rutas/getPoblaciones 10 2007 0 0
+/Lista_produccion/entregados 2 26434 0 0
+/menu/update/88 1 25 0 0
+/entrar/24 1 6991 0 0
+/empresas 82 1133014 0 0
+/partes/print/44765 2 7066 0 0
+/menu/edit/5 1 165 0 0
+/usuarios/eliminar/111 1 60 0 0
+/menu/edit/91 3 532 0 0
+/elegirProveedor/25 14 21598 0 0
+/pedidos/updateLineaPedido/143 2 136 0 0
+/productos_necesidad/edit/25 4 53059 0 0
+/fichajes/editar/238 3 1509 0 0
+/menu/edit/4 8 1232 0 0
+/empresas/actualizarContacto 1 25 0 0
+/pedidos/edit/57 48 1946273 0 0
+/contactos/getContactos 59 397532 0 2
+//Partes_controller/CambiaEstado/43803 1 21 0 0
+/select_empresa 51 651766 0 0
+/usuarios/editar/114 1 11929 0 0
+/log 24 301520 0 0
+/contactos/getContacto/1703 3 402 0 0
+/fichajes/eliminar/235 1 25 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/138 1 4787 0 0
+/pedidos/print/35 1 7847 0 0
+/familia_productos 10 145312 0 0
+/usuarios/datosAcceso/113 1 11735 0 0
+/empresas/getContacto/4 3 468 0 0
+/menu/submenus/25 2 31531 0 0
+/menu/edit/2 4 596 0 0
+/partes/print/132 7 23189 0 0
+/usuarios/editar/113 1 11931 0 0
+/select_empresa/get_empresa/8 3 516 0 0
+/maquinas 9 132624 0 0
+/pedidos/addLineaPedido 8 472 0 0
+/pedidos/edit/56 76 3002993 0 0
+/Ruta_pedido/obtenerRuta/10 9 1323 0 0
+/usuarios/eliminar/113 1 68 0 0
+/vendor/grocery-crud/icons/font-awesome-v5/webfonts/fa-solid-900.woff2 1 78268 0 0
+/menu/delete/89 1 25 0 0
+/lista_produccion/todos 2 1684 0 0
+/pedidos_proveedor/editar/125 1 19050 0 0
+/Submenus/1 3 14082 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/44796 1 4859 0 0
+/menu/add 27 823 0 0
+/Lista_produccion/todoslospartes 9 1219211 1 0
+/pedidos/enmarcha 93 1433707 1 0
+/fichajes/eliminar/242 1 25 0 0
+/pedidos/mostrarFormularioEditarLineaPedido/140 23 120039 0 0
+/poblaciones_rutas 11 163769 0 0
+/pedidos/print/56 1 7925 0 0
+//Partes_controller/CambiaEstado/120 1 21 0 0
+/vacaciones/delete/37 1 25 0 0
+/productos 22 349937 0 0
+/usuarios/editar/1 15 192969 0 0
+/partes/print/115 5 20241 0 0
+/pedidos_proveedor/editLineaPedidoForm/224 1 582 0 0
+/menu/delete/82 1 25 0 0
+/empresas/getContactosPorEmpresa/1703 14 2460 0 1
+/empresas/getEmpresas 55 4384258 0 0
+/menu/delete/76 1 25 0 0
+/pedidos_proveedor/editar/131 23 439814 1 0
+/menu/submenus/1 17 223770 0 0
+/Lista_produccion/enmaquina/0 1 17943 0 0
+/pedidos/print/17525 1 8033 0 0
+/pedidos/edit/51 8 323499 0 0
+/informe_detalle/11 1 6756 0 0
+/Ruta_pedido/rutas/17049/1703 3 1159 0 0
+/laborables/actualizarLaborables 22 628 0 0
+/Rutas/enmarcha 3 42718 0 0
+/menu/edit/11 1 182 0 0
+/informes/agregarInforme 1 25 0 0
+/Niveles_acceso/deleteNivel/14 1 25 0 0
+/pedidos/edit/41 4 122590 1 0
+/pedidos/print/59 1 7905 0 0
+//Partes_controller/verificarEstadoProcesos/120 1 30 0 0
+/presentes/12884219 5 34815 0 0
+/menu/delete/93 1 25 0 0
+END_SIDER
