@@ -1,7 +1,7 @@
-
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/botones.css') ?>?v=<?= time() ?>">
 <div id="fondo">
-<input action="action" type="button" value="Cerrar" onclick="window.close();" class="btn btn-warning btn-sm"/>
-<input type="button" onclick="printDiv('printableArea')" value="Imprimir Informe" class="btn btn-success btn-sm"/>
+<input action="action" type="button" value="Cerrar" onclick="window.close();" class="btn boton btnEditar"/>
+<input type="button" onclick="printDiv('printableArea')" value="Imprimir Informe" class="btn boton btnImprimir"/>
 	<div id="printableArea">
     	<!-- info row -->
     	<div class="row">
@@ -31,7 +31,7 @@
 				
 				<table class="table table-sm table-hover">
 					<thead>
-						<tr>
+						<tr>''
 							<th>Nombre y apellidos</th>
 							<th>Entrada</th>
 							<th>Salida</th>
