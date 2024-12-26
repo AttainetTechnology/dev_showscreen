@@ -28,10 +28,7 @@ class Gallery extends BaseController
         $baseDirectory = "/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public/assets/uploads/files/{$id_empresa}";
         $currentDirectory = rtrim($baseDirectory . '/' . $current_path, '/');
 
-        log_message('debug', "Ruta que se está buscando: {$currentDirectory}");
-
         if (!is_readable($currentDirectory)) {
-            log_message('error', "No se puede leer el directorio: {$currentDirectory}");
             return redirect()->to('/')->with('error', 'Ocurrió un problema al intentar acceder a los archivos.');
         }
 
@@ -42,38 +39,49 @@ class Gallery extends BaseController
         $files = array_diff(scandir($currentDirectory), ['.', '..']);
         foreach ($files as $file) {
             $filePath = $currentDirectory . DIRECTORY_SEPARATOR . $file;
-        
+
             // Detectar carpetas
             if (is_dir($filePath)) {
-                $relativeFolderPath = $current_path ? $current_path . '/' . $file : $file;
-                $folders[] = $relativeFolderPath;
-        
-                // Escanear subcarpetas
+                $containsImage = false;
                 $subFiles = array_diff(scandir($filePath), ['.', '..']);
+
+                // Verificar si la carpeta contiene imágenes
                 foreach ($subFiles as $subFile) {
-                    $subFilePath = $filePath . DIRECTORY_SEPARATOR . $subFile;
                     if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $subFile)) {
-                        $relativePath = str_replace("/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public/", '', $subFilePath);
-                        $images[] = base_url('public/' . ltrim($relativePath, '/')); // Cambio aquí
+                        $containsImage = true;
+
+                        // Añadir imágenes de la carpeta directamente
+                        $subFilePath = $filePath . DIRECTORY_SEPARATOR . $subFile;
+                        $relativePath = str_replace("/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public", '', $subFilePath);
+                        $images[] = [
+                            'url' => base_url('public/' . ltrim($relativePath, '/')),
+                            'name' => pathinfo($subFile, PATHINFO_FILENAME) // Extraer el nombre del archivo sin extensión
+                        ];
                     }
+                }
+
+                // Si no contiene imágenes, agregarla a la lista de carpetas
+                if (!$containsImage) {
+                    $relativeFolderPath = $current_path ? $current_path . '/' . $file : $file;
+                    $folders[] = $relativeFolderPath;
                 }
             }
             // Detectar imágenes en el directorio actual
             elseif (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
-                $relativePath = str_replace("/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public/", '', $filePath);
-                $images[] = base_url('public/' . ltrim($relativePath, '/')); // Cambio aquí
+                $relativePath = str_replace("/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public", '', $filePath);
+                $images[] = [
+                    'url' => base_url('public/' . ltrim($relativePath, '/')),
+                    'name' => pathinfo($file, PATHINFO_FILENAME) // Extraer el nombre del archivo sin extensión
+                ];
             }
         }
-        
-
-        log_message('debug', 'Carpetas detectadas: ' . print_r($folders, true));
-        log_message('debug', 'Rutas de imágenes generadas: ' . print_r($images, true));
 
         return view('gallery', [
             'id_empresa' => $id_empresa,
             'current_path' => $current_path,
             'folders' => $folders,
             'images' => $images,
+            'current_folder' => $current_path ? basename($current_path) : 'Raíz' // Extraer la carpeta principal
         ]);
     }
 }
