@@ -61,7 +61,7 @@
             <div class="gallery-item">
                 <img src="<?= esc($image['url']) ?>" alt="<?= esc($image['name']) ?>">
                 <br> <br>
-                <p><?= esc($image['name']) ?></p> <!-- Mostrar el nombre de la imagen -->
+                <p><?= esc($image['name']) ?></p>
             </div>
         <?php endforeach; ?>
     </div>

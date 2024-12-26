@@ -42,26 +42,22 @@ class Gallery extends BaseController
 
             // Detectar carpetas
             if (is_dir($filePath)) {
-                $containsImage = false;
-                $subFiles = array_diff(scandir($filePath), ['.', '..']);
-
-                // Verificar si la carpeta contiene imágenes
-                foreach ($subFiles as $subFile) {
-                    if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $subFile)) {
-                        $containsImage = true;
-
-                        // Añadir imágenes de la carpeta directamente
-                        $subFilePath = $filePath . DIRECTORY_SEPARATOR . $subFile;
-                        $relativePath = str_replace("/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public", '', $subFilePath);
-                        $images[] = [
-                            'url' => base_url('public/' . ltrim($relativePath, '/')),
-                            'name' => pathinfo($subFile, PATHINFO_FILENAME) // Extraer el nombre del archivo sin extensión
-                        ];
+                // Verificar si el nombre de la carpeta es un número
+                if (is_numeric($file)) {
+                    // Escanear imágenes dentro de la carpeta numérica y añadirlas directamente
+                    $subFiles = array_diff(scandir($filePath), ['.', '..']);
+                    foreach ($subFiles as $subFile) {
+                        if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $subFile)) {
+                            $subFilePath = $filePath . DIRECTORY_SEPARATOR . $subFile;
+                            $relativePath = str_replace("/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public", '', $subFilePath);
+                            $images[] = [
+                                'url' => base_url('public/' . ltrim($relativePath, '/')),
+                                'name' => pathinfo($subFile, PATHINFO_FILENAME) // Extraer el nombre del archivo sin extensión
+                            ];
+                        }
                     }
-                }
-
-                // Si no contiene imágenes, agregarla a la lista de carpetas
-                if (!$containsImage) {
+                } else {
+                    // Agregar carpetas normales a la lista de carpetas navegables
                     $relativeFolderPath = $current_path ? $current_path . '/' . $file : $file;
                     $folders[] = $relativeFolderPath;
                 }
