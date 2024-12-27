@@ -134,4 +134,8 @@ $routes->post('menu/add', 'Menu::add');
 $routes->get('menu/edit/(:num)', 'Menu::edit/$1');  
 $routes->post('menu/update/(:num)', 'Menu::update/$1');
 $routes->get('empresas/editForm/(:num)', 'Empresas::editForm/$1');
-
+$routes->group('gallery', function ($routes) {
+    $routes->get('', 'Gallery::index'); // Página principal de la galería
+    $routes->get('(:any)', 'Gallery::index/$1'); // Maneja carpetas y subcarpetas
+});
+$routes->post('gallery/delete', 'Gallery::delete');

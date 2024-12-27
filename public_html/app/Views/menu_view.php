@@ -201,18 +201,13 @@
             {
                 headerName: "Activo",
                 field: "activo",
-                valueGetter: (params) => {
-                    return params.data.activo === 1 ? 'Desactivado' : 'Activo';
-                },
                 filter: 'agTextColumnFilter',
                 filterParams: {
                     filterOptions: ['contains'],
                     debounceMs: 500
                 }
             }
-
         ];
-
 
         const gridOptions = {
             columnDefs: columnDefs,
@@ -295,7 +290,6 @@
             contentType: false,
             success: function (response) {
                 if (response.success) {
-                    alert('Menú actualizado con éxito.');
                     $('#editMenuModal').modal('hide'); // Cerrar el modal
                     setTimeout(function () {
                         location.reload(); // Recargar la página después de un breve retraso

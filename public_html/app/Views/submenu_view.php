@@ -1,6 +1,13 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <?= $this->include('partials/amiga') ?>
+<<<<<<< HEAD
+=======
+<!-- Estilos de AG-Grid -->
+
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
+
+>>>>>>> 6dc77b6b31e50f3447e9739ac3cfca9d6292fa2f
 <br>
 <h2>Menú de la aplicación</h2>
 <br>
@@ -186,10 +193,6 @@
 </div>
 
 </div>
-<!-- Estilos y Scripts de AG-Grid -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
-<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

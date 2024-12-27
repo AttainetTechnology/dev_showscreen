@@ -581,7 +581,7 @@
                         tabla += '<td>' + proceso.id_linea_pedido + '</td>';
                         tabla += '<td>' + proceso.nombre_proceso + '</td>';
                         tabla += '<td>' + proceso.nombre_producto + '</td>';
-                        tabla += '<td><button class="btn btn-warning revertir-estado" data-id-relacion="' + proceso.id_relacion + '">Revertir</button></td>';
+                        tabla += '<td><button class="btn boton btnEditar revertir-estado" data-id-relacion="' + proceso.id_relacion + '">Revertir </button></td>';
                         tabla += '</tr>';
                     });
                     $('#tablaProcesos').html(tabla);

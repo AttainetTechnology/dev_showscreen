@@ -19,7 +19,7 @@
 
         <div class="form-group">
             <label for="enlace">Enlace</label>
-            <input type="text" class="form-control" id="enlace" name="enlace" >
+            <input type="text" class="form-control" id="enlace" name="enlace">
         </div>
 
         <div class="form-group">
