@@ -219,23 +219,31 @@ class Productos_necesidad extends BaseController
             'id_familia' => 'required',
             'estado_producto' => 'required'
         ]);
+    
         if (!$validation->withRequest($this->request)->run()) {
             return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
+    
         $image = $this->request->getFile('imagen');
         $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos_necesidad/{$id_producto}/";
         $imageName = $productosModel->find($id_producto)['imagen'];
-
+    
         if ($image && $image->isValid()) {
+            // Eliminar la imagen anterior si existe
             if ($imageName && file_exists($productFolder . $imageName)) {
                 unlink($productFolder . $imageName);
             }
-            $imageName = $image->getRandomName();
+    
+            // Generar un nuevo nombre para la imagen incluyendo el ID del usuario autenticado
+            $userSesionId = isset($data['id_user']) ? $data['id_user'] : 'unknown';
+            $imageName = pathinfo($image->getName(), PATHINFO_FILENAME) . "_IDUser{$userSesionId}." . $image->getExtension();
+    
             if (!is_dir($productFolder)) {
                 mkdir($productFolder, 0777, true);
             }
             $image->move($productFolder, $imageName);
         }
+    
         $productosModel->update($id_producto, [
             'para_boton' => $this->request->getPost('para_boton'),
             'nombre_producto' => $this->request->getPost('nombre_producto'),
@@ -244,8 +252,10 @@ class Productos_necesidad extends BaseController
             'unidad' => $this->request->getPost('unidad'),
             'estado_producto' => $this->request->getPost('estado_producto')
         ]);
+    
         return redirect()->to(base_url('productos_necesidad/edit/' . $id_producto))->with('success', 'Producto actualizado correctamente.');
     }
+    
 
     public function delete($id_producto)
     {
@@ -264,18 +274,25 @@ class Productos_necesidad extends BaseController
         $db = db_connect($data['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
         $producto = $productosModel->find($id_producto);
+    
         if ($producto && $producto['imagen']) {
             $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos_necesidad/{$id_producto}/";
             $imagePath = $productFolder . $producto['imagen'];
+    
+            // Intentar eliminar la imagen del sistema de archivos
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
-
+    
+            // Eliminar la referencia de la imagen en la base de datos
             $productosModel->update($id_producto, ['imagen' => null]);
+    
+            return $this->response->setJSON(['success' => true]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => 'No se encontró la imagen o el producto.']);
         }
     }
+    
     private function obtenerNombreProductoVenta($id_producto_necesidad)
     {
         $data = usuario_sesion();

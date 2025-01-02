@@ -46,9 +46,13 @@ class Gallery extends BaseController
         $baseDirectory = "/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public/assets/uploads/files/{$id_empresa}";
         return rtrim($baseDirectory . '/' . $current_path, '/');
     }
-    
+
     private function scanDirectory($currentDirectory, $current_path)
     {
+        $data = usuario_sesion();
+        $userSesionId = isset($data['id_user']) ? $data['id_user'] : null; // ID del usuario autenticado
+        $nivelAcceso = isset($data['nivel']) ? $data['nivel'] : 0; // Nivel de acceso del usuario
+
         $folders = [];
         $images = [];
         $publicPathPrefix = "/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public";
@@ -59,24 +63,30 @@ class Gallery extends BaseController
             $filePath = $currentDirectory . DIRECTORY_SEPARATOR . $file;
 
             if (is_dir($filePath)) {
-                $this->processDirectory($file, $filePath, $current_path, $folders, $images, $publicPathPrefix);
+                $this->processDirectory($file, $filePath, $current_path, $folders, $images, $publicPathPrefix, $userSesionId, $nivelAcceso);
             } elseif ($this->isImage($file)) {
-                $images[] = $this->buildImageData($filePath, $publicPathPrefix);
+                // Si el nivel de acceso no es 9, filtrar las imágenes por ID de usuario
+                if ($nivelAcceso == 9 || strpos($file, "_IDUser{$userSesionId}") !== false) {
+                    $images[] = $this->buildImageData($filePath, $publicPathPrefix);
+                }
             }
         }
 
         return [$folders, $images];
     }
 
-    private function processDirectory($file, $filePath, $current_path, &$folders, &$images, $publicPathPrefix)
+    private function processDirectory($file, $filePath, $current_path, &$folders, &$images, $publicPathPrefix, $userSesionId, $nivelAcceso)
     {
         if (is_numeric($file)) {
             $subFiles = array_diff(scandir($filePath), ['.', '..']);
 
             foreach ($subFiles as $subFile) {
                 if ($this->isImage($subFile)) {
-                    $subFilePath = $filePath . DIRECTORY_SEPARATOR . $subFile;
-                    $images[] = $this->buildImageData($subFilePath, $publicPathPrefix);
+                    // Si el nivel de acceso no es 9, filtrar las imágenes por ID de usuario
+                    if ($nivelAcceso == 9 || strpos($subFile, "_IDUser{$userSesionId}") !== false) {
+                        $subFilePath = $filePath . DIRECTORY_SEPARATOR . $subFile;
+                        $images[] = $this->buildImageData($subFilePath, $publicPathPrefix);
+                    }
                 }
             }
         } else {
@@ -84,6 +94,7 @@ class Gallery extends BaseController
             $folders[] = $relativeFolderPath;
         }
     }
+
 
     private function isImage($file)
     {
@@ -101,30 +112,30 @@ class Gallery extends BaseController
     public function delete()
     {
         helper(['filesystem', 'security']);
-    
+
         // Obtener datos del formulario
         $imageUrl = $this->request->getPost('image_path');
         $recordId = $this->request->getPost('record_id'); // Obtener el ID del registro
-    
+
         // Convertir la URL en una ruta de archivo absoluta
         $basePublicPath = "/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public";
         $filePath = str_replace(base_url('public'), $basePublicPath, $imageUrl);
-    
+
         // Verificar si el archivo existe
         if (!file_exists($filePath)) {
             return redirect()->back()->with('error', 'El archivo no existe o ya fue eliminado.');
         }
-    
+
         // Eliminar el registro de la base de datos
         if ($recordId) {
             $db = \Config\Database::connect();
             $builder = $db->table('tabla_correspondiente'); // Ajusta el nombre de la tabla
             $builder->where('id', $recordId)->delete(); // Usa el ID para eliminar el registro
         }
-    
+
         // Obtener la carpeta que contiene la imagen
         $folderPath = dirname($filePath);
-    
+
         // Intentar eliminar el archivo
         if (unlink($filePath)) {
             // Verificar si la carpeta está vacía

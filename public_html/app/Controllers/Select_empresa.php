@@ -36,54 +36,61 @@ class Select_empresa extends BaseController
     public function editar()
     {
         $empresaModel = new DbConnections_Model();
-
+    
         $id = $this->request->getPost('id_empresa');
-        $data = [
+        $data = usuario_sesion(); // Obtener datos del usuario autenticado
+        $userSesionId = isset($data['id_user']) ? $data['id_user'] : 'unknown';
+    
+        $updateData = [
             'nombre_empresa' => $this->request->getPost('nombre_empresa'),
             'db_name' => $this->request->getPost('db_name'),
             'db_user' => $this->request->getPost('db_user'),
             'db_password' => $this->request->getPost('db_password'),
             'NIF' => $this->request->getPost('NIF'),
         ];
-
+    
         // Ruta base para los archivos públicos
         $uploadPath = FCPATH . 'public/assets/uploads/files/' . $id . '/logos/';
         if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0777, true); // Crear directorio si no existe
+            mkdir($uploadPath, 0777, true);
         }
-
+    
         // Procesar logo de empresa
         $logoEmpresa = $this->request->getFile('logo_empresa');
         if ($logoEmpresa && $logoEmpresa->isValid()) {
-            $filePath = $id . '/logos/' . $logoEmpresa->getName();
-            $logoEmpresa->move($uploadPath, $logoEmpresa->getName());
-            $data['logo_empresa'] = $filePath;
+            $newName = pathinfo($logoEmpresa->getName(), PATHINFO_FILENAME) . "_IDUser{$userSesionId}." . $logoEmpresa->getExtension();
+            $filePath = $id . '/logos/' . $newName;
+            $logoEmpresa->move($uploadPath, $newName);
+            $updateData['logo_empresa'] = $filePath;
         }
-
+    
         // Procesar favicon
         $favicon = $this->request->getFile('favicon');
         if ($favicon && $favicon->isValid()) {
-            $filePath = $id . '/logos/' . $favicon->getName();
-            $favicon->move($uploadPath, $favicon->getName());
-            $data['favicon'] = $filePath;
+            $newName = pathinfo($favicon->getName(), PATHINFO_FILENAME) . "_IDUser{$userSesionId}." . $favicon->getExtension();
+            $filePath = $id . '/logos/' . $newName;
+            $favicon->move($uploadPath, $newName);
+            $updateData['favicon'] = $filePath;
         }
-
+    
         // Procesar logo de fichajes
         $logoFichajes = $this->request->getFile('logo_fichajes');
         if ($logoFichajes && $logoFichajes->isValid()) {
-            $filePath = $id . '/logos/' . $logoFichajes->getName();
-            $logoFichajes->move($uploadPath, $logoFichajes->getName());
-            $data['logo_fichajes'] = $filePath;
+            $newName = pathinfo($logoFichajes->getName(), PATHINFO_FILENAME) . "_IDUser{$userSesionId}." . $logoFichajes->getExtension();
+            $filePath = $id . '/logos/' . $newName;
+            $logoFichajes->move($uploadPath, $newName);
+            $updateData['logo_fichajes'] = $filePath;
         }
-
+    
         if (!empty($id)) {
-            $empresaModel->update($id, $data);
+            $empresaModel->update($id, $updateData);
         } else {
-            $empresaModel->insert($data);
+            $empresaModel->insert($updateData);
         }
-
+    
         return redirect()->to(base_url('select_empresa'));
     }
+    
     public function eliminar($id)
     {
         $empresaModel = new DbConnections_Model();

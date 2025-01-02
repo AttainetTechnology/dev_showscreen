@@ -47,12 +47,15 @@ class Usuarios extends BaseController
     public function actualizarUsuario()
     {
         $data = usuario_sesion();
+        if (!isset($data['id_user'])) {
+            return redirect()->back()->with('error', 'No se pudo obtener el usuario autenticado.');
+        }
+
         $db = db_connect($data['new_db']);
         $model = new Usuarios2_Model($db);
         $id = $this->request->getPost('id');
 
-        // Datos del formulario
-        $data = [
+        $dataFormulario = [
             'nombre_usuario' => $this->request->getPost('nombre_usuario'),
             'apellidos_usuario' => $this->request->getPost('apellidos_usuario'),
             'email' => $this->request->getPost('email'),
@@ -61,34 +64,31 @@ class Usuarios extends BaseController
             'id_empresa' => $data['id_empresa'],
             'dni' => $this->request->getPost('dni'),
             'seguridad_social' => $this->request->getPost('seguridad_social'),
-
         ];
 
-        // Si se ha subido una nueva foto
         if ($this->request->getFile('userfoto')->isValid()) {
             $userfoto = $this->request->getFile('userfoto');
             $id_empresa = $data['id_empresa'];
-            $user_id = $id;
+            $user_id = $id; // ID del usuario que se está editando
+            $user_sesion_id = $data['id_user']; // ID del usuario autenticado en la sesión
             $uploadPath = ROOTPATH . 'public/assets/uploads/files/' . $id_empresa . '/usuarios/' . $user_id . '/';
 
-            // Crear el directorio si no existe
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
             }
 
-            // Si ya hay imágenes en la carpeta, eliminarlas
             $this->eliminarImagenesExistentes($uploadPath);
 
-            // Mover la nueva imagen
             $originalName = $userfoto->getName();
-            $userfoto->move($uploadPath, $originalName);
+            $extension = $userfoto->getExtension();
+            $newFileName = pathinfo($originalName, PATHINFO_FILENAME) . '_IDUser' . $user_sesion_id . '.' . $extension;
 
-            // Guardar la ruta de la imagen en la base de datos
-            $data['userfoto'] = $user_id . '/' . $originalName;
+            $userfoto->move($uploadPath, $newFileName);
+
+            $dataFormulario['userfoto'] = $user_id . '/' . $newFileName;
         }
 
-        // Actualizar los datos del usuario
-        if ($model->update($id, $data)) {
+        if ($model->update($id, $dataFormulario)) {
             return redirect()->to('/usuarios')->with('success', 'Usuario actualizado correctamente.');
         } else {
             return redirect()->back()->with('error', 'No se pudo actualizar el usuario.')->withInput();
