@@ -115,38 +115,86 @@ class Gallery extends BaseController
 
         // Obtener datos del formulario
         $imageUrl = $this->request->getPost('image_path');
-        $recordId = $this->request->getPost('record_id'); // Obtener el ID del registro
+        $recordId = $this->request->getPost('record_id');
+
+        // Decodificar la URL para manejar caracteres especiales
+        $decodedImageUrl = urldecode($imageUrl);
 
         // Convertir la URL en una ruta de archivo absoluta
         $basePublicPath = "/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public";
-        $filePath = str_replace(base_url('public'), $basePublicPath, $imageUrl);
+        $filePath = str_replace(base_url('public'), $basePublicPath, $decodedImageUrl);
 
         // Verificar si el archivo existe
         if (!file_exists($filePath)) {
             return redirect()->back()->with('error', 'El archivo no existe o ya fue eliminado.');
         }
 
-        // Eliminar el registro de la base de datos
-        if ($recordId) {
-            $db = \Config\Database::connect();
-            $builder = $db->table('tabla_correspondiente'); // Ajusta el nombre de la tabla
-            $builder->where('id', $recordId)->delete(); // Usa el ID para eliminar el registro
-        }
+        // Conectar a la base de datos
+        $db = \Config\Database::connect();
 
-        // Obtener la carpeta que contiene la imagen
-        $folderPath = dirname($filePath);
+        // Actualizar las tablas para eliminar referencias a la imagen
+        $this->removeImageReferences($db, $decodedImageUrl);
 
         // Intentar eliminar el archivo
         if (unlink($filePath)) {
+            // Obtener la carpeta que contiene la imagen
+            $folderPath = dirname($filePath);
+
             // Verificar si la carpeta está vacía
             if (is_dir($folderPath) && count(array_diff(scandir($folderPath), ['.', '..'])) === 0) {
-                // Eliminar la carpeta si está vacía
                 rmdir($folderPath);
             }
-            return redirect()->back()->with('success', 'Imagen, registro y carpeta eliminados exitosamente, si corresponde.');
+            return redirect()->back()->with('success', 'Imagen eliminada exitosamente de todas las referencias.');
         } else {
             return redirect()->back()->with('error', 'Ocurrió un error al intentar eliminar la imagen.');
         }
     }
+
+
+    private function removeImageReferences($db, $imageUrl)
+    {
+        $mainDb = \Config\Database::connect();
+
+        $data = usuario_sesion();
+        if (!isset($data['new_db'])) {
+            throw new \RuntimeException('No se pudo determinar la base de datos.');
+        }
+
+        $dynamicDb = db_connect($data['new_db']);
+
+        // Obtener el nombre del archivo únicamente
+        $fileName = basename($imageUrl);
+
+        // Normalizar el nombre del archivo eliminando prefijos como `numero/` o subdirectorios
+        $fileNameNormalized = preg_replace('/^\d+\/|^.*\//', '', $fileName);
+
+        $tablesToUpdate = [
+            'productos_necesidad' => ['imagen', $dynamicDb],
+            'productos' => ['imagen', $dynamicDb],
+            'users' => ['userfoto', $dynamicDb],
+            'dbconnections' => ['logo_empresa', 'favicon', 'logo_fichajes', $mainDb],
+        ];
+
+        foreach ($tablesToUpdate as $table => $columns) {
+            $dbConnection = array_pop($columns);
+
+            foreach ($columns as $column) {
+                try {
+                    // Ejecutar la consulta con una búsqueda flexible
+                    $dbConnection->query("
+                    UPDATE {$table}
+                    SET {$column} = NULL
+                    WHERE {$column} LIKE CONCAT('%', ?)
+                ", [$fileNameNormalized]);
+
+                } catch (\Exception $e) {
+                    // Manejo silencioso de errores o agregar manejo específico aquí si es necesario
+                }
+            }
+        }
+    }
+
+
+
 
 }
