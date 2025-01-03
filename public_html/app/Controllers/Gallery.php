@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 class Gallery extends BaseController
 {
-    public function index($current_path = '')
+    public function index($current_path = '', $custom_name = null)
     {
         helper(['controlacceso']);
 
@@ -18,15 +18,42 @@ class Gallery extends BaseController
             return redirect()->to('/')->with('error', 'Ocurrió un problema al intentar acceder a los archivos.');
         }
 
+        // Añadir las migas de pan
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Galería', base_url('/gallery'));
+
+        // Si hay un nombre personalizado, lo usamos, de lo contrario usamos el nombre de la carpeta.
+        $folderName = $custom_name ? $custom_name : basename($current_path);
+        $this->addBreadcrumb($this->formatFolderName($folderName)); // Usamos la función de formato
+
+        // Obtener las migas de pan
+        $data['amiga'] = $this->getBreadcrumbs();
+
+        // Obtener los datos de carpetas e imágenes
         [$folders, $images] = $this->scanDirectory($currentDirectory, $current_path);
+
+        // Formateamos los nombres de las carpetas
+        $formattedFolders = array_map([$this, 'formatFolderName'], $folders);
 
         return view('gallery', [
             'id_empresa' => $id_empresa,
             'current_path' => $current_path,
-            'folders' => $folders,
+            'folders' => $formattedFolders, // Pasar los nombres formateados
             'images' => $images,
             'current_folder' => $current_path ? basename($current_path) : 'Raíz',
+            'amiga' => $data['amiga'] // Pasar las migas de pan a la vista
         ]);
+    }
+
+    private function formatFolderName($folderName)
+    {
+        // Reemplaza guiones bajos por espacios
+        $formattedName = str_replace('_', ' ', $folderName);
+
+        // Convierte la primera letra de cada palabra a mayúscula
+        $formattedName = ucwords($formattedName);
+
+        return $formattedName;
     }
 
     private function getIdEmpresa()
@@ -66,7 +93,7 @@ class Gallery extends BaseController
                 $this->processDirectory($file, $filePath, $current_path, $folders, $images, $publicPathPrefix, $userSesionId, $nivelAcceso);
             } elseif ($this->isImage($file)) {
                 // Si el nivel de acceso no es 9, filtrar las imágenes por ID de usuario
-                if ($nivelAcceso == 9 || strpos($file, "_IDUser{$userSesionId}") !== false) {
+                if ($nivelAcceso >= 8 || strpos($file, "_IDUser{$userSesionId}") !== false) {
                     $images[] = $this->buildImageData($filePath, $publicPathPrefix);
                 }
             }
@@ -83,7 +110,7 @@ class Gallery extends BaseController
             foreach ($subFiles as $subFile) {
                 if ($this->isImage($subFile)) {
                     // Si el nivel de acceso no es 9, filtrar las imágenes por ID de usuario
-                    if ($nivelAcceso == 9 || strpos($subFile, "_IDUser{$userSesionId}") !== false) {
+                    if ($nivelAcceso  >= 8|| strpos($subFile, "_IDUser{$userSesionId}") !== false) {
                         $subFilePath = $filePath . DIRECTORY_SEPARATOR . $subFile;
                         $images[] = $this->buildImageData($subFilePath, $publicPathPrefix);
                     }
