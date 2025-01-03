@@ -207,7 +207,6 @@ class Gallery extends BaseController
 
             foreach ($columns as $column) {
                 try {
-                    // Ejecutar la consulta con una búsqueda flexible
                     $dbConnection->query("
                     UPDATE {$table}
                     SET {$column} = NULL
@@ -215,7 +214,6 @@ class Gallery extends BaseController
                 ", [$fileNameNormalized]);
 
                 } catch (\Exception $e) {
-                    // Manejo silencioso de errores o agregar manejo específico aquí si es necesario
                 }
             }
         }

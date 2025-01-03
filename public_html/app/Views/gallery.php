@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/gallery.css') ?>?v=<?= time() ?>">
 
 <title>Galería de Imágenes</title>
-
+<br>
 <h1>Galería de Imágenes</h1>
 
 <!-- Mostrar carpetas -->
