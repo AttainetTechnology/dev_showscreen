@@ -156,11 +156,10 @@ class Menu extends BaseController
 		$db = db_connect($data['new_db']);
 		$menuModel = new MenuModel($db);
 
-		// Recoger datos del formulario
 		$formData = [
 			'posicion' => $this->request->getPost('posicion'),
 			'titulo' => $this->request->getPost('titulo'),
-			'enlace' => $this->request->getPost('enlace'),
+			'enlace' => $this->request->getPost('enlace') ?: '',  
 			'nivel' => $this->request->getPost('nivel'),
 			'activo' => $this->request->getPost('activo'),
 			'estilo' => $this->request->getPost('estilo'),
@@ -169,6 +168,7 @@ class Menu extends BaseController
 			'nueva_pestana' => $this->request->getPost('nueva_pestana'),
 			'dependencia' => 0, // Menú sin dependencia
 		];
+		
 
 		// Validar que el campo 'posicion' no esté vacío y sea un número
 		if (empty($formData['posicion']) || !is_numeric($formData['posicion'])) {
