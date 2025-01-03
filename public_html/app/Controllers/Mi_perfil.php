@@ -74,17 +74,23 @@ class Mi_perfil extends BaseController
                 return redirect()->back()->withInput();
             }
 
+            // Crear la carpeta si no existe
             if (!is_dir($specificPath)) {
                 mkdir($specificPath, 0777, true);
             } else {
-                array_map('unlink', glob($specificPath . "*"));
+                array_map('unlink', glob($specificPath . "*")); 
             }
 
-            $imageFile->move($specificPath);
-            $imagePath = $specificPath . $imageFile->getName();
+            // Agregar el ID del usuario autenticado al nombre de la imagen
+            $newName = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . "_IDUser{$userId}." . $imageFile->getExtension();
+            $imageFile->move($specificPath, $newName);
+
+            // Redimensionar y comprimir la imagen
+            $imagePath = $specificPath . $newName;
             $this->compressAndResizeImage($imagePath, 400, 200);
 
-            $updateDataCliente['userfoto'] = $userId . '/' . $imageFile->getName();
+            // Actualizar el nombre de la imagen en la base de datos
+            $updateDataCliente['userfoto'] = $userId . '/' . $newName;
         }
 
         if (!empty($updateDataOriginal)) {
@@ -127,9 +133,7 @@ class Mi_perfil extends BaseController
     }
 
     public function edit($id = null)
-    {  
-
-        
+    {
         if ($id === null) {
             return redirect()->to('/');
         }
