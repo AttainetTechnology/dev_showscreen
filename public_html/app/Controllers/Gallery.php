@@ -67,14 +67,14 @@ class Gallery extends BaseController
         return $data['id_empresa'];
     }
 
-    private function buildDirectoryPath($current_path)
+    public function buildDirectoryPath($current_path)
     {
         $id_empresa = $this->getIdEmpresa(); // Obtén el id_empresa directamente
         $baseDirectory = "/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public/assets/uploads/files/{$id_empresa}";
         return rtrim($baseDirectory . '/' . $current_path, '/');
     }
 
-    private function scanDirectory($currentDirectory, $current_path)
+    public function scanDirectory($currentDirectory, $current_path)
     {
         $data = usuario_sesion();
         $userSesionId = isset($data['id_user']) ? $data['id_user'] : null; // ID del usuario autenticado
@@ -128,14 +128,20 @@ class Gallery extends BaseController
         return preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file);
     }
 
-    private function buildImageData($filePath, $publicPathPrefix)
+    public function buildImageData($filePath, $publicPathPrefix)
     {
         $relativePath = str_replace($publicPathPrefix, '', $filePath);
+        $url = base_url('public/' . ltrim($relativePath, '/'));
+    
+        // Depurar para verificar las rutas
+        log_message('debug', 'Imagen generada: ' . $url);
+    
         return [
-            'url' => base_url('public/' . ltrim($relativePath, '/')),
+            'url' => $url,
             'name' => pathinfo($filePath, PATHINFO_FILENAME),
         ];
     }
+    
     public function delete()
     {
         helper(['filesystem', 'security']);
