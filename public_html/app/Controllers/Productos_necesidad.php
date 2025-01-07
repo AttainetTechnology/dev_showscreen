@@ -224,7 +224,7 @@ class Productos_necesidad extends BaseController
         ]);
 
     }
-    
+
     public function update($id_producto)
     {
         $data = usuario_sesion();
@@ -297,52 +297,44 @@ class Productos_necesidad extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado.']);
         }
     }
-    public function eliminarImagen($id_producto)
+    public function eliminarImagen($id)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
-        $producto = $productosModel->find($id_producto);
 
-        if ($producto && $producto['imagen']) {
-            $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos/";
-            $imagePath = "{$productFolder}{$producto['imagen']}";
-
-            // Intentar eliminar la imagen del sistema de archivos
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
-            }
-
-            // Eliminar la referencia de la imagen en la base de datos
-            $productosModel->update($id_producto, ['imagen' => null]);
-
-            return $this->response->setJSON(['success' => true]);
-        } else {
-            return $this->response->setJSON(['success' => false, 'message' => 'No se encontró la imagen o el producto.']);
+        // Buscar el producto por ID
+        $producto = $productosModel->find($id);
+        if (!$producto || !$producto['imagen']) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Imagen no encontrada.']);
         }
+
+        // Desasociar la imagen del producto (establecer el campo 'imagen' en NULL)
+        $productosModel->update($id, ['imagen' => null]);
     }
+
 
     public function asociarImagen()
     {
         $id_producto = $this->request->getPost('id_producto');
         $imagen = $this->request->getPost('imagen');
-    
+
         if (!$id_producto || !$imagen) {
             return $this->response->setJSON(['success' => false, 'message' => 'Faltan datos.']);
         }
-    
+
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
-    
+
         $producto = $productosModel->find($id_producto);
-    
+
         if (!$producto) {
             return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado.']);
         }
-    
+
         $productosModel->update($id_producto, ['imagen' => $imagen]);
-    
+
     }
 
     private function obtenerNombreProductoVenta($id_producto_necesidad)

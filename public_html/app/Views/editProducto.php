@@ -71,18 +71,34 @@
 
         <!-- Campo oculto para almacenar el nombre de la imagen seleccionada -->
         <input type="hidden" id="imagenSeleccionada" name="imagenSeleccionada" value="<?= $producto['imagen'] ?>">
+
         <!-- Botón para abrir la galería -->
-         <br>
-        <button type="button" class="btn boton btnEditar" id="abrirModalGaleria"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
-        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-        <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z"/>
-        </svg>Seleccionar de la Galería</button>
+        <br>
+        <button type="button" class="btn boton btnEditar" id="abrirModalGaleria">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image"
+                viewBox="0 0 16 16">
+                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+                <path
+                    d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z" />
+            </svg>Seleccionar de la Galería</button>
+        
+        <!-- Botón para eliminar la imagen -->
+        <?php if ($producto['imagen']): ?>
+            <button type="button" class="btn boton btnEliminar" style="margin-left:10px !important;" onclick="eliminarImagen(<?= $producto['id_producto'] ?>)"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
+                    <path
+                        d="M7.66752 7.27601C7.41731 7.27601 7.17736 7.37593 7.00044 7.5538C6.82351 7.73166 6.72412 7.9729 6.72412 8.22444V9.17287C6.72412 9.4244 6.82351 9.66564 7.00044 9.84351C7.17736 10.0214 7.41731 10.1213 7.66752 10.1213H8.13922V18.6571C8.13922 19.1602 8.338 19.6427 8.69184 19.9984C9.04569 20.3542 9.5256 20.554 10.026 20.554H15.6864C16.1868 20.554 16.6667 20.3542 17.0205 19.9984C17.3744 19.6427 17.5732 19.1602 17.5732 18.6571V10.1213H18.0449C18.2951 10.1213 18.535 10.0214 18.712 9.84351C18.8889 9.66564 18.9883 9.4244 18.9883 9.17287V8.22444C18.9883 7.9729 18.8889 7.73166 18.712 7.5538C18.535 7.37593 18.2951 7.27601 18.0449 7.27601H14.743C14.743 7.02447 14.6436 6.78324 14.4667 6.60537C14.2898 6.42751 14.0498 6.32758 13.7996 6.32758H11.9128C11.6626 6.32758 11.4226 6.42751 11.2457 6.60537C11.0688 6.78324 10.9694 7.02447 10.9694 7.27601H7.66752ZM10.4977 11.0697C10.6228 11.0697 10.7428 11.1197 10.8312 11.2086C10.9197 11.2975 10.9694 11.4182 10.9694 11.5439V18.1829C10.9694 18.3087 10.9197 18.4293 10.8312 18.5182C10.7428 18.6072 10.6228 18.6571 10.4977 18.6571C10.3726 18.6571 10.2526 18.6072 10.1642 18.5182C10.0757 18.4293 10.026 18.3087 10.026 18.1829V11.5439C10.026 11.4182 10.0757 11.2975 10.1642 11.2086C10.2526 11.1197 10.3726 11.0697 10.4977 11.0697ZM12.8562 11.0697C12.9813 11.0697 13.1013 11.1197 13.1897 11.2086C13.2782 11.2975 13.3279 11.4182 13.3279 11.5439V18.1829C13.3279 18.3087 13.2782 18.4293 13.1897 18.5182C13.1013 18.6072 12.9813 18.6571 12.8562 18.6571C12.7311 18.6571 12.6111 18.6072 12.5227 18.5182C12.4342 18.4293 12.3845 18.3087 12.3845 18.1829V11.5439C12.3845 11.4182 12.4342 11.2975 12.5227 11.2086C12.6111 11.1197 12.7311 11.0697 12.8562 11.0697ZM15.6864 11.5439V18.1829C15.6864 18.3087 15.6367 18.4293 15.5482 18.5182C15.4598 18.6072 15.3398 18.6571 15.2147 18.6571C15.0896 18.6571 14.9696 18.6072 14.8811 18.5182C14.7927 18.4293 14.743 18.3087 14.743 18.1829V11.5439C14.743 11.4182 14.7927 11.2975 14.8811 11.2086C14.9696 11.1197 15.0896 11.0697 15.2147 11.0697C15.3398 11.0697 15.4598 11.1197 15.5482 11.2086C15.6367 11.2975 15.6864 11.4182 15.6864 11.5439Z"
+                        fill="white" />
+                </svg></button>
+        <?php endif; ?>
         <!-- Vista previa de la imagen seleccionada -->
-        <br> <br>
+        <br><br>
         <img id="imagenSeleccionadaPreview"
             src="<?= $producto['imagen'] ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}") : '#' ?>"
             alt="Vista previa" style="<?= $producto['imagen'] ? '' : 'display: none;' ?>; width: 100px; height: 100px;">
+
     </div>
+
     <!-- Modal para la galería -->
     <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -143,16 +159,18 @@
         });
     });
     function eliminarImagen(idProducto) {
-        if (confirm('¿Estás seguro de que deseas eliminar esta imagen?')) {
+        if (confirm('¿Desea quitar la imagen asignada?')) {
             $.ajax({
                 url: `<?= base_url("productos/eliminarImagen") ?>/${idProducto}`,
-                type: 'DELETE',
+                type: 'POST', // Cambia a POST si el método DELETE no está configurado en el backend
                 success: function (response) {
                     if (response.success) {
-                        alert('Imagen eliminada correctamente');
+                        alert(response.message);
+                        // Ocultar la vista previa y el botón de eliminar
+                        document.getElementById('imagenSeleccionadaPreview').style.display = 'none';
                         location.reload();
                     } else {
-                        alert('Error: ' + response.message);
+                        location.reload();
                     }
                 },
                 error: function () {
@@ -161,7 +179,6 @@
             });
         }
     }
-
 </script>
 
 <?= $this->endSection() ?>
