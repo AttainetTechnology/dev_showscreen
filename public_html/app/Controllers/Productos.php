@@ -106,12 +106,13 @@ class Productos extends BaseController
             ->join('unidades', 'productos.unidad = unidades.id_unidad', 'left')
             ->findAll();
 
-        foreach ($productos as &$producto) {
-            $producto['estado_nombre'] = $producto['estado_producto'] == 1 ? 'Activo' : 'Inactivo';
-            $producto['imagen_url'] = $producto['imagen']
-                ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['id_producto']}/{$producto['imagen']}")
-                : null; // Devuelve null si no hay imagen
-        }
+            foreach ($productos as &$producto) {
+                $producto['estado_nombre'] = $producto['estado_producto'] == 1 ? 'Activo' : 'Inactivo';
+                $producto['imagen_url'] = $producto['imagen']
+                    ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}")
+                    : null; // Devuelve null si no hay imagen
+            }
+            
 
         return $this->response->setJSON($productos);
     }
@@ -165,66 +166,77 @@ class Productos extends BaseController
 
     public function editarVista($id)
     {
-        // Añadir migas de pan
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Productos', base_url('/productos'));
         $this->addBreadcrumb('Editar Producto');
-
+    
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new Productos_model($db);
-
+    
         $producto = $productosModel->find($id);
         if (!$producto) {
             return redirect()->back()->with('error', 'Producto no encontrado');
         }
-
+    
         $producto['imagen_url'] = $producto['imagen']
-            ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['id_producto']}/{$producto['imagen']}")
+            ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}")
             : null;
-
+    
         $familias = $db->table('familia_productos')->get()->getResultArray();
         $unidades = $db->table('unidades')->get()->getResultArray();
-
+    
         return view('editProducto', [
             'producto' => $producto,
             'familias' => $familias,
             'unidades' => $unidades,
             'amiga' => $this->getBreadcrumbs(),
+            'data' => $data, // Pasar $data
         ]);
     }
-
     public function editarProducto($id)
-{
-    $data = usuario_sesion();
-    $db = db_connect($data['new_db']);
-    $productosModel = new Productos_model($db);
-
-    $postData = $this->request->getPost();
-    $file = $this->request->getFile('imagen');
-
-    if ($file && $file->isValid() && !$file->hasMoved()) {
-        // Crear la carpeta del producto si no existe
-        $rutaProducto = "public/assets/uploads/files/{$data['id_empresa']}/productos/{$id}";
-        if (!is_dir($rutaProducto)) {
-            mkdir($rutaProducto, 0777, true);
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+    
+        $postData = $this->request->getPost();
+        $file = $this->request->getFile('imagen');
+    
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $rutaProductos = "public/assets/uploads/files/{$data['id_empresa']}/productos";
+    
+            // Crear la carpeta principal si no existe
+            if (!is_dir($rutaProductos)) {
+                mkdir($rutaProductos, 0777, true);
+            }
+    
+            // Generar un nombre único con el ID del usuario
+            $nombreBase = pathinfo($file->getName(), PATHINFO_FILENAME);
+            $extension = $file->getExtension();
+            $idUser = $data['id_user']; // ID del usuario desde la sesión
+            $nombreConId = "{$nombreBase}_IDUser{$idUser}.{$extension}";
+    
+            $rutaArchivo = "{$rutaProductos}/{$nombreConId}";
+    
+            if (file_exists($rutaArchivo)) {
+                // Si la imagen ya existe con el ID del usuario, simplemente asociarla
+                $postData['imagen'] = $nombreConId;
+            } else {
+                // Si no existe, moverla y asociarla
+                $file->move($rutaProductos, $nombreConId);
+                $postData['imagen'] = $nombreConId;
+            }
         }
-
-        // Agregar el ID del usuario autenticado al nombre de la imagen
-        $userSesionId = isset($data['id_user']) ? $data['id_user'] : 'unknown';
-        $newName = pathinfo($file->getName(), PATHINFO_FILENAME) . "_IDUser{$userSesionId}." . $file->getExtension();
-        $file->move($rutaProducto, $newName);
-
-        // Actualizar el nombre de la imagen en los datos del producto
-        $postData['imagen'] = $newName;
+    
+        if ($productosModel->update($id, $postData)) {
+            return redirect()->to(base_url("productos/editarVista/{$id}"));
+        } else {
+            return redirect()->to(base_url("productos/editarVista/{$id}"))->with('error', 'Error al actualizar el producto');
+        }
     }
+    
 
-    if ($productosModel->update($id, $postData)) {
-        return redirect()->to(base_url("productos/editarVista/{$id}"));
-    } else {
-        return redirect()->to(base_url("productos/editarVista/{$id}"))->with('error', 'Error al actualizar el producto');
-    }
-}
 
     public function eliminarProducto($id)
     {
@@ -237,21 +249,23 @@ class Productos extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado.']);
         }
 
-        // Ruta de la carpeta del producto
-        $rutaProducto = "public/assets/uploads/files/{$data['id_empresa']}/productos/{$id}";
+        $rutaImagenes = "public/assets/uploads/files/{$data['id_empresa']}/productos";
 
-        // Eliminar la carpeta del producto si existe
-        if (is_dir($rutaProducto)) {
-            array_map('unlink', glob("$rutaProducto/*.*")); // Eliminar archivos
-            rmdir($rutaProducto); // Eliminar carpeta
+        // Eliminar la imagen del producto si existe
+        if ($producto['imagen']) {
+            $imagenPath = "{$rutaImagenes}/{$producto['imagen']}";
+            if (file_exists($imagenPath)) {
+                unlink($imagenPath);
+            }
         }
-
+        
         // Eliminar el producto de la base de datos
         if ($productosModel->delete($id)) {
             return $this->response->setJSON(['success' => true]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar el producto.']);
         }
+        
     }
 
     public function eliminarImagen($id)
@@ -265,18 +279,15 @@ class Productos extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Imagen no encontrada.']);
         }
     
-        // Ruta de la imagen
-        $rutaImagen = "public/assets/uploads/files/{$data['id_empresa']}/productos/{$id}/{$producto['imagen']}";
-    
-        // Intentar eliminar la imagen del sistema de archivos
+        $rutaImagen = "public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}";
         if (file_exists($rutaImagen)) {
             unlink($rutaImagen);
         }
-    
-        // Eliminar la referencia de la imagen en la base de datos
         $productosModel->update($id, ['imagen' => null]);
-    
+        
+        
         return $this->response->setJSON(['success' => true]);
+        
     }
     
 
