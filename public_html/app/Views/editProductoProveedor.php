@@ -30,28 +30,34 @@
         </select>
     </div>
     <div class="mb-3">
-    <label for="imagen" class="form-label">Imagen</label>
-    <input type="file" name="imagen" id="imagen" class="form-control">
-    <input type="hidden" name="imagenSeleccionada" id="imagenSeleccionada" value="<?= $producto['imagen'] ?>">
-    <br>
-    <?php if ($producto['imagen']): ?>
-        <img id="imagenSeleccionadaPreview" src="<?= base_url("public/assets/uploads/files/{$id_empresa}/productos_necesidad/" . $producto['imagen']) ?>" height="60">
-    <?php else: ?>
-        <img id="imagenSeleccionadaPreview" src="#" alt="Vista previa" height="60" style="display: none;">
-    <?php endif; ?>
-    <br>
-    <button type="button" class="btn btn-primary mt-2" id="abrirModalGaleria">Seleccionar de la Galería</button>
-</div>
-
-
-<div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <?= view('gallery_modal', ['images' => $images]) ?>
+        <label for="imagen" class="form-label">Imagen</label>
+        <input type="file" name="imagen" id="imagen" class="form-control">
+        <input type="hidden" name="imagenSeleccionada" id="imagenSeleccionada" value="<?= $producto['imagen'] ?>">
+        <br>
+        <button type="button" class="btn boton btnEditar" id="abrirModalGaleria">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image"
+                viewBox="0 0 16 16">
+                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+                <path
+                    d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z" />
+            </svg>Seleccionar de la Galería</button>
+        <br> <br>
+        <?php if ($producto['imagen']): ?>
+            <img id="imagenSeleccionadaPreview"
+                src="<?= base_url("public/assets/uploads/files/{$id_empresa}/productos/" . $producto['imagen']) ?>"
+                height="60">
+        <?php else: ?>
+            <img id="imagenSeleccionadaPreview" src="#" alt="Vista previa" height="60" style="display: none;">
+        <?php endif; ?>
+        <br>
+    </div>
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <?= view('gallery_modal', ['images' => $images]) ?>
+            </div>
         </div>
     </div>
-</div>
-
 
     <div class="mb-3">
         <label for="unidad" class="form-label">Unidad</label>

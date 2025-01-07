@@ -8,19 +8,18 @@
 </div>
 
 <div class="modal-body">
-<div class="gallery-container">
-    <?php if (!empty($images)): ?>
-        <?php foreach ($images as $image): ?>
-            <div class="gallery-item" style="cursor: pointer;" onclick="selectImage('<?= esc($image['url']) ?>')">
-                <img src="<?= esc($image['url']) ?>" alt="<?= esc($image['name']) ?>">
-                <p><?= esc($image['name']) ?></p>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No hay imágenes disponibles.</p>
-    <?php endif; ?>
-</div>
-
+    <div class="gallery-container">
+        <?php if (!empty($images)): ?>
+            <?php foreach ($images as $image): ?>
+                <div class="gallery-item" style="cursor: pointer;" onclick="selectImage('<?= esc($image['url']) ?>')">
+                    <img src="<?= esc($image['url']) ?>" alt="<?= esc($image['name']) ?>">
+                    <p><?= esc($image['name']) ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No hay imágenes disponibles.</p>
+        <?php endif; ?>
+    </div>
 </div>
 <script>
     function selectImage(imageUrl) {
@@ -37,13 +36,6 @@
             url: '<?= base_url('productos_necesidad/asociarImagen') ?>',
             method: 'POST',
             data: { id_producto: productoId, imagen: imageName },
-            success: function (response) {
-                if (response.success) {
-                    alert('Imagen asociada correctamente.');
-                } else {
-                    alert('Hubo un error al asociar la imagen.');
-                }
-            },
             error: function () {
                 alert('Error al comunicarse con el servidor.');
             }

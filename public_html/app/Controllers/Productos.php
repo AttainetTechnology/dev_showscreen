@@ -245,17 +245,25 @@ class Productos extends BaseController
     
     public function asociarImagen()
     {
+        $id_producto = $this->request->getPost('id_producto');
+        $imagen = $this->request->getPost('imagen');
+    
+        if (!$id_producto || !$imagen) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Faltan datos.']);
+        }
+    
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new Productos_model($db);
     
-        $idProducto = $this->request->getPost('id_producto');
-        $nombreImagen = $this->request->getPost('imagen');
+        $producto = $productosModel->find($id_producto);
     
-        if ($productosModel->update($idProducto, ['imagen' => $nombreImagen])) {
-        } else {
-            return $this->response->setJSON(['success' => false, 'message' => 'No se pudo asociar la imagen.']);
+        if (!$producto) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado.']);
         }
+    
+        $productosModel->update($id_producto, ['imagen' => $imagen]);
+    
     }
     
 

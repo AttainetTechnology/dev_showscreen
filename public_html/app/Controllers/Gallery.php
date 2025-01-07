@@ -79,16 +79,22 @@ class Gallery extends BaseController
         $data = usuario_sesion();
         $userSesionId = isset($data['id_user']) ? $data['id_user'] : null; // ID del usuario autenticado
         $nivelAcceso = isset($data['nivel']) ? $data['nivel'] : 0; // Nivel de acceso del usuario
-
+    
         $folders = [];
         $images = [];
         $publicPathPrefix = "/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public";
-
+    
+        // Verifica si el directorio existe y es legible
+        if (!is_dir($currentDirectory) || !is_readable($currentDirectory)) {
+            log_message('error', "El directorio {$currentDirectory} no existe o no tiene permisos de lectura.");
+            return [$folders, $images];
+        }
+    
         $files = array_diff(scandir($currentDirectory), ['.', '..']);
-
+    
         foreach ($files as $file) {
             $filePath = $currentDirectory . DIRECTORY_SEPARATOR . $file;
-
+    
             if (is_dir($filePath)) {
                 $this->processDirectory($file, $filePath, $current_path, $folders, $images, $publicPathPrefix, $userSesionId, $nivelAcceso);
             } elseif ($this->isImage($file)) {
@@ -98,9 +104,10 @@ class Gallery extends BaseController
                 }
             }
         }
-
+    
         return [$folders, $images];
     }
+    
 
     private function processDirectory($file, $filePath, $current_path, &$folders, &$images, $publicPathPrefix, $userSesionId, $nivelAcceso)
     {
@@ -202,7 +209,6 @@ class Gallery extends BaseController
         $fileNameNormalized = preg_replace('/^\d+\/|^.*\//', '', $fileName);
 
         $tablesToUpdate = [
-            'productos_necesidad' => ['imagen', $dynamicDb],
             'productos' => ['imagen', $dynamicDb],
             'users' => ['userfoto', $dynamicDb],
             'dbconnections' => ['logo_empresa', 'favicon', 'logo_fichajes', $mainDb],
