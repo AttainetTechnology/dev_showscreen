@@ -186,14 +186,21 @@ class Productos extends BaseController
         $familias = $db->table('familia_productos')->get()->getResultArray();
         $unidades = $db->table('unidades')->get()->getResultArray();
     
+        // Cargar imágenes desde la galería
+        $gallery = new \App\Controllers\Gallery();
+        $currentDirectory = $gallery->buildDirectoryPath('productos');
+        [$folders, $images] = $gallery->scanDirectory($currentDirectory, 'productos');
+    
         return view('editProducto', [
             'producto' => $producto,
             'familias' => $familias,
             'unidades' => $unidades,
             'amiga' => $this->getBreadcrumbs(),
             'data' => $data, // Pasar $data
+            'images' => $images, // Pasar las imágenes a la vista
         ]);
     }
+    
     public function editarProducto($id)
     {
         $data = usuario_sesion();
@@ -236,7 +243,21 @@ class Productos extends BaseController
         }
     }
     
-
+    public function asociarImagen()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+    
+        $idProducto = $this->request->getPost('id_producto');
+        $nombreImagen = $this->request->getPost('imagen');
+    
+        if ($productosModel->update($idProducto, ['imagen' => $nombreImagen])) {
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'No se pudo asociar la imagen.']);
+        }
+    }
+    
 
     public function eliminarProducto($id)
     {
