@@ -84,11 +84,12 @@ class Productos_necesidad extends BaseController
         return $this->response->setJSON($productos);
     }
 
-    private function getImageUrl($imageName, $idEmpresa, $idProducto)
+    private function getImageUrl($imageName, $idEmpresa)
     {
-        $path = "public/assets/uploads/files/{$idEmpresa}/productos_necesidad/{$idProducto}/";
+        $path = "public/assets/uploads/files/{$idEmpresa}/productos_necesidad/";
         return $imageName ? base_url($path . $imageName) : '';
     }
+    
 
 
     public function verProductos($id_producto)
@@ -225,25 +226,36 @@ class Productos_necesidad extends BaseController
         }
     
         $image = $this->request->getFile('imagen');
-        $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos_necesidad/{$id_producto}/";
+        $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos_necesidad/";
         $imageName = $productosModel->find($id_producto)['imagen'];
     
-        if ($image && $image->isValid()) {
-            // Eliminar la imagen anterior si existe
-            if ($imageName && file_exists($productFolder . $imageName)) {
-                unlink($productFolder . $imageName);
-            }
+        if ($image && $image->isValid() && !$image->hasMoved()) {
+            // Generar el nombre de archivo con el ID del usuario
+            $userSesionId = $data['id_user'] ?? 'unknown';
+            $nombreBase = pathinfo($image->getName(), PATHINFO_FILENAME);
+            $extension = $image->getExtension();
+            $imageName = "{$nombreBase}_IDUser{$userSesionId}.{$extension}";
     
-            // Generar un nuevo nombre para la imagen incluyendo el ID del usuario autenticado
-            $userSesionId = isset($data['id_user']) ? $data['id_user'] : 'unknown';
-            $imageName = pathinfo($image->getName(), PATHINFO_FILENAME) . "_IDUser{$userSesionId}." . $image->getExtension();
-    
+            // Crear la carpeta si no existe
             if (!is_dir($productFolder)) {
                 mkdir($productFolder, 0777, true);
             }
-            $image->move($productFolder, $imageName);
+    
+            $imagePath = "{$productFolder}{$imageName}";
+    
+            if (file_exists($imagePath)) {
+                // Si el archivo ya existe, asociarlo directamente
+                $imageName = basename($imagePath);
+            } else {
+                // Si el archivo no existe, eliminar el anterior y guardar el nuevo
+                if (!empty($productosModel->find($id_producto)['imagen']) && file_exists("{$productFolder}{$productosModel->find($id_producto)['imagen']}")) {
+                    unlink("{$productFolder}{$productosModel->find($id_producto)['imagen']}");
+                }
+                $image->move($productFolder, $imageName);
+            }
         }
     
+        // Actualizar la base de datos
         $productosModel->update($id_producto, [
             'para_boton' => $this->request->getPost('para_boton'),
             'nombre_producto' => $this->request->getPost('nombre_producto'),
@@ -255,6 +267,7 @@ class Productos_necesidad extends BaseController
     
         return redirect()->to(base_url('productos_necesidad/edit/' . $id_producto))->with('success', 'Producto actualizado correctamente.');
     }
+    
     
 
     public function delete($id_producto)
@@ -276,8 +289,8 @@ class Productos_necesidad extends BaseController
         $producto = $productosModel->find($id_producto);
     
         if ($producto && $producto['imagen']) {
-            $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos_necesidad/{$id_producto}/";
-            $imagePath = $productFolder . $producto['imagen'];
+            $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos_necesidad/";
+            $imagePath = "{$productFolder}{$producto['imagen']}";
     
             // Intentar eliminar la imagen del sistema de archivos
             if (file_exists($imagePath)) {
@@ -292,6 +305,7 @@ class Productos_necesidad extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'No se encontró la imagen o el producto.']);
         }
     }
+    
     
     private function obtenerNombreProductoVenta($id_producto_necesidad)
     {

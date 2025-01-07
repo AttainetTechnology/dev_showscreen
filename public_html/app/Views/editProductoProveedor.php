@@ -34,7 +34,7 @@
         <input type="file" name="imagen" id="imagen" class="form-control">
         <br>
         <?php if ($producto['imagen']): ?>
-            <img src="<?= base_url("public/assets/uploads/files/{$id_empresa}/productos_necesidad/{$producto['id_producto']}/" . $producto['imagen']) ?>"
+            <img src="<?= base_url("public/assets/uploads/files/{$id_empresa}/productos_necesidad/" . $producto['imagen']) ?>"
                 height="60">
             <button type="button" class="btn boton btnEliminar" id="eliminarImagenButton"><svg
                     xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
