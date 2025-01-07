@@ -29,15 +29,40 @@
             <img src="<?= esc($image['url']) ?>" alt="<?= esc($image['name']) ?>">
             <p><?= esc($image['name']) ?></p>
 
-            <!-- Formulario para eliminar imagen -->
-            <form action="<?= base_url('/gallery/delete') ?>" method="post" style="margin-top: 15px;">
+            <form class="deleteForm" method="post" action="<?= base_url('gallery/delete') ?>">
                 <?= csrf_field() ?>
                 <input type="hidden" name="image_path" value="<?= esc($image['url']) ?>">
-                <input type="hidden" name="record_id" value="<?= esc($image['record_id'] ?? '') ?>">
-                <button type="submit" class="btn boton btnEliminar">Eliminar</button>
+                <button type="button" class="btn boton btnEliminar"
+                    data-associated="<?= isset($image['is_associated']) && $image['is_associated'] ? 'true' : 'false' ?>">
+                    Eliminar
+                </button>
             </form>
+
         </div>
     <?php endforeach; ?>
 </div>
+
 <br>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const deleteButtons = document.querySelectorAll('.btnEliminar');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const isAssociated = button.getAttribute('data-associated') === 'true';
+                const form = button.closest('.deleteForm');
+                const message = isAssociated
+                    ? 'IMAGEN ASOCIADA A UN REGISTRO. ¿Desea eliminarla?'
+                    : '¿Está seguro de eliminar esta imagen?';
+
+                if (confirm(message)) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+</script>
 <?= $this->endSection() ?>

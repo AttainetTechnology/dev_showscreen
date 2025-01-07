@@ -79,22 +79,22 @@ class Gallery extends BaseController
         $data = usuario_sesion();
         $userSesionId = isset($data['id_user']) ? $data['id_user'] : null; // ID del usuario autenticado
         $nivelAcceso = isset($data['nivel']) ? $data['nivel'] : 0; // Nivel de acceso del usuario
-    
+
         $folders = [];
         $images = [];
         $publicPathPrefix = "/home/u9-ddc4y0armryb/www/dev.showscreen.app/public_html/public";
-    
+
         // Verifica si el directorio existe y es legible
         if (!is_dir($currentDirectory) || !is_readable($currentDirectory)) {
             log_message('error', "El directorio {$currentDirectory} no existe o no tiene permisos de lectura.");
             return [$folders, $images];
         }
-    
+
         $files = array_diff(scandir($currentDirectory), ['.', '..']);
-    
+
         foreach ($files as $file) {
             $filePath = $currentDirectory . DIRECTORY_SEPARATOR . $file;
-    
+
             if (is_dir($filePath)) {
                 $this->processDirectory($file, $filePath, $current_path, $folders, $images, $publicPathPrefix, $userSesionId, $nivelAcceso);
             } elseif ($this->isImage($file)) {
@@ -104,10 +104,10 @@ class Gallery extends BaseController
                 }
             }
         }
-    
+
         return [$folders, $images];
     }
-    
+
 
     private function processDirectory($file, $filePath, $current_path, &$folders, &$images, $publicPathPrefix, $userSesionId, $nivelAcceso)
     {
@@ -117,7 +117,7 @@ class Gallery extends BaseController
             foreach ($subFiles as $subFile) {
                 if ($this->isImage($subFile)) {
                     // Si el nivel de acceso no es 9, filtrar las imágenes por ID de usuario
-                    if ($nivelAcceso  >= 8|| strpos($subFile, "_IDUser{$userSesionId}") !== false) {
+                    if ($nivelAcceso >= 8 || strpos($subFile, "_IDUser{$userSesionId}") !== false) {
                         $subFilePath = $filePath . DIRECTORY_SEPARATOR . $subFile;
                         $images[] = $this->buildImageData($subFilePath, $publicPathPrefix);
                     }
@@ -139,16 +139,61 @@ class Gallery extends BaseController
     {
         $relativePath = str_replace($publicPathPrefix, '', $filePath);
         $url = base_url('public/' . ltrim($relativePath, '/'));
-    
-        // Depurar para verificar las rutas
-        log_message('debug', 'Imagen generada: ' . $url);
-    
+
+        // Verificar si la imagen está asociada en alguna tabla
+        $isAssociated = $this->checkIfImageAssociated($relativePath);
+
         return [
             'url' => $url,
             'name' => pathinfo($filePath, PATHINFO_FILENAME),
+            'is_associated' => $isAssociated, // Asociado a un registro
         ];
     }
-    
+
+    private function checkIfImageAssociated($relativePath)
+    {
+        // Conectar a la base de datos
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+
+        $dbOriginal = \Config\Database::connect();
+
+        $imageFileName = basename($relativePath);
+
+        // Consultar la tabla `productos`
+        $isAssociatedInProducts = $db->query("
+        SELECT COUNT(*) as count
+        FROM productos
+        WHERE imagen LIKE CONCAT('%', ?)
+    ", [$imageFileName])->getRow()->count > 0;
+
+        // Consultar la tabla `usuarios`
+        $isAssociatedInUsers = $db->query("
+        SELECT COUNT(*) as count
+        FROM users
+        WHERE userfoto LIKE CONCAT('%', ?)
+    ", [$imageFileName])->getRow()->count > 0;
+
+        // Consultar la tabla `logos`
+        $isAssociatedInLogos = $dbOriginal->query("
+        SELECT COUNT(*) as count
+        FROM dbconnections
+        WHERE logo_empresa LIKE CONCAT('%', ?)
+           OR favicon LIKE CONCAT('%', ?)
+           OR logo_fichajes LIKE CONCAT('%', ?)
+    ", [$imageFileName, $imageFileName, $imageFileName])->getRow()->count > 0;
+
+        // Consultar la tabla `productos_necesidad`
+        $isAssociatedInProductosNecesidad = $db->query("
+        SELECT COUNT(*) as count
+        FROM productos_necesidad
+        WHERE imagen LIKE CONCAT('%', ?)
+    ", [$imageFileName])->getRow()->count > 0;
+
+        // Retornar true si está asociado en cualquiera de las tablas
+        return $isAssociatedInProducts || $isAssociatedInUsers || $isAssociatedInLogos || $isAssociatedInProductosNecesidad;
+    }
+
     public function delete()
     {
         helper(['filesystem', 'security']);
@@ -212,6 +257,7 @@ class Gallery extends BaseController
             'productos' => ['imagen', $dynamicDb],
             'users' => ['userfoto', $dynamicDb],
             'dbconnections' => ['logo_empresa', 'favicon', 'logo_fichajes', $mainDb],
+            'productos_necesidad' => ['imagen', $dynamicDb], // Agregamos esta tabla
         ];
 
         foreach ($tablesToUpdate as $table => $columns) {
@@ -226,11 +272,11 @@ class Gallery extends BaseController
                 ", [$fileNameNormalized]);
 
                 } catch (\Exception $e) {
+                    log_message('error', "Error al desasociar imagen en la tabla {$table}: " . $e->getMessage());
                 }
             }
         }
     }
-
 
 
 
