@@ -229,12 +229,10 @@ class Gallery extends BaseController
             if (is_dir($folderPath) && count(array_diff(scandir($folderPath), ['.', '..'])) === 0) {
                 rmdir($folderPath);
             }
-            return redirect()->back()->with('success', 'Imagen eliminada exitosamente de todas las referencias.');
         } else {
             return redirect()->back()->with('error', 'Ocurrió un error al intentar eliminar la imagen.');
         }
     }
-
 
     private function removeImageReferences($db, $imageUrl)
     {
