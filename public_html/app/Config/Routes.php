@@ -139,3 +139,4 @@ $routes->group('gallery', function ($routes) {
     $routes->get('(:any)', 'Gallery::index/$1'); // Maneja carpetas y subcarpetas
 });
 $routes->post('gallery/delete', 'Gallery::delete');
+$routes->post('productos_necesidad/update/(:num)', 'Productos_necesidad::update/$1');

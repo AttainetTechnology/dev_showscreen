@@ -234,12 +234,17 @@ class Productos_necesidad extends BaseController
         $validation->setRules([
             'nombre_producto' => 'required',
             'id_familia' => 'required',
-            'estado_producto' => 'required'
+            'estado_producto' => 'required|in_list[Activo,Inactivo]' 
         ]);
 
-        if (!$validation->withRequest($this->request)->run()) {
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-        }
+        log_message('debug', 'Datos recibidos: ' . json_encode($this->request->getPost()));
+log_message('debug', 'Archivos recibidos: ' . json_encode($_FILES));
+
+
+
+if (!$validation->withRequest($this->request)->run()) {
+    return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+}
 
         $image = $this->request->getFile('imagen');
         $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos/";
