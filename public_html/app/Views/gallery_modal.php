@@ -23,7 +23,6 @@
                             </svg>
                         </button>
                     </form>
-
                     <img src="<?= esc($image['url']) ?>" alt="<?= esc($image['name']) ?>">
                     <p><?= esc($image['name']) ?></p>
                 </div>
