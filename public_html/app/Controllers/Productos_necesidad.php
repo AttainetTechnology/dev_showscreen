@@ -224,71 +224,65 @@ class Productos_necesidad extends BaseController
         ]);
 
     }
-
     public function update($id_producto)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new ProductosNecesidadModel($db);
+
+        // Validaciones
         $validation = \Config\Services::validation();
         $validation->setRules([
             'nombre_producto' => 'required',
             'id_familia' => 'required',
-            'estado_producto' => 'required|in_list[Activo,Inactivo]' 
+            'estado_producto' => 'required|in_list[Activo,Inactivo]'
         ]);
 
-        log_message('debug', 'Datos recibidos: ' . json_encode($this->request->getPost()));
-log_message('debug', 'Archivos recibidos: ' . json_encode($_FILES));
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
 
+        // Obtener la imagen actual del producto
+        $producto = $productosModel->find($id_producto);
+        $imagenActual = $producto['imagen']; // Imagen actual en la base de datos
 
-
-if (!$validation->withRequest($this->request)->run()) {
-    return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-}
-
+        // Manejo de la nueva imagen
         $image = $this->request->getFile('imagen');
         $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos/";
-        $imageName = $productosModel->find($id_producto)['imagen'];
+
+        // Mantener el nombre de imagen actual como valor predeterminado
+        $imageName = $imagenActual;
 
         if ($image && $image->isValid() && !$image->hasMoved()) {
-            // Generar el nombre de archivo con el ID del usuario
-            $userSesionId = $data['id_user'] ?? 'unknown';
-            $nombreBase = pathinfo($image->getName(), PATHINFO_FILENAME);
-            $extension = $image->getExtension();
-            $imageName = "{$nombreBase}_IDUser{$userSesionId}.{$extension}";
-
             // Crear la carpeta si no existe
             if (!is_dir($productFolder)) {
                 mkdir($productFolder, 0777, true);
             }
 
-            $imagePath = "{$productFolder}{$imageName}";
+            // Crear un nombre único para evitar conflictos
+            $userSesionId = $data['id_user'] ?? 'unknown';
+            $nombreBase = pathinfo($image->getName(), PATHINFO_FILENAME);
+            $extension = $image->getExtension();
+            $nuevoNombre = "{$nombreBase}_IDUser{$userSesionId}.{$extension}";
 
-            if (file_exists($imagePath)) {
-                // Si el archivo ya existe, asociarlo directamente
-                $imageName = basename($imagePath);
-            } else {
-                // Si el archivo no existe, eliminar el anterior y guardar el nuevo
-                if (!empty($productosModel->find($id_producto)['imagen']) && file_exists("{$productFolder}{$productosModel->find($id_producto)['imagen']}")) {
-                    unlink("{$productFolder}{$productosModel->find($id_producto)['imagen']}");
-                }
-                $image->move($productFolder, $imageName);
-            }
+            // Mover la nueva imagen a la carpeta
+            $image->move($productFolder, $nuevoNombre);
+
+            // Asignar el nuevo nombre en la base de datos
+            $imageName = $nuevoNombre;
         }
 
-        // Actualizar la base de datos
+        // Actualizar la base de datos con la nueva imagen (o mantener la existente)
         $productosModel->update($id_producto, [
-            'para_boton' => $this->request->getPost('para_boton'),
             'nombre_producto' => $this->request->getPost('nombre_producto'),
             'id_familia' => $this->request->getPost('id_familia'),
-            'imagen' => $imageName,
+            'imagen' => $imageName, // Guardar la nueva imagen sin eliminar la anterior
             'unidad' => $this->request->getPost('unidad'),
             'estado_producto' => $this->request->getPost('estado_producto')
         ]);
 
         return redirect()->to(base_url('productos_necesidad/edit/' . $id_producto))->with('success', 'Producto actualizado correctamente.');
     }
-
 
 
     public function delete($id_producto)
