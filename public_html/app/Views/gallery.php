@@ -44,7 +44,6 @@
 
 <br>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const deleteButtons = document.querySelectorAll('.btnEliminar');
@@ -58,10 +57,35 @@
                     : '¿Está seguro de eliminar esta imagen?';
 
                 if (confirm(message)) {
-                    form.submit();
+                    // Almacena la posición actual en el historial antes de eliminar
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
+
+                    // Envía el formulario y espera la respuesta
+                    fetch(form.action, {
+                        method: form.method,
+                        body: new FormData(form),
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                // Recarga la página después de la eliminación
+                                window.location.reload();
+                            } else {
+                                alert('Error al eliminar la imagen.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error en la conexión.');
+                        });
                 }
             });
         });
+
+        // Restaura la posición del scroll después de recargar
+        if (sessionStorage.getItem('scrollPosition')) {
+            window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
+            sessionStorage.removeItem('scrollPosition'); // Elimina el dato almacenado
+        }
     });
 
 </script>
