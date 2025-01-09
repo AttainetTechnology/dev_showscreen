@@ -1,5 +1,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/gallery.css') ?>?v=<?= time() ?>">
+<style>
+    .modal-body {
+        max-height: 70vh;
+        /* Limita la altura del cuerpo del modal al 70% del viewport */
+        overflow-y: auto;
+        /* Habilita el scroll vertical */
+    }
+</style>
 
 <div class="modal-header">
     <h5 class="modal-title">Galería de Imágenes</h5>
@@ -7,10 +16,15 @@
 </div>
 
 <div class="modal-body">
+    <!-- Buscador -->
+    <input type="text" id="imageSearch" class="form-control mb-3" placeholder="Escribe el nombre de la imagen ">
+
+    <!-- Galería -->
     <div class="gallery-container">
         <?php if (!empty($images)): ?>
             <?php foreach ($images as $image): ?>
-                <div class="gallery-item" style="cursor: pointer;" onclick="selectImage('<?= esc($image['url']) ?>')">
+                <div class="gallery-item" data-name="<?= esc(strtolower($image['name'])) ?>" style="cursor: pointer;"
+                    onclick="selectImage('<?= esc($image['url']) ?>')">
                     <form class="deleteForm" method="post" action="<?= base_url('gallery/delete') ?>">
                         <?= csrf_field() ?>
                         <input type="hidden" name="image_path" value="<?= esc($image['url']) ?>">
@@ -32,6 +46,7 @@
         <?php endif; ?>
     </div>
 </div>
+
 <script>
     function selectImage(imageUrl) {
         const imageName = imageUrl.split('/').pop(); // Extrae el nombre de la imagen desde la URL
@@ -55,6 +70,27 @@
         // Cierra el modal
         $('#galleryModal').modal('hide');
     }
+    document.getElementById('imageSearch').addEventListener('input', function () {
+        const searchText = this.value.toLowerCase();
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        galleryItems.forEach(item => {
+            const imageName = item.getAttribute('data-name');
+            if (imageName.includes(searchText)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+
+    // Prevenir el envío del formulario al presionar "Enter" en el buscador
+    document.getElementById('imageSearch').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Previene el comportamiento por defecto de la tecla Enter
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
         const deleteButtons = document.querySelectorAll('.btnEliminarModal');
 
@@ -99,67 +135,3 @@
 
 
 </script>
-
-<style>
-    .gallery-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 10px;
-    }
-
-    .gallery-item {
-        position: relative;
-        width: 150px;
-        height: 150px;
-        overflow: hidden;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        text-align: center;
-    }
-
-    .gallery-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .gallery-item p {
-        margin: 5px 0 0;
-        font-size: 12px;
-    }
-
-    .btnEliminarModal {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        background-color: #D9534F !important;
-        color: white;
-        border: none;
-        border-radius: 30%;
-        width: 25px;
-        height: 25px;
-        font-size: 14px;
-        line-height: 20px;
-        text-align: center;
-        cursor: pointer;
-    }
-
-
-    .btnEliminarModal:hover {
-        background-color: #AC1E1A !important;
-        color: white;
-    }
-
-    .btnEliminarModal:active {
-        background-color: #EE8A88 !important;
-        color: white !important;
-    }
-
-    .btnEliminarModal svg {
-        width: 25px;
-        height: 25px;
-        color: white;
-        margin-left: -6px;
-        margin-top: 0px;
-    }
-</style>
