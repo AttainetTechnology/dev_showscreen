@@ -121,6 +121,14 @@ $estadoMap = [
             },
             onGridReady: function (params) {
                 params.api.sizeColumnsToFit();
+                const savedFilterModel = localStorage.getItem('gridFilterModel');
+                if (savedFilterModel) {
+                    params.api.setFilterModel(JSON.parse(savedFilterModel));
+                }
+            },
+            onFilterChanged: function (params) {
+                const filterModel = params.api.getFilterModel();
+                localStorage.setItem('gridFilterModel', JSON.stringify(filterModel));
             },
             getRowClass: function (params) {
                 switch (params.data.estado) {
