@@ -66,29 +66,29 @@ class Productos extends BaseController
 
         $jsonData = $this->request->getJSON(); // Decodificar JSON automáticamente
 
-        if (empty($jsonData)) {
+        if (!is_object($jsonData) || !isset($jsonData->id_producto) || !isset($jsonData->procesos)) {
             return $this->response->setStatusCode(400, 'Datos no válidos');
         }
 
         $id_producto = $jsonData->id_producto;
         $procesos = $jsonData->procesos;
 
-        if (empty($id_producto) || empty($procesos)) {
+        if (empty($id_producto) || !is_array($procesos)) {
             return $this->response->setStatusCode(400, 'Datos incompletos');
         }
-
         // Eliminar procesos existentes
         $db->table('procesos_productos')->where('id_producto', $id_producto)->delete();
-
-        // Insertar nuevos procesos con el orden actualizado
         foreach ($procesos as $proceso) {
+            if (!isset($proceso->id_proceso) || !isset($proceso->orden)) {
+                log_message('error', 'Proceso malformado: ' . json_encode($proceso));
+                continue; // Saltar procesos malformados
+            }
             $db->table('procesos_productos')->insert([
                 'id_producto' => $id_producto,
                 'id_proceso' => $proceso->id_proceso,
                 'orden' => $proceso->orden
             ]);
         }
-
         return $this->response->setJSON(['success' => true, 'message' => 'Orden actualizado correctamente']);
     }
 
