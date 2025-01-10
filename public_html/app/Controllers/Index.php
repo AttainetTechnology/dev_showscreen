@@ -26,16 +26,20 @@ class Index extends BaseController
     {
         $this->index('4');
     }
-
     public function index($estado = 2)
     {
-        /** APARTADO STANDARD PARA TODOS LOS CONTROLADORES **/
-        // Control de login    
+        // Control de login
         helper('controlacceso');
         control_login();
 
         // Saco los datos del usuario
         $data = datos_user();
+
+        // Verificar si el nivel del usuario es 1
+        if (isset($data['nivel']) && $data['nivel'] == 1) {
+            // Redirigir a la página deseada si el nivel es 1
+            return redirect()->to('/rutas_transporte/rutas'); // Cambia "/pagina-deseada" por la URL o ruta correcta
+        }
 
         // Conecto la BDD
         $db = db_connect($data['new_db']);
