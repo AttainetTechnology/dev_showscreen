@@ -16,6 +16,11 @@ class Procesos_pedidos extends BaseControllerGC
 {
     public function index()
     {
+        $redirect = check_access_level(); 
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }  
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $lineaPedidoModel = new LineaPedido($db);

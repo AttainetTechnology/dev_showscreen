@@ -20,6 +20,14 @@ class Pedidos extends BaseController
 	}
 	public function index()
 	{
+		
+        $redirect = check_access_level(); 
+
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
+
 		$this->todos('estado<=', '6');
 	}
 	public function enmarcha()

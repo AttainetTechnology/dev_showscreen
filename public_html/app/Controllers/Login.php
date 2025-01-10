@@ -11,6 +11,7 @@ class Login extends LoginController
         include_once(__DIR__ . '/../../clean_sessions.php');
         helper('controlacceso');
         control_acceso();
+        return redirect()->to('/index');
     }
 
     public function google_login()

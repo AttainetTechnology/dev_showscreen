@@ -9,10 +9,22 @@ use App\Models\FormasPagoModel;
 use App\Models\PaisesModel;
 use App\Models\Contactos;
 
+
 class Empresas extends BaseController
 {
+    public function __construct()
+    {
+        helper('controlacceso'); // Carga el helper creado
+    }
     public function index()
     {
+ 
+        $redirect = check_access_level(); 
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
+        
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Empresas');
         $data['amiga'] = $this->getBreadcrumbs();

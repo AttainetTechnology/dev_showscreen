@@ -8,6 +8,12 @@ class Poblaciones_rutas extends BaseController
 {
     public function index()
     {
+        $redirect = check_access_level(); 
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
+        
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Poblaciones');
         $data['amiga'] = $this->getBreadcrumbs();
