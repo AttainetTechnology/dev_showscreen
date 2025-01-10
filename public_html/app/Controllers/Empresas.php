@@ -14,7 +14,7 @@ class Empresas extends BaseController
 {
     public function __construct()
     {
-        helper('controlacceso'); // Carga el helper creado
+        helper('controlacceso'); 
     }
     public function index()
     {

@@ -8,6 +8,12 @@ class Log extends BaseController
 {
     public function index()
     {
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Logs');
         $data['amiga'] = $this->getBreadcrumbs();

@@ -8,6 +8,12 @@ use App\Models\ProductosProveedorModel;
 class ComparadorProductos extends BaseController
 {public function index($id_producto = null)
     {
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Productos Necesidad', base_url('/productos_necesidad'));
         $this->addBreadcrumb('Comparador de Precios');

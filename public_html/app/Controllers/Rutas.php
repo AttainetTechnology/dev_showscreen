@@ -9,6 +9,12 @@ class Rutas extends BaseController
 
 	public function todas($coge_estado, $where_estado)
 	{
+		helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
 		$this->addBreadcrumb('Inicio', base_url('/'));
 		$this->addBreadcrumb('Rutas');
 		$data['amiga'] = $this->getBreadcrumbs();
@@ -21,8 +27,6 @@ class Rutas extends BaseController
 			'amiga' => $data['amiga']  // Pasar amiga a la vista
 		]);
 	}
-
-
 
 	public function index()
 	{

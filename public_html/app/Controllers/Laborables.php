@@ -9,6 +9,12 @@ class Laborables extends BaseController
 	public function index()
 	{
 		helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
+		helper('controlacceso');
 		$nivel = control_login();
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);

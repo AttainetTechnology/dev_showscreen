@@ -6,8 +6,12 @@ class Gallery extends BaseController
 {
     public function index($current_path = '', $custom_name = null)
     {
-        helper(['controlacceso']);
-
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
         $id_empresa = $this->getIdEmpresa();
         if (!$id_empresa) {
             return redirect()->to('/')->with('error', 'No se pudo determinar la empresa.');

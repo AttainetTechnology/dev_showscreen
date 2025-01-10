@@ -17,6 +17,12 @@ class Pedido_print_controller extends BaseControllerGC
 
     public function pedido_print($id_pedido)
     {
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
         //Saco los detalles del pedido
 
         $Pedidos_model = model('App\Models\Pedidos_model');
