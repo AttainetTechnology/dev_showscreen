@@ -15,7 +15,6 @@
         border-radius: 5px;
         text-align: center;
         position: relative;
-        /* Agregado para posicionar el botón correctamente */
     }
 
     .gallery-item img {
