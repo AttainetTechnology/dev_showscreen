@@ -22,7 +22,7 @@ div#fondo_rutas {
     display: block !Important;
     page-break-before: always;
     position: relative;
-    padding-top: 70px;
+    padding-top: 40px;
 }
 
 @media print {
@@ -147,10 +147,10 @@ div#fondo {
 #observaciones {
     padding: 0px;
     width: 100%;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     clear: both;
-    padding: 20px;
+    padding: 10px;
     background-color: #eee;
 }
 
@@ -447,7 +447,7 @@ img.imagen_parte {
 }
 
 .modal-body {
-    margin: 30px;
+    margin: 10px !important;
 }
 
 .modal-dialog {

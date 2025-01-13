@@ -158,8 +158,8 @@
                                     <!-- Cabecera -->
                                     <div class="row">
                                         <div id="parte_fila_left">
-                                            <img src="<?php echo base_url("public/assets/uploads/logo/") . "/" . $url_logo; ?>"
-                                                class="logo_partes"><br>
+                                        <img src="<?php echo base_url("public/assets/uploads/files") . "/" . $url_logo; ?>" class="logo_partes"><br>
+                                         <br>
                                             Cliente:
                                             <address>
                                                 <strong><?php echo $cli->nombre_cliente; ?></strong>
