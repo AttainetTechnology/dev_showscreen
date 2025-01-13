@@ -15,54 +15,68 @@ class Partes_controller extends BaseControllerGC
         // Control de login
         helper('controlacceso');
         control_login();
-    
+
         // Saco los datos del usuario
         $data = datos_user();
-    
+
         // Conecto la BDD
         $db = db_connect($data['new_db']);
-    
+
         // Obtener la línea de pedido
         $builder = $db->table('linea_pedidos');
         $builder->select('*');
         $builder->where('id_lineapedido', $id_lineapedido);
         $query = $builder->get();
         $data['lineas'] = $query->getResult();
-    
-        // Inicializar `$data['clientes']` como un array vacío por si no se encuentra el cliente
+
+        // Inicializar `$data['clientes']` y `$data['mas_de_una_linea` como arrays vacíos
         $data['clientes'] = [];
-    
+        $data['mas_de_una_linea'] = [];
+
         // Obtener los detalles del pedido y cliente
         foreach ($query->getResult() as $row) {
             $elpedido = $row->id_pedido;
+
+            // Obtener el pedido
             $builder = $db->table('pedidos');
             $builder->select('*');
             $builder->where('id_pedido', $elpedido);
             $query2 = $builder->get();
             $data['pedidos'] = $query2->getResult();
-    
+
             // Obtener el cliente si existe
             if (!empty($data['pedidos']) && isset($data['pedidos'][0]->id_cliente)) {
                 $elcliente = $data['pedidos'][0]->id_cliente;
-    
+
                 $builder = $db->table('clientes');
                 $builder->select('*');
                 $builder->where('id_cliente', $elcliente);
                 $query5 = $builder->get();
                 $data['clientes'] = $query5->getResult();
             }
+
+            // Verificar si hay más de una línea asociada al pedido y obtener sus productos
+            // EXCLUIMOS la línea de pedido que se está procesando (`id_lineapedido`)
+            $builder = $db->table('linea_pedidos');
+            $builder->select('linea_pedidos.*, productos.nombre_producto');
+            $builder->where('id_pedido', $elpedido);
+            $builder->where('id_lineapedido !=', $id_lineapedido); // Excluir línea actual
+            $builder->join('productos', 'productos.id_producto = linea_pedidos.id_producto', 'left');
+            $queryMasDeUnaLinea = $builder->get();
+            $data['mas_de_una_linea'] = $queryMasDeUnaLinea->getResult();
         }
-    
+
         // Saco los detalles del producto
         foreach ($query->getResult() as $row) {
             $elproducto = $row->id_producto;
+
             $builder = $db->table('productos');
             $builder->select('*');
             $builder->where('id_producto', $elproducto);
             $query3 = $builder->get();
             $data['productos'] = $query3->getResult();
         }
-    
+
         // Saco los procesos
         $builder = $db->table('procesos_productos');
         $builder->select('*');
@@ -71,22 +85,21 @@ class Partes_controller extends BaseControllerGC
         $builder->orderby('procesos_productos.orden', 'asc');
         $query4 = $builder->get();
         $data['procesos'] = $query4->getResult();
-    
+
         // Devolver la vista de acuerdo con el tipo de solicitud
         if ($this->request->isAJAX()) {
-            return view('partes', (array)$data); // solo el contenido
+            return view('partes', (array) $data); // solo el contenido
         } else {
             echo view('header_partes');
-            echo view('partes', (array)$data);
+            echo view('partes', (array) $data);
             echo view('footer');
         }
     }
-    
 
     public function pedido_print($id_pedido)
     {
 
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $builder = $db->table('pedidos');
         $builder->where('id_pedido', $id_pedido);
         $builder->select('*');
@@ -94,7 +107,7 @@ class Partes_controller extends BaseControllerGC
 
         $data['records'] = $query->getResult();
         helper('url');
-        echo view('pedidos', (array)$data);
+        echo view('pedidos', (array) $data);
     }
     //Cambio el estado de la linea de pedido a "material recibido" cuando sacamos el parte.
     public function CambiaEstado($id_lineapedido)
@@ -118,7 +131,6 @@ class Partes_controller extends BaseControllerGC
         echo "<script>window.close();</script>";
         exit;
     }
-
 
     public function verificarEstadoProcesos($id_lineapedido)
     {
