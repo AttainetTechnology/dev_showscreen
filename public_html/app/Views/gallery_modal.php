@@ -8,6 +8,13 @@
         overflow-y: auto;
         /* Habilita el scroll vertical */
     }
+    
+    .gallery-item:hover {
+    border-color: rgba(24, 107, 24, 0.42) !important; /* Cambia el color del borde */
+    border: 2px solid; /* Asegura el borde */
+    box-shadow: 0 0 8px rgba(24, 107, 24, 0.42); 
+}
+
 </style>
 
 <div class="modal-header">

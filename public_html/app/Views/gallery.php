@@ -1,7 +1,12 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <?= $this->include('partials/amiga') ?>
-
+<!-- <style>
+    .gallery-item:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s ease; 
+}
+</style> -->
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/gallery.css') ?>?v=<?= time() ?>">
 <br> <br>
 <input type="text" id="imageSearch" class="form-control mb-3" placeholder="Escribe el nombre de la imagen ">
