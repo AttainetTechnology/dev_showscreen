@@ -69,7 +69,7 @@ foreach ($pedido as $ped) { ?>
                         <tbody style=" font-size:40px !important;">
                             <?php $total = 0; ?>
                             <?php
-                            $lineas_pag1 = array_slice($lineas, 0, 9); // Dividir correctamente las líneas para la primera página
+                            $lineas_pag1 = array_slice($lineas, 0, 12); // Dividir correctamente las líneas para la primera página
                             foreach ($lineas_pag1 as $l) { ?>
                                 <tr>
                                     <td style=" font-size:20px !important;"><b><?php echo $l->n_piezas; ?> </b></td>
@@ -86,7 +86,7 @@ foreach ($pedido as $ped) { ?>
                 </div>
             </div>
 
-            <?php if (count($lineas) > 9) { ?>
+            <?php if (count($lineas) > 12) { ?>
                 <div class="page-break"></div> <!-- Fuerza un salto de página -->
 
                 <!-- Segunda página - Tabla para los registros restantes -->
