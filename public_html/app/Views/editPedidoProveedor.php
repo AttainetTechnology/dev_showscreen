@@ -386,7 +386,7 @@
                 }
             },
             error: function (xhr, status, error) {
-                alert('Error en el servidor.');
+                alert('Añade numero de piezas.');
             }
         });
     });
