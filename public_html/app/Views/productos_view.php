@@ -8,6 +8,9 @@
     .select2-container {
         width: 100% !important; /* Asegura que el ancho coincida con el input */
     }
+    svg.bi.bi-file-earmark-excel {
+    color: red;
+}
 </style>
 
 <title>Productos</title>
@@ -226,12 +229,26 @@
     }
 
     function imagenRenderer(params) {
-        const imagenUrl = params.value;
-        if (!imagenUrl) {
-            return ''; // Devuelve vacío si no hay URL
-        }
-        return `<img src="${imagenUrl}" alt="Imagen Producto" style="width: 100px; height: 100px; object-fit: cover;">`;
+    const imagenUrl = params.value;
+
+    if (!imagenUrl) {
+        // Si no hay URL, devuelve vacío como hasta ahora
+        return '';
     }
+
+    // Devuelve la imagen con un `onerror` que reemplaza la imagen rota por el nuevo ícono SVG
+    return `
+        <img src="${imagenUrl}" alt="Imagen Producto" 
+            style="width: 50%; object-fit: cover;" 
+            onerror="this.onerror=null;this.outerHTML=\`
+                <svg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='currentColor' class='bi bi-file-earmark-excel' viewBox='0 0 16 16'>
+                    <path d='M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z'/>
+                    <path d='M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z'/>
+                </svg>
+            \`;">
+    `;
+}
+
 
 
     function abrirModalAgregarProducto() {
