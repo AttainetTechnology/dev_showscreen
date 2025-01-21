@@ -48,7 +48,7 @@ foreach ($pedido as $ped) { ?>
             </div>
 
             <div class="tituparte">Pedido interno</div>
-            <div id="observaciones">
+            <div id="observaciones" style="font-size:24px !important;">
                 <div class="seccionparte">Observaciones de pedido:</div>
                 <?php echo $ped->observaciones; ?>
             </div>
