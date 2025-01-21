@@ -170,22 +170,59 @@ class Lineaspedido_model extends Model
         helper('controlacceso');
         $data2 = usuario_sesion();
         $db = db_connect($data2['new_db']);
-
+    
         if (!$db->connID) {
             // Conexión fallida
             throw new \Exception('Conexión a la base de datos fallida: ' . $db->error());
         }
-
+    
+        // Obtener los id_linea_pedido relacionados con el id_pedido
+        $builder = $db->table('linea_pedidos');
+        $builder->select('id_lineapedido');  // Asegúrate de que la columna sea id_lineapedido, no id_linea_pedido
+        $builder->where('id_pedido', $id_pedido);
+        $query = $builder->get();
+    
+        // Verificar si la consulta fue exitosa
+        if ($query === false) {
+            // Si la consulta falla, lanzar una excepción con el error
+            throw new \Exception('Error al ejecutar la consulta en linea_pedidos: ' . $db->error());
+        }
+    
+        // Verificar si hay resultados
+        if ($query->getNumRows() > 0) {
+            // Obtener los id_linea_pedido como un array
+            $id_lineas_pedido = array_map(function($row) {
+                return $row->id_lineapedido;  // Usar 'id_lineapedido', que es el nombre correcto de la columna
+            }, $query->getResult());
+    
+            // Eliminar registros relacionados en la tabla procesos_pedidos
+            $builder = $db->table('procesos_pedidos');
+            $builder->whereIn('id_linea_pedido', $id_lineas_pedido);
+            $builder->delete();
+        } else {
+            // Si no se encuentran lineas de pedido para el id_pedido, lanzar una excepción
+            throw new \Exception('No se encontraron líneas de pedido para el id_pedido: ' . $id_pedido);
+        }
+    
+        // Actualizar la tabla linea_pedidos con el nuevo estado
         $builder = $db->table('linea_pedidos');
         $builder->set($data);
         $builder->where('id_pedido', $id_pedido);
-        $builder->update();
-
+        if (!$builder->update()) {
+            throw new \Exception('Error al actualizar la tabla linea_pedidos: ' . $db->error());
+        }
+    
+        // Actualizar la tabla pedidos con el nuevo estado
         $builder = $db->table('pedidos');
         $builder->set($data);
         $builder->where('id_pedido', $id_pedido);
-        return $builder->update();
+        if (!$builder->update()) {
+            throw new \Exception('Error al actualizar la tabla pedidos: ' . $db->error());
+        }
+    
+        return true;
     }
+    
 
     public function actualiza_linea($id_lineapedido, $estado)
     {
