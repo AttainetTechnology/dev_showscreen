@@ -86,6 +86,7 @@
                 <?php endforeach; ?>
             </select>
         </div>
+
         <div class="form-group">
             <label for="referencia">Referencia:</label>
             <input type="text" id="referencia" name="referencia" class="form-control"
@@ -194,6 +195,17 @@
             </div>
         </div>
         <script>
+            $(document).ready(function () {
+                $('#id_cliente').select2({
+                    placeholder: "Selecciona una empresa",
+                    allowClear: true,
+                    width: '100%'
+                });
+
+                // Mantener el cliente seleccionado en la inicialización
+                $('#id_cliente').val('<?= $pedido->id_cliente ?>').trigger('change');
+            });
+
             document.addEventListener('DOMContentLoaded', function () {
                 const estadosTexto = <?= json_encode($estados_texto) ?>;
                 const columnDefs = [{
