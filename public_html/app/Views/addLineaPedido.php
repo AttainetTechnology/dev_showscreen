@@ -122,7 +122,7 @@
 <script>
     $(document).ready(function() {
         $('#id_producto').select2({
-            placeholder: "Selecciona un producto",
+            placeholder: "Selecciona un producto", 
             dropdownParent: $('#addLineaPedidoForm')
         });
     });
