@@ -6,6 +6,12 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<style>
+  /* Aplica el z-index solo a los Select2 dentro del modal */
+  #editarLineaModal .select2-container {
+        z-index: 2050 !important; /* Asegura que el dropdown de Select2 se muestre sobre el modal */
+    }
+</style>
 <div class="container mt-5 editpedido">
 
     <h2 class="titleditPedido">Editar Pedido</h2>
