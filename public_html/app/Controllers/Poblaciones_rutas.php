@@ -14,12 +14,12 @@ class Poblaciones_rutas extends BaseController
         if ($redirect && is_string($redirectUrl)) {
             return redirect()->to($redirectUrl);
         }
-        $redirect = check_access_level(); 
+        $redirect = check_access_level();
         $redirectUrl = session()->getFlashdata('redirect');
         if ($redirect && is_string($redirectUrl)) {
             return redirect()->to($redirectUrl);
         }
-        
+
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Poblaciones');
         $data['amiga'] = $this->getBreadcrumbs();
@@ -32,13 +32,13 @@ class Poblaciones_rutas extends BaseController
         $db = db_connect($data['new_db']);
         $model = new PoblacionesModel($db);
         $poblaciones = $model->findAll();
-        
+
         foreach ($poblaciones as &$poblacion) {
             $poblacion['acciones'] = [
                 'editar' => base_url('poblaciones_rutas/editar/' . $poblacion['id_poblacion']),
                 'eliminar' => base_url('poblaciones_rutas/eliminar/' . $poblacion['id_poblacion'])
             ];
-            
+
         }
         return $this->response->setJSON($poblaciones);
     }
@@ -48,9 +48,9 @@ class Poblaciones_rutas extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new PoblacionesModel($db);
-    
+
         $model->delete($id);
-    
+
         return $this->response->setJSON(['success' => true]);
     }
     public function actualizarPoblacion()
@@ -58,21 +58,21 @@ class Poblaciones_rutas extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new PoblacionesModel($db);
-    
+
         $id = $this->request->getPost('id_poblacion');
         $poblacion = $this->request->getPost('poblacion');
 
         if (empty($id) || empty($poblacion)) {
             return $this->response->setJSON(['success' => false, 'message' => 'Faltan datos.']);
         }
- 
+
         $model->set('poblacion', $poblacion)
-              ->where('id_poblacion', $id)
-              ->update();
-    
+            ->where('id_poblacion', $id)
+            ->update();
+
         return $this->response->setJSON(['success' => true]);
     }
-    
+
     public function agregarPoblacion()
     {
         $data = usuario_sesion();

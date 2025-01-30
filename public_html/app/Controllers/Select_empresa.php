@@ -36,11 +36,11 @@ class Select_empresa extends BaseController
     public function editar()
     {
         $empresaModel = new DbConnections_Model();
-    
+
         $id = $this->request->getPost('id_empresa');
         $data = usuario_sesion(); // Obtener datos del usuario autenticado
         $userSesionId = isset($data['id_user']) ? $data['id_user'] : 'unknown';
-    
+
         $updateData = [
             'nombre_empresa' => $this->request->getPost('nombre_empresa'),
             'db_name' => $this->request->getPost('db_name'),
@@ -48,13 +48,13 @@ class Select_empresa extends BaseController
             'db_password' => $this->request->getPost('db_password'),
             'NIF' => $this->request->getPost('NIF'),
         ];
-    
+
         // Ruta base para los archivos públicos
         $uploadPath = FCPATH . 'public/assets/uploads/files/' . $id . '/logos/';
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
         }
-    
+
         // Procesar logo de empresa
         $logoEmpresa = $this->request->getFile('logo_empresa');
         if ($logoEmpresa && $logoEmpresa->isValid()) {
@@ -63,7 +63,7 @@ class Select_empresa extends BaseController
             $logoEmpresa->move($uploadPath, $newName);
             $updateData['logo_empresa'] = $filePath;
         }
-    
+
         // Procesar favicon
         $favicon = $this->request->getFile('favicon');
         if ($favicon && $favicon->isValid()) {
@@ -72,7 +72,7 @@ class Select_empresa extends BaseController
             $favicon->move($uploadPath, $newName);
             $updateData['favicon'] = $filePath;
         }
-    
+
         // Procesar logo de fichajes
         $logoFichajes = $this->request->getFile('logo_fichajes');
         if ($logoFichajes && $logoFichajes->isValid()) {
@@ -81,16 +81,16 @@ class Select_empresa extends BaseController
             $logoFichajes->move($uploadPath, $newName);
             $updateData['logo_fichajes'] = $filePath;
         }
-    
+
         if (!empty($id)) {
             $empresaModel->update($id, $updateData);
         } else {
             $empresaModel->insert($updateData);
         }
-    
+
         return redirect()->to(base_url('select_empresa'));
     }
-    
+
     public function eliminar($id)
     {
         $empresaModel = new DbConnections_Model();

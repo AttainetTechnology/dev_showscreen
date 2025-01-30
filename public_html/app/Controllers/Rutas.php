@@ -10,11 +10,11 @@ class Rutas extends BaseController
 	public function todas($coge_estado, $where_estado)
 	{
 		helper('controlacceso');
-        $redirect = check_access_level();
-        $redirectUrl = session()->getFlashdata('redirect');
-        if ($redirect && is_string($redirectUrl)) {
-            return redirect()->to($redirectUrl);
-        }
+		$redirect = check_access_level();
+		$redirectUrl = session()->getFlashdata('redirect');
+		if ($redirect && is_string($redirectUrl)) {
+			return redirect()->to($redirectUrl);
+		}
 		$this->addBreadcrumb('Inicio', base_url('/'));
 		$this->addBreadcrumb('Rutas');
 		$data['amiga'] = $this->getBreadcrumbs();
@@ -247,12 +247,12 @@ class Rutas extends BaseController
 	}
 	public function preparado($id_ruta)
 	{
-		$data = usuario_sesion(); 
+		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$rutas_model = new Rutas_model($db);
 
 		$data = [
-			'estado_ruta' => '0' 
+			'estado_ruta' => '0'
 		];
 		$rutas_model->update($id_ruta, $data);
 		$this->enmarcha();
@@ -277,11 +277,11 @@ class Rutas extends BaseController
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$model = new Rutas_model($db);
-	
+
 		try {
 
 			$model->update($idRuta, ['estado_ruta' => $nuevoEstado]);
-	
+
 			return $this->response->setJSON(['success' => true]);
 		} catch (\Exception $e) {
 			return $this->response->setJSON([
@@ -290,5 +290,5 @@ class Rutas extends BaseController
 			])->setStatusCode(500);
 		}
 	}
-	
+
 }

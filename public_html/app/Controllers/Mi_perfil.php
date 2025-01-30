@@ -3,7 +3,7 @@ namespace App\Controllers;
 use \Gumlet\ImageResize;
 
 class Mi_perfil extends BaseController
-{ 
+{
     public function index($id = null)
     {
         return $this->edit($id);
@@ -41,10 +41,10 @@ class Mi_perfil extends BaseController
 
         // Verificar si el nombre de usuario ya existe
         $existingUser = $dbOriginal->table('users')
-                                   ->where('username', $post_array['username'])
-                                   ->where('id !=', $userId)
-                                   ->get()
-                                   ->getRow();
+            ->where('username', $post_array['username'])
+            ->where('id !=', $userId)
+            ->get()
+            ->getRow();
 
         if ($existingUser) {
             $session->setFlashdata('error', 'El nombre de usuario ya existe.');
@@ -78,7 +78,7 @@ class Mi_perfil extends BaseController
             if (!is_dir($specificPath)) {
                 mkdir($specificPath, 0777, true);
             } else {
-                array_map('unlink', glob($specificPath . "*")); 
+                array_map('unlink', glob($specificPath . "*"));
             }
 
             // Agregar el ID del usuario autenticado al nombre de la imagen

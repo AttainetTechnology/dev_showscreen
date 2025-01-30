@@ -107,16 +107,16 @@ class Pedidos_proveedor extends BaseController
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Pedidos', base_url('/pedidos_proveedor'));
         $this->addBreadcrumb('Editar Pedido');
-    
+
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $pedidoModel = new PedidosProveedorModel($db);
         $pedido = $pedidoModel->find($id_pedido);
-    
+
         if (!$pedido) {
             return redirect()->to(base_url('pedidos_proveedor'))->with('error', 'Pedido no encontrado.');
         }
-    
+
         // Actualizar consulta para incluir nombre_producto
         $builder = $db->table('linea_pedido_proveedor lp');
         $builder->select('lp.*, pp.ref_producto, pn.nombre_producto');
@@ -124,7 +124,7 @@ class Pedidos_proveedor extends BaseController
         $builder->join('productos_necesidad pn', 'pp.id_producto_necesidad = pn.id_producto', 'left');
         $builder->where('lp.id_pedido', $id_pedido);
         $lineasPedido = $builder->get()->getResultArray();
-    
+
         $proveedores = (new ProveedoresModel($db))->findAll();
         $usuarios = $this->getUsuarios();
         $estados = [
@@ -133,7 +133,7 @@ class Pedidos_proveedor extends BaseController
             "2" => "Recibido",
             "6" => "Anulado"
         ];
-    
+
         return view('editPedidoProveedor', [
             'pedido' => $pedido,
             'proveedores' => $proveedores,
@@ -143,7 +143,7 @@ class Pedidos_proveedor extends BaseController
             'id_pedido' => $id_pedido,
         ]);
     }
-    
+
 
     public function update($id_pedido)
     {

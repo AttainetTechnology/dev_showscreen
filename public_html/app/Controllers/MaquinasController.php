@@ -60,8 +60,8 @@ class MaquinasController extends BaseController
         }
 
         $model->set('nombre', $nombre)
-              ->where('id_maquina', $idMaquina)
-              ->update();
+            ->where('id_maquina', $idMaquina)
+            ->update();
 
         return $this->response->setJSON(['success' => true]);
     }

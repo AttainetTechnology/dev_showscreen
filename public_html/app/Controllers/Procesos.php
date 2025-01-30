@@ -17,12 +17,12 @@ class Procesos extends BaseController
         }
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Procesos');
-        
+
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
         $procesos = $procesoModel->where('estado_proceso', 1)->orderBy('nombre_proceso', 'ASC')->findAll();
-    
+
         // Pasar las migas de pan a la vista
         return view('procesos', [
             'procesos' => $procesos,
@@ -30,7 +30,7 @@ class Procesos extends BaseController
             'amiga' => $this->getBreadcrumbs()
         ]);
     }
-    
+
     public function getProcesos($estado = null)
     {
         $data = datos_user();

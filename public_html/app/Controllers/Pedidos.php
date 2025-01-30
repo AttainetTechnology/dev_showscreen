@@ -20,13 +20,13 @@ class Pedidos extends BaseController
 	}
 	public function index()
 	{
-		
-        $redirect = check_access_level(); 
 
-        $redirectUrl = session()->getFlashdata('redirect');
-        if ($redirect && is_string($redirectUrl)) {
-            return redirect()->to($redirectUrl);
-        }
+		$redirect = check_access_level();
+
+		$redirectUrl = session()->getFlashdata('redirect');
+		if ($redirect && is_string($redirectUrl)) {
+			return redirect()->to($redirectUrl);
+		}
 
 		$this->todos('estado<=', '6');
 	}
@@ -144,11 +144,13 @@ class Pedidos extends BaseController
 		$pedidoModel = new Pedidos_model($db);
 
 		// Validación básica de datos
-		if (!$this->validate([
-			'id_cliente' => 'required',
-			'fecha_entrada' => 'required',
-			'fecha_entrega' => 'required',
-		])) {
+		if (
+			!$this->validate([
+				'id_cliente' => 'required',
+				'fecha_entrada' => 'required',
+				'fecha_entrega' => 'required',
+			])
+		) {
 			return redirect()->back()->with('error', 'Faltan datos obligatorios');
 		}
 
@@ -188,8 +190,8 @@ class Pedidos extends BaseController
 	public function edit($id_pedido)
 	{
 		$this->addBreadcrumb('Inicio', base_url('/'));
-        $this->addBreadcrumb('Pedidos', base_url('/pedidos/enmarcha'));
-        $this->addBreadcrumb('Editar Pedido');
+		$this->addBreadcrumb('Pedidos', base_url('/pedidos/enmarcha'));
+		$this->addBreadcrumb('Editar Pedido');
 		helper('controlacceso');
 		$session = session();
 		$data = datos_user();
@@ -229,22 +231,24 @@ class Pedidos extends BaseController
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
-	
+
 		// Validación básica de datos
-		if (!$this->validate([
-			'id_cliente' => 'required',
-			'fecha_entrada' => 'required',
-			'fecha_entrega' => 'required',
-		])) {
+		if (
+			!$this->validate([
+				'id_cliente' => 'required',
+				'fecha_entrada' => 'required',
+				'fecha_entrega' => 'required',
+			])
+		) {
 			return redirect()->back()->with('error', 'Faltan datos obligatorios');
 		}
-	
+
 		// Obtener el pedido actual para mantener su estado
 		$pedido = $pedidoModel->find($id_pedido);
 		if (!$pedido) {
 			return redirect()->back()->with('error', 'Pedido no encontrado');
 		}
-	
+
 		// Preparar los datos para actualizar el pedido
 		$updateData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
@@ -254,10 +258,10 @@ class Pedidos extends BaseController
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
 		];
-	
+
 		// Mantener el estado original del pedido, no modificarlo
 		$updateData['estado'] = $pedido->estado; // Usar notación de objeto ->
-	
+
 		// Actualizar el pedido
 		if ($pedidoModel->update($id_pedido, $updateData)) {
 			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Pedido actualizado correctamente');
@@ -265,7 +269,7 @@ class Pedidos extends BaseController
 			return redirect()->back()->with('error', 'No se pudo actualizar el pedido');
 		}
 	}
-	
+
 
 	function imprimir_parte($row)
 	{
@@ -347,9 +351,11 @@ class Pedidos extends BaseController
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$lineaspedidoModel = new LineaPedido($db);
-		if (!$this->validate([
-			'id_producto' => 'required',
-		])) {
+		if (
+			!$this->validate([
+				'id_producto' => 'required',
+			])
+		) {
 			return redirect()->back()->with('error', 'El producto es obligatorio.');
 		}
 		$fecha_entrada = $this->request->getPost('fecha_entrada') ?: date('Y-m-d');
@@ -433,20 +439,20 @@ class Pedidos extends BaseController
 		$estadoModel = new EstadoModel($db);
 		$lineaPedidoModel = new LineaPedido($db);
 		$linea_pedido = $lineaPedidoModel->find($id_lineapedido);
-	
+
 		if (!$linea_pedido) {
 			return $this->response->setStatusCode(404, 'Línea de pedido no encontrada');
 		}
-	
+
 		// Verificar si el estado de la línea es "en cola"
 		$isEstadoEnCola = ($linea_pedido['estado'] === 'en cola');
-	
+
 		// Pasar datos a la vista
 		$data['productos'] = $productosModel->findAll();
 		$data['estados'] = $estadoModel->findAll();
 		$data['linea_pedido'] = $linea_pedido;
 		$data['isEstadoEnCola'] = $isEstadoEnCola;  // Variable adicional para controlar la visibilidad
-	
+
 		// Renderizar la vista dependiendo de si es AJAX o no
 		if ($this->request->isAJAX()) {
 			return view('editLineaPedido', $data);
@@ -454,7 +460,7 @@ class Pedidos extends BaseController
 			return redirect()->back()->with('error', 'Acción no permitida');
 		}
 	}
-	
+
 	public function mostrarFormularioAddLineaPedido($id_pedido)
 	{
 		$data = usuario_sesion();

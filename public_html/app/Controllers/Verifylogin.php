@@ -7,7 +7,7 @@ class Verifylogin extends LoginController
     public function index()
     {
         helper(['url', 'form', 'controlacceso']);
-        
+
         if ($this->request->getPost('username')) {
             $db = \Config\Database::connect();
             $builder = $db->table('users');
@@ -24,7 +24,8 @@ class Verifylogin extends LoginController
                     // Contraseña válida, iniciar sesión
                     $login = new Login();
                     $login->crea_sesion($record);
-                    return redirect()->to('login')->withInput()->with('error', 'No existe el usuario');;
+                    return redirect()->to('login')->withInput()->with('error', 'No existe el usuario');
+                    ;
                 } else {
                     // Contraseña incorrecta
                     return redirect()->to('login')->withInput()->with('error', 'Usuario o contraseña incorrectos');

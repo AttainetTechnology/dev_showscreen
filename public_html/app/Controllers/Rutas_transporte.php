@@ -57,7 +57,7 @@ class Rutas_transporte extends BaseControllerGC
         $data['user'] = $this->edit();
 
         // Mostrar la vista de rutas
-        echo view('rutas', (array)$data);
+        echo view('rutas', (array) $data);
     }
 
 
