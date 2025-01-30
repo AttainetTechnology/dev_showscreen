@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Controllers;
 
 use App\Models\FamiliaProveedorModel;
@@ -49,17 +49,17 @@ class Familia_proveedor extends BaseController
         $model = new FamiliaProveedorModel($db);
         $idFamilia = $this->request->getPost('id_familia');
         $nombre = $this->request->getPost('nombre');
-    
+
         if (empty($nombre)) {
             return $this->response->setJSON(['success' => false, 'message' => 'El campo nombre es obligatorio.']);
         }
         $model->set('nombre', $nombre)
-              ->where('id_familia', $idFamilia)
-              ->update();
-    
+            ->where('id_familia', $idFamilia)
+            ->update();
+
         return $this->response->setJSON(['success' => true]);
     }
-    
+
     public function editar($id_familia)
     {
         $data = usuario_sesion();
@@ -73,16 +73,16 @@ class Familia_proveedor extends BaseController
     }
 
     public function agregarFamilia()
-{
-    $data = usuario_sesion();
-    $db = db_connect($data['new_db']);
-    $model = new FamiliaProveedorModel($db);
-    $nombre = $this->request->getPost('nombre');
-    if (empty($nombre)) {
-        return $this->response->setJSON(['success' => false, 'message' => 'El campo nombre es obligatorio.']);
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new FamiliaProveedorModel($db);
+        $nombre = $this->request->getPost('nombre');
+        if (empty($nombre)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'El campo nombre es obligatorio.']);
+        }
+        $model->insert(['nombre' => $nombre]);
+        return $this->response->setJSON(['success' => true]);
     }
-    $model->insert(['nombre' => $nombre]);
-    return $this->response->setJSON(['success' => true]);
-}
 
 }

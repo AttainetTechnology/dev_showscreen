@@ -21,11 +21,11 @@ class Fichar extends BaseFichar
 	public function index()
 	{
 		helper('controlacceso');
-        $redirect = check_access_level();
-        $redirectUrl = session()->getFlashdata('redirect');
-        if ($redirect && is_string($redirectUrl)) {
-            return redirect()->to($redirectUrl);
-        }
+		$redirect = check_access_level();
+		$redirectUrl = session()->getFlashdata('redirect');
+		if ($redirect && is_string($redirectUrl)) {
+			return redirect()->to($redirectUrl);
+		}
 		helper('controlacceso');
 
 		// Comprobamos si hemos cambiado de día y activamos las comprobaciones
@@ -113,7 +113,7 @@ class Fichar extends BaseFichar
 	{
 		$ayer = date('d.m.Y', strtotime("-1 days"));
 		$date = new DateTime($ayer);
-		$day =  $date->format("w");
+		$day = $date->format("w");
 		if ($day == 6 || $day == 0) {
 			$session = session();
 			$aviso .= 'Ayer fue fin de semana, no genero ausencias.</br>';
@@ -147,7 +147,8 @@ class Fichar extends BaseFichar
 			} else {
 				$session = session();
 				$aviso .= "Ayer no fue festivo.<br>";
-				$this->ComprobarAusencias($aviso);;
+				$this->ComprobarAusencias($aviso);
+				;
 			}
 		}
 	}
@@ -187,7 +188,7 @@ class Fichar extends BaseFichar
 				->where('entrada <', $hoy)
 				->select('entrada')
 				->findAll();
-				//->where('entrada',$ayer)
+			//->where('entrada',$ayer)
 			;
 			foreach ($fichajesayer as $fila) {
 				foreach ($fila as $clave) {
@@ -214,7 +215,8 @@ class Fichar extends BaseFichar
 			->where('desde <=', $ayer)
 			->where('hasta >=', $ayer)
 			->select('desde')
-			->findAll();;
+			->findAll();
+		;
 		$aviso = '';
 		foreach ($vacacionessayer as $fila) {
 			foreach ($fila as $clave) {
@@ -226,9 +228,9 @@ class Fichar extends BaseFichar
 			} else {
 				// echo "El usuario".$empleado." no fichó, genero Ausencia.<br>";
 				$datos = [
-					'id_usuario'    => $empleado,
-					'entrada'       => $ayer,
-					'incidencia'    => 'Ausencia'
+					'id_usuario' => $empleado,
+					'entrada' => $ayer,
+					'incidencia' => 'Ausencia'
 				];
 				$fichajes = model('Fichajes', true, $this->db);
 				$fichajes->insert($datos);

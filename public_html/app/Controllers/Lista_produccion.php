@@ -50,30 +50,30 @@ class Lista_produccion extends BaseControllerGC
     {
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Partes');
-    
+
         // Control de login
         helper('controlacceso');
         $nivel = control_login();
-    
+
         // Conectar a la base de datos
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-    
+
         // Configuración de paginación
         $perPage = 2000; // Número de registros cargados
-        $page = $this->request->getVar('page') ?? 1; 
+        $page = $this->request->getVar('page') ?? 1;
         $offset = ($page - 1) * $perPage;
-    
+
         // Obtener los datos paginados de la tabla
         $builder = $db->table('v_linea_pedidos_con_familia');
         $builder->select('id_lineapedido, fecha_entrada, med_inicial, med_final, id_cliente, nom_base, id_producto, id_pedido, estado, id_familia');
         $builder->where($coge_estado . $where_estado);
         $builder->orderBy('fecha_entrada', 'DESC');
-    
-        $total = $builder->countAllResults(false); 
+
+        $total = $builder->countAllResults(false);
         $query = $builder->limit($perPage, $offset)->get();
         $result = $query->getResultArray();
-    
+
         // Procesar relaciones (igual que antes)
         $clientesModel = new \App\Models\ClienteModel($db);
         $familiasModel = new \App\Models\Familia_productos_model($db);
@@ -92,23 +92,23 @@ class Lista_produccion extends BaseControllerGC
 
         $ahora = date('d-m-y');
         $titulo_pagina = "Partes " . $situacion . " - fecha: " . $ahora;
- 
+
         $data['titulo_pagina'] = $titulo_pagina;
         $data['result'] = $result;
         $data['amiga'] = $this->getBreadcrumbs();
 
         $pager = \Config\Services::pager();
         $data['pager'] = $pager->makeLinks($page, $perPage, $total);
-    
+
         echo view('lista_produccion_view', $data);
     }
-    
+
 
     function asignaEstado($estado)
     {
         $estado_clase = "";
         $nombre_estado = "";
-        
+
         switch ($estado) {
             case '0':
                 $nombre_estado = "Pendiente de material";
@@ -143,10 +143,10 @@ class Lista_produccion extends BaseControllerGC
                 $estado_clase = "estado-default"; // Clase por defecto
                 break;
         }
-    
+
         return ['nombre_estado' => $nombre_estado, 'estado_clase' => $estado_clase];
     }
-    
+
 
     function nombre_cliente($id_pedido)
     {

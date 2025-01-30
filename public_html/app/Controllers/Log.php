@@ -26,7 +26,7 @@ class Log extends BaseController
         $db = db_connect($data['new_db']);
         $logModel = new Log_model($db);
         $logs = $logModel->findAll();
-    
+
         if ($logs) {
             return $this->response->setJSON($logs);
         } else {
@@ -38,7 +38,7 @@ class Log extends BaseController
         if (empty($id_log)) {
             return $this->response->setJSON(['success' => false, 'message' => 'ID de log no válido.']);
         }
-    
+
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $logModel = new Log_model($db);
@@ -54,6 +54,6 @@ class Log extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Log no encontrado para el ID: ' . $id_log]);
         }
     }
-    
-    
+
+
 }

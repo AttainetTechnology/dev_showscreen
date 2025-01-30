@@ -24,7 +24,7 @@ class Fichajes extends BaseController
     {
 
         if (empty($salida) || $salida == '0000-00-00 00:00:00' || $salida == '00:00:00') {
-            return ''; 
+            return '';
         }
 
         $entrada = new \DateTime($entrada);
@@ -76,7 +76,7 @@ class Fichajes extends BaseController
                 'eliminar' => base_url('fichajes/eliminar/' . $fichaje['id'])
             ];
         }
-    
+
         return $this->response->setJSON($fichajes);
     }
     public function editar($id)
@@ -92,10 +92,10 @@ class Fichajes extends BaseController
         $usuarios = $usuariosModel->findAll();
         return $this->response->setJSON([
             'fichaje' => $fichaje,
-            'usuarios' => $usuarios 
+            'usuarios' => $usuarios
         ]);
     }
-    
+
     public function actualizar()
     {
         $data = usuario_sesion();
@@ -119,24 +119,24 @@ class Fichajes extends BaseController
             'extras' => $extras,
             'id_usuario' => $id_usuario
         ]);
-    
+
         return $this->response->setJSON(['success' => true]);
     }
 
-     public function eliminar($id)
-     {
-         $data = usuario_sesion();
-         $db = db_connect($data['new_db']);
-         $fichajesModel = new FichajesModel($db);
- 
-         $fichaje = $fichajesModel->find($id);
-         if (!$fichaje) {
-             return $this->response->setJSON(['error' => 'Fichaje no encontrado']);
-         }
- 
-         $fichajesModel->delete($id);
- 
-         return $this->response->setJSON(['success' => true]);
-     }
-    
+    public function eliminar($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $fichajesModel = new FichajesModel($db);
+
+        $fichaje = $fichajesModel->find($id);
+        if (!$fichaje) {
+            return $this->response->setJSON(['error' => 'Fichaje no encontrado']);
+        }
+
+        $fichajesModel->delete($id);
+
+        return $this->response->setJSON(['success' => true]);
+    }
+
 }

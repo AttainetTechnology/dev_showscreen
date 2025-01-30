@@ -49,7 +49,7 @@ class Index extends BaseController
         $incidenciasModel = new Incidencias_model();
         $data['incidencias'] = $incidenciasModel->getIncidencias();
         $data['pendientes'] = $this->cuenta('0', $db);
-        $data['en_cola']    = $this->cuenta('2', $db);
+        $data['en_cola'] = $this->cuenta('2', $db);
         $data['en_maquina'] = $this->cuenta('3', $db);
         $data['terminados'] = $this->cuenta('4', $db);
 

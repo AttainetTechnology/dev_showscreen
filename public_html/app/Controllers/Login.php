@@ -57,7 +57,7 @@ class Login extends LoginController
                     $config = model('App\Models\Home_model');
                     $database_data = $config->find($user['id_empresa']);
                     $new_db = [
-                        'DSN'      => '',
+                        'DSN' => '',
                         'hostname' => 'localhost',
                         'username' => $database_data['db_user'],
                         'password' => $database_data['db_password'],
@@ -65,15 +65,15 @@ class Login extends LoginController
                         'DBDriver' => 'MySQLi',
                         'DBPrefix' => '',
                         'pConnect' => false,
-                        'DBDebug'  => (ENVIRONMENT !== 'development'),
-                        'charset'  => 'utf8',
+                        'DBDebug' => (ENVIRONMENT !== 'development'),
+                        'charset' => 'utf8',
                         'DBCollat' => 'utf8_general_ci',
-                        'swapPre'  => '',
-                        'encrypt'  => false,
+                        'swapPre' => '',
+                        'encrypt' => false,
                         'compress' => false,
                         'strictOn' => false,
                         'failover' => [],
-                        'port'     => 3306
+                        'port' => 3306
                     ];
                     $session = session();
                     $sess_array = array(
@@ -89,7 +89,7 @@ class Login extends LoginController
                         'logo_fichajes' => $database_data['logo_fichajes']
                     );
                     $session->set(array('logged_in' => $sess_array));
-                    
+
                     // Añadir script para cerrar la ventana emergente y recargar la página principal
                     echo "<script>
                         window.opener.location.reload();
@@ -119,7 +119,7 @@ class Login extends LoginController
         $config = model('App\Models\Home_model');
         $database_data = $config->find($record->id_empresa);
         $new_db = [
-            'DSN'      => '',
+            'DSN' => '',
             'hostname' => 'localhost',
             'username' => $database_data['db_user'],
             'password' => $database_data['db_password'],
@@ -127,15 +127,15 @@ class Login extends LoginController
             'DBDriver' => 'MySQLi',
             'DBPrefix' => '',
             'pConnect' => false,
-            'DBDebug'  => (ENVIRONMENT !== 'development'),
-            'charset'  => 'utf8',
+            'DBDebug' => (ENVIRONMENT !== 'development'),
+            'charset' => 'utf8',
             'DBCollat' => 'utf8_general_ci',
-            'swapPre'  => '',
-            'encrypt'  => false,
+            'swapPre' => '',
+            'encrypt' => false,
             'compress' => false,
             'strictOn' => false,
             'failover' => [],
-            'port'     => 3306
+            'port' => 3306
         ];
         $url_logo = $database_data['logo_empresa'];
         $logo_fichajes = $database_data['logo_fichajes'];

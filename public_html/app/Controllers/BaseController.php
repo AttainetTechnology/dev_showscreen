@@ -39,7 +39,7 @@ class BaseController extends Controller
 
         // Obtener todos los elementos del menú desde la base de datos
         $menuItems = $menuModel->orderBy('posicion', 'asc')->findAll();
-        
+
         // Creo una instancia del modelo de usuarios
 
         $datosUsuario = new Usuarios2_Model($this->db);
@@ -53,18 +53,18 @@ class BaseController extends Controller
             $this->data['apellidos_usuario'] = $itemsUsuario['apellidos_usuario'];
             $this->data['userfoto'] = $itemsUsuario['userfoto'];
         } else {
-        // Si $itemsUsuario es nulo, obtenemos los datos de la sesión
+            // Si $itemsUsuario es nulo, obtenemos los datos de la sesión
             if ($sessionData !== null) {
                 $this->data['nombre_usuario'] = $sessionData['nombre_usuario'];
                 $this->data['apellidos_usuario'] = $sessionData['apellidos_usuario'];
                 $this->data['userfoto'] = array_key_exists('userfoto', $sessionData) ? $sessionData['userfoto'] : '';
-            } 
+            }
         }
         // Estructurar los datos del menú para la vista
         $structuredMenu = $this->buildMenuStructure($menuItems);
 
         // Determina la página actual
-        $path =  $request->getUri();
+        $path = $request->getUri();
         $segments = explode('/', $path);
         $currentPage = end($segments);
 
@@ -73,11 +73,11 @@ class BaseController extends Controller
         $this->data['currentPage'] = $currentPage;
         return view('partials/menu_lateral', $this->data);
         //Output
-        $this->output = (object)[
+        $this->output = (object) [
             'js_files' => [],
             'output' => ''
         ];
-        
+
     }
 
     // Método para estructurar los datos del menú
@@ -95,46 +95,47 @@ class BaseController extends Controller
         return $menu;
     }
     //TABLA LOG
-protected function logAction($seccion, $log, $stateParameters) {
-    // Crear una instancia del modelo Log y Usuarios2_Model
-    $logModel = new \App\Models\Log_model($this->db);
-    $datosUsuario = new Usuarios2_Model($this->db);
+    protected function logAction($seccion, $log, $stateParameters)
+    {
+        // Crear una instancia del modelo Log y Usuarios2_Model
+        $logModel = new \App\Models\Log_model($this->db);
+        $datosUsuario = new Usuarios2_Model($this->db);
 
-    // Intentar obtener los datos del usuario de la base de datos
-    $itemsUsuario = $datosUsuario->find($this->data['id_user']);
-    if ($itemsUsuario !== null) {
-        $nombre_usuario = $itemsUsuario['nombre_usuario'];
-        $apellidos_usuario = $itemsUsuario['apellidos_usuario'];
-    } else {
-        // Si $itemsUsuario es nulo, obtenemos los datos de la sesión
-        $session = session();
-        $sessionData = $session->get('logged_in');
-        if ($sessionData !== null) {
-            $nombre_usuario = array_key_exists('nombre_usuario', $sessionData) ? $sessionData['nombre_usuario'] : '';
-            $apellidos_usuario = array_key_exists('apellidos_usuario', $sessionData) ? $sessionData['apellidos_usuario'] : '';
+        // Intentar obtener los datos del usuario de la base de datos
+        $itemsUsuario = $datosUsuario->find($this->data['id_user']);
+        if ($itemsUsuario !== null) {
+            $nombre_usuario = $itemsUsuario['nombre_usuario'];
+            $apellidos_usuario = $itemsUsuario['apellidos_usuario'];
         } else {
-            // Los datos de la sesión no existen, salir de la función
-            return;
+            // Si $itemsUsuario es nulo, obtenemos los datos de la sesión
+            $session = session();
+            $sessionData = $session->get('logged_in');
+            if ($sessionData !== null) {
+                $nombre_usuario = array_key_exists('nombre_usuario', $sessionData) ? $sessionData['nombre_usuario'] : '';
+                $apellidos_usuario = array_key_exists('apellidos_usuario', $sessionData) ? $sessionData['apellidos_usuario'] : '';
+            } else {
+                // Los datos de la sesión no existen, salir de la función
+                return;
+            }
         }
+        // Crear un nuevo registro de log
+        $data = [
+            'fecha' => date('Y-m-d H:i:s'), // Fecha y hora actual
+            'id_usuario' => $nombre_usuario . ' ' . $apellidos_usuario,
+            'log' => $log,
+            'seccion' => $seccion
+        ];
+
+        // Insertar el registro de log en la base de datos
+        $logModel->insert($data);
     }
-    // Crear un nuevo registro de log
-    $data = [
-        'fecha' => date('Y-m-d H:i:s'), // Fecha y hora actual
-        'id_usuario' => $nombre_usuario . ' ' . $apellidos_usuario,
-        'log' => $log,
-        'seccion' => $seccion
-    ];
+    public function addBreadcrumb($title, $link = '#')
+    {
+        $this->amiga[] = ['title' => $title, 'link' => $link];
+    }
 
-    // Insertar el registro de log en la base de datos
-    $logModel->insert($data);
-}
-public function addBreadcrumb($title, $link = '#')
-{
-    $this->amiga[] = ['title' => $title, 'link' => $link];
-}
-
-public function getBreadcrumbs()
-{
-    return $this->amiga;
-}
+    public function getBreadcrumbs()
+    {
+        return $this->amiga;
+    }
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
@@ -60,8 +60,8 @@ class Familia_productos extends BaseController
         }
 
         $model->set('nombre', $nombre)
-              ->where('id_familia', $idFamilia)
-              ->update();
+            ->where('id_familia', $idFamilia)
+            ->update();
 
         return $this->response->setJSON(['success' => true]);
     }
