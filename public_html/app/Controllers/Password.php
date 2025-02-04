@@ -87,7 +87,7 @@ class Password extends BaseControllerGC
         $post_array = $request->getPost();
         $post_array['id'] = $id;
 
-        unset($post_array['nombre_usuario']); 
+        unset($post_array['nombre_usuario']);
 
         if (!empty($post_array['password'])) {
             if ($this->isValidPassword($post_array['password'])) {
@@ -158,18 +158,19 @@ class Password extends BaseControllerGC
         return true;
     }
 
-    public function getNivelAcceso($id) {
+    public function getNivelAcceso($id)
+    {
         $db = db_connect();
         $query = $db->table('users')->where('id', $id)->get();
         $user = $query->getRow();
-        
+
         if ($user) {
             return $this->response->setJSON(['nivel_acceso' => $user->nivel_acceso]);
         } else {
             return $this->response->setJSON(['error' => 'Usuario no encontrado'], 404);
         }
     }
-    
+
 
     public function getNombreUsuario($id)
     {
