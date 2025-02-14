@@ -1,6 +1,11 @@
 <div class="fondo-empleados">
     <div class="container-fluid d-flex flex-row flex-wrap">
         <h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
+        <div class="volver">
+            <a href="<?= site_url('salir/' . $usuario['id']); ?>" class="btn btn-light">
+                <span class="glyphicon glyphicon-arrow-left"></span> Volver
+            </a>
+        </div>
         <form action="<?= site_url('selectMaquina') ?>" method="POST">
             <label for="maquina">Seleccione una Máquina:</label>
             <select name="id_maquina" id="maquina" required>
