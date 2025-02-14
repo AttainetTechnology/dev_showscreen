@@ -1,5 +1,6 @@
 <div class="fondo-empleados">
     <div class="container-fluid d-flex flex-row flex-wrap">
+    <h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
         <form action="<?= site_url('selectMaquina') ?>" method="POST">
             <label for="maquina">Seleccione una Máquina:</label>
             <select name="id_maquina" id="maquina" required>

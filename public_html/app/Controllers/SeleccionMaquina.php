@@ -4,13 +4,13 @@ namespace App\Controllers;
 
 use App\Models\Maquinas;
 use App\Models\ProcesosPedido;
+use App\Models\Usuarios2_Model;
 
 
 
 class SeleccionMaquina extends BaseFichar
 {
-
-    public function getMaquina()
+    public function getMaquina($id_usuario)
     {
         helper('controlacceso');
         $data = usuario_sesion();
@@ -22,13 +22,35 @@ class SeleccionMaquina extends BaseFichar
         // Obtener todas las máquinas
         $maquinas = $maquinasModel->findAll();
 
-        // Retornamos la vista con las máquinas
+        // Cargar el modelo de Usuarios y obtener el nombre del usuario
+        $usuariosModel = new Usuarios2_Model($db);
+        $usuario = $usuariosModel->find($id_usuario); // Obtener los datos del usuario
+
+        // Verificamos si el usuario existe
+        if (!$usuario) {
+            return redirect()->to('/error'); // Redirigir si el usuario no existe
+        }
+
+        // Guardar el usuario en la sesión
+        session()->set('usuario', $usuario);
+
+        // Retornamos la vista con las máquinas y el nombre del usuario
         return view('selectMaquina', [
-            'maquinas' => $maquinas
+            'maquinas' => $maquinas,
+            'usuario' => $usuario // Pasamos el nombre del usuario
         ]);
     }
+
+
     public function selectMaquina()
     {
+        $usuario = session()->get('usuario');
+
+        // Verificamos si el usuario existe
+        if (!$usuario) {
+            return redirect()->to('/error'); // Redirigir si no hay usuario en la sesión
+        }
+
         // Verificamos si se ha seleccionado una máquina
         $idMaquina = $this->request->getPost('id_maquina');
 
@@ -38,7 +60,7 @@ class SeleccionMaquina extends BaseFichar
             $data = usuario_sesion();
             $db = db_connect($data['new_db']);
 
-            // Cargar el modelo de ProcesosPedido
+            // Cargar el modelo de ProcesosPedido 
             $procesosPedidoModel = new ProcesosPedido($db);
 
             // Traemos los procesos relacionados con la máquina seleccionada y con estado menor a 4
@@ -57,8 +79,8 @@ class SeleccionMaquina extends BaseFichar
             // Iteramos sobre los procesos y obtenemos la información del producto
             foreach ($procesos as &$proceso) {
                 $producto = $this->obtenerProducto($proceso['id_producto']);  // Obtener datos del producto
-                $proceso['nombre_producto'] = $producto['nombre'];  
-                $proceso['imagen_producto'] = $producto['imagen']; 
+                $proceso['nombre_producto'] = $producto['nombre'];
+                $proceso['imagen_producto'] = $producto['imagen'];
 
                 // Obtener el nombre del cliente asociado al pedido de la linea de pedido
                 $nombreCliente = $this->obtenerNombreClientePorPedido($proceso['id_pedido']);
@@ -69,6 +91,7 @@ class SeleccionMaquina extends BaseFichar
             return view('selectMaquina', [
                 'maquinas' => $maquinas,  // Pasamos todas las máquinas
                 'procesos' => $procesos,
+                'usuario' => $usuario,  // Pasamos el nombre del usuario
                 'nombreMaquinaSeleccionada' => $maquinaSeleccionada['nombre']
             ]);
         }
@@ -133,12 +156,8 @@ class SeleccionMaquina extends BaseFichar
             if ($cliente) {
                 return $cliente['nombre_cliente'];
             }
-
         }
 
         return 'Cliente no encontrado';
     }
-
-
 }
-

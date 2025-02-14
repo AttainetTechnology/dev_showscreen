@@ -142,7 +142,7 @@ $routes->post('gallery/delete', 'Gallery::delete');
 $routes->post('productos_necesidad/update/(:num)', 'Productos_necesidad::update/$1');
 
 // Ruta GET para mostrar el formulario de selección de máquina
-$routes->get('selectMaquina', 'SeleccionMaquina::getMaquina');
+$routes->get('selectMaquina/(:num)', 'SeleccionMaquina::getMaquina/$1');
 
 // Ruta POST para procesar la selección de máquina
 $routes->post('selectMaquina', 'SeleccionMaquina::selectMaquina');
