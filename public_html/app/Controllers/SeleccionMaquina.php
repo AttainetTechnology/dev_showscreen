@@ -30,7 +30,7 @@ class SeleccionMaquina extends BaseFichar
         $maquinas = $maquinasModel->findAll();
 
         $usuariosModel = new Usuarios2_Model($db);
-        $usuario = $usuariosModel->find($id_usuario); 
+        $usuario = $usuariosModel->find($id_usuario);
 
 
         session()->set('usuario', $usuario);
@@ -46,13 +46,13 @@ class SeleccionMaquina extends BaseFichar
         $usuario = session()->get('usuario');
 
         if (!$usuario) {
-            return redirect()->to('/error'); 
+            return redirect()->to('/error');
         }
 
         $idMaquina = $this->request->getPost('id_maquina');
 
         if (!$idMaquina) {
-            return redirect()->to(current_url()); 
+            return redirect()->to(current_url());
         }
         if ($idMaquina) {
 
@@ -70,19 +70,20 @@ class SeleccionMaquina extends BaseFichar
             $maquinas = $maquinasModel->findAll();
             $maquinaSeleccionada = $maquinasModel->find($idMaquina);
             foreach ($procesos as &$proceso) {
-                $producto = $this->obtenerProducto($proceso['id_producto']);  
+                $producto = $this->obtenerProducto($proceso['id_producto']);
                 $proceso['nombre_producto'] = $producto['nombre'];
                 $proceso['imagen_producto'] = $producto['imagen'];
 
                 $nombreCliente = $this->obtenerNombreClientePorPedido($proceso['id_pedido']);
-                $proceso['nombre_cliente'] = $nombreCliente; 
+                $proceso['nombre_cliente'] = $nombreCliente;
             }
 
             return view('selectMaquina', [
-                'maquinas' => $maquinas,  
+                'maquinas' => $maquinas,
                 'procesos' => $procesos,
-                'usuario' => $usuario, 
-                'nombreMaquinaSeleccionada' => $maquinaSeleccionada['nombre']
+                'usuario' => $usuario,
+                'nombreMaquinaSeleccionada' => $maquinaSeleccionada['nombre'],
+                'idMaquina' => $idMaquina
             ]);
         }
         return redirect()->to('selectMaquina');
@@ -100,7 +101,7 @@ class SeleccionMaquina extends BaseFichar
             // Generar la URL de la imagen
             $imagenUrl = $producto['imagen']
                 ? base_url("public/assets/uploads/files/{$empresaId}/productos/{$producto['imagen']}")
-                : null; 
+                : null;
 
             return [
                 'nombre' => $producto['nombre_producto'],
@@ -126,5 +127,38 @@ class SeleccionMaquina extends BaseFichar
         }
 
         return 'Cliente no encontrado';
+    }
+    public function seleccionarProceso()
+    {
+        // Obtener los datos del formulario
+        $id_linea_pedido = $this->request->getPost('id_linea_pedido');
+        $id_proceso_pedido = $this->request->getPost('id_proceso_pedido');
+        $id_pedido = $this->request->getPost('id_pedido');
+        $id_maquina = $this->request->getPost('id_maquina');
+
+        // Obtener el usuario actual
+        $usuario = session()->get('usuario');
+        $id_usuario = $usuario['id'];
+
+        // Crear el registro en la tabla 'relacion_proceso_usuario'
+        $data = [
+            'id_pedido' => $id_pedido,
+            'id_linea_pedido' => $id_linea_pedido,
+            'id_proceso_pedido' => $id_proceso_pedido,
+            'id_usuario' => $id_usuario,
+            'id_maquina' => $id_maquina,
+            'estado' => 'en maquina', // Estado inicial
+            'buenas' => 0,
+            'malas' => 0,
+            'repasadas' => 0
+        ];
+
+        // Insertar en la base de datos
+        $db = $this->db;
+        $builder = $db->table('relacion_proceso_usuario');
+        $builder->insert($data);
+
+        // Redirigir a la vista de selección de máquina
+        return redirect()->to('/selectMaquina/' . $id_usuario)->with('success', 'Proceso seleccionado correctamente.');
     }
 }

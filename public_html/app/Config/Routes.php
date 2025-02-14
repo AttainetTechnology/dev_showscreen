@@ -148,3 +148,4 @@ $routes->post('selectMaquina', 'SeleccionMaquina::selectMaquina');
 
 // Ruta GET para la función index que redirige a getMaquina
 $routes->get('selectMaquina', 'SeleccionMaquina::index');
+$routes->post('seleccionarProceso', 'SeleccionMaquina::seleccionarProceso');

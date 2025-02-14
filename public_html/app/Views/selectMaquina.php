@@ -7,7 +7,6 @@
                 <span class="glyphicon glyphicon-arrow-left"></span> Volver
             </a>
         </div>
-
         <div class="row">
             <div class="col-md-3">
                 <form action="<?= site_url('selectMaquina') ?>" method="POST">
@@ -32,7 +31,7 @@
             </div>
             <div class="col-md-9">
                 <?php if (isset($procesos) && !empty($procesos)): ?>
-                    <h2>Procesos Seleccionados en <?= $nombreMaquinaSeleccionada ?></h2>
+                    <h2>Procesos en <?= $nombreMaquinaSeleccionada ?></h2>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -44,6 +43,7 @@
                                 <th>Nombre Base</th>
                                 <th>Medida Inicial</th>
                                 <th>Medida Final</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,6 +60,17 @@
                                     <td><?= $proceso['nom_base'] ?></td>
                                     <td><?= $proceso['med_inicial'] ?></td>
                                     <td><?= $proceso['med_final'] ?></td>
+                                    <td>
+                                        <form action="<?= site_url('seleccionarProceso') ?>" method="POST">
+                                            <input type="hidden" name="id_linea_pedido"
+                                                value="<?= $proceso['id_linea_pedido'] ?>">
+                                            <input type="hidden" name="id_proceso_pedido"
+                                                value="<?= $proceso['id_relacion'] ?>">
+                                            <input type="hidden" name="id_pedido" value="<?= $proceso['id_pedido'] ?>">
+                                            <input type="hidden" name="id_maquina" value="<?= $idMaquina ?>">
+                                            <button type="submit" class="btn btn-primary">Seleccionar</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
