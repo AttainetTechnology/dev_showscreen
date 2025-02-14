@@ -10,11 +10,28 @@ use App\Models\Usuarios2_Model;
 
 class SeleccionMaquina extends BaseFichar
 {
+    public function index()
+    {
+        // Verificamos si el usuario está en sesión
+        $usuario = session()->get('usuario');
+
+        if (!$usuario) {
+            // Si no hay usuario en sesión, redirigimos a una página de error o login
+            return redirect()->to('/login');
+        }
+
+        // Obtener el id del usuario desde la sesión
+        $id_usuario = $usuario['id']; // Asumiendo que 'id' es el campo en la sesión
+
+        // Redirigir al método getMaquina con el id del usuario
+        return redirect()->to("/selectMaquina/{$id_usuario}");
+    }
+
     public function getMaquina($id_usuario)
     {
         helper('controlacceso');
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
+        // Usamos la conexión heredada de BaseFichar
+        $db = $this->db;
 
         // Cargar el modelo de Maquinas
         $maquinasModel = new Maquinas($db);
@@ -41,7 +58,6 @@ class SeleccionMaquina extends BaseFichar
         ]);
     }
 
-
     public function selectMaquina()
     {
         $usuario = session()->get('usuario');
@@ -54,11 +70,12 @@ class SeleccionMaquina extends BaseFichar
         // Verificamos si se ha seleccionado una máquina
         $idMaquina = $this->request->getPost('id_maquina');
 
+        if (!$idMaquina) {
+            return redirect()->to(current_url()); // Redirige a la misma URL
+        }
         if ($idMaquina) {
             // Modelo para procesos pedidos
-            helper('controlacceso');
-            $data = usuario_sesion();
-            $db = db_connect($data['new_db']);
+            $db = $this->db;
 
             // Cargar el modelo de ProcesosPedido 
             $procesosPedidoModel = new ProcesosPedido($db);
@@ -103,9 +120,7 @@ class SeleccionMaquina extends BaseFichar
 
     public function obtenerProducto($idProducto)
     {
-        helper('controlacceso');
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
+        $db = $this->db;
         $productoModel = new \App\Models\Productos_model($db);
 
         // Obtener los detalles del producto
@@ -113,9 +128,11 @@ class SeleccionMaquina extends BaseFichar
 
         // Verificamos si se encontró el producto
         if ($producto) {
+            $empresaId = session()->get('id');
+
             // Generar la URL de la imagen
             $imagenUrl = $producto['imagen']
-                ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}")
+                ? base_url("public/assets/uploads/files/{$empresaId}/productos/{$producto['imagen']}")
                 : null;  // Si no tiene imagen, se asigna null
 
             return [
@@ -133,9 +150,7 @@ class SeleccionMaquina extends BaseFichar
 
     public function obtenerNombreClientePorPedido($idPedido)
     {
-        helper('controlacceso');
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
+        $db = $this->db;
 
         // Modelo para la tabla pedidos
         $pedidosModel = new \App\Models\Pedidos_model($db);

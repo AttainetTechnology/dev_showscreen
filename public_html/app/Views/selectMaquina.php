@@ -1,6 +1,6 @@
 <div class="fondo-empleados">
     <div class="container-fluid d-flex flex-row flex-wrap">
-    <h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
+        <h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
         <form action="<?= site_url('selectMaquina') ?>" method="POST">
             <label for="maquina">Seleccione una Máquina:</label>
             <select name="id_maquina" id="maquina" required>
@@ -18,7 +18,7 @@
                     <tr>
                         <th>Proceso</th>
                         <th>Linea de Pedido</th>
-                        <th>Cliente</th> 
+                        <th>Cliente</th>
                         <th>Producto</th>
                         <th>Observaciones</th>
                         <th>Número de Piezas</th>
@@ -50,4 +50,5 @@
 
         <script>
             window.history.replaceState({}, document.title, "<?= base_url('selectMaquina'); ?>");
+
         </script>
