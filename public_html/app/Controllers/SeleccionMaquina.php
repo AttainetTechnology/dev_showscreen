@@ -12,49 +12,32 @@ class SeleccionMaquina extends BaseFichar
 {
     public function index()
     {
-        // Verificamos si el usuario está en sesión
         $usuario = session()->get('usuario');
 
         if (!$usuario) {
-            // Si no hay usuario en sesión, redirigimos a una página de error o login
             return redirect()->to('/login');
         }
-
-        // Obtener el id del usuario desde la sesión
-        $id_usuario = $usuario['id']; // Asumiendo que 'id' es el campo en la sesión
-
-        // Redirigir al método getMaquina con el id del usuario
+        $id_usuario = $usuario['id'];
         return redirect()->to("/selectMaquina/{$id_usuario}");
     }
 
     public function getMaquina($id_usuario)
     {
         helper('controlacceso');
-        // Usamos la conexión heredada de BaseFichar
         $db = $this->db;
 
-        // Cargar el modelo de Maquinas
         $maquinasModel = new Maquinas($db);
-
-        // Obtener todas las máquinas
         $maquinas = $maquinasModel->findAll();
 
-        // Cargar el modelo de Usuarios y obtener el nombre del usuario
         $usuariosModel = new Usuarios2_Model($db);
-        $usuario = $usuariosModel->find($id_usuario); // Obtener los datos del usuario
+        $usuario = $usuariosModel->find($id_usuario); 
 
-        // Verificamos si el usuario existe
-        if (!$usuario) {
-            return redirect()->to('/error'); // Redirigir si el usuario no existe
-        }
 
-        // Guardar el usuario en la sesión
         session()->set('usuario', $usuario);
 
-        // Retornamos la vista con las máquinas y el nombre del usuario
         return view('selectMaquina', [
             'maquinas' => $maquinas,
-            'usuario' => $usuario // Pasamos el nombre del usuario
+            'usuario' => $usuario
         ]);
     }
 
@@ -62,25 +45,19 @@ class SeleccionMaquina extends BaseFichar
     {
         $usuario = session()->get('usuario');
 
-        // Verificamos si el usuario existe
         if (!$usuario) {
-            return redirect()->to('/error'); // Redirigir si no hay usuario en la sesión
+            return redirect()->to('/error'); 
         }
 
-        // Verificamos si se ha seleccionado una máquina
         $idMaquina = $this->request->getPost('id_maquina');
 
         if (!$idMaquina) {
-            return redirect()->to(current_url()); // Redirige a la misma URL
+            return redirect()->to(current_url()); 
         }
         if ($idMaquina) {
-            // Modelo para procesos pedidos
+
             $db = $this->db;
-
-            // Cargar el modelo de ProcesosPedido 
             $procesosPedidoModel = new ProcesosPedido($db);
-
-            // Traemos los procesos relacionados con la máquina seleccionada y con estado menor a 4
             $procesos = $procesosPedidoModel
                 ->where('procesos_pedidos.id_maquina', $idMaquina)
                 ->where('procesos_pedidos.estado <', 4)
@@ -89,83 +66,58 @@ class SeleccionMaquina extends BaseFichar
                 ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')  // Traemos el id_pedido
                 ->findAll();
 
-            // Cargamos el modelo de Maquinas y obtenemos la máquina seleccionada
             $maquinasModel = new Maquinas($db);
-            $maquinas = $maquinasModel->findAll();  // Ejecutamos findAll() para obtener los datos de las máquinas
+            $maquinas = $maquinasModel->findAll();
             $maquinaSeleccionada = $maquinasModel->find($idMaquina);
-            // Iteramos sobre los procesos y obtenemos la información del producto
             foreach ($procesos as &$proceso) {
-                $producto = $this->obtenerProducto($proceso['id_producto']);  // Obtener datos del producto
+                $producto = $this->obtenerProducto($proceso['id_producto']);  
                 $proceso['nombre_producto'] = $producto['nombre'];
                 $proceso['imagen_producto'] = $producto['imagen'];
 
-                // Obtener el nombre del cliente asociado al pedido de la linea de pedido
                 $nombreCliente = $this->obtenerNombreClientePorPedido($proceso['id_pedido']);
-                $proceso['nombre_cliente'] = $nombreCliente;  // Agregamos el nombre del cliente al proceso
+                $proceso['nombre_cliente'] = $nombreCliente; 
             }
 
-            // Mostrar la vista con los procesos encontrados y la máquina seleccionada
             return view('selectMaquina', [
-                'maquinas' => $maquinas,  // Pasamos todas las máquinas
+                'maquinas' => $maquinas,  
                 'procesos' => $procesos,
-                'usuario' => $usuario,  // Pasamos el nombre del usuario
+                'usuario' => $usuario, 
                 'nombreMaquinaSeleccionada' => $maquinaSeleccionada['nombre']
             ]);
         }
-
-        // Si no se seleccionó máquina, redirigir de nuevo
         return redirect()->to('selectMaquina');
     }
-
 
     public function obtenerProducto($idProducto)
     {
         $db = $this->db;
         $productoModel = new \App\Models\Productos_model($db);
 
-        // Obtener los detalles del producto
         $producto = $productoModel->find($idProducto);
-
-        // Verificamos si se encontró el producto
         if ($producto) {
             $empresaId = session()->get('id');
 
             // Generar la URL de la imagen
             $imagenUrl = $producto['imagen']
                 ? base_url("public/assets/uploads/files/{$empresaId}/productos/{$producto['imagen']}")
-                : null;  // Si no tiene imagen, se asigna null
+                : null; 
 
             return [
                 'nombre' => $producto['nombre_producto'],
                 'imagen' => $imagenUrl  // Se pasa la URL completa de la imagen
             ];
         }
-
-        // Si no se encuentra el producto, retornamos un valor por defecto
-        return [
-            'nombre' => 'Producto no encontrado',
-            'imagen' => 'default-image.jpg'  // Imagen predeterminada
-        ];
     }
 
     public function obtenerNombreClientePorPedido($idPedido)
     {
         $db = $this->db;
-
-        // Modelo para la tabla pedidos
         $pedidosModel = new \App\Models\Pedidos_model($db);
-
-        // Buscar el cliente asociado al id_pedido
         $pedido = $pedidosModel->where('id_pedido', $idPedido)->first();
 
         if ($pedido) {
-            // Obtener el id_cliente del pedido
             $idCliente = $pedido->id_cliente;
-
-            // Modelo para la tabla clientes
             $clientesModel = new \App\Models\ClienteModel($db);
-
-            // Buscar el cliente por el id_cliente
             $cliente = $clientesModel->where('id_cliente', $idCliente)->first();
 
             if ($cliente) {
