@@ -75,6 +75,7 @@
             </table>
         </div>
         <!-- Columna para el formulario -->
+        <!-- Columna para el formulario -->
         <div class="col-md-6">
             <h4>Editar Datos de Proceso</h4>
             <form action="<?= site_url('editarPiezas') ?>" method="POST">
@@ -96,8 +97,13 @@
                     <input type="number" id="repasadas" name="repasadas" class="form-control" value="0" min="0">
                 </div>
                 <br>
-                <!-- Botón de Guardar cambios -->
-                <button type="submit" class="btn btn-primary" name="action" value="guardar_cambios">Apuntar</button>
+                <!-- Botones de Guardado -->
+                <button type="submit" class="btn btn-primary" name="action" value="apuntar_cambios">Apuntar</button>
+                <button type="submit" class="btn btn-success" name="action" value="apuntar_terminar">Apuntar y Terminar
+                    Pedido</button>
+                <button type="submit" class="btn btn-warning" name="action" value="apuntar_continuar">Apuntar y
+                    Continuar Más Tarde</button>
             </form>
         </div>
+
     </div>

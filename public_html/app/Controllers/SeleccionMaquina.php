@@ -301,40 +301,50 @@ class SeleccionMaquina extends BaseFichar
         $buenas = $this->request->getPost('buenas');
         $malas = $this->request->getPost('malas');
         $repasadas = $this->request->getPost('repasadas');
-
+        $action = $this->request->getPost('action');  // Obtener el valor del botón presionado
+    
         // Asegurarnos de que los datos son válidos
         if ($buenas < 0 || $malas < 0 || $repasadas < 0) {
             return redirect()->to('/error')->with('error', 'Los valores no pueden ser negativos.');
         }
-
+    
         // Obtener el ID de la relación_proceso_usuario desde el formulario
         $idRelacionProcesoUsuario = $this->request->getPost('id_relacion_proceso_usuario');
-
+    
         // Obtener los valores actuales de las piezas desde la base de datos
         $db = $this->db;
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
-
+    
         if (!$registro) {
             return redirect()->to('/error')->with('error', 'Registro no encontrado.');
         }
-
+    
         // Sumar los valores nuevos a los existentes
         $nuevasBuenas = $registro['buenas'] + $buenas;
         $nuevasMalas = $registro['malas'] + $malas;
         $nuevasRepasadas = $registro['repasadas'] + $repasadas;
-
-        // Actualizar los valores sumados en la base de datos
+    
+        // Determinar el estado según el botón presionado
+        $estado = 1; // Estado normal (guardar)
+        if ($action === 'apuntar_terminar') {
+            $estado = 3;  // Terminar pedido
+        } elseif ($action === 'guardar_continuar') {
+            $estado = 2;  // Continuar más tarde
+        }
+    
+        // Actualizar los valores sumados y el estado en la base de datos
         $relacionModel->where('id', $idRelacionProcesoUsuario)
             ->update([
                 'buenas' => $nuevasBuenas,
                 'malas' => $nuevasMalas,
-                'repasadas' => $nuevasRepasadas
+                'repasadas' => $nuevasRepasadas,
+                'estado' => $estado  // Actualizamos el estado según el botón
             ]);
-
+    
         // Redirigir a la vista del proceso con los nuevos valores
         return redirect()->to('/editarProceso/' . $idRelacionProcesoUsuario);
     }
-
+    
 
 }
