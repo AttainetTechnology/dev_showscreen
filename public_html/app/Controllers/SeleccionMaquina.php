@@ -55,21 +55,31 @@ class SeleccionMaquina extends BaseFichar
         if (!$idMaquina) {
             return redirect()->to(current_url());
         }
-        if ($idMaquina) {
 
+        if ($idMaquina) {
             $db = $this->db;
             $procesosPedidoModel = new ProcesosPedido($db);
+
+            // Consulta para obtener procesos
             $procesos = $procesosPedidoModel
                 ->where('procesos_pedidos.id_maquina', $idMaquina)
-                ->where('procesos_pedidos.estado <', 4)
+                ->where('procesos_pedidos.estado <', 4) // Procesos en estado < 4
                 ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
                 ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
+                ->join('relacion_proceso_usuario', 'relacion_proceso_usuario.id_proceso_pedido = procesos_pedidos.id_relacion', 'left') // Usamos LEFT JOIN para incluir los procesos sin relación
+                ->groupStart()  // Empezamos un grupo para aplicar condiciones OR
+                ->where('relacion_proceso_usuario.estado', 2) // Procesos en estado 2 en la relación
+                ->orWhere('relacion_proceso_usuario.id IS NULL') // O aquellos procesos que no tienen relación (no están en la tabla)
+                ->groupEnd()  // Terminamos el grupo
                 ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')  // Traemos el id_pedido
                 ->findAll();
 
+            // Obtener las máquinas disponibles
             $maquinasModel = new Maquinas($db);
             $maquinas = $maquinasModel->findAll();
             $maquinaSeleccionada = $maquinasModel->find($idMaquina);
+
+            // Añadir más datos a los procesos
             foreach ($procesos as &$proceso) {
                 $producto = $this->obtenerProducto($proceso['id_producto']);
                 $proceso['nombre_producto'] = $producto['nombre'];
@@ -79,15 +89,13 @@ class SeleccionMaquina extends BaseFichar
                 $proceso['nombre_cliente'] = $nombreCliente;
             }
 
-            // Obtener procesos del usuario
-
+            // Renderizar la vista con los datos de los procesos y las máquinas
             return view('selectMaquina', [
                 'maquinas' => $maquinas,
                 'procesos' => $procesos,
                 'usuario' => $usuario,
                 'nombreMaquinaSeleccionada' => $maquinaSeleccionada['nombre'],
                 'idMaquina' => $idMaquina,
-
             ]);
         }
 
@@ -152,7 +160,7 @@ class SeleccionMaquina extends BaseFichar
             'id_proceso_pedido' => $id_proceso_pedido,
             'id_usuario' => $id_usuario,
             'id_maquina' => $id_maquina,
-            'estado' => 'en maquina', // Estado inicial
+            'estado' => '1',
             'buenas' => 0,
             'malas' => 0,
             'repasadas' => 0
@@ -179,16 +187,10 @@ class SeleccionMaquina extends BaseFichar
             ->join('productos', 'productos.id_producto = linea_pedidos.id_producto') // Relación con la tabla 'productos'
             ->where('relacion_proceso_usuario.id_usuario', $id_usuario)
             ->where('procesos_pedidos.estado <', 4) // Filtro para el estado
+            ->where('relacion_proceso_usuario.estado', 1)  // Filtrar por estado = 1
             ->select('relacion_proceso_usuario.id, procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido') // Selección del 'id' de la tabla 'relacion_proceso_usuario'
             ->get()
             ->getResultArray();
-
-        // Verificar si hay resultados
-        if (empty($procesos)) {
-            log_message('debug', "No se encontraron procesos para el usuario con ID: $id_usuario");
-        } else {
-            log_message('debug', "Procesos encontrados: " . print_r($procesos, true));
-        }
 
         // Asegúrate de obtener los nombres de los productos y los clientes
         foreach ($procesos as &$proceso) {
@@ -200,35 +202,11 @@ class SeleccionMaquina extends BaseFichar
         return $procesos;
     }
 
-    public function editarProceso($id)
-    {
-        $db = $this->db;
-        $relacionModel = $db->table('relacion_proceso_usuario');
-
-        // Obtener el proceso desde la tabla 'relacion_proceso_usuario' usando 'id'
-        $proceso = $relacionModel
-            ->join('procesos_pedidos', 'procesos_pedidos.id_relacion = relacion_proceso_usuario.id_proceso_pedido')
-            ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
-            ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
-            ->join('productos', 'productos.id_producto = linea_pedidos.id_producto')
-            ->where('relacion_proceso_usuario.id', $id)  // Usamos el 'id' de la tabla relacion_proceso_usuario
-            ->get()
-            ->getRowArray();  // Usamos getRowArray() ya que esperamos solo un resultado
-
-        if (!$proceso) {
-            return redirect()->to('/error')->with('error', 'Proceso no encontrado.');
-        }
-
-        // Pasar los datos del proceso a la vista
-        return view('editarProcesoUser', [
-            'proceso' => $proceso
-        ]);
-    }
     public function obtenerProcesoPorId($id)
     {
         $db = $this->db;
         $relacionModel = $db->table('relacion_proceso_usuario');
-    
+
         // Obtener el proceso específico con el id recibido por URL
         $proceso = $relacionModel
             ->join('procesos_pedidos', 'procesos_pedidos.id_relacion = relacion_proceso_usuario.id_proceso_pedido')
@@ -238,20 +216,105 @@ class SeleccionMaquina extends BaseFichar
             ->where('relacion_proceso_usuario.id', $id)  // Filtrar por el id de la tabla 'relacion_proceso_usuario'
             ->get()
             ->getRowArray();  // Usamos getRowArray() porque esperamos solo un resultado
-    
+
         if (!$proceso) {
-            return redirect()->to('/error')->with('error', 'Proceso no encontrado.');
+            return redirect()->to('/error')->with('error', 'Proceso no encontrado o estado inválido.');
         }
-    
+
         // Obtener nombre del producto y cliente si no se han cargado
         $proceso['nombre_producto'] = $this->obtenerProducto($proceso['id_producto'])['nombre'];
         $proceso['imagen_producto'] = $this->obtenerProducto($proceso['id_producto'])['imagen'];
         $proceso['nombre_cliente'] = $this->obtenerNombreClientePorPedido($proceso['id_pedido']);
-    
+
+        // Llamar a mostrarPiezas para obtener las piezas asociadas a este proceso
+        $unidadesIndividuales = $this->mostrarPiezas($id);
+
+        // Llamar a mostrarTotales para obtener las piezas totales (sumadas) por id_proceso_pedido
+        $totales = $this->mostrarTotales($proceso['id_proceso_pedido']);
+
+        // Devolver todo junto a la vista
         return view('editarProcesoUser', [
-            'proceso' => $proceso
+            'proceso' => $proceso,
+            'unidadesIndividuales' => $unidadesIndividuales,
+            'totales' => $totales
         ]);
     }
-    
+
+
+    public function mostrarPiezas($idRelacionProcesoUsuario)
+    {
+        $db = $this->db;
+
+        // Recuperar las unidades individuales (buenas, malas, repasadas) y el id de la tabla relacion_proceso_usuario
+        $unidadesIndividuales = $db->table('relacion_proceso_usuario')
+            ->select('id, buenas, malas, repasadas')  // Ahora seleccionamos también el 'id'
+            ->where('id', $idRelacionProcesoUsuario)  // Filtramos por el id que llega por URL
+            ->get()
+            ->getRowArray();  // Devuelve un solo registro
+
+        if (!$unidadesIndividuales) {
+            // Si no se encuentra el registro, redirigimos a una página de error
+            return redirect()->to('/error')->with('error', 'No se encontraron las unidades para este proceso.');
+        }
+
+        return $unidadesIndividuales;  // Devolver las unidades buenas, malas y repasadas junto con el id
+    }
+
+
+    public function mostrarTotales($idProcesoPedido)
+    {
+        $db = $this->db;
+
+        // Recuperar las sumas de las unidades buenas, malas y repasadas para todos los registros con el mismo id_proceso_pedido
+        $totales = $db->table('relacion_proceso_usuario')
+            ->selectSum('buenas', 'total_buenas')
+            ->selectSum('malas', 'total_malas')
+            ->selectSum('repasadas', 'total_repasadas')
+            ->where('id_proceso_pedido', $idProcesoPedido)  // Filtramos por el id_proceso_pedido
+            ->get()
+            ->getRowArray();  // Devuelve un solo registro con las sumas
+
+        if (!$totales) {
+            // Si no se encuentran registros, podemos devolver totales en 0
+            return [
+                'total_buenas' => 0,
+                'total_malas' => 0,
+                'total_repasadas' => 0
+            ];
+        }
+
+        return $totales;  // Devolver las sumas totales
+    }
+
+    public function editarPiezas()
+    {
+        // Recibimos los datos del formulario
+        $buenas = $this->request->getPost('buenas');
+        $malas = $this->request->getPost('malas');
+        $repasadas = $this->request->getPost('repasadas');
+
+        // Asegurarnos de que los datos son válidos
+        if ($buenas < 0 || $malas < 0 || $repasadas < 0) {
+            return redirect()->to('/error')->with('error', 'Los valores no pueden ser negativos.');
+        }
+
+        // Obtener el ID de la relación_proceso_usuario desde la URL
+        $idRelacionProcesoUsuario = $this->request->getPost('id_relacion_proceso_usuario');  // Este valor debe estar en el formulario, o pasarse de alguna otra forma
+
+        // Actualizamos las unidades en la base de datos
+        $db = $this->db;
+        $relacionModel = $db->table('relacion_proceso_usuario');
+
+        // Actualizar las unidades para este registro
+        $relacionModel->where('id', $idRelacionProcesoUsuario)
+            ->update([
+                'buenas' => $buenas,
+                'malas' => $malas,
+                'repasadas' => $repasadas
+            ]);
+
+        // Redirigir a la vista del proceso con los nuevos valores
+        return redirect()->to('/editarProceso/' . $idRelacionProcesoUsuario);
+    }
 
 }
