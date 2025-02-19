@@ -83,20 +83,17 @@
 
                 <div class="form-group">
                     <label for="buenas">Buenas:</label>
-                    <input type="number" id="buenas" name="buenas" class="form-control"
-                        value="<?= esc($unidadesIndividuales['buenas']) ?>" min="0">
+                    <input type="number" id="buenas" name="buenas" class="form-control" value="0" min="0">
                 </div>
 
                 <div class="form-group">
                     <label for="malas">Malas:</label>
-                    <input type="number" id="malas" name="malas" class="form-control"
-                        value="<?= esc($unidadesIndividuales['malas']) ?>" min="0">
+                    <input type="number" id="malas" name="malas" class="form-control" value="0" min="0">
                 </div>
 
                 <div class="form-group">
                     <label for="repasadas">Repasadas:</label>
-                    <input type="number" id="repasadas" name="repasadas" class="form-control"
-                        value="<?= esc($unidadesIndividuales['repasadas']) ?>" min="0">
+                    <input type="number" id="repasadas" name="repasadas" class="form-control" value="0" min="0">
                 </div>
                 <br>
                 <!-- Botón de Guardar cambios -->

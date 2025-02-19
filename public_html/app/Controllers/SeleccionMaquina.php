@@ -171,9 +171,18 @@ class SeleccionMaquina extends BaseFichar
         $builder = $db->table('relacion_proceso_usuario');
         $builder->insert($data);
 
-        // Redirigir a la vista de selección de máquina
+        // Obtener el ID del registro recién insertado
+        $nuevo_id = $db->insertID();
+
+        // Actualizar todos los registros con el mismo 'id_proceso_pedido', excluyendo el recién insertado
+        $builder = $db->table('relacion_proceso_usuario');
+        $builder->where('id_proceso_pedido', $id_proceso_pedido)
+            ->where('id !=', $nuevo_id) // Excluir el nuevo registro recién insertado
+            ->update(['estado' => 3]); // Cambiar el estado a 3
+
         return redirect()->to('/selectMaquina/' . $id_usuario)->with('success', 'Proceso seleccionado correctamente.');
     }
+
     public function obtenerProcesosUsuario($id_usuario)
     {
         $db = $this->db;
@@ -298,23 +307,34 @@ class SeleccionMaquina extends BaseFichar
             return redirect()->to('/error')->with('error', 'Los valores no pueden ser negativos.');
         }
 
-        // Obtener el ID de la relación_proceso_usuario desde la URL
-        $idRelacionProcesoUsuario = $this->request->getPost('id_relacion_proceso_usuario');  // Este valor debe estar en el formulario, o pasarse de alguna otra forma
+        // Obtener el ID de la relación_proceso_usuario desde el formulario
+        $idRelacionProcesoUsuario = $this->request->getPost('id_relacion_proceso_usuario');
 
-        // Actualizamos las unidades en la base de datos
+        // Obtener los valores actuales de las piezas desde la base de datos
         $db = $this->db;
         $relacionModel = $db->table('relacion_proceso_usuario');
+        $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
 
-        // Actualizar las unidades para este registro
+        if (!$registro) {
+            return redirect()->to('/error')->with('error', 'Registro no encontrado.');
+        }
+
+        // Sumar los valores nuevos a los existentes
+        $nuevasBuenas = $registro['buenas'] + $buenas;
+        $nuevasMalas = $registro['malas'] + $malas;
+        $nuevasRepasadas = $registro['repasadas'] + $repasadas;
+
+        // Actualizar los valores sumados en la base de datos
         $relacionModel->where('id', $idRelacionProcesoUsuario)
             ->update([
-                'buenas' => $buenas,
-                'malas' => $malas,
-                'repasadas' => $repasadas
+                'buenas' => $nuevasBuenas,
+                'malas' => $nuevasMalas,
+                'repasadas' => $nuevasRepasadas
             ]);
 
         // Redirigir a la vista del proceso con los nuevos valores
         return redirect()->to('/editarProceso/' . $idRelacionProcesoUsuario);
     }
+
 
 }
