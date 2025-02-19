@@ -75,13 +75,52 @@
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                <?php elseif (!isset($idMaquina) || $idMaquina == null): ?>
+                    <h2>Procesos relacionados con tu usuario</h2>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Proceso</th>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Observaciones</th>
+                                <th>Número de Piezas</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($procesosUsuario)): ?>
+                                <?php foreach ($procesosUsuario as $proceso): ?>
+                                    <tr>
+                                        <td><?= $proceso['nombre_proceso'] ?></td>
+                                        <td><?= $proceso['nombre_cliente'] ?></td>
+                                        <td>
+                                            <strong><?= $proceso['nombre_producto'] ?></strong><br>
+                                            <img src="<?= $proceso['imagen_producto'] ?>" alt="Imagen de producto" width="100">
+                                        </td>
+                                        <td><?= $proceso['observaciones'] ?></td>
+                                        <td><?= $proceso['n_piezas'] ?></td>
+                                        <td>
+                                            <a href="<?= site_url('editarProceso/' . $proceso['id']) ?>"
+                                                class="btn btn-primary">Editar</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="6">No se encontraron procesos para este usuario.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 <?php endif; ?>
-            </div>
-        </div>
 
-        <script>
-            window.history.replaceState({}, document.title, "<?= base_url('selectMaquina'); ?>");
-        </script>
+
+            </div>
+
+            <script>
+                window.history.replaceState({}, document.title, "<?= base_url('selectMaquina'); ?>");
+            </script>
+        </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
