@@ -1,12 +1,16 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-<div class="fondo-empleados">
-    <div class="container-fluid">
-        <h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
+<?php //print_r($presentes);?>
+<?=$cabecera;?>
+<body class="page-select" onload="startTime()">
+<?=$hora;?>
+<div class="fondo-select">
+<h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
         <div class="volver">
             <a href="<?= site_url('salir/' . $usuario['id']); ?>" class="btn btn-light">
                 <span class="glyphicon glyphicon-arrow-left"></span> Volver
             </a>
         </div>
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
                 <form action="<?= site_url('selectMaquina') ?>" method="POST">

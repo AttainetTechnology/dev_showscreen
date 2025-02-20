@@ -32,14 +32,19 @@ class SeleccionMaquina extends BaseFichar
         $usuariosModel = new Usuarios2_Model($db);
         $usuario = $usuariosModel->find($id_usuario);
 
-
         session()->set('usuario', $usuario);
         $procesosUsuario = $this->obtenerProcesosUsuario($usuario['id']);
-        return view('selectMaquina', [
+
+        // Definir los datos para la vista
+        $datos = [
+            'cabecera' => view('template/cabecera_select'),
+            'hora' => view('template/hora_logo'),
             'maquinas' => $maquinas,
             'usuario' => $usuario,
             'procesosUsuario' => $procesosUsuario
-        ]);
+        ];
+
+        return view('selectMaquina', $datos);
     }
 
     public function selectMaquina()
@@ -60,7 +65,6 @@ class SeleccionMaquina extends BaseFichar
             $db = $this->db;
             $procesosPedidoModel = new ProcesosPedido($db);
 
-            // Consulta para obtener procesos
             $procesos = $procesosPedidoModel
                 ->where('procesos_pedidos.id_maquina', $idMaquina)
                 ->where('procesos_pedidos.estado <', 4)
@@ -71,7 +75,7 @@ class SeleccionMaquina extends BaseFichar
                 ->where('relacion_proceso_usuario.estado', 2)
                 ->orWhere('relacion_proceso_usuario.id IS NULL')
                 ->groupEnd()
-                ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')  // Traemos el id_pedido
+                ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')
                 ->findAll();
 
             $maquinasModel = new Maquinas($db);
@@ -87,13 +91,18 @@ class SeleccionMaquina extends BaseFichar
                 $proceso['nombre_cliente'] = $nombreCliente;
             }
 
-            return view('selectMaquina', [
+            // Definir los datos para la vista
+            $datos = [
+                'cabecera' => view('template/cabecera_select'),
+                'hora' => view('template/hora_logo'),
                 'maquinas' => $maquinas,
                 'procesos' => $procesos,
                 'usuario' => $usuario,
                 'nombreMaquinaSeleccionada' => $maquinaSeleccionada['nombre'],
                 'idMaquina' => $idMaquina,
-            ]);
+            ];
+
+            return view('selectMaquina', $datos);
         }
 
         return redirect()->to('selectMaquina');
