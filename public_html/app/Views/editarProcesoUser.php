@@ -26,7 +26,6 @@
             <tr>
                 <td><?= esc($proceso['nombre_proceso']) ?></td>
                 <td><?= esc($proceso['nombre_cliente']) ?></td>
-
                 <td>
                     <img src="<?= esc($proceso['imagen_producto']) ?>" alt="<?= esc($proceso['nombre_producto']) ?>"
                         style="max-width: 100px;">
@@ -44,13 +43,12 @@
     </table>
     <br>
     <div class="row">
-        <!-- Columna para la tabla de Piezas -->
         <div class="col-md-6">
             <h4>Piezas</h4>
             <table class="table table-striped table-hover table-bordered">
                 <thead class="table-secondary">
                     <tr>
-                        <th></th> <!-- Nueva columna vacía en el encabezado -->
+                        <th></th>
                         <th>Buenas</th>
                         <th>Malas</th>
                         <th>Repasadas</th>
@@ -58,7 +56,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Ultimo</strong></td> <!-- Nueva celda en la primera fila de registros -->
+                        <td><strong>Ultimo</strong></td>
                         <td><?= esc($unidadesIndividuales['buenas']) ?></td>
                         <td><?= esc($unidadesIndividuales['malas']) ?></td>
                         <td><?= esc($unidadesIndividuales['repasadas']) ?></td>
@@ -66,7 +64,7 @@
                 </tbody>
                 <tbody>
                     <tr>
-                        <td><strong>Totales</strong></td> <!-- Nueva celda en la segunda fila de registros -->
+                        <td><strong>Totales</strong></td>
                         <td><?= esc($totales['total_buenas']) ?></td>
                         <td><?= esc($totales['total_malas']) ?></td>
                         <td><?= esc($totales['total_repasadas']) ?></td>
@@ -74,14 +72,10 @@
                 </tbody>
             </table>
         </div>
-        <!-- Columna para el formulario -->
-        <!-- Columna para el formulario -->
         <div class="col-md-6">
             <h4>Editar Datos de Proceso</h4>
             <form action="<?= site_url('editarPiezas') ?>" method="POST">
-                <!-- Pasamos el id de la relación al formulario -->
                 <input type="hidden" name="id_relacion_proceso_usuario" value="<?= esc($unidadesIndividuales['id']) ?>">
-
                 <div class="form-group">
                     <label for="buenas">Buenas:</label>
                     <input type="number" id="buenas" name="buenas" class="form-control" value="0" min="0">
@@ -97,7 +91,6 @@
                     <input type="number" id="repasadas" name="repasadas" class="form-control" value="0" min="0">
                 </div>
                 <br>
-                <!-- Botones de Guardado -->
                 <button type="submit" class="btn btn-primary" name="action" value="apuntar_cambios">Apuntar</button>
                 <button type="submit" class="btn btn-success" name="action" value="apuntar_terminar">Apuntar y Terminar
                     Pedido</button>
