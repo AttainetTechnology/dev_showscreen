@@ -250,16 +250,43 @@ use App\Models\Menu_familias_model; ?>
 					</div>
 				</div>
 			</div>
-			<? if (isset($rutas)): ?>
+			<?php if (!empty($faltaMaterial)): ?>
 				<div class="panel panel-default">
 					<div class="panel-heading" style="font-size: 15px !important;">
 						<i class="bi bi-boxes"></i> FALTA DE MATERIAL
 					</div>
 					<div class="panel-body">
-
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>ID Pedido</th>
+									<th>ID Línea Pedido</th>
+									<th>Nombre del Proceso</th>
+									<th>ID Usuario</th>
+									<th>ID Máquina</th>
+									<th>Buenas</th>
+									<th>Malas</th>
+									<th>Repasadas</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ($faltaMaterial as $item): ?>
+									<tr>
+										<td><?= esc($item['id_pedido']) ?></td>
+										<td><?= esc($item['id_linea_pedido']) ?></td>
+										<td><?= esc($item['nombre_proceso']) ?></td>
+										<td><?= esc($item['nombre_usuario'] . ' ' . $item['apellidos_usuario']) ?></td>
+										<td><?= esc($item['nombre']) ?></td>
+										<td><?= esc($item['buenas']) ?></td>
+										<td><?= esc($item['malas']) ?></td>
+										<td><?= esc($item['repasadas']) ?></td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
 					</div>
 				</div>
-			<? endif; ?>
+			<?php endif; ?>
 		</div>
 		<div class="col-lg-4">
 			<? if (isset($rutas)): ?>

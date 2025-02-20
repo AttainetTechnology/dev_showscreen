@@ -7,6 +7,7 @@ use App\Models\Contador_model;
 use App\Models\Lineapedidosnew_model;
 use App\Models\Rutas_model;
 use App\Models\Incidencias_model;
+use App\Models\RelacionProcesoUsuario_model;
 
 class Index extends BaseController
 {
@@ -55,6 +56,8 @@ class Index extends BaseController
 
         $data['piezasfamilia'] = $this->pedidos_tabla($estado, $db);
         $data['rutas'] = $this->rutas_home($db);
+        $data['faltaMaterial'] = $this->obtenerFaltaMaterial($db);
+
 
         if ($estado == 0) {
             $data['titulo'] = "Piezas en espera de material";
@@ -70,11 +73,21 @@ class Index extends BaseController
             $data['clase'] = "panel-success";
         }
 
-        // Cargamos las vistas
         echo view('estadisticas', $data);
     }
-
-    // Esta función cuenta las líneas de una tabla
+    public function obtenerFaltaMaterial($db)
+    {
+        $query = $db->table('relacion_proceso_usuario')
+            ->select('relacion_proceso_usuario.*, procesos.nombre_proceso, users.nombre_usuario, users.apellidos_usuario, 
+                    maquinas.nombre')
+            ->join('procesos_pedidos', 'procesos_pedidos.id_relacion = relacion_proceso_usuario.id_proceso_pedido')
+            ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
+            ->join('users', 'users.id = relacion_proceso_usuario.id_usuario')
+            ->join('maquinas', 'maquinas.id_maquina = relacion_proceso_usuario.id_maquina')
+            ->where('relacion_proceso_usuario.estado', 4)
+            ->get();
+        return $query->getResultArray();
+    }
     function cuenta($estado, $db)
     {
         $contador = new Contador_model($db);
