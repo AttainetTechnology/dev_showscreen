@@ -292,6 +292,13 @@ class SeleccionMaquina extends BaseFichar
             return redirect()->to('/error')->with('error', 'Registro no encontrado.');
         }
 
+        if ($action === 'falta_material') {
+            $estado = 4;
+            $relacionModel->where('id', $idRelacionProcesoUsuario)
+                ->update(['estado' => $estado]);
+            return redirect()->to('/selectMaquina');
+        }
+
         $nuevasBuenas = $registro['buenas'] + $buenas;
         $nuevasMalas = $registro['malas'] + $malas;
         $nuevasRepasadas = $registro['repasadas'] + $repasadas;
@@ -317,5 +324,6 @@ class SeleccionMaquina extends BaseFichar
 
         return redirect()->to('/editarProceso/' . $idRelacionProcesoUsuario);
     }
+
 
 }

@@ -124,16 +124,15 @@
                 Pedido</button>
             <button type="submit" class="btn btn-warning" name="action" value="apuntar_continuar">Apuntar y Continuar
                 Más Tarde</button>
+            <br>
+            <button type="submit" class="btn btn-warning" name="action" value="falta_material">FALTA DE
+                MATERIAL</button>
             </form>
         </div>
-
     </div>
     <div class="row">
 
     </div>
-
-
-
 
     <script>
         let activeField = 'buenas';
