@@ -1,5 +1,8 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
+<?php //print_r($presentes);?>
+<?=$cabecera;?>
+<body class="page-select" onload="startTime()">
+<?=$hora;?>
+<div class="fondo-select">
 <div class="container">
     <br>
     <div class="volver">
@@ -63,7 +66,7 @@
                     <input type="text" id="repasadas" name="repasadas" class="form-control" value="0" readonly>
                 </div>
                 <br>
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <h4>Piezas</h4>
                     <table class="table table-striped table-hover table-bordered">
                         <thead class="table-secondary">

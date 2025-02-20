@@ -234,6 +234,8 @@ class SeleccionMaquina extends BaseFichar
         $totales = $this->mostrarTotales($proceso['id_proceso_pedido']);
 
         return view('editarProcesoUser', [
+            'cabecera' => view('template/cabecera_select'),
+            'hora' => view('template/hora_logo'),
             'proceso' => $proceso,
             'unidadesIndividuales' => $unidadesIndividuales,
             'totales' => $totales
