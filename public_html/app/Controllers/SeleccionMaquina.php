@@ -299,7 +299,7 @@ class SeleccionMaquina extends BaseFichar
         $estado = 1;
         if ($action === 'apuntar_terminar') {
             $estado = 3; 
-        } elseif ($action === 'guardar_continuar') {
+        } elseif ($action === 'apuntar_continuar') {
             $estado = 2;  
         }
 
