@@ -63,14 +63,14 @@ class SeleccionMaquina extends BaseFichar
             // Consulta para obtener procesos
             $procesos = $procesosPedidoModel
                 ->where('procesos_pedidos.id_maquina', $idMaquina)
-                ->where('procesos_pedidos.estado <', 4) 
+                ->where('procesos_pedidos.estado <', 4)
                 ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
                 ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
-                ->join('relacion_proceso_usuario', 'relacion_proceso_usuario.id_proceso_pedido = procesos_pedidos.id_relacion', 'left') 
-                ->groupStart() 
-                ->where('relacion_proceso_usuario.estado', 2) 
+                ->join('relacion_proceso_usuario', 'relacion_proceso_usuario.id_proceso_pedido = procesos_pedidos.id_relacion', 'left')
+                ->groupStart()
+                ->where('relacion_proceso_usuario.estado', 2)
                 ->orWhere('relacion_proceso_usuario.id IS NULL')
-                ->groupEnd() 
+                ->groupEnd()
                 ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')  // Traemos el id_pedido
                 ->findAll();
 
@@ -114,7 +114,7 @@ class SeleccionMaquina extends BaseFichar
 
             return [
                 'nombre' => $producto['nombre_producto'],
-                'imagen' => $imagenUrl 
+                'imagen' => $imagenUrl
             ];
         }
     }
@@ -167,8 +167,8 @@ class SeleccionMaquina extends BaseFichar
 
         $builder = $db->table('relacion_proceso_usuario');
         $builder->where('id_proceso_pedido', $id_proceso_pedido)
-            ->where('id !=', $nuevo_id) 
-            ->update(['estado' => 3]); 
+            ->where('id !=', $nuevo_id)
+            ->update(['estado' => 3]);
 
         return redirect()->to('/selectMaquina/' . $id_usuario)->with('success', 'Proceso seleccionado correctamente.');
     }
@@ -179,13 +179,13 @@ class SeleccionMaquina extends BaseFichar
         $relacionModel = $db->table('relacion_proceso_usuario');
 
         $procesos = $relacionModel
-            ->join('procesos_pedidos', 'procesos_pedidos.id_relacion = relacion_proceso_usuario.id_proceso_pedido') 
+            ->join('procesos_pedidos', 'procesos_pedidos.id_relacion = relacion_proceso_usuario.id_proceso_pedido')
             ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
-            ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido') 
-            ->join('productos', 'productos.id_producto = linea_pedidos.id_producto') 
+            ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
+            ->join('productos', 'productos.id_producto = linea_pedidos.id_producto')
             ->where('relacion_proceso_usuario.id_usuario', $id_usuario)
-            ->where('procesos_pedidos.estado <', 4) 
-            ->where('relacion_proceso_usuario.estado', 1) 
+            ->where('procesos_pedidos.estado <', 4)
+            ->where('relacion_proceso_usuario.estado', 1)
             ->select('relacion_proceso_usuario.id, procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido') // Selección del 'id' de la tabla 'relacion_proceso_usuario'
             ->get()
             ->getResultArray();
@@ -210,7 +210,7 @@ class SeleccionMaquina extends BaseFichar
             ->join('productos', 'productos.id_producto = linea_pedidos.id_producto')
             ->where('relacion_proceso_usuario.id', $id)
             ->get()
-            ->getRowArray(); 
+            ->getRowArray();
 
         if (!$proceso) {
             return redirect()->to('/error')->with('error', 'Proceso no encontrado o estado inválido.');
@@ -237,15 +237,15 @@ class SeleccionMaquina extends BaseFichar
         $db = $this->db;
 
         $unidadesIndividuales = $db->table('relacion_proceso_usuario')
-            ->select('id, buenas, malas, repasadas')  
-            ->where('id', $idRelacionProcesoUsuario) 
+            ->select('id, buenas, malas, repasadas')
+            ->where('id', $idRelacionProcesoUsuario)
             ->get()
-            ->getRowArray(); 
+            ->getRowArray();
         if (!$unidadesIndividuales) {
             return redirect()->to('/error')->with('error', 'No se encontraron las unidades para este proceso.');
         }
 
-        return $unidadesIndividuales; 
+        return $unidadesIndividuales;
     }
 
     public function mostrarTotales($idProcesoPedido)
@@ -256,9 +256,9 @@ class SeleccionMaquina extends BaseFichar
             ->selectSum('buenas', 'total_buenas')
             ->selectSum('malas', 'total_malas')
             ->selectSum('repasadas', 'total_repasadas')
-            ->where('id_proceso_pedido', $idProcesoPedido)  
+            ->where('id_proceso_pedido', $idProcesoPedido)
             ->get()
-            ->getRowArray();  
+            ->getRowArray();
 
         if (!$totales) {
             return [
@@ -276,18 +276,18 @@ class SeleccionMaquina extends BaseFichar
         $buenas = $this->request->getPost('buenas');
         $malas = $this->request->getPost('malas');
         $repasadas = $this->request->getPost('repasadas');
-        $action = $this->request->getPost('action'); 
-    
+        $action = $this->request->getPost('action');
+
         if ($buenas < 0 || $malas < 0 || $repasadas < 0) {
             return redirect()->to('/error')->with('error', 'Los valores no pueden ser negativos.');
         }
 
         $idRelacionProcesoUsuario = $this->request->getPost('id_relacion_proceso_usuario');
-    
+
         $db = $this->db;
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
-    
+
         if (!$registro) {
             return redirect()->to('/error')->with('error', 'Registro no encontrado.');
         }
@@ -298,9 +298,9 @@ class SeleccionMaquina extends BaseFichar
 
         $estado = 1;
         if ($action === 'apuntar_terminar') {
-            $estado = 3; 
+            $estado = 3;
         } elseif ($action === 'apuntar_continuar') {
-            $estado = 2;  
+            $estado = 2;
         }
 
         $relacionModel->where('id', $idRelacionProcesoUsuario)
@@ -308,10 +308,14 @@ class SeleccionMaquina extends BaseFichar
                 'buenas' => $nuevasBuenas,
                 'malas' => $nuevasMalas,
                 'repasadas' => $nuevasRepasadas,
-                'estado' => $estado 
+                'estado' => $estado
             ]);
 
+        if ($action === 'apuntar_terminar' || $action === 'apuntar_continuar') {
+            return redirect()->to('/selectMaquina');
+        }
+
         return redirect()->to('/editarProceso/' . $idRelacionProcesoUsuario);
-    }    
+    }
 
 }
