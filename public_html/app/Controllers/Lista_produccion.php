@@ -104,6 +104,7 @@ class Lista_produccion extends BaseControllerGC
     }
 
 
+
     function asignaEstado($estado)
     {
         $estado_clase = "";
