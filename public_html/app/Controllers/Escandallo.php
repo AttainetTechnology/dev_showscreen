@@ -101,10 +101,7 @@ class Escandallo extends BaseController
             $result = $query->getRow();
             return $result->nombre;
         }
-
         return 'Máquina no encontrada';
     }
-
-
 
 }
