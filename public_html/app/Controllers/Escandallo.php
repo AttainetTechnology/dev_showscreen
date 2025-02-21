@@ -59,7 +59,6 @@ class Escandallo extends BaseController
         return $agrupadas;
     }
 
-
     private function sumarPiezas(&$grupo, $relacion)
     {
         $grupo['buenas'] += (int) $relacion['buenas'];

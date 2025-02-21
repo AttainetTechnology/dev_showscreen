@@ -67,6 +67,7 @@ class SeleccionMaquina extends BaseFichar
 
             $procesos = $procesosPedidoModel
                 ->where('procesos_pedidos.id_maquina', $idMaquina)
+                ->where('procesos_pedidos.restriccion', '') // Filtra para procesos donde restriccion esté vacío
                 ->where('procesos_pedidos.estado <', 4)
                 ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
                 ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
@@ -75,6 +76,7 @@ class SeleccionMaquina extends BaseFichar
                 ->where('relacion_proceso_usuario.estado', 2)
                 ->orWhere('relacion_proceso_usuario.id IS NULL')
                 ->groupEnd()
+                ->orderBy('procesos_pedidos.orden', 'asc')
                 ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')
                 ->findAll();
 
