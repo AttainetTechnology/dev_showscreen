@@ -151,3 +151,4 @@ $routes->get('selectMaquina', 'SeleccionMaquina::index');
 $routes->post('seleccionarProceso', 'SeleccionMaquina::seleccionarProceso');
 $routes->post('editarPiezas', 'SeleccionMaquina::editarPiezas');
 $routes->get('editarProceso/(:num)', 'SeleccionMaquina::obtenerProcesoPorId/$1');
+$routes->post('index/resetMaterial', 'Index::resetMaterial');

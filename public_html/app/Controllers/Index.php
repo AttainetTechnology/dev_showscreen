@@ -88,6 +88,24 @@ class Index extends BaseController
             ->get();
         return $query->getResultArray();
     }
+    public function resetMaterial()
+    {
+        $id = $this->request->getPost('id');
+
+        if ($id) {
+            $data = datos_user();
+            $db = db_connect($data['new_db']);
+
+            $db->table('relacion_proceso_usuario')
+                ->where('id', $id) 
+                ->update(['estado' => 2]);
+
+            return redirect()->to('/index')->with('message', 'Material reseteado exitosamente.');
+        } else {
+            return redirect()->to('/index')->with('message', 'ID no válido.');
+        }
+    }
+
     function cuenta($estado, $db)
     {
         $contador = new Contador_model($db);
@@ -95,7 +113,6 @@ class Index extends BaseController
             $query = $contador->where('estado', $estado)->countAllResults();
             return $query ?: "0";
         } catch (\Exception $e) {
-            // Log the error or handle it appropriately
             log_message('error', $e->getMessage());
             return "0";
         }

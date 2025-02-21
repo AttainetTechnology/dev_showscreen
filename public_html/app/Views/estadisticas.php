@@ -259,27 +259,28 @@ use App\Models\Menu_familias_model; ?>
 						<table class="table table-bordered">
 							<thead>
 								<tr>
+									<th>Accion</th>
 									<th>ID Pedido</th>
 									<th>ID Línea Pedido</th>
 									<th>Nombre del Proceso</th>
-									<th>ID Usuario</th>
 									<th>ID Máquina</th>
-									<th>Buenas</th>
-									<th>Malas</th>
-									<th>Repasadas</th>
+									<th>ID Usuario</th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php foreach ($faltaMaterial as $item): ?>
 									<tr>
+										<td>
+											<form action="/index/resetMaterial" method="POST">
+												<input type="hidden" name="id" value="<?= esc($item['id']) ?>">
+												<button type="submit" class="btn btn-warning">Reset Material</button>
+											</form>
+										</td>
 										<td><?= esc($item['id_pedido']) ?></td>
 										<td><?= esc($item['id_linea_pedido']) ?></td>
 										<td><?= esc($item['nombre_proceso']) ?></td>
-										<td><?= esc($item['nombre_usuario'] . ' ' . $item['apellidos_usuario']) ?></td>
 										<td><?= esc($item['nombre']) ?></td>
-										<td><?= esc($item['buenas']) ?></td>
-										<td><?= esc($item['malas']) ?></td>
-										<td><?= esc($item['repasadas']) ?></td>
+										<td><?= esc($item['nombre_usuario'] . ' ' . $item['apellidos_usuario']) ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>
@@ -396,5 +397,7 @@ use App\Models\Menu_familias_model; ?>
 		});
 
 	});
+
+
 </script>
 <?= $this->endSection() ?>
