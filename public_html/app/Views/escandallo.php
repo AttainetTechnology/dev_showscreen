@@ -23,20 +23,29 @@
         // Definir las columnas de ag-Grid
         const columnDefs = [
             { headerName: "ID Pedido", field: "id_pedido" },
-            { headerName: "ID Proceso Pedido", field: "id_proceso_pedido" },
+            { headerName: "Nombre Proceso", field: "nombre_proceso" },
+            { headerName: "Maquina", field: "nombre_maquina" },
             { headerName: "Buenas", field: "buenas" },
             { headerName: "Malas", field: "malas" },
             { headerName: "Repasadas", field: "repasadas" },
-            { headerName: "Estado", field: "estado" },
-            { headerName: "Usuarios", field: "usuarios", valueGetter: (params) => params.data.usuarios.join(", ") }
         ];
 
-        // Configurar ag-Grid
-        const gridOptions = {
+
+               // Configurar ag-Grid
+               const gridOptions = {
             columnDefs: columnDefs,
             rowData: relacionesData,
             pagination: true, // Activar paginación
             paginationPageSize: 10, // Páginas de 10 registros
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                sortable: true,
+                floatingFilter: true,
+                resizable: true
+            },
+            domLayout: 'autoHeight',
+            rowHeight: 60,
         };
 
         // Iniciar ag-Grid

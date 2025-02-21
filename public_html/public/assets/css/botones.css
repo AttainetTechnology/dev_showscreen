@@ -492,3 +492,8 @@ button.btn.botonTabla.btnEditarTabla {
     margin-right: 21px;
     padding: 2px 6px !important;
 }
+.btnEscandallo{
+    height: 30px !important;
+    background-color: #f3bb42 !important;
+    color: white !important;  
+}

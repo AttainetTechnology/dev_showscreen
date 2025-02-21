@@ -15,9 +15,7 @@ class Escandallo extends BaseController
         $relaciones = $this->getRelaciones($model, $id_linea_pedido);
 
         if ($relaciones) {
-            $agrupadas = $this->agruparRelaciones($relaciones);
-            $estado = $this->determinarEstado($agrupadas);
-            $this->asignarEstado($agrupadas, $estado);
+            $agrupadas = $this->agruparRelaciones($relaciones, $db);  // Pasamos el db aquí
 
             $relacionesAgrupadas = array_values($agrupadas);
 
@@ -27,35 +25,35 @@ class Escandallo extends BaseController
         }
     }
 
-
     private function getRelaciones($model, $id_linea_pedido)
     {
         return $model->where('id_linea_pedido', $id_linea_pedido)->findAll();
     }
 
-    private function agruparRelaciones($relaciones)
+    private function agruparRelaciones($relaciones, $db)
     {
         $agrupadas = [];
 
         foreach ($relaciones as $relacion) {
             $id_proceso_pedido = $relacion['id_proceso_pedido'];
             $id_usuario = $relacion['id_usuario'];
+            $id_maquina = $relacion['id_maquina'];
 
             if (!isset($agrupadas[$id_proceso_pedido])) {
                 $agrupadas[$id_proceso_pedido] = [
                     'id_pedido' => $relacion['id_pedido'],
-                    'id_proceso_pedido' => $id_proceso_pedido,
+                    'nombre_maquina' => $this->obtenerNombreMaquina($id_maquina, $db),
                     'buenas' => 0,
                     'malas' => 0,
                     'repasadas' => 0,
-                    'usuarios' => []
+                    'usuarios' => [],
+                    'nombre_proceso' => $this->obtenerNombreProceso($id_proceso_pedido, $db), // Obtener el nombre del proceso
                 ];
             }
 
             // Sumar las piezas
             $this->sumarPiezas($agrupadas[$id_proceso_pedido], $relacion);
 
-            $this->agregarUsuario($agrupadas[$id_proceso_pedido], $id_usuario);
         }
 
         return $agrupadas;
@@ -69,40 +67,45 @@ class Escandallo extends BaseController
         $grupo['repasadas'] += (int) $relacion['repasadas'];
     }
 
-    private function agregarUsuario(&$grupo, $id_usuario)
+    private function obtenerNombreProceso($id_proceso_pedido, $db)
     {
-        if (!in_array($id_usuario, $grupo['usuarios'])) {
-            $grupo['usuarios'][] = $id_usuario;
-        }
-    }
+        // Realizamos la consulta para obtener el nombre del proceso
+        $builder = $db->table('procesos_pedidos');
+        $builder->select('procesos.nombre_proceso');
+        $builder->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso', 'inner');
+        $builder->where('procesos_pedidos.id_relacion', $id_proceso_pedido);
 
-    // Función para determinar el estado del grupo
-    private function determinarEstado($agrupadas)
-    {
-        $estado = 0;  // Inicializamos el estado a 0
+        // Ejecutamos la consulta y obtenemos el resultado
+        $query = $builder->get();
 
-        foreach ($agrupadas as $registro) {
-            // Si el estado es 4, lo asignamos inmediatamente
-            if (in_array(4, $registro['usuarios'])) {
-                return 4;
-            }
-
-            // De lo contrario, tomamos el estado más bajo
-            foreach ($registro['usuarios'] as $usuario) {
-                if ($estado === 0 || $usuario < $estado) {
-                    $estado = $usuario;
-                }
-            }
+        // Verificamos si la consulta devolvió un resultado
+        if ($query->getNumRows() > 0) {
+            // Si hay resultados, devolvemos el nombre del proceso
+            $result = $query->getRow();  // Obtenemos la primera fila
+            return $result->nombre_proceso;
         }
 
-        return $estado;
+        // Si no se encontraron resultados, devolvemos un valor por defecto o un mensaje de error
+        return 'Proceso no encontrado';
     }
 
-    // Función para asignar el estado final a cada grupo
-    private function asignarEstado(&$agrupadas, $estado)
+    private function obtenerNombreMaquina($id_maquina, $db)
     {
-        foreach ($agrupadas as $id_proceso_pedido => $registro) {
-            $agrupadas[$id_proceso_pedido]['estado'] = $estado;
+
+        $builder = $db->table('maquinas');
+        $builder->select('nombre');
+        $builder->where('id_maquina', $id_maquina);
+
+        $query = $builder->get();
+
+        if ($query->getNumRows() > 0) {
+            $result = $query->getRow();
+            return $result->nombre;
         }
+
+        return 'Máquina no encontrada';
     }
+
+
+
 }
