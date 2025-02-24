@@ -371,7 +371,8 @@ class SeleccionMaquina extends BaseFichar
         $this->eliminarRestriccion($idRelacionProcesoUsuario);
     
         // Verificar y actualizar el estado de la línea de pedido
-        $this->verificarYActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
+        $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
+        $this->ActualizarEstadoPedido($idRelacionProcesoUsuario);
     
         return true;
     }
@@ -420,7 +421,7 @@ class SeleccionMaquina extends BaseFichar
         return true; 
     }
 
-    public function verificarYActualizarEstadoLineaPedido($idRelacionProcesoUsuario)
+    public function ActualizarEstadoLineaPedido($idRelacionProcesoUsuario)
     {
         $db = $this->db;
         $relacionModel = $db->table('relacion_proceso_usuario');
@@ -464,6 +465,54 @@ class SeleccionMaquina extends BaseFichar
         return true; 
     }
     
+
+    public function ActualizarEstadoPedido($idRelacionProcesoUsuario)
+{
+    $db = $this->db;
+    $relacionModel = $db->table('relacion_proceso_usuario');
+    $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
+
+    if (!$registro) {
+        return redirect()->to('/error')->with('error', 'Registro no encontrado.');
+    }
+
+    $idProcesoPedido = $registro['id_proceso_pedido'];
+
+    $procesosModel = $db->table('procesos_pedidos');
+    $procesoPedido = $procesosModel->where('id_relacion', $idProcesoPedido)->get()->getRowArray();
+
+    if (!$procesoPedido) {
+        return redirect()->to('/error')->with('error', 'No se encontró el proceso de pedido.');
+    }
+
+    $idLineaPedido = $procesoPedido['id_linea_pedido'];
+
+    // Obtener todos los registros de la tabla linea_pedidos con el mismo id_linea_pedido
+    $lineaPedidoModel = $db->table('linea_pedidos');
+    $lineasPedido = $lineaPedidoModel->where('id_lineapedido', $idLineaPedido)->get()->getResultArray();
+
+    if (empty($lineasPedido)) {
+        return redirect()->to('/error')->with('error', 'No se encontraron registros con el mismo id_linea_pedido.');
+    }
+
+    // Verificar si todos los registros de la misma id_linea_pedido tienen estado 4
+    $todosEnEstado4 = true;
+    foreach ($lineasPedido as $linea) {
+        if ($linea['estado'] != 4) {
+            $todosEnEstado4 = false;
+            break; // Si encontramos un estado distinto a 4, no continuamos
+        }
+    }
+
+    // Si todas las líneas de pedido tienen estado 4, actualizamos el estado de la tabla pedidos
+    if ($todosEnEstado4) {
+        $pedidoModel = $db->table('pedidos');
+        $pedidoModel->where('id_pedido', $registro['id_pedido'])
+            ->update(['estado' => 4]);
+    }
+
+    return true; // Si todo está bien, retornamos true
+}
 
     
 }
