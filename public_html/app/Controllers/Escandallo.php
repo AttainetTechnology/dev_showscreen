@@ -38,7 +38,7 @@ class Escandallo extends BaseController
             $id_proceso_pedido = $relacion['id_proceso_pedido'];
             $id_usuario = $relacion['id_usuario'];
             $id_maquina = $relacion['id_maquina'];
-            $estado = $relacion['estado'];  // Adicionando o campo de estado
+            $estado = $relacion['estado']; 
 
             if (!isset($agrupadas[$id_proceso_pedido])) {
                 $agrupadas[$id_proceso_pedido] = [
@@ -49,25 +49,19 @@ class Escandallo extends BaseController
                     'repasadas' => 0,
                     'usuarios' => [],
                     'nombre_proceso' => $this->obtenerNombreProceso($id_proceso_pedido, $db),
-                    'estados' => [],  // Array para almacenar los estados
-                    'estado' => null,  // Inicializando el estado
+                    'estados' => [],  
+                    'estado' => null,  
                 ];
             }
-
-            // Sumar las piezas
             $this->sumarPiezas($agrupadas[$id_proceso_pedido], $relacion);
 
-            // Guardamos el estado de cada registro
             $agrupadas[$id_proceso_pedido]['estados'][] = $estado;
         }
 
-        // Calculamos el estado final para cada grupo
         foreach ($agrupadas as $key => &$grupo) {
             $grupo['estado'] = $this->calcularEstado($grupo['estados']);
-            // Convertimos el estado numérico en texto
             $grupo['estado'] = $this->convertirEstado($grupo['estado']);
         }
-
         return $agrupadas;
     }
 
@@ -79,15 +73,12 @@ class Escandallo extends BaseController
         if (count($conteo) == 1 && isset($conteo[3])) {
             return 3;
         }
-
         if (isset($conteo[4])) {
             return 4;
         }
-
         if (isset($conteo[1])) {
             return 1;
         }
-
         if (isset($conteo[2])) {
             return 2;
         }
