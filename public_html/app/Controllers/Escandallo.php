@@ -38,6 +38,7 @@ class Escandallo extends BaseController
             $id_proceso_pedido = $relacion['id_proceso_pedido'];
             $id_usuario = $relacion['id_usuario'];
             $id_maquina = $relacion['id_maquina'];
+            $estado = $relacion['estado'];  // Adicionando o campo de estado
 
             if (!isset($agrupadas[$id_proceso_pedido])) {
                 $agrupadas[$id_proceso_pedido] = [
@@ -47,16 +48,66 @@ class Escandallo extends BaseController
                     'malas' => 0,
                     'repasadas' => 0,
                     'usuarios' => [],
-                    'nombre_proceso' => $this->obtenerNombreProceso($id_proceso_pedido, $db), // Obtener el nombre del proceso
+                    'nombre_proceso' => $this->obtenerNombreProceso($id_proceso_pedido, $db),
+                    'estados' => [],  // Array para almacenar los estados
+                    'estado' => null,  // Inicializando el estado
                 ];
             }
 
             // Sumar las piezas
             $this->sumarPiezas($agrupadas[$id_proceso_pedido], $relacion);
 
+            // Guardamos el estado de cada registro
+            $agrupadas[$id_proceso_pedido]['estados'][] = $estado;
+        }
+
+        // Calculamos el estado final para cada grupo
+        foreach ($agrupadas as $key => &$grupo) {
+            $grupo['estado'] = $this->calcularEstado($grupo['estados']);
+            // Convertimos el estado numérico en texto
+            $grupo['estado'] = $this->convertirEstado($grupo['estado']);
         }
 
         return $agrupadas;
+    }
+
+    private function calcularEstado($estados)
+    {
+
+        $conteo = array_count_values($estados);
+
+        if (count($conteo) == 1 && isset($conteo[3])) {
+            return 3;
+        }
+
+        if (isset($conteo[4])) {
+            return 4;
+        }
+
+        if (isset($conteo[1])) {
+            return 1;
+        }
+
+        if (isset($conteo[2])) {
+            return 2;
+        }
+        return 0;
+    }
+
+
+    private function convertirEstado($estado)
+    {
+        switch ($estado) {
+            case 1:
+                return 'En maquina';
+            case 2:
+                return 'En espera';
+            case 3:
+                return 'Terminado';
+            case 4:
+                return 'Falta de material';
+
+        }
     }
 
     private function sumarPiezas(&$grupo, $relacion)
@@ -68,23 +119,19 @@ class Escandallo extends BaseController
 
     private function obtenerNombreProceso($id_proceso_pedido, $db)
     {
-        // Realizamos la consulta para obtener el nombre del proceso
+
         $builder = $db->table('procesos_pedidos');
         $builder->select('procesos.nombre_proceso');
         $builder->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso', 'inner');
         $builder->where('procesos_pedidos.id_relacion', $id_proceso_pedido);
 
-        // Ejecutamos la consulta y obtenemos el resultado
         $query = $builder->get();
 
-        // Verificamos si la consulta devolvió un resultado
         if ($query->getNumRows() > 0) {
-            // Si hay resultados, devolvemos el nombre del proceso
-            $result = $query->getRow();  // Obtenemos la primera fila
+            $result = $query->getRow();
             return $result->nombre_proceso;
         }
 
-        // Si no se encontraron resultados, devolvemos un valor por defecto o un mensaje de error
         return 'Proceso no encontrado';
     }
 

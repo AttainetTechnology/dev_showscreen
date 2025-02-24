@@ -22,13 +22,14 @@
 
         // Definir las columnas de ag-Grid
         const columnDefs = [
-            { headerName: "ID Pedido", field: "id_pedido" },
-            { headerName: "Nombre Proceso", field: "nombre_proceso" },
-            { headerName: "Maquina", field: "nombre_maquina" },
-            { headerName: "Buenas", field: "buenas" },
-            { headerName: "Malas", field: "malas" },
-            { headerName: "Repasadas", field: "repasadas" },
-        ];
+    { headerName: "Nombre Proceso", field: "nombre_proceso" },
+    { headerName: "Maquina", field: "nombre_maquina" },
+    { headerName: "Buenas", field: "buenas" },
+    { headerName: "Malas", field: "malas" },
+    { headerName: "Repasadas", field: "repasadas" },
+    { headerName: "Estado", field: "estado" }, // Adicionando a coluna de estado
+];
+
 
 
                // Configurar ag-Grid
