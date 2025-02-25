@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <h2 class="tituloProveedores">Escandallo</h2>
-
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <div class="btnsEditPedido">
     <button id="clear-filters" class="boton btnEliminarfiltros">
         Quitar Filtros
@@ -22,12 +22,12 @@
 
         // Definir las columnas de ag-Grid
         const columnDefs = [
-            { headerName: "Nombre Proceso", field: "nombre_proceso" },
-            { headerName: "Maquina", field: "nombre_maquina" },
-            { headerName: "Buenas", field: "buenas" },
-            { headerName: "Malas", field: "malas" },
-            { headerName: "Repasadas", field: "repasadas" },
-            { headerName: "Estado", field: "estado" },
+            { headerName: "Nombre Proceso", field: "nombre_proceso", filter: 'agTextColumnFilter' },
+            { headerName: "Maquina", field: "nombre_maquina", filter: 'agTextColumnFilter' },
+            { headerName: "Buenas", field: "buenas", filter: 'agTextColumnFilter' },
+            { headerName: "Malas", field: "malas", filter: 'agTextColumnFilter' },
+            { headerName: "Repasadas", field: "repasadas", filter: 'agTextColumnFilter' },
+            { headerName: "Estado", field: "estado", filter: 'agTextColumnFilter' },
             {
                 headerName: "Restricciones",
                 field: "tiene_restricciones",
@@ -61,8 +61,8 @@
         const gridOptions = {
             columnDefs: columnDefs,
             rowData: relacionesData,
-            pagination: true, // Activar paginación
-            paginationPageSize: 10, // Páginas de 10 registros
+            pagination: true,
+            paginationPageSize: 10,
             defaultColDef: {
                 flex: 1,
                 minWidth: 100,
@@ -72,6 +72,12 @@
             },
             domLayout: 'autoHeight',
             rowHeight: 60,
+            localeText: {
+                noRowsToShow: 'No hay registros disponibles.'
+            },
+            onGridReady: function (params) {
+                fetchEmpresasData(params.api);
+            }
         };
 
         // Iniciar ag-Grid
@@ -80,7 +86,10 @@
             new agGrid.Grid(gridDiv, gridOptions);
         });
 
-
+        document.getElementById('clear-filters').addEventListener('click', () => {
+            gridOptions.api.setFilterModel(null);
+            gridOptions.api.onFilterChanged();
+        });
     </script>
 <?php else: ?>
     <p>No se encontraron detalles para esta línea de pedido.</p>

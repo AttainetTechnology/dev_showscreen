@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-
+<link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <br>
 <h2>Proceso: <?= esc($nombre_proceso) ?></h2>
 
@@ -23,11 +23,11 @@
 
         const columnDefs = [
 
-            { headerName: "Usuario", field: "nombre_usuario" },
-            { headerName: "Estado", field: "estado" },
-            { headerName: "Buenas", field: "buenas" },
-            { headerName: "Malas", field: "malas" },
-            { headerName: "Repasadas", field: "repasadas" },
+            { headerName: "Usuario", field: "nombre_usuario", filter: 'agTextColumnFilter' },
+            { headerName: "Estado", field: "estado", filter: 'agTextColumnFilter' },
+            { headerName: "Buenas", field: "buenas", filter: 'agTextColumnFilter' },
+            { headerName: "Malas", field: "malas", filter: 'agTextColumnFilter' },
+            { headerName: "Repasadas", field: "repasadas", filter: 'agTextColumnFilter' },
         ];
 
         const gridOptions = {
@@ -44,11 +44,22 @@
             },
             domLayout: 'autoHeight',
             rowHeight: 60,
+            localeText: {
+                noRowsToShow: 'No hay registros disponibles.'
+            },
+            onGridReady: function (params) {
+                fetchEmpresasData(params.api);
+            }
         };
 
         document.addEventListener('DOMContentLoaded', function () {
             const gridDiv = document.querySelector('#myGrid');
             new agGrid.Grid(gridDiv, gridOptions);
+        });
+
+        document.getElementById('clear-filters').addEventListener('click', () => {
+            gridOptions.api.setFilterModel(null);
+            gridOptions.api.onFilterChanged();
         });
 
         function verMas(idLineaPedido) {
