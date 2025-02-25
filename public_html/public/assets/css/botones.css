@@ -111,10 +111,10 @@
 }
 
 .accederButtonTabla svg{
-    width: 23px;
-    height: 23px;
+    width: 22px;
+    height: 22px;
     color: white;
-    margin-left: 3px;
+    margin-left: 1px;
 }
 
 .volverButton svg {

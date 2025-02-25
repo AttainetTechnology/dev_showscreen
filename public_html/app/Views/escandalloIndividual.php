@@ -14,7 +14,7 @@
         </svg>
     </button>
 </div>
-
+<br>
 <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width: 100%;"></div>
 
 <?php if (isset($relaciones) && !empty($relaciones)): ?>
