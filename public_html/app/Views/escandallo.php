@@ -29,6 +29,17 @@
             { headerName: "Repasadas", field: "repasadas" },
             { headerName: "Estado", field: "estado" },
             {
+                headerName: "Restricciones",
+                field: "tiene_restricciones",
+                cellRenderer: function (params) {
+                    if (params.value) {
+                        return `<div style="width: 20px; height: 20px; background-color: red; border-radius: 3px;"></div>`; // 🔴 Restricción presente
+                    } else {
+                        return `<div style="width: 20px; height: 20px; background-color: green; border-radius: 3px;"></div>`; // 🟢 No hay restricciones
+                    }
+                }
+            },
+            {
                 headerName: "Acciones",
                 field: "id_proceso_pedido",
                 cellRenderer: function (params) {
