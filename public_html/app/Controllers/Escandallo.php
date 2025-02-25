@@ -11,24 +11,34 @@ class Escandallo extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new RelacionProcesoUsuario_model($db);
-
+    
         $relaciones = $this->getRelaciones($model, $id_linea_pedido);
-
+    
+        // Agregar migas de pan (breadcrumbs)
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
+        $this->addBreadcrumb('Escandallo', base_url('/escandallo'));
+    
+        // Pasar las migas de pan a la vista
+        $data['amiga'] = $this->getBreadcrumbs();
+    
         if ($relaciones) {
             $agrupadas = $this->agruparRelaciones($relaciones, $db);
-
+    
             // Agregar información sobre restricciones
             foreach ($agrupadas as &$grupo) {
                 $grupo['tiene_restricciones'] = $this->tieneRestricciones($grupo['id_proceso_pedido'], $db);
             }
-
+    
             $relacionesAgrupadas = array_values($agrupadas);
-            return view('escandallo', ['relaciones' => $relacionesAgrupadas]);
+            $data['relaciones'] = $relacionesAgrupadas;
         } else {
-            return view('escandallo', ['error' => 'No se encontraron detalles para esta línea de pedido.']);
+            $data['error'] = 'No se encontraron detalles para esta línea de pedido.';
         }
+    
+        return view('escandallo', $data);
     }
-
+    
     private function getRelaciones($model, $id_linea_pedido)
     {
         return $model->where('id_linea_pedido', $id_linea_pedido)->findAll();

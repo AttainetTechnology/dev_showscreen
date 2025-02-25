@@ -67,7 +67,10 @@ class SeleccionMaquina extends BaseFichar
 
             $procesos = $procesosPedidoModel
                 ->where('procesos_pedidos.id_maquina', $idMaquina)
-                ->where('procesos_pedidos.restriccion', '') // Filtra para procesos donde restriccion esté vacío
+                ->groupStart()
+                ->where('procesos_pedidos.restriccion', '') // Filtra cuando está vacío
+                ->orWhere('procesos_pedidos.restriccion IS NULL') // Filtra cuando es NULL
+                ->groupEnd()
                 ->where('procesos_pedidos.estado <', 4)
                 ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
                 ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
@@ -508,7 +511,7 @@ class SeleccionMaquina extends BaseFichar
                 ->update(['estado' => 4]);
         }
 
-        return true; 
+        return true;
     }
 
 

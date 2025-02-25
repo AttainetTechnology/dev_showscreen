@@ -93,21 +93,28 @@
 }
 
 .volverButton,
-.volverButtonTabla, .btnSubmenu {
+.volverButtonTabla, .btnSubmenu, .accederButtonTabla {
     background-color: #337AB7 !important;
     color: white !important;
 }
 
 .volverButton:hover,
-.volverButtonTabla:hover, .btnSubmenu:hover {
+.volverButtonTabla:hover, .btnSubmenu:hover, .accederButtonTabla:hover {
     background-color: #125692 !important;
     color: white;
 }
 
 .volverButton:active,
-.volverButtonTabla:active, .btnSubmenu:active {
+.volverButtonTabla:active, .btnSubmenu:active, .accederButtonTabla:hover {
     background-color: #6897C0 !important;
     color: white !important;
+}
+
+.accederButtonTabla svg{
+    width: 23px;
+    height: 23px;
+    color: white;
+    margin-left: 3px;
 }
 
 .volverButton svg {

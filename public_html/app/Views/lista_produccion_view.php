@@ -26,7 +26,7 @@
             field: 'acciones',
             cellRenderer: renderActions,
             cellClass: 'acciones-col',
-            maxWidth: 200,
+            minWidth: 200,
             filter: false,
         },
         {
