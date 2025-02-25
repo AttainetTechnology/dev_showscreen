@@ -1,17 +1,99 @@
+a:hover {
+    text-decoration: none;
+}
 
-   a:hover {
-      text-decoration: none;
-  }
-  div#txt {
-      font-size: 40px;
-      color: #000000;
-  }
-  .cabecera {
-      padding: 1rem 1rem 0rem 1rem;
-      display: flex;
-      justify-content: space-between;
-  }
+h2 {
+    margin-top: 0px !important;
+    margin-bottom: 5px !important;
+}
 
-  .logo img {
-      max-width: 136px;
-  }
+div#txt {
+    font-size: 40px;
+    color: #000000;
+}
+
+.cabecera2 {
+    margin: 10px 0px 10px 15px;
+}
+
+.cabecera {
+    padding: 10px 0px 0px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo img {
+    max-width: 136px;
+}
+
+.page-select {
+    margin: 10px;
+    font-size: 17px;
+}
+
+/* Tablas */
+.maquina {
+    background-color: #f0d78e !important;
+    border: 3px solid #f0d78e;
+}
+
+.maquina tbody tr {
+    border: 5px solid #f0d78e;
+}
+
+button.btn.btn-light.btn-block {
+    font-size: 19px;
+}
+
+.maquina {
+    background-color: #f0d78e;
+    border: 3px solid #f0d78e;
+}
+
+.maquina tbody tr {
+    border: 5px solid #f0d78e;
+}
+
+
+.procesos {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.procesos thead {
+    background-color: #f0d78e;
+    color: black;
+    border-bottom: 2px solid #f0d78e !important;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.procesos tbody {
+    background-color: white;
+}
+
+.procesos th,
+.procesos td,
+.maquina th,
+.maquina td {
+    border: 2px solid #f0d78e !important;
+    text-align: center;
+}
+
+.procesos tbody tr {
+    border-bottom: 2px solid #f0d78e !important;
+}
+
+.procesos th {
+    font-weight: bold;
+}
+
+.nombre_proceso {
+    font-weight: bold;
+}
+
+
+table.procesos.table.table-bordered {
+    font-size: 16px;
+}
