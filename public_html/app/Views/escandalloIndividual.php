@@ -1,6 +1,8 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-<h2 class="tituloProveedores">Escandallo</h2>
+
+<br>
+<h2>Proceso: <?= esc($nombre_proceso) ?></h2>
 
 <div class="btnsEditPedido">
     <button id="clear-filters" class="boton btnEliminarfiltros">
@@ -12,46 +14,27 @@
         </svg>
     </button>
 </div>
-<!-- Contenedor de ag-Grid -->
+
 <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width: 100%;"></div>
 
 <?php if (isset($relaciones) && !empty($relaciones)): ?>
     <script>
-        // Convertir las relaciones PHP en un array JavaScript
         const relacionesData = <?php echo json_encode($relaciones); ?>;
 
-        // Definir las columnas de ag-Grid
         const columnDefs = [
-            { headerName: "Nombre Proceso", field: "nombre_proceso" },
-            { headerName: "Maquina", field: "nombre_maquina" },
+
+            { headerName: "Usuario", field: "nombre_usuario" },
+            { headerName: "Estado", field: "estado" },
             { headerName: "Buenas", field: "buenas" },
             { headerName: "Malas", field: "malas" },
             { headerName: "Repasadas", field: "repasadas" },
-            { headerName: "Estado", field: "estado" },
-            {
-                headerName: "Acciones",
-                field: "id_proceso_pedido",
-                cellRenderer: function (params) {
-                    return `<button onclick="redirigirEscandallo('${params.data.id_proceso_pedido}')" class="btn btn-primary">Ver</button>`;
-                }
-            }
         ];
 
-        function redirigirEscandallo(id_proceso_pedido) {
-            if (id_proceso_pedido) {
-                window.location.href = `/escandalloIndividual/${id_proceso_pedido}`;
-            } else {
-                console.error("ID del proceso no encontrado");
-            }
-        }
-
-
-        // Configurar ag-Grid
         const gridOptions = {
             columnDefs: columnDefs,
             rowData: relacionesData,
-            pagination: true, // Activar paginación
-            paginationPageSize: 10, // Páginas de 10 registros
+            pagination: true,
+            paginationPageSize: 10,
             defaultColDef: {
                 flex: 1,
                 minWidth: 100,
@@ -63,16 +46,18 @@
             rowHeight: 60,
         };
 
-        // Iniciar ag-Grid
         document.addEventListener('DOMContentLoaded', function () {
             const gridDiv = document.querySelector('#myGrid');
             new agGrid.Grid(gridDiv, gridOptions);
         });
 
-
+        function verMas(idLineaPedido) {
+            // Puedes redirigir a otra vista o mostrar más detalles de la línea de pedido
+            window.location.href = `/escandallo/verMas/${idLineaPedido}`;
+        }
     </script>
 <?php else: ?>
-    <p>No se encontraron detalles para esta línea de pedido.</p>
+    <p>No se encontraron detalles para esta línea de pedidos.</p>
 <?php endif; ?>
 
 <?= $this->endSection() ?>

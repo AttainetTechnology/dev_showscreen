@@ -152,3 +152,4 @@ $routes->post('seleccionarProceso', 'SeleccionMaquina::seleccionarProceso');
 $routes->post('editarPiezas', 'SeleccionMaquina::editarPiezas');
 $routes->get('editarProceso/(:num)', 'SeleccionMaquina::obtenerProcesoPorId/$1');
 $routes->get('escandallo/(:num)', 'Escandallo::ver/$1');
+$routes->get('/escandalloIndividual/(:num)', 'Escandallo::verEscandalloIndividual/$1');
