@@ -137,7 +137,7 @@
                             </tbody>
                         </table>
                     <?php endif; ?>
-
+<br>
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="<?= site_url('salir/' . $usuario['id']); ?>" class="btn volverButton">
                             <span class="glyphicon glyphicon-arrow-left"></span> Volver

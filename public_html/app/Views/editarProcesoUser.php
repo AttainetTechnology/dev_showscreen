@@ -5,25 +5,21 @@
     <?= $hora; ?>
     <div class="fondo-select">
         <div class="container">
-            <br>
-            <div class="volver">
-                <a href="<?= site_url('selectMaquina/'); ?>" class="btn btn-light">
-                    <span class="glyphicon glyphicon-arrow-left"></span> Volver
-                </a>
-            </div>
-            <h3>Proceso seleccionado</h3>
-            <table class="table table-striped table-hover table-bordered">
+            <a href="<?= site_url('selectMaquina/'); ?>" class="btn volverButton">
+                <span class="glyphicon glyphicon-arrow-left"></span> Volver
+            </a>
+            <table class="procesos table table-responsive">
                 <thead class="table-primary">
                     <tr>
                         <th>Proceso</th>
                         <th>Cliente</th>
                         <th>Producto</th>
                         <th>Observaciones</th>
-                        <th>Número de Piezas</th>
+                        <th>Nº de Piezas</th>
                         <th>Nombre Base</th>
-                        <th>Medida Inicial</th>
+                        <th>Med. Inicial</th>
+                        <th>Med. Final</th>
                         <th>Distancia</th>
-                        <th>Medida Final</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,15 +36,14 @@
                         <td><?= esc($proceso['n_piezas']) ?></td>
                         <td><?= esc($proceso['nom_base']) ?></td>
                         <td><?= esc($proceso['med_inicial']) ?></td>
-                        <td><?= esc($proceso['distancia']) ?></td>
                         <td><?= esc($proceso['med_final']) ?></td>
+                        <td><?= esc($proceso['distancia']) ?></td>
                     </tr>
                 </tbody>
             </table>
-            <br>
             <div class="row">
                 <div class="col-md-6">
-                    <h4>Editar Datos de Proceso</h4>
+                    <h3>Añadir piezas</h3>
                     <form action="<?= site_url('editarPiezas') ?>" method="POST">
                         <input type="hidden" name="id_relacion_proceso_usuario"
                             value="<?= esc($unidadesIndividuales['id']) ?>">
@@ -67,10 +62,9 @@
                             <label for="repasadas">Repasadas:</label>
                             <input type="text" id="repasadas" name="repasadas" class="form-control" value="0" readonly>
                         </div>
-                        <br>
-                        <div class="col-md-10">
-                            <h4>Piezas</h4>
-                            <table class="table table-striped table-hover table-bordered">
+                        <div class="col-md-10 col10 ">
+                            <h3>Piezas</h3>
+                            <table class="procesos table table-bordered">
                                 <thead class="table-secondary">
                                     <tr>
                                         <th></th>
@@ -96,51 +90,55 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="volver">
+
+                            </div>
                         </div>
+
                 </div>
                 <br>
 
                 <div class="col-md-6">
                     <div class="calculator">
                         <div class="row">
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(1)">1</button>
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(2)">2</button>
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(3)">3</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(1)">1</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(2)">2</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(3)">3</button>
                         </div>
                         <div class="row">
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(4)">4</button>
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(5)">5</button>
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(6)">6</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(4)">4</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(5)">5</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(6)">6</button>
                         </div>
                         <div class="row">
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(7)">7</button>
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(8)">8</button>
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(9)">9</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(7)">7</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(8)">8</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(9)">9</button>
                         </div>
                         <div class="row">
                             <button type="button" class="btnCalculadora btn-danger" onclick="clearInput()">C</button>
-                            <button type="button" class="btnCalculadora btn-light" onclick="addNumber(0)">0</button>
+                            <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(0)">0</button>
                             <button type="button" class="btnCalculadora btn-warning" onclick="deleteLast()">⌫</button>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" name="action" value="apuntar_cambios">Apuntar</button>
-                    <button type="submit" class="btn btn-success" name="action" value="apuntar_terminar">Apuntar y
-                        Terminar
-                        Pedido</button>
-                    <button type="submit" class="btn btn-warning" name="action" value="apuntar_continuar">Apuntar y
-                        Continuar
-                        Más Tarde</button>
-                    <br>
-                    <button type="submit" class="btn btn-warning" name="action" value="falta_material">FALTA DE
-                        MATERIAL</button>
+                    <div class="butons">
+                        <button type="submit" class="btn btn-primary" name="action"
+                            value="apuntar_cambios">Apuntar</button>
+                        <button type="submit" class="btn btn-warning" name="action" value="apuntar_continuar">Apuntar y
+                            salir</button>
+                        <button type="submit" class="btn btn-success" name="action" value="apuntar_terminar">Apuntar y
+                            terminar
+                            pedido</button>
+                        <button type="submit" class="btn btn-warning" name="action" value="falta_material">FALTA DE
+                            MATERIAL</button>
+                    </div>
                     </form>
+
                 </div>
             </div>
             <div class="row">
-
             </div>
-
             <script>
                 let activeField = 'buenas';
 
@@ -173,25 +171,3 @@
                 document.getElementById('malas').addEventListener('focus', () => setActiveField('malas'));
                 document.getElementById('repasadas').addEventListener('focus', () => setActiveField('repasadas'));
             </script>
-
-            <style>
-                .calculator {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    margin-top: 10px;
-                }
-
-                .row {
-                    display: flex;
-                    justify-content: center;
-                    margin-bottom: 5px;
-                }
-
-                .btnCalculadora {
-                    width: 60px;
-                    height: 60px;
-                    font-size: 20px;
-                    margin: 3px;
-                }
-            </style>
