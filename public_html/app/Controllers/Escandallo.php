@@ -11,34 +11,34 @@ class Escandallo extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new RelacionProcesoUsuario_model($db);
-    
+
         $relaciones = $this->getRelaciones($model, $id_linea_pedido);
-    
+
         // Agregar migas de pan (breadcrumbs)
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
         $this->addBreadcrumb('Escandallo', base_url('/escandallo'));
-    
+
         // Pasar las migas de pan a la vista
         $data['amiga'] = $this->getBreadcrumbs();
-    
+
         if ($relaciones) {
             $agrupadas = $this->agruparRelaciones($relaciones, $db);
-    
+
             // Agregar información sobre restricciones
             foreach ($agrupadas as &$grupo) {
                 $grupo['tiene_restricciones'] = $this->tieneRestricciones($grupo['id_proceso_pedido'], $db);
             }
-    
+
             $relacionesAgrupadas = array_values($agrupadas);
             $data['relaciones'] = $relacionesAgrupadas;
         } else {
             $data['error'] = 'No se encontraron detalles para esta línea de pedido.';
         }
-    
+
         return view('escandallo', $data);
     }
-    
+
     private function getRelaciones($model, $id_linea_pedido)
     {
         return $model->where('id_linea_pedido', $id_linea_pedido)->findAll();
@@ -92,7 +92,7 @@ class Escandallo extends BaseController
 
         if ($query->getNumRows() > 0) {
             $result = $query->getRow();
-            return !empty($result->restricciones); 
+            return !empty($result->restricciones);
         }
 
         return false;
@@ -196,21 +196,42 @@ class Escandallo extends BaseController
         $db = db_connect($data['new_db']);
         $model = new RelacionProcesoUsuario_model($db);
 
+        // Recuperar relaciones del proceso
         $relaciones = $model->where('id_proceso_pedido', $id_proceso_pedido)->findAll();
 
+        // Recuperar el nombre del proceso
         $nombre_proceso = $this->obtenerNombreProceso($id_proceso_pedido, $db);
 
+        // Recuperar id_linea_pedido de la tabla procesos_pedidos
+        $id_linea_pedido = $db->table('procesos_pedidos')->where('id_relacion', $id_proceso_pedido)->get()->getRow()->id_linea_pedido;
+
+        // Agregar migas de pan (breadcrumbs)
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
+        $this->addBreadcrumb('Escandallo', base_url('/escandallo/' . $id_linea_pedido)); // Aquí se usa id_linea_pedido
+        $this->addBreadcrumb('Datos Escandallo', base_url('/escandalloIndividual/' . $id_proceso_pedido)); // Aquí se pasa el id_proceso_pedido
+
+        // Pasar las migas de pan a la vista
+        $data['amiga'] = $this->getBreadcrumbs();
+
         if ($relaciones) {
+            // Procesar las relaciones
             foreach ($relaciones as &$relacion) {
                 $relacion['nombre_usuario'] = $this->obtenerNombreUsuario($relacion['id_usuario'], $db);
-
                 $relacion['estado'] = $this->convertirEstado($relacion['estado']);
             }
-            return view('escandalloIndividual', ['relaciones' => $relaciones, 'nombre_proceso' => $nombre_proceso]);
+            // Pasar la id_linea_pedido junto con los datos a la vista
+            $data['relaciones'] = $relaciones;
+            $data['nombre_proceso'] = $nombre_proceso;
+            $data['id_linea_pedido'] = $id_linea_pedido;
+
+            return view('escandalloIndividual', $data);
         } else {
-            return view('escandalloIndividual', ['error' => 'No se encontraron registros para este proceso.', 'nombre_proceso' => $nombre_proceso]);
+            $data['error'] = 'No se encontraron registros para este proceso.';
+            return view('escandalloIndividual', $data);
         }
     }
+
 
 
 
