@@ -77,7 +77,7 @@
         }
     </script>
 <?php else: ?>
-    <p>No se encontraron detalles para esta línea de pedidos.</p>
+    <p> </p>
 <?php endif; ?>
 
 <?= $this->endSection() ?>
