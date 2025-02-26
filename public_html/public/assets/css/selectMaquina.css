@@ -5,6 +5,7 @@ a:hover {
 h2 {
     margin-top: 0px !important;
     margin-bottom: 5px !important;
+    font-weight: bold !important;
 }
 
 h3 {
@@ -22,7 +23,7 @@ div#txt {
 }
 
 .cabecera {
-    padding: 10px 0px 0px 0px;
+    padding: 10px 20px 0px 0px;
     display: flex;
     justify-content: space-between;
 }
@@ -113,6 +114,10 @@ table.procesos.table.table-bordered {
     padding: 0px !important;
 }
 
+.volverButtonEdit {
+    margin-bottom: 10px !important;
+}
+
 /* calculadora */
 .calculator {
     display: flex;
@@ -157,4 +162,58 @@ table.procesos.table.table-bordered {
     font-size: 18px;
     width: 250px;
     text-align: center;
+}
+
+.bntApuntar {
+    background-color: #f5cf5f;
+    border: none !important;
+    color: white;
+}
+
+.bntApuntar:hover,
+.bntApuntar:active {
+    background-color: #fade91;
+    color: white !important;
+}
+
+.btnSalir {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btnSalir:hover,
+.btnSalir:active {
+    background-color: #ed8a87;
+    color: white !important;
+}
+
+
+.btnTerminarPedido {
+    background-color: #448244;
+    color: white;
+
+}
+
+.btnTerminarPedido:hover,
+.btnTerminarPedido:active {
+    background-color: #6c8b6c;
+    color: white !important;
+}
+
+
+.btnFaltaMaterial {
+    background-color: #e29752;
+    color: white;
+
+}
+
+.btnFaltaMaterial:hover,
+.btnFaltaMaterial:active {
+    background-color: #ecb37d;
+    color: white !important;
+}
+
+.btnApuntarGenerico {
+    height: 45px;
+    font-size: 25px;
 }

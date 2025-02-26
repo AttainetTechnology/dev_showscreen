@@ -5,7 +5,7 @@
     <?= $hora; ?>
     <div class="fondo-select">
         <div class="container">
-            <a href="<?= site_url('selectMaquina/'); ?>" class="btn volverButton">
+            <a href="<?= site_url('selectMaquina/'); ?>" class="btn volverButton volverButtonEdit">
                 <span class="glyphicon glyphicon-arrow-left"></span> Volver
             </a>
             <table class="procesos table table-responsive">
@@ -123,14 +123,17 @@
                     </div>
 
                     <div class="butons">
-                        <button type="submit" class="btn btn-primary" name="action"
+                        <button type="submit" class="btn btnApuntarGenerico bntApuntar" name="action"
                             value="apuntar_cambios">Apuntar</button>
-                        <button type="submit" class="btn btn-warning" name="action" value="apuntar_continuar">Apuntar y
+                        <button type="submit" class="btn btnApuntarGenerico btnSalir" name="action"
+                            value="apuntar_continuar">Apuntar y
                             salir</button>
-                        <button type="submit" class="btn btn-success" name="action" value="apuntar_terminar">Apuntar y
+                        <button type="submit" class="btn btnApuntarGenerico btnTerminarPedido" name="action"
+                            value="apuntar_terminar">Apuntar y
                             terminar
                             pedido</button>
-                        <button type="submit" class="btn btn-warning" name="action" value="falta_material">FALTA DE
+                        <button type="submit" class="btn btnApuntarGenerico btnFaltaMaterial" name="action"
+                            value="falta_material">FALTA DE
                             MATERIAL</button>
                     </div>
                     </form>
