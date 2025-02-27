@@ -184,7 +184,7 @@ class SeleccionMaquina extends BaseFichar
             ->where('id !=', $nuevo_id)
             ->update(['estado' => 3]);
 
-        return redirect()->to('/selectMaquina/' . $id_usuario)->with('success', 'Proceso seleccionado correctamente.');
+        return redirect()->to('/presentes')->with('success', 'Proceso seleccionado correctamente.');
     }
 
     public function obtenerProcesosUsuario($id_usuario)
