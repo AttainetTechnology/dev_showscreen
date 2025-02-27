@@ -131,7 +131,7 @@ $routes->get('niveles_acceso', 'Niveles_acceso::index');
 $routes->get('niveles_acceso/getLogs', 'Niveles_acceso::getLogs');
 $routes->post('niveles_acceso/deleteNievel/(:num)', 'Niveles_acceso::deleteNievel/$1');
 $routes->post('menu/add', 'Menu::add');
-$routes->get('menu/edit/(:num)', 'Menu::edit/$1');  
+$routes->get('menu/edit/(:num)', 'Menu::edit/$1');
 $routes->post('menu/update/(:num)', 'Menu::update/$1');
 $routes->get('empresas/editForm/(:num)', 'Empresas::editForm/$1');
 $routes->group('gallery', function ($routes) {
@@ -142,6 +142,7 @@ $routes->post('gallery/delete', 'Gallery::delete');
 $routes->post('productos_necesidad/update/(:num)', 'Productos_necesidad::update/$1');
 // Ruta GET para mostrar el formulario de selección de máquina
 $routes->get('selectMaquina/(:num)', 'SeleccionMaquina::getMaquina/$1');
+$routes->get('entrarEditor/(:num)', 'SeleccionMaquina::entrarEditor/$1');
 
 // Ruta POST para procesar la selección de máquina
 $routes->post('selectMaquina', 'SeleccionMaquina::selectMaquina');
@@ -153,3 +154,4 @@ $routes->post('editarPiezas', 'SeleccionMaquina::editarPiezas');
 $routes->get('editarProceso/(:num)', 'SeleccionMaquina::obtenerProcesoPorId/$1');
 $routes->get('escandallo/(:num)', 'Escandallo::ver/$1');
 $routes->get('/escandalloIndividual/(:num)', 'Escandallo::verEscandalloIndividual/$1');
+

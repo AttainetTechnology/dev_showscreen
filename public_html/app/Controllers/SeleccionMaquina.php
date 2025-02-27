@@ -47,6 +47,47 @@ class SeleccionMaquina extends BaseFichar
         return view('selectMaquina', $datos);
     }
 
+    public function entrarEditor($id_usuario)
+    {
+        helper('controlacceso');
+        $db = $this->db;
+
+        $maquinasModel = new Maquinas($db);
+        $maquinas = $maquinasModel->findAll();
+
+        $usuariosModel = new Usuarios2_Model($db);
+        $usuario = $usuariosModel->find($id_usuario);
+
+        session()->set('usuario', $usuario);
+
+        // Verificamos si existe algún registro en la tabla relacion_proceso_usuario con estado = 1
+        $relacionModel = $db->table('relacion_proceso_usuario');
+        $registroRelacion = $relacionModel->where('id_usuario', $id_usuario)
+            ->where('estado', 1) 
+            ->get()
+            ->getRowArray();
+
+        if ($registroRelacion) {
+            return redirect()->to('/editarProceso/' . $registroRelacion['id']);
+        }
+
+        // Si no existe relación, mostramos la vista selectMaquina
+        $procesosUsuario = $this->obtenerProcesosUsuario($usuario['id']);
+
+        // Definir los datos para la vista
+        $datos = [
+            'cabecera' => view('template/cabecera_select'),
+            'hora' => view('template/hora_logo'),
+            'maquinas' => $maquinas,
+            'usuario' => $usuario,
+            'procesosUsuario' => $procesosUsuario
+        ];
+
+        return view('selectMaquina', $datos);
+    }
+
+
+
     public function selectMaquina()
     {
         $usuario = session()->get('usuario');

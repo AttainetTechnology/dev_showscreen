@@ -18,10 +18,11 @@
          <div class="fichabotones">
             <div class="titulopagina">FICHAR SALIDA</div>
             <div class="fichar-nombre-empleado"><?= $ausentes['nombre_usuario']; ?>
-               <?= $ausentes['apellidos_usuario']; ?></div>
+               <?= $ausentes['apellidos_usuario']; ?>
+            </div>
             <div class="botonentrar"><a href="<?= base_url('/sal/') ?>/<?= $ausentes['id']; ?>"
                   class="btn btn-danger btn-lg">TERMINAR JORNADA</a></div>
-            <a href="<?= base_url('/selectMaquina') ?>/<?= $ausentes['id']; ?>" class="btn btn-danger btn-lg">FICHAR
+            <a href="<?= base_url('/entrarEditor') ?>/<?= $ausentes['id']; ?>" class="btn btn-danger btn-lg">FICHAR
                MAQUINA</a>
             <?php
             // Obtener el id_empresa desde la sesión
