@@ -125,13 +125,13 @@
                     <div class="butons">
                         <button type="submit" class="btn btnApuntarGenerico bntApuntar" name="action"
                             value="apuntar_cambios">Apuntar</button>
-                        <button type="submit" class="btn btnApuntarGenerico btnSalir" name="action"
-                            value="apuntar_continuar">Apuntar y
-                            salir</button>
-                        <button type="submit" class="btn btnApuntarGenerico btnTerminarPedido" name="action"
+                            <button type="submit" class="btn btnApuntarGenerico btnTerminarPedido" name="action"
                             value="apuntar_terminar">Apuntar y
                             terminar
                             pedido</button>
+                        <button type="submit" class="btn btnApuntarGenerico btnSalir" name="action"
+                            value="apuntar_continuar">Apuntar y
+                            terminar jornada</button>
                         <button type="submit" class="btn btnApuntarGenerico btnFaltaMaterial" name="action"
                             value="falta_material">FALTA DE
                             MATERIAL</button>

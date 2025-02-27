@@ -380,11 +380,11 @@ class SeleccionMaquina extends BaseFichar
             ]);
 
         // Redirigir a la página adecuada según la acción
-        if ($action === 'apuntar_terminar' || $action === 'apuntar_continuar') {
+        if ($action === 'apuntar_terminar') {
             return redirect()->to('/selectMaquina');
         }
 
-        return redirect()->to('/editarProceso/' . $idRelacionProcesoUsuario);
+        return redirect()->to('/presentes');
     }
 
     public function finalizarProcesoPedido($idRelacionProcesoUsuario)
