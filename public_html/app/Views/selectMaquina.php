@@ -130,7 +130,7 @@
 
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6">No se encontraron procesos para este usuario.</td>
+                                        <td colspan="6">NO TIENES PROCESOS ACTIVOS</td>
                                     </tr>
                                 <?php endif; ?>
 
