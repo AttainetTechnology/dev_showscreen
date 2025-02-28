@@ -5,7 +5,7 @@
     <?= $hora; ?>
     <div class="fondo-select">
         <div class="container">
-            <a href="<?= site_url('selectMaquina/'); ?>" class="btn volverButton volverButtonEdit">
+            <a href="<?= site_url('presentes/'); ?>" class="btn volverButton volverButtonEdit">
                 <span class="glyphicon glyphicon-arrow-left"></span> Volver
             </a>
             <table class="procesos table table-responsive">

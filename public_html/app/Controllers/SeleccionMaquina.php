@@ -421,8 +421,6 @@ class SeleccionMaquina extends BaseFichar
         return true;
     }
 
-
-
     public function eliminarRestriccion($idRelacionProcesoUsuario)
     {
         $db = $this->db;
