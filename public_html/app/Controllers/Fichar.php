@@ -39,11 +39,16 @@ class Fichar extends BaseFichar
 			->findAll();
 		$datos['presentes'] = array();
 		$i = 0;
+
 		// De cada fichaje saco sus datos de usuario y creamos la variable datos[presentes]
 		foreach ($a1 as $usera1) {
 			$a2 = model('Usuarios1_Model', true, $this->db)->where('id', $usera1['id_empleado'])->findAll();
 			if (!empty($a2)) {
-				$datos['presentes'][$i] = array_merge($a2[0], $usera1);
+				$usuario = $a2[0];
+				// Obtener las máquinas asociadas a este usuario
+				$maquinas = $this->obtenerMaquinasPorUsuario($usuario['id']);
+				$usuario['maquinas'] = $maquinas;  // Añadimos las máquinas al array del usuario
+				$datos['presentes'][$i] = array_merge($usuario, $usera1);
 				$i += 1;
 			}
 		}
@@ -54,6 +59,21 @@ class Fichar extends BaseFichar
 		$datos['recarga_hora'] = view('template/recarga_hora');
 
 		return view('presentes', $datos);
+	}
+
+	public function obtenerMaquinasPorUsuario($id_usuario)
+	{
+		helper('controlacceso');
+		$db = $this->db;
+		$query = $db->table('relacion_proceso_usuario')
+			->select('relacion_proceso_usuario.*, maquinas.nombre')
+			->join('maquinas', 'maquinas.id_maquina = relacion_proceso_usuario.id_maquina')
+			->where('relacion_proceso_usuario.id_usuario', $id_usuario)
+			->where('relacion_proceso_usuario.estado', 1)
+			->get();
+
+		$resultados = $query->getResultArray();
+		return $resultados;
 	}
 
 	public function CompruebaDia()

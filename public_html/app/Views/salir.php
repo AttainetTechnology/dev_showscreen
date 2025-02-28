@@ -22,7 +22,7 @@
             </div>
             <div class="botonentrar"><a href="<?= base_url('/sal/') ?>/<?= $ausentes['id']; ?>"
                   class="btn btn-danger btn-lg">TERMINAR JORNADA</a></div>
-            <a href="<?= base_url('/entrarEditor') ?>/<?= $ausentes['id']; ?>" class="btn btn-danger btn-lg">FICHAR
+            <a href="<?= base_url('/entrarEditor') ?>/<?= $ausentes['id']; ?>" class="btn btnFaltaMaterial">FICHAR
                MAQUINA</a>
             <?php
             // Obtener el id_empresa desde la sesión
