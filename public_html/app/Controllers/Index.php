@@ -79,15 +79,37 @@ class Index extends BaseController
     {
         $query = $db->table('relacion_proceso_usuario')
             ->select('relacion_proceso_usuario.*, procesos.nombre_proceso, users.nombre_usuario, users.apellidos_usuario, 
-                    maquinas.nombre')
+                 maquinas.nombre, linea_pedidos.n_piezas')
             ->join('procesos_pedidos', 'procesos_pedidos.id_relacion = relacion_proceso_usuario.id_proceso_pedido')
             ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
             ->join('users', 'users.id = relacion_proceso_usuario.id_usuario')
             ->join('maquinas', 'maquinas.id_maquina = relacion_proceso_usuario.id_maquina')
+            ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = relacion_proceso_usuario.id_linea_pedido')
             ->where('relacion_proceso_usuario.estado', 4)
             ->get();
-        return $query->getResultArray();
+
+        $resultados = $query->getResultArray();
+
+        foreach ($resultados as &$registro) {
+            $sumaBuenas = $this->obtenerSumaBuenas($db, $registro['id_proceso_pedido']);
+            $registro['total_buenas'] = $sumaBuenas;
+        }
+
+        return $resultados;
     }
+
+
+    public function obtenerSumaBuenas($db, $idProcesoPedido)
+    {
+        $query = $db->table('relacion_proceso_usuario')
+            ->selectSum('buenas') 
+            ->where('id_proceso_pedido', $idProcesoPedido)
+            ->get();
+
+        $resultado = $query->getRowArray();
+        return $resultado['buenas'] ?? 0;
+    }
+
     public function resetMaterial()
     {
         $id = $this->request->getPost('id');
@@ -97,7 +119,7 @@ class Index extends BaseController
             $db = db_connect($data['new_db']);
 
             $db->table('relacion_proceso_usuario')
-                ->where('id', $id) 
+                ->where('id', $id)
                 ->update(['estado' => 2]);
 
             return redirect()->to('/index')->with('message', 'Material reseteado exitosamente.');

@@ -264,6 +264,8 @@ use App\Models\Menu_familias_model; ?>
 									<th>ID Línea Pedido</th>
 									<th>Nombre del Proceso</th>
 									<th>ID Máquina</th>
+									<th>Total piezas</th>
+									<th>Piezas realizadas</th>
 									<th>ID Usuario</th>
 								</tr>
 							</thead>
@@ -285,6 +287,8 @@ use App\Models\Menu_familias_model; ?>
 										<td><?= esc($item['id_linea_pedido']) ?></td>
 										<td><?= esc($item['nombre_proceso']) ?></td>
 										<td><?= esc($item['nombre']) ?></td>
+										<td><?= esc($item['n_piezas']) ?></td>
+										<td><?= esc($item['total_buenas']) ?></td>
 										<td><?= esc($item['nombre_usuario'] . ' ' . $item['apellidos_usuario']) ?></td>
 									</tr>
 								<?php endforeach; ?>
