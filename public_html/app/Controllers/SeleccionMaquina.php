@@ -349,15 +349,22 @@ class SeleccionMaquina extends BaseFichar
             return redirect()->to('/error')->with('error', 'Registro no encontrado.');
         }
 
+        if ($action === 'falta_material') {
+            $relacionModel->where('id', $idRelacionProcesoUsuario)
+                ->update(['estado' => 4]);
+
+            return redirect()->to('/presentes');
+        }
+
+
         $estadoActual = 3;
         $relacionModel->where('id', $idRelacionProcesoUsuario)
             ->update(['estado' => $estadoActual]);
 
-
         if ($action === 'apuntar_terminar') {
             $nuevoEstado = 3;
         } elseif ($action === 'apuntar_continuar') {
-            $nuevoEstado = 2; 
+            $nuevoEstado = 2;
         } else {
             $nuevoEstado = 1;
         }
@@ -379,17 +386,18 @@ class SeleccionMaquina extends BaseFichar
         ];
 
         $relacionModel->insert($nuevoRegistro);
+
         $todosTerminado = $relacionModel->where('id_proceso_pedido', $registro['id_proceso_pedido'])
             ->where('estado !=', 3)
             ->countAllResults() == 0;
 
         if ($todosTerminado) {
-            $this->finalizarProcesoPedido($idRelacionProcesoUsuario);  
+            $this->finalizarProcesoPedido($idRelacionProcesoUsuario);
         }
 
-        $this->eliminarRestriccion($idRelacionProcesoUsuario);  
-        $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario); 
-        $this->ActualizarEstadoPedido($idRelacionProcesoUsuario); 
+        $this->eliminarRestriccion($idRelacionProcesoUsuario);
+        $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
+        $this->ActualizarEstadoPedido($idRelacionProcesoUsuario);
 
         if ($action === 'apuntar_terminar') {
             return redirect()->to('/selectMaquina');
