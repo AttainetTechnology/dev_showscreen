@@ -63,7 +63,7 @@ class SeleccionMaquina extends BaseFichar
         // Verificamos si existe algún registro en la tabla relacion_proceso_usuario con estado = 1
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registroRelacion = $relacionModel->where('id_usuario', $id_usuario)
-            ->where('estado', 1) 
+            ->where('estado', 1)
             ->get()
             ->getRowArray();
 
@@ -349,43 +349,55 @@ class SeleccionMaquina extends BaseFichar
             return redirect()->to('/error')->with('error', 'Registro no encontrado.');
         }
 
-        // Si la acción es 'apuntar_terminar', llamamos a la nueva función para finalizar el proceso
+        $estadoActual = 3;
+        $relacionModel->where('id', $idRelacionProcesoUsuario)
+            ->update(['estado' => $estadoActual]);
+
+
         if ($action === 'apuntar_terminar') {
-            $this->finalizarProcesoPedido($idRelacionProcesoUsuario); // Llamamos a la nueva función
-            $estado = 3; // Asignamos el nuevo estado
-        } elseif ($action === 'falta_material') {
-            $estado = 4;
-            $relacionModel->where('id', $idRelacionProcesoUsuario)
-                ->update(['estado' => $estado]);
-            return redirect()->to('/selectMaquina');
+            $nuevoEstado = 3;
+        } elseif ($action === 'apuntar_continuar') {
+            $nuevoEstado = 2; 
         } else {
-            $estado = 1;
-            if ($action === 'apuntar_continuar') {
-                $estado = 2;
-            }
+            $nuevoEstado = 1;
         }
 
-        // Actualizamos los valores de 'buenas', 'malas' y 'repasadas'
-        $nuevasBuenas = $registro['buenas'] + $buenas;
-        $nuevasMalas = $registro['malas'] + $malas;
-        $nuevasRepasadas = $registro['repasadas'] + $repasadas;
+        $nuevasBuenas = $buenas;
+        $nuevasMalas = $malas;
+        $nuevasRepasadas = $repasadas;
 
-        // Actualizamos la relación en la tabla 'relacion_proceso_usuario'
-        $relacionModel->where('id', $idRelacionProcesoUsuario)
-            ->update([
-                'buenas' => $nuevasBuenas,
-                'malas' => $nuevasMalas,
-                'repasadas' => $nuevasRepasadas,
-                'estado' => $estado
-            ]);
+        $nuevoRegistro = [
+            'id_proceso_pedido' => $registro['id_proceso_pedido'],
+            'id_usuario' => $registro['id_usuario'],
+            'id_linea_pedido' => $registro['id_linea_pedido'],
+            'id_pedido' => $registro['id_pedido'],
+            'id_maquina' => $registro['id_maquina'],
+            'buenas' => $nuevasBuenas,
+            'malas' => $nuevasMalas,
+            'repasadas' => $nuevasRepasadas,
+            'estado' => $nuevoEstado
+        ];
 
-        // Redirigir a la página adecuada según la acción
+        $relacionModel->insert($nuevoRegistro);
+        $todosTerminado = $relacionModel->where('id_proceso_pedido', $registro['id_proceso_pedido'])
+            ->where('estado !=', 3)
+            ->countAllResults() == 0;
+
+        if ($todosTerminado) {
+            $this->finalizarProcesoPedido($idRelacionProcesoUsuario);  
+        }
+
+        $this->eliminarRestriccion($idRelacionProcesoUsuario);  
+        $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario); 
+        $this->ActualizarEstadoPedido($idRelacionProcesoUsuario); 
+
         if ($action === 'apuntar_terminar') {
             return redirect()->to('/selectMaquina');
         }
 
         return redirect()->to('/presentes');
     }
+
 
     public function finalizarProcesoPedido($idRelacionProcesoUsuario)
     {
@@ -399,7 +411,6 @@ class SeleccionMaquina extends BaseFichar
 
         $idProcesoPedido = $registro['id_proceso_pedido'];
 
-        // Buscar el proceso en la tabla procesos_pedidos
         $procesosModel = $db->table('procesos_pedidos');
         $procesoPedido = $procesosModel->where('id_relacion', $idProcesoPedido)->get()->getRowArray();
 
@@ -407,14 +418,11 @@ class SeleccionMaquina extends BaseFichar
             return redirect()->to('/error')->with('error', 'No se encontró el proceso de pedido.');
         }
 
-        // Actualizar el estado del proceso a 4
         $procesosModel->where('id_relacion', $idProcesoPedido)
             ->update(['estado' => 4]);
 
-        // Eliminar restricciones
         $this->eliminarRestriccion($idRelacionProcesoUsuario);
 
-        // Verificar y actualizar el estado de la línea de pedido
         $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
         $this->ActualizarEstadoPedido($idRelacionProcesoUsuario);
 
