@@ -186,12 +186,12 @@
 
         if (passwordField.type === "password") {
             passwordField.type = "text";
-            passwordConfirmationField.type = "text"; // También cambiar el tipo en el campo de confirmación
+            passwordConfirmationField.type = "text";
             eyeIconSlash.style.display = "none";
             eyeIconOpen.style.display = "block";
         } else {
             passwordField.type = "password";
-            passwordConfirmationField.type = "password"; // Volver a tipo password en confirmación
+            passwordConfirmationField.type = "password"; 
             eyeIconSlash.style.display = "block";
             eyeIconOpen.style.display = "none";
         }
