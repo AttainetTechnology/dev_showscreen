@@ -10,28 +10,19 @@ class Escandallo extends BaseController
         helper('controlacceso');
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $model = new RelacionProcesoUsuario_model($db);
+        $procesosPedidosModel = new \App\Models\ProcesosPedido($db);
 
-        $relaciones = $this->getRelaciones($model, $id_linea_pedido);
+        $procesos = $procesosPedidosModel->where('id_linea_pedido', $id_linea_pedido)->findAll();
 
         // Agregar migas de pan (breadcrumbs)
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
         $this->addBreadcrumb('Escandallo', base_url('/escandallo'));
-
-        // Pasar las migas de pan a la vista
         $data['amiga'] = $this->getBreadcrumbs();
 
-        if ($relaciones) {
-            $agrupadas = $this->agruparRelaciones($relaciones, $db);
-
-            // Agregar información sobre restricciones
-            foreach ($agrupadas as &$grupo) {
-                $grupo['tiene_restricciones'] = $this->tieneRestricciones($grupo['id_proceso_pedido'], $db);
-            }
-
-            $relacionesAgrupadas = array_values($agrupadas);
-            $data['relaciones'] = $relacionesAgrupadas;
+        if ($procesos) {
+            $agrupadas = $this->agruparRelaciones($procesos, $db);
+            $data['relaciones'] = array_values($agrupadas);
         } else {
             $data['error'] = 'No se encontraron detalles para esta línea de pedido.';
         }
@@ -39,25 +30,25 @@ class Escandallo extends BaseController
         return view('escandallo', $data);
     }
 
-    private function getRelaciones($model, $id_linea_pedido)
-    {
-        return $model->where('id_linea_pedido', $id_linea_pedido)->findAll();
-    }
 
-    private function agruparRelaciones($relaciones, $db)
+    // private function getRelaciones($model, $id_linea_pedido)
+    // {
+    //     return $model->where('id_linea_pedido', $id_linea_pedido)->findAll();
+    // }
+
+    private function agruparRelaciones($procesos, $db)
     {
         $agrupadas = [];
+        $relacionProcesoUsuarioModel = new RelacionProcesoUsuario_model($db); // Modelo para buscar datos relacionados
 
-        foreach ($relaciones as $relacion) {
-            $id_proceso_pedido = $relacion['id_proceso_pedido'];
-            $id_maquina = $relacion['id_maquina'];
-            $estado = $relacion['estado'];
+        foreach ($procesos as $proceso) {
+            $id_proceso_pedido = $proceso['id_relacion'];
+            $relaciones = $relacionProcesoUsuarioModel->where('id_proceso_pedido', $id_proceso_pedido)->findAll();
 
             if (!isset($agrupadas[$id_proceso_pedido])) {
                 $agrupadas[$id_proceso_pedido] = [
-                    'id_proceso_pedido' => $id_proceso_pedido, // Aseguramos que se incluya en el array
-                    'id_pedido' => $relacion['id_pedido'],
-                    'nombre_maquina' => $this->obtenerNombreMaquina($id_maquina, $db),
+                    'id_proceso_pedido' => $id_proceso_pedido,
+                    'nombre_maquina' => $this->obtenerNombreMaquina($proceso['id_maquina'], $db),
                     'buenas' => 0,
                     'malas' => 0,
                     'repasadas' => 0,
@@ -65,34 +56,37 @@ class Escandallo extends BaseController
                     'nombre_proceso' => $this->obtenerNombreProceso($id_proceso_pedido, $db),
                     'estados' => [],
                     'estado' => null,
+                    'tiene_restricciones' => $this->tieneRestricciones($id_proceso_pedido, $db)
                 ];
             }
 
-            $this->sumarPiezas($agrupadas[$id_proceso_pedido], $relacion);
-            $agrupadas[$id_proceso_pedido]['estados'][] = $estado;
+            // Sumar piezas y manejar datos de relaciones
+            foreach ($relaciones as $relacion) {
+                $this->sumarPiezas($agrupadas[$id_proceso_pedido], $relacion);
+                $agrupadas[$id_proceso_pedido]['estados'][] = $relacion['estado'];
+            }
         }
 
+        // Asignar y convertir estados
         foreach ($agrupadas as $key => &$grupo) {
             $grupo['estado'] = $this->calcularEstado($grupo['estados']);
             $grupo['estado'] = $this->convertirEstado($grupo['estado']);
         }
+
         return $agrupadas;
     }
 
+
     private function tieneRestricciones($id_proceso_pedido, $db)
     {
-        helper('controlacceso');
-        $data = usuario_sesion();
-        $db = db_connect($data['new_db']);
         $builder = $db->table('procesos_pedidos');
         $builder->select('restriccion');
         $builder->where('id_relacion', $id_proceso_pedido);
-
         $query = $builder->get();
 
         if ($query->getNumRows() > 0) {
             $result = $query->getRow();
-            return !empty($result->restricciones);
+            return !empty($result->restriccion);
         }
 
         return false;
@@ -196,31 +190,26 @@ class Escandallo extends BaseController
         $db = db_connect($data['new_db']);
         $model = new RelacionProcesoUsuario_model($db);
 
-        // Recuperar relaciones del proceso
-        $relaciones = $model->where('id_proceso_pedido', $id_proceso_pedido)->findAll();
+        $relaciones = $model->where('id_proceso_pedido', $id_proceso_pedido)
+            ->where("buenas != 0 OR malas != 0 OR repasadas != 0")
+            ->findAll();
 
-        // Recuperar el nombre del proceso
         $nombre_proceso = $this->obtenerNombreProceso($id_proceso_pedido, $db);
 
-        // Recuperar id_linea_pedido de la tabla procesos_pedidos
         $id_linea_pedido = $db->table('procesos_pedidos')->where('id_relacion', $id_proceso_pedido)->get()->getRow()->id_linea_pedido;
 
-        // Agregar migas de pan (breadcrumbs)
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
-        $this->addBreadcrumb('Escandallo', base_url('/escandallo/' . $id_linea_pedido)); // Aquí se usa id_linea_pedido
-        $this->addBreadcrumb('Datos Escandallo', base_url('/escandalloIndividual/' . $id_proceso_pedido)); // Aquí se pasa el id_proceso_pedido
+        $this->addBreadcrumb('Escandallo', base_url('/escandallo/' . $id_linea_pedido));
+        $this->addBreadcrumb('Datos Escandallo', base_url('/escandalloIndividual/' . $id_proceso_pedido));
 
-        // Pasar las migas de pan a la vista
         $data['amiga'] = $this->getBreadcrumbs();
 
         if ($relaciones) {
-            // Procesar las relaciones
             foreach ($relaciones as &$relacion) {
                 $relacion['nombre_usuario'] = $this->obtenerNombreUsuario($relacion['id_usuario'], $db);
                 $relacion['estado'] = $this->convertirEstado($relacion['estado']);
             }
-            // Pasar la id_linea_pedido junto con los datos a la vista
             $data['relaciones'] = $relaciones;
             $data['nombre_proceso'] = $nombre_proceso;
             $data['id_linea_pedido'] = $id_linea_pedido;
@@ -231,8 +220,4 @@ class Escandallo extends BaseController
             return view('escandalloIndividual', $data);
         }
     }
-
-
-
-
 }
