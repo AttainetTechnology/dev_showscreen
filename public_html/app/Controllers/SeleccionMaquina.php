@@ -330,10 +330,12 @@ class SeleccionMaquina extends BaseFichar
 
     public function editarPiezas()
     {
+        $usuario = session()->get('usuario')['id'];  // Asegúrate de acceder al campo correcto
         $buenas = $this->request->getPost('buenas');
         $malas = $this->request->getPost('malas');
         $repasadas = $this->request->getPost('repasadas');
         $action = $this->request->getPost('action');
+
 
         if ($buenas < 0 || $malas < 0 || $repasadas < 0) {
             return redirect()->to('/error')->with('error', 'Los valores no pueden ser negativos.');
@@ -401,8 +403,9 @@ class SeleccionMaquina extends BaseFichar
 
         if ($action === 'apuntar_terminar') {
             return redirect()->to('/selectMaquina');
+        } elseif ($action === 'apuntar_continuar') {
+            return redirect()->to("/sal/$usuario");
         }
-
         return redirect()->to('/presentes');
     }
 
