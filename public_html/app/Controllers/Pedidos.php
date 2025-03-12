@@ -326,9 +326,19 @@ class Pedidos extends BaseController
 	{
 		$Lineaspedido_model = model('App\Models\Lineaspedido_model');
 		$Lineaspedido_model->entrega_lineas($id_pedido);
-		$this->logAction('Pedidos', 'Entrega pedido, ID: ' . $id_pedido, []);
+
+		// Intentar cargar el modelo RelacionProcesosUsuario_model
+		$RelacionProcesosUsuario_model = model('App\Models\RelacionProcesosUsuario_model');
+		if ($RelacionProcesosUsuario_model !== null) {
+			$RelacionProcesosUsuario_model->where('id_pedido', $id_pedido)->delete();
+		} else {
+			log_message('error', 'No se pudo cargar el modelo RelacionProcesosUsuario_model');
+		}
+
+		$this->logAction('Pedidos', 'Entrega pedido y maneja posible error de modelo, ID: ' . $id_pedido, []);
 		return redirect()->to('pedidos/edit/' . $id_pedido);
 	}
+
 	public function anular($id_pedido)
 	{
 		$Lineaspedido_model = model('App\Models\Lineaspedido_model');
@@ -391,6 +401,7 @@ class Pedidos extends BaseController
 		$db = db_connect($data['new_db']);
 		$lineaspedidoModel = new LineaPedido($db);
 		$procesosPedidoModel = new ProcesosPedido($db);
+		$relacionProcesosUsuariosModel = model('App\Models\RelacionProcesoUsuario_model', false, $db); // Asegúrate de tener este modelo definido correctamente
 
 		$updateData = [
 			'id_producto' => $this->request->getPost('id_producto') ?? null,
@@ -411,11 +422,15 @@ class Pedidos extends BaseController
 		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
 			$id_pedido = $this->request->getPost('id_pedido');
 
-			if (isset($updateData['estado'])) {
+			if (isset($updateData['estado']) && $updateData['estado'] == 5) { 
 				$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)
 					->set('estado', $updateData['estado'])
 					->update();
+
+				// Elimina los registros en relacion_proceso_usuario si la línea se marca como 'entregado'
+				$relacionProcesosUsuariosModel->where('id_linea_pedido', $id_lineapedido)->delete();
 			}
+
 			$this->actualizarTotalPedido($id_pedido);
 			$this->actualizarEstadoPedido($id_pedido);
 			if ($this->request->isAJAX()) {
