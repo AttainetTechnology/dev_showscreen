@@ -31,13 +31,11 @@
                   <br>
                   <?php if (!empty($presente['maquinas'])): ?>
                      <div class="maquinas">
-                        <strong>Máquina:</strong>
                         <?php foreach ($presente['maquinas'] as $maquina): ?>
                            <span><?= $maquina['nombre']; ?></span>
                         <?php endforeach; ?>
                      </div>
                   <?php endif; ?>
-
                </div>
             </a>
          <?php endforeach; ?>
