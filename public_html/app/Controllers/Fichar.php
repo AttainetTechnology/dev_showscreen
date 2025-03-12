@@ -277,6 +277,14 @@ class Fichar extends BaseFichar
 			return redirect()->back();
 		}
 
+		$relacionProcesoUsuarioModel = model('RelacionProcesoUsuario_model', true, $this->db);
+		// Cambiando el estado a 2 en relacion_proceso_usuario
+		$relacionProcesoUsuarioModel
+			->where('id_usuario', $id)
+			->where('estado', 1)
+			->set(['estado' => 2])
+			->update();
+
 		$fechaentrada = $data1['entrada'];
 		$fichaextras = $data1['extras'];
 		$fichajes = model('Fichajes', true, $this->db);
@@ -288,7 +296,6 @@ class Fichar extends BaseFichar
 		$diff = $date1->diff($date2);
 		$totalMinutos = ($diff->h * 60) + $diff->i;
 
-		// Si el total de minutos trabajados es menor a 465 minutos (7 horas y 45 minutos)
 		if ($totalMinutos < 465 && $fichaextras != '1') {
 			$incidencia = "Menos de 8 Horas";
 		} else {
