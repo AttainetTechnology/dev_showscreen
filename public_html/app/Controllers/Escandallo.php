@@ -36,15 +36,14 @@ class Escandallo extends BaseController
     //     return $model->where('id_linea_pedido', $id_linea_pedido)->findAll();
     // }
 
-    private function agruparRelaciones($procesos, $db)
-    {
+    private function agruparRelaciones($procesos, $db) {
         $agrupadas = [];
         $relacionProcesoUsuarioModel = new RelacionProcesoUsuario_model($db); // Modelo para buscar datos relacionados
-
+    
         foreach ($procesos as $proceso) {
             $id_proceso_pedido = $proceso['id_relacion'];
             $relaciones = $relacionProcesoUsuarioModel->where('id_proceso_pedido', $id_proceso_pedido)->findAll();
-
+    
             if (!isset($agrupadas[$id_proceso_pedido])) {
                 $agrupadas[$id_proceso_pedido] = [
                     'id_proceso_pedido' => $id_proceso_pedido,
@@ -56,26 +55,27 @@ class Escandallo extends BaseController
                     'nombre_proceso' => $this->obtenerNombreProceso($id_proceso_pedido, $db),
                     'estados' => [],
                     'estado' => null,
-                    'tiene_restricciones' => $this->tieneRestricciones($id_proceso_pedido, $db)
+                    'tiene_restricciones' => $this->tieneRestricciones($id_proceso_pedido, $db),
+                    'tiene_relaciones' => !empty($relaciones) // Indicador si hay relaciones
                 ];
             }
-
+    
             // Sumar piezas y manejar datos de relaciones
             foreach ($relaciones as $relacion) {
                 $this->sumarPiezas($agrupadas[$id_proceso_pedido], $relacion);
                 $agrupadas[$id_proceso_pedido]['estados'][] = $relacion['estado'];
             }
         }
-
+    
         // Asignar y convertir estados
-        foreach ($agrupadas as $key => &$grupo) {
+        foreach ($agrupadas as &$grupo) {
             $grupo['estado'] = $this->calcularEstado($grupo['estados']);
             $grupo['estado'] = $this->convertirEstado($grupo['estado']);
         }
-
+    
         return $agrupadas;
     }
-
+    
 
     private function tieneRestricciones($id_proceso_pedido, $db)
     {

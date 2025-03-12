@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Lineaspedido_model;
 use App\Models\Pedidos_model;
-use CodeIgniter\Controller;
+use App\Models\RelacionProcesoUsuario_model;
 
 class Lista_produccion extends BaseControllerGC
 {
@@ -66,6 +66,7 @@ class Lista_produccion extends BaseControllerGC
 
         // Obtener los datos paginados de la tabla
         $builder = $db->table('v_linea_pedidos_con_familia');
+        $relacionProcesosUsuariosModel = new RelacionProcesoUsuario_model($db);
         $builder->select('id_lineapedido, fecha_entrada, med_inicial, med_final, id_cliente, nom_base, id_producto, id_pedido, estado, id_familia');
         $builder->where($coge_estado . $where_estado);
         $builder->orderBy('fecha_entrada', 'DESC');
@@ -92,7 +93,10 @@ class Lista_produccion extends BaseControllerGC
 
         $ahora = date('d-m-y');
         $titulo_pagina = "Partes " . $situacion . " - fecha: " . $ahora;
-
+        // Verificar la existencia de registros en relacion_procesos_usuarios para cada línea de pedido
+        foreach ($result as &$row) {
+            $row['tiene_escandallo'] = $relacionProcesosUsuariosModel->where('id_linea_pedido', $row['id_lineapedido'])->countAllResults() > 0;
+        }
         $data['titulo_pagina'] = $titulo_pagina;
         $data['result'] = $result;
         $data['amiga'] = $this->getBreadcrumbs();
@@ -102,8 +106,6 @@ class Lista_produccion extends BaseControllerGC
 
         echo view('lista_produccion_view', $data);
     }
-
-
 
     function asignaEstado($estado)
     {
