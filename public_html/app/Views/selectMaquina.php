@@ -149,3 +149,27 @@
                 </script>
             </div>
         </div>
+
+        <script>
+        (function() {
+        var tiempoInactividad = 30000; // 30 segundos
+        var temporizador;
+
+        function resetTemporizador() {
+            clearTimeout(temporizador);
+            temporizador = setTimeout(function() {
+                window.location.href = '/presentes'; 
+            }, tiempoInactividad);
+        }
+
+        // Eventos que reiniciarán el temporizador
+        window.onload = resetTemporizador;
+        window.onmousemove = resetTemporizador;
+        window.onmousedown = resetTemporizador;  //interacción táctil/teclado
+        window.ontouchstart = resetTemporizador;
+        window.onclick = resetTemporizador;     //clics
+        window.onkeypress = resetTemporizador;
+        window.addEventListener('scroll', resetTemporizador, true);  //scroll
+
+    })();
+        </script>
