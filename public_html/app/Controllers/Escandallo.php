@@ -30,12 +30,6 @@ class Escandallo extends BaseController
         return view('escandallo', $data);
     }
 
-
-    // private function getRelaciones($model, $id_linea_pedido)
-    // {
-    //     return $model->where('id_linea_pedido', $id_linea_pedido)->findAll();
-    // }
-
     private function agruparRelaciones($procesos, $db) {
         $agrupadas = [];
         $relacionProcesoUsuarioModel = new RelacionProcesoUsuario_model($db); // Modelo para buscar datos relacionados

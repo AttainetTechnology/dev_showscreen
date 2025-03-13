@@ -7,6 +7,11 @@
         <div class="cabecera2">
             <h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
         </div>
+        <div class="d-flex justify-content-end ">
+            <a href="<?= site_url('salir/' . $usuario['id']); ?>" class="btn volverButton">
+                <span class="glyphicon glyphicon-arrow-left"></span> Volver
+            </a>
+        </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-3 columna1">
@@ -138,11 +143,6 @@
                         </table>
                     <?php endif; ?>
                     <br>
-                    <div class="d-flex justify-content-end ">
-                        <a href="<?= site_url('salir/' . $usuario['id']); ?>" class="btn volverButton">
-                            <span class="glyphicon glyphicon-arrow-left"></span> Volver
-                        </a>
-                    </div>
                 </div>
                 <script>
                     window.history.replaceState({}, document.title, "<?= base_url('selectMaquina'); ?>");
@@ -151,25 +151,25 @@
         </div>
 
         <script>
-        (function() {
-        var tiempoInactividad = 30000; // 30 segundos
-        var temporizador;
+            (function () {
+                var tiempoInactividad = 30000; // 30 segundos
+                var temporizador;
 
-        function resetTemporizador() {
-            clearTimeout(temporizador);
-            temporizador = setTimeout(function() {
-                window.location.href = '/presentes'; 
-            }, tiempoInactividad);
-        }
+                function resetTemporizador() {
+                    clearTimeout(temporizador);
+                    temporizador = setTimeout(function () {
+                        window.location.href = '/presentes';
+                    }, tiempoInactividad);
+                }
 
-        // Eventos que reiniciarán el temporizador
-        window.onload = resetTemporizador;
-        window.onmousemove = resetTemporizador;
-        window.onmousedown = resetTemporizador;  //interacción táctil/teclado
-        window.ontouchstart = resetTemporizador;
-        window.onclick = resetTemporizador;     //clics
-        window.onkeypress = resetTemporizador;
-        window.addEventListener('scroll', resetTemporizador, true);  //scroll
+                // Eventos que reiniciarán el temporizador
+                window.onload = resetTemporizador;
+                window.onmousemove = resetTemporizador;
+                window.onmousedown = resetTemporizador;  //interacción táctil/teclado
+                window.ontouchstart = resetTemporizador;
+                window.onclick = resetTemporizador;     //clics
+                window.onkeypress = resetTemporizador;
+                window.addEventListener('scroll', resetTemporizador, true);  //scroll
 
-    })();
+            })();
         </script>

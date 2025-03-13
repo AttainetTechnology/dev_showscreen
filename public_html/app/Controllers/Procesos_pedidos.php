@@ -711,12 +711,14 @@ class Procesos_pedidos extends BaseControllerGC
             }
         }
     }
-
     private function agregarRestriccionProceso($procesosPedidoModel, $procesoModel, $proceso, $idProcesoActual, $idLineaPedido)
     {
+        if ($proceso['id_linea_pedido'] != $idLineaPedido) {
+            return;
+        }
         if ($proceso['estado'] < 4 && $proceso['id_proceso'] != $idProcesoActual) {
             $restriccionesConfig = $procesoModel->where('id_proceso', $proceso['id_proceso'])->first();
-
+    
             if ($restriccionesConfig) {
                 $restriccionesConfigArray = explode(',', $restriccionesConfig['restriccion']);
                 if (in_array($idProcesoActual, $restriccionesConfigArray)) {
@@ -733,4 +735,5 @@ class Procesos_pedidos extends BaseControllerGC
             }
         }
     }
+    
 }
