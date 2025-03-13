@@ -58,9 +58,9 @@
                 field: "tiene_restricciones",
                 cellRenderer: function (params) {
                     if (params.value) {
-                        return `<div style="width: 20px; height: 20px; background-color: red; border-radius: 3px;"></div>`; // 🔴 Restricción presente
+                        return `<div style="width: 20px; height: 20px; background-color: red; border-radius: 3px;"></div>`; // 🔴 Restricción 
                     } else {
-                        return `<div style="width: 20px; height: 20px; background-color: green; border-radius: 3px;"></div>`; // 🟢 No hay restricciones
+                        return `<div style="width: 20px; height: 20px; background-color: green; border-radius: 3px;"></div>`; // 🟢 No restricciones
                     }
                 }
             },
