@@ -217,3 +217,17 @@ table.procesos.table.table-bordered {
     height: 45px;
     font-size: 25px;
 }
+
+.container-fluid {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+
+.divMaquinas {
+    margin: 0px !important;
+}
+
+table.maquina td button {
+    width: 100%;
+    white-space: normal;
+}
