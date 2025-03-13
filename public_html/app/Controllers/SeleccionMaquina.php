@@ -112,7 +112,7 @@ class SeleccionMaquina extends BaseFichar
                 ->where('procesos_pedidos.restriccion', '') // Filtra cuando está vacío
                 ->orWhere('procesos_pedidos.restriccion IS NULL') // Filtra cuando es NULL
                 ->groupEnd()
-                ->where('procesos_pedidos.estado <', 4)
+                ->where('procesos_pedidos.estado', 3)
                 ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
                 ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
                 ->join('relacion_proceso_usuario', 'relacion_proceso_usuario.id_proceso_pedido = procesos_pedidos.id_relacion', 'left')
