@@ -191,7 +191,7 @@ class Escandallo extends BaseController
         $model = new RelacionProcesoUsuario_model($db);
 
         $relaciones = $model->where('id_proceso_pedido', $id_proceso_pedido)
-            ->where("buenas != 0 OR malas != 0 OR repasadas != 0")
+            ->where("buenas != 0 AND malas != 0 AND repasadas != 0")
             ->findAll();
 
         $nombre_proceso = $this->obtenerNombreProceso($id_proceso_pedido, $db);
