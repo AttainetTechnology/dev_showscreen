@@ -317,7 +317,7 @@ class Pedidos extends BaseController
 			log_message('error', 'No se pudo cargar el modelo RelacionProcesosUsuario_model');
 		}
 
-		$this->logAction('Pedidos', 'Entrega pedido y maneja posible error de modelo, ID: ' . $id_pedido, []);
+		$this->logAction('Pedidos', 'Entrega pedido, ID: ' . $id_pedido, []);
 		return redirect()->to('pedidos/edit/' . $id_pedido);
 	}
 
@@ -486,6 +486,7 @@ class Pedidos extends BaseController
 		if ($db->transStatus() === false) {
 			return redirect()->back()->with('error', 'No se pudo eliminar la línea del pedido');
 		}
+		$this->logAction('Pedidos', 'Elimina Linea pedido, ID: ' . $id_lineapedido, []);
 		return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea del pedido y procesos asociados eliminados correctamente');
 	}
 
