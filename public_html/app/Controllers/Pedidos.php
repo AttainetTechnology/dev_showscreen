@@ -77,8 +77,8 @@ class Pedidos extends BaseController
 		$this->addBreadcrumb('Inicio', base_url('/'));
 		$this->addBreadcrumb('Pedidos', base_url('/pedidos/enmarcha'));
 		$this->addBreadcrumb('Añadir Pedido');
-		$data = datos_user(); 
-		$db = db_connect($data['new_db']);  
+		$data = datos_user();
+		$db = db_connect($data['new_db']);
 
 		$clienteModel = new ClienteModel($db);
 		$data['clientes'] = $clienteModel->findAll();
@@ -205,7 +205,7 @@ class Pedidos extends BaseController
 		$data['users'] = $usuarioModel->findAll();
 		$data['clientes'] = $clienteModel->findAll();
 		$data['estados'] = array_filter($estadoModel->findAll(), function ($estado) {
-			return $estado['id_estado'] != 3; 
+			return $estado['id_estado'] != 3;
 		});
 		$data['amiga'] = $this->getBreadcrumbs();
 		$data['pedido'] = $pedido;
@@ -241,7 +241,7 @@ class Pedidos extends BaseController
 			'observaciones' => $this->request->getPost('observaciones'),
 		];
 
-		$updateData['estado'] = $pedido->estado; 
+		$updateData['estado'] = $pedido->estado;
 
 		if ($pedidoModel->update($id_pedido, $updateData)) {
 			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Pedido actualizado correctamente');
@@ -284,6 +284,7 @@ class Pedidos extends BaseController
 		if ($db->transStatus() === false) {
 			return redirect()->back()->with('error', 'No se pudo eliminar el pedido');
 		}
+		$this->logAction('Pedidos', 'Eliminado pedido, ID: ' . $id_pedido, []);
 		return redirect()->to(base_url('pedidos/enmarcha'))->with('success', 'Pedido y sus líneas asociadas eliminados correctamente');
 	}
 
@@ -294,6 +295,7 @@ class Pedidos extends BaseController
 		$builder = $db->table('linea_pedidos');
 		$builder->selectSum('total_linea', 'suma_total');
 		$builder->where('id_pedido', $id_pedido);
+		$builder->where('estado !=', 6);
 		$query = $builder->get();
 		$resultado = $query->getRow();
 		$totalPedido = $resultado->suma_total ?? 0;
@@ -301,6 +303,7 @@ class Pedidos extends BaseController
 		$pedidoModel->update($id_pedido, ['total_pedido' => $totalPedido]);
 		return $totalPedido;
 	}
+
 	public function entregar($id_pedido)
 	{
 		$data = usuario_sesion();
@@ -383,7 +386,7 @@ class Pedidos extends BaseController
 		$db = db_connect($data['new_db']);
 		$lineaspedidoModel = new LineaPedido($db);
 		$procesosPedidoModel = new ProcesosPedido($db);
-		$relacionProcesosUsuariosModel = model('App\Models\RelacionProcesoUsuario_model', false, $db); 
+		$relacionProcesosUsuariosModel = model('App\Models\RelacionProcesoUsuario_model', false, $db);
 
 		$updateData = [
 			'id_producto' => $this->request->getPost('id_producto') ?? null,
@@ -404,7 +407,7 @@ class Pedidos extends BaseController
 		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
 			$id_pedido = $this->request->getPost('id_pedido');
 
-			if (isset($updateData['estado']) && $updateData['estado'] == 5) { 
+			if (isset($updateData['estado']) && $updateData['estado'] == 5) {
 				$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)
 					->set('estado', $updateData['estado'])
 					->update();
@@ -428,6 +431,7 @@ class Pedidos extends BaseController
 			}
 		}
 	}
+
 	public function mostrarFormularioEditarLineaPedido($id_lineapedido)
 	{
 		$data = datos_user();
@@ -446,7 +450,7 @@ class Pedidos extends BaseController
 		$data['productos'] = $productosModel->findAll();
 		$data['estados'] = $estadoModel->findAll();
 		$data['linea_pedido'] = $linea_pedido;
-		$data['isEstadoEnCola'] = $isEstadoEnCola;  
+		$data['isEstadoEnCola'] = $isEstadoEnCola;
 
 		if ($this->request->isAJAX()) {
 			return view('editLineaPedido', $data);
@@ -468,26 +472,64 @@ class Pedidos extends BaseController
 		$data['fecha_entrega'] = $fecha_entrega;
 		return view('addLineaPedido', $data);
 	}
+
 	public function deleteLinea($id_lineapedido)
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
+		$session = session();
+		$session_data = $session->get('logged_in');
+		$nivel_acceso = $session_data['nivel'];
+
 		$lineaPedidoModel = new LineaPedido($db);
 		$procesosPedidoModel = new ProcesosPedido($db);
 		$linea = $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)->first();
+
 		if (!$linea) {
 			return redirect()->back()->with('error', 'Línea no encontrada');
 		}
+
 		$id_pedido = $linea['id_pedido'];
+
+		if ($nivel_acceso != 9) {
+			return $this->anularLinea($id_lineapedido, $id_pedido);
+		}
+
 		$db->transStart();
 		$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)->delete();
 		$lineaPedidoModel->delete($id_lineapedido);
 		$db->transComplete();
+
 		if ($db->transStatus() === false) {
 			return redirect()->back()->with('error', 'No se pudo eliminar la línea del pedido');
 		}
-		$this->logAction('Pedidos', 'Elimina Linea pedido, ID: ' . $id_lineapedido, []);
+
+		$this->logAction('Pedidos', 'Elimina Línea pedido, ID: ' . $id_lineapedido, []);
+
 		return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea del pedido y procesos asociados eliminados correctamente');
+	}
+
+	public function anularLinea($id_lineapedido, $id_pedido)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$lineaPedidoModel = new LineaPedido($db);
+
+		$linea = $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)->first();
+
+		if (!$linea) {
+			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('error', 'La línea de pedido no existe.');
+		}
+
+		$update = $lineaPedidoModel->update($id_lineapedido, ['estado' => 6]);
+
+		if ($update) {
+			$totalPedido = $this->actualizarTotalPedido($id_pedido);
+			$this->logAction('Pedidos', 'Anula Línea pedido, ID: ' . $id_lineapedido, []);
+			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea de pedido anulada correctamente y total del pedido actualizado. Total: ' . $totalPedido);
+		} else {
+			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('error', 'No se pudo anular la línea de pedido');
+		}
 	}
 
 	public function actualizarEstadoPedido($id_pedido)
