@@ -167,7 +167,7 @@ class Pedidos extends BaseController
 		$id_pedido = $pedidoModel->insert($pedidoData, true);
 
 		if ($id_pedido) {
-			$this->logAction('Pedido', 'Añadir Pedido', $pedidoData);
+			$this->logAction('Pedido', 'Añadir pedido, ID: ' . $id_pedido, $pedidoData);
 			return redirect()->to(base_url("pedidos/edit/$id_pedido"))->with('success', 'Pedido guardado correctamente');
 		} else {
 			return redirect()->back()->with('error', 'No se pudo guardar el pedido');
