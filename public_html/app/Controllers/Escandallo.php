@@ -14,7 +14,6 @@ class Escandallo extends BaseController
 
         $procesos = $procesosPedidosModel->where('id_linea_pedido', $id_linea_pedido)->findAll();
 
-        // Agregar migas de pan (breadcrumbs)
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
         $this->addBreadcrumb('Escandallo', base_url('/escandallo'));
@@ -30,14 +29,15 @@ class Escandallo extends BaseController
         return view('escandallo', $data);
     }
 
-    private function agruparRelaciones($procesos, $db) {
+    private function agruparRelaciones($procesos, $db)
+    {
         $agrupadas = [];
-        $relacionProcesoUsuarioModel = new RelacionProcesoUsuario_model($db); // Modelo para buscar datos relacionados
-    
+        $relacionProcesoUsuarioModel = new RelacionProcesoUsuario_model($db); 
+
         foreach ($procesos as $proceso) {
             $id_proceso_pedido = $proceso['id_relacion'];
             $relaciones = $relacionProcesoUsuarioModel->where('id_proceso_pedido', $id_proceso_pedido)->findAll();
-    
+
             if (!isset($agrupadas[$id_proceso_pedido])) {
                 $agrupadas[$id_proceso_pedido] = [
                     'id_proceso_pedido' => $id_proceso_pedido,
@@ -50,26 +50,25 @@ class Escandallo extends BaseController
                     'estados' => [],
                     'estado' => null,
                     'tiene_restricciones' => $this->tieneRestricciones($id_proceso_pedido, $db),
-                    'tiene_relaciones' => !empty($relaciones) // Indicador si hay relaciones
+                    'tiene_relaciones' => !empty($relaciones) 
                 ];
             }
-    
-            // Sumar piezas y manejar datos de relaciones
+
             foreach ($relaciones as $relacion) {
                 $this->sumarPiezas($agrupadas[$id_proceso_pedido], $relacion);
                 $agrupadas[$id_proceso_pedido]['estados'][] = $relacion['estado'];
             }
         }
-    
+
         // Asignar y convertir estados
         foreach ($agrupadas as &$grupo) {
             $grupo['estado'] = $this->calcularEstado($grupo['estados']);
             $grupo['estado'] = $this->convertirEstado($grupo['estado']);
         }
-    
+
         return $agrupadas;
     }
-    
+
 
     private function tieneRestricciones($id_proceso_pedido, $db)
     {
@@ -185,7 +184,6 @@ class Escandallo extends BaseController
         $model = new RelacionProcesoUsuario_model($db);
 
         $relaciones = $model->where('id_proceso_pedido', $id_proceso_pedido)
-            ->where("buenas != 0 AND malas != 0 AND repasadas != 0")
             ->findAll();
 
         $nombre_proceso = $this->obtenerNombreProceso($id_proceso_pedido, $db);

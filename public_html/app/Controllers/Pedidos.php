@@ -9,6 +9,7 @@ use App\Models\EstadoModel;
 use App\Models\LineaPedido;
 use App\Models\Productos_model;
 use App\Models\ProcesosPedido;
+use App\Models\RelacionProcesoUsuario_model;
 
 class Pedidos extends BaseController
 {
@@ -324,11 +325,14 @@ class Pedidos extends BaseController
 	}
 	public function entregar($id_pedido)
 	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+
 		$Lineaspedido_model = model('App\Models\Lineaspedido_model');
 		$Lineaspedido_model->entrega_lineas($id_pedido);
 
-		// Intentar cargar el modelo RelacionProcesosUsuario_model
-		$RelacionProcesosUsuario_model = model('App\Models\RelacionProcesosUsuario_model');
+
+		$RelacionProcesosUsuario_model = new RelacionProcesoUsuario_model($db);
 		if ($RelacionProcesosUsuario_model !== null) {
 			$RelacionProcesosUsuario_model->where('id_pedido', $id_pedido)->delete();
 		} else {

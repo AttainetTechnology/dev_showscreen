@@ -396,7 +396,7 @@ class SeleccionMaquina extends BaseFichar
         if ($todosTerminado) {
             $this->finalizarProcesoPedido($idRelacionProcesoUsuario);
         }
-
+        $this->eliminarRegistroSiVacio($registro['id_proceso_pedido']);
         $this->eliminarRestriccion($idRelacionProcesoUsuario);
         $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
         $this->ActualizarEstadoPedido($idRelacionProcesoUsuario);
@@ -407,6 +407,22 @@ class SeleccionMaquina extends BaseFichar
             return redirect()->to("/sal/$usuario");
         }
         return redirect()->to('/presentes');
+    }
+    private function eliminarRegistroSiVacio($id_proceso_pedido)
+    {
+        $db = $this->db;
+        $builder = $db->table('relacion_proceso_usuario');
+
+        $registro = $builder->where('id_proceso_pedido', $id_proceso_pedido)
+            ->where('buenas', 0)
+            ->where('malas', 0)
+            ->where('repasadas', 0)
+            ->get()
+            ->getRow();
+
+        if ($registro) {
+            $builder->where('id', $registro->id)->delete();
+        }
     }
 
 
