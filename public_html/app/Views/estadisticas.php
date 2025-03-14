@@ -18,7 +18,7 @@ use App\Models\Menu_familias_model; ?>
 					<div class="panel-heading" style="font-size: 15px !important;">
 						<div class="row">
 							<div class="col-xs-3">
-								<i class="fa fa-clock-o fa-5x"></i>
+								<i class="fa fa-clock-o fa-3x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
 								<div class="display-3">
@@ -44,7 +44,7 @@ use App\Models\Menu_familias_model; ?>
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-3">
-								<i class="fa fa-tasks fa-5x"></i>
+								<i class="fa fa-tasks fa-4x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
 								<div class="display-3">
@@ -70,7 +70,7 @@ use App\Models\Menu_familias_model; ?>
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-3">
-								<i class="fa fa-wrench fa-5x"></i>
+								<i class="fa fa-wrench fa-4x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
 								<div class="display-3">
@@ -96,7 +96,7 @@ use App\Models\Menu_familias_model; ?>
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-3">
-								<i class="fa fa-check fa-5x"></i>
+								<i class="fa fa-check fa-4x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
 								<div class="display-3">
