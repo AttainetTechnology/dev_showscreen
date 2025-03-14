@@ -44,7 +44,6 @@ class Pedidos extends BaseController
 		$this->todos('estado=', '5');
 	}
 
-	//CREAMOS LA PAGINA DE PEDIDOs
 
 	public function todos($coge_estado, $where_estado)
 	{
@@ -57,24 +56,20 @@ class Pedidos extends BaseController
 		$session_data = $session->get('logged_in');
 		$nivel_acceso = $session_data['nivel'];
 
-		// Cargar el modelo de pedidos, clientes y usuarios
 		$pedidoModel = new Pedidos_model($db);
 		$clienteModel = new ClienteModel($db);
 		$usuarioModel = new Usuarios2_Model($db);
 
-		// Obtener todos los pedidos
 		$data['pedidos'] = $pedidoModel->getPedidoWithRelations($coge_estado, $where_estado);
 
-		// Obtener la lista de clientes, usuarios y estados para los filtros
 		$data['clientes'] = $clienteModel->findAll();
 		$data['users'] = $usuarioModel->findAll();
-		$estadoModel = new EstadoModel($db);  // Añadir la carga de estados
+		$estadoModel = new EstadoModel($db);
 		$data['estados'] = $estadoModel->findAll();
 
-		// Verificar el nivel de acceso para permitir la eliminación
 		$data['allow_delete'] = ($nivel_acceso == 9);
 		$data['amiga'] = $this->getBreadcrumbs();
-		// Cargar la vista pasando los datos
+
 		echo view('mostrarPedido', $data);
 	}
 	public function add()
@@ -82,16 +77,14 @@ class Pedidos extends BaseController
 		$this->addBreadcrumb('Inicio', base_url('/'));
 		$this->addBreadcrumb('Pedidos', base_url('/pedidos/enmarcha'));
 		$this->addBreadcrumb('Añadir Pedido');
-		$data = datos_user();  // Obtener los datos de la sesión del usuario
-		$db = db_connect($data['new_db']);  // Conectar a la base de datos del cliente
+		$data = datos_user(); 
+		$db = db_connect($data['new_db']);  
 
 		$clienteModel = new ClienteModel($db);
 		$data['clientes'] = $clienteModel->findAll();
 
-		// Obtener el ID del usuario autenticado
 		$id_usuario = $data['id_user'];
 
-		// Consulta para obtener el nombre y apellidos desde la tabla 'users' de la BBDD del cliente
 		$builder = $db->table('users');
 		$builder->select('nombre_usuario, apellidos_usuario');
 		$builder->where('id', $id_usuario);
@@ -100,7 +93,6 @@ class Pedidos extends BaseController
 		$usuario = $query->getRow();
 		$data['amiga'] = $this->getBreadcrumbs();
 
-		// Verificar si se encontró el usuario
 		$data['usuario_sesion'] = $usuario ? [
 			'id_user' => $id_usuario,
 			'nombre_usuario' => $usuario->nombre_usuario,
@@ -111,7 +103,6 @@ class Pedidos extends BaseController
 			'apellidos_usuario' => ''
 		];
 
-		// Cargar la vista completa como página, en lugar de manejar una petición AJAX
 		return view('add_pedido', $data);
 	}
 
@@ -139,12 +130,11 @@ class Pedidos extends BaseController
 	}
 	public function save()
 	{
-		// Obtener los datos del usuario autenticado desde la sesión
+
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
 
-		// Validación básica de datos
 		if (
 			!$this->validate([
 				'id_cliente' => 'required',
@@ -155,7 +145,6 @@ class Pedidos extends BaseController
 			return redirect()->back()->with('error', 'Faltan datos obligatorios');
 		}
 
-		// Obtener el nombre del usuario desde la tabla 'users' en la base de datos
 		$builder = $db->table('users');
 		$builder->select('nombre_usuario, apellidos_usuario');
 		$builder->where('id', $data['id_user']);
@@ -163,10 +152,8 @@ class Pedidos extends BaseController
 		$query = $builder->get();
 		$usuario = $query->getRow();
 
-		// Verificar si se encontró el usuario
 		$nombre_usuario = $usuario ? $usuario->nombre_usuario . ' ' . $usuario->apellidos_usuario : 'test';
 
-		// Preparar los datos para insertar el pedido
 		$pedidoData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
@@ -177,7 +164,6 @@ class Pedidos extends BaseController
 			'pedido_por' => $nombre_usuario
 		];
 
-		// Insertar el pedido y capturar el ID recién creado
 		$id_pedido = $pedidoModel->insert($pedidoData, true);
 
 		if ($id_pedido) {
@@ -202,12 +188,12 @@ class Pedidos extends BaseController
 		$estadoModel = new EstadoModel($db);
 		$productosModel = new Productos_model($db);
 		$usuarioModel = new Usuarios2_Model($db);
-		// Obtener el pedido actual a editar
+
 		$pedido = $pedidoModel->findPedidoWithUser($id_pedido);
 		if (!$pedido) {
 			return redirect()->back()->with('error', 'Pedido no encontrado');
 		}
-		// Obtener las líneas de pedido con el nombre del producto
+
 		$builder = $db->table('linea_pedidos');
 		$builder->select('linea_pedidos.*, productos.nombre_producto');
 		$builder->join('productos', 'productos.id_producto = linea_pedidos.id_producto');
@@ -215,12 +201,11 @@ class Pedidos extends BaseController
 		$query = $builder->get();
 		$lineas_pedido = $query->getResultArray();
 
-		// Pasar los datos a la vista
 		$data['productos'] = $productosModel->findAll();
 		$data['users'] = $usuarioModel->findAll();
 		$data['clientes'] = $clienteModel->findAll();
 		$data['estados'] = array_filter($estadoModel->findAll(), function ($estado) {
-			return $estado['id_estado'] != 3; // Filtra el estado con id 3
+			return $estado['id_estado'] != 3; 
 		});
 		$data['amiga'] = $this->getBreadcrumbs();
 		$data['pedido'] = $pedido;
@@ -233,7 +218,6 @@ class Pedidos extends BaseController
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
 
-		// Validación básica de datos
 		if (
 			!$this->validate([
 				'id_cliente' => 'required',
@@ -244,13 +228,10 @@ class Pedidos extends BaseController
 			return redirect()->back()->with('error', 'Faltan datos obligatorios');
 		}
 
-		// Obtener el pedido actual para mantener su estado
 		$pedido = $pedidoModel->find($id_pedido);
 		if (!$pedido) {
 			return redirect()->back()->with('error', 'Pedido no encontrado');
 		}
-
-		// Preparar los datos para actualizar el pedido
 		$updateData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
@@ -260,10 +241,8 @@ class Pedidos extends BaseController
 			'observaciones' => $this->request->getPost('observaciones'),
 		];
 
-		// Mantener el estado original del pedido, no modificarlo
-		$updateData['estado'] = $pedido->estado; // Usar notación de objeto ->
+		$updateData['estado'] = $pedido->estado; 
 
-		// Actualizar el pedido
 		if ($pedidoModel->update($id_pedido, $updateData)) {
 			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Pedido actualizado correctamente');
 		} else {
@@ -283,7 +262,6 @@ class Pedidos extends BaseController
 	}
 	public function delete($id_pedido)
 	{
-		// Obtener datos de la sesión
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$session = session();
@@ -405,7 +383,7 @@ class Pedidos extends BaseController
 		$db = db_connect($data['new_db']);
 		$lineaspedidoModel = new LineaPedido($db);
 		$procesosPedidoModel = new ProcesosPedido($db);
-		$relacionProcesosUsuariosModel = model('App\Models\RelacionProcesoUsuario_model', false, $db); // Asegúrate de tener este modelo definido correctamente
+		$relacionProcesosUsuariosModel = model('App\Models\RelacionProcesoUsuario_model', false, $db); 
 
 		$updateData = [
 			'id_producto' => $this->request->getPost('id_producto') ?? null,
@@ -463,16 +441,13 @@ class Pedidos extends BaseController
 			return $this->response->setStatusCode(404, 'Línea de pedido no encontrada');
 		}
 
-		// Verificar si el estado de la línea es "en cola"
 		$isEstadoEnCola = ($linea_pedido['estado'] === 'en cola');
 
-		// Pasar datos a la vista
 		$data['productos'] = $productosModel->findAll();
 		$data['estados'] = $estadoModel->findAll();
 		$data['linea_pedido'] = $linea_pedido;
-		$data['isEstadoEnCola'] = $isEstadoEnCola;  // Variable adicional para controlar la visibilidad
+		$data['isEstadoEnCola'] = $isEstadoEnCola;  
 
-		// Renderizar la vista dependiendo de si es AJAX o no
 		if ($this->request->isAJAX()) {
 			return view('editLineaPedido', $data);
 		} else {

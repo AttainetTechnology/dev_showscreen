@@ -35,7 +35,6 @@ class SeleccionMaquina extends BaseFichar
         session()->set('usuario', $usuario);
         $procesosUsuario = $this->obtenerProcesosUsuario($usuario['id']);
 
-        // Definir los datos para la vista
         $datos = [
             'cabecera' => view('template/cabecera_select'),
             'hora' => view('template/hora_logo'),
@@ -60,7 +59,6 @@ class SeleccionMaquina extends BaseFichar
 
         session()->set('usuario', $usuario);
 
-        // Verificamos si existe algún registro en la tabla relacion_proceso_usuario con estado = 1
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registroRelacion = $relacionModel->where('id_usuario', $id_usuario)
             ->where('estado', 1)
@@ -71,10 +69,8 @@ class SeleccionMaquina extends BaseFichar
             return redirect()->to('/editarProceso/' . $registroRelacion['id']);
         }
 
-        // Si no existe relación, mostramos la vista selectMaquina
         $procesosUsuario = $this->obtenerProcesosUsuario($usuario['id']);
 
-        // Definir los datos para la vista
         $datos = [
             'cabecera' => view('template/cabecera_select'),
             'hora' => view('template/hora_logo'),
@@ -109,8 +105,8 @@ class SeleccionMaquina extends BaseFichar
             $procesos = $procesosPedidoModel
                 ->where('procesos_pedidos.id_maquina', $idMaquina)
                 ->groupStart()
-                ->where('procesos_pedidos.restriccion', '') // Filtra cuando está vacío
-                ->orWhere('procesos_pedidos.restriccion IS NULL') // Filtra cuando es NULL
+                ->where('procesos_pedidos.restriccion', '') 
+                ->orWhere('procesos_pedidos.restriccion IS NULL')
                 ->groupEnd()
                 ->where('procesos_pedidos.estado', 3)
                 ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
@@ -137,7 +133,6 @@ class SeleccionMaquina extends BaseFichar
                 $proceso['nombre_cliente'] = $nombreCliente;
             }
 
-            // Definir los datos para la vista
             $datos = [
                 'cabecera' => view('template/cabecera_select'),
                 'hora' => view('template/hora_logo'),
@@ -241,7 +236,7 @@ class SeleccionMaquina extends BaseFichar
             ->where('relacion_proceso_usuario.id_usuario', $id_usuario)
             ->where('procesos_pedidos.estado <', 4)
             ->where('relacion_proceso_usuario.estado', 1)
-            ->select('relacion_proceso_usuario.id, procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido') // Selección del 'id' de la tabla 'relacion_proceso_usuario'
+            ->select('relacion_proceso_usuario.id, procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')
             ->get()
             ->getResultArray();
         foreach ($procesos as &$proceso) {
@@ -330,7 +325,7 @@ class SeleccionMaquina extends BaseFichar
 
     public function editarPiezas()
     {
-        $usuario = session()->get('usuario')['id'];  // Asegúrate de acceder al campo correcto
+        $usuario = session()->get('usuario')['id'];  
         $buenas = $this->request->getPost('buenas');
         $malas = $this->request->getPost('malas');
         $repasadas = $this->request->getPost('repasadas');

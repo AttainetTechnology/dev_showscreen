@@ -60,7 +60,6 @@ class Escandallo extends BaseController
             }
         }
 
-        // Asignar y convertir estados
         foreach ($agrupadas as &$grupo) {
             $grupo['estado'] = $this->calcularEstado($grupo['estados']);
             $grupo['estado'] = $this->convertirEstado($grupo['estado']);

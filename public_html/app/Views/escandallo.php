@@ -75,7 +75,6 @@
         }
 
 
-        // Configurar ag-Grid
         const gridOptions = {
             columnDefs: columnDefs,
             rowData: relacionesData,
@@ -98,7 +97,6 @@
             }
         };
 
-        // Iniciar ag-Grid
         document.addEventListener('DOMContentLoaded', function () {
             const gridDiv = document.querySelector('#myGrid');
             new agGrid.Grid(gridDiv, gridOptions);
