@@ -212,6 +212,78 @@ class Pedidos extends BaseController
 		$data['lineas_pedido'] = $lineas_pedido;
 		return view('editPedido', $data);
 	}
+
+
+	public function duplicar($id_pedido)
+	{
+		$session = session();
+
+		$data = datos_user();
+		$usuario_id = $data['id_user'];
+		$db = db_connect($data['new_db']);
+		$pedidoModel = new Pedidos_model($db);
+		$pedido = (array) $pedidoModel->find($id_pedido);
+
+		if (!$pedido) {
+			return redirect()->back()->with('error', 'Pedido no encontrado');
+		}
+
+		$nuevoPedido = [
+			'id_cliente' => $pedido['id_cliente'],
+			'referencia' => $pedido['referencia'],
+			'observaciones' => $pedido['observaciones'],
+			'fecha_entrada' => date('Y-m-d'),
+			'fecha_entrega' => date('Y-m-d', strtotime('+14 days')),
+			'estante' => $pedido['estante'],
+			'id_usuario' => $usuario_id,
+			'total_pedido' => $pedido['total_pedido'],
+			'detalles' => $pedido['detalles'],
+			'estado' => 0,
+			'pedido_por' => $pedido['pedido_por'],
+			'representante' => $pedido['representante'],
+			'bt_imprimir' => $pedido['bt_imprimir']
+		];
+		$nuevoPedidoId = $pedidoModel->insert($nuevoPedido);
+
+		if (!$nuevoPedidoId) {
+			return redirect()->back()->with('error', 'Error al duplicar el pedido');
+		}
+
+		$lineaPedidoModel = new LineaPedido($db);
+		$lineas = $lineaPedidoModel->where('id_pedido', $id_pedido)->findAll();
+
+		foreach ($lineas as $linea) {
+			$nuevaLinea = [
+				'id_pedido' => $nuevoPedidoId,
+				'fecha_entrada' => date('Y-m-d'),
+				'fecha_entrega' => date('Y-m-d', strtotime('+14 days')),
+				'id_producto' => $linea['id_producto'],
+				'n_piezas' => $linea['n_piezas'],
+				'nom_base' => $linea['nom_base'],
+				'nom_inserto' => $linea['nom_inserto'],
+				'tono' => $linea['tono'],
+				'cal' => $linea['cal'],
+				'torelo' => $linea['torelo'],
+				'med_inicial' => $linea['med_inicial'],
+				'med_final' => $linea['med_final'],
+				'lado' => $linea['lado'],
+				'distancia' => $linea['distancia'],
+				'observaciones' => $linea['observaciones'],
+				'id_usuario' => $usuario_id,
+				'unidades' => $linea['unidades'],
+				'precio_venta' => $linea['precio_venta'],
+				'manipulacion' => $linea['manipulacion'],
+				'descuento' => $linea['descuento'],
+				'add_linea' => $linea['add_linea'],
+				'total_linea' => $linea['total_linea'],
+				'estado' => 0
+			];
+			$lineaPedidoModel->insert($nuevaLinea);
+		}
+		$this->logAction('Pedidos', 'Duplica Linea Pedido, ID: ' . $id_pedido, []);
+		return redirect()->to(base_url('pedidos/edit/' . $nuevoPedidoId))->with('success', 'Pedido duplicado correctamente');
+	}
+
 	public function update($id_pedido)
 	{
 		$data = usuario_sesion();
