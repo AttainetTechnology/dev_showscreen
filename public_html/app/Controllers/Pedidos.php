@@ -316,6 +316,7 @@ class Pedidos extends BaseController
 		$updateData['estado'] = $pedido->estado;
 
 		if ($pedidoModel->update($id_pedido, $updateData)) {
+			$this->logAction('Pedidos', 'Edita pedido, ID: ' . $id_pedido, []);
 			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Pedido actualizado correctamente');
 		} else {
 			return redirect()->back()->with('error', 'No se pudo actualizar el pedido');
@@ -444,9 +445,11 @@ class Pedidos extends BaseController
 			'precio_venta' => $precio_venta,
 			'total_linea' => $n_piezas * $precio_venta
 		];
+		$id_pedido = $this->request->getPost('id_pedido');
 		if ($lineaspedidoModel->insert($data)) {
 			$this->actualizarTotalPedido($data['id_pedido']);
 			$this->actualizarEstadoPedido($data['id_pedido']);
+			$this->logAction('Pedidos', 'Añade linea pedido, Id pedido: ' . $id_pedido, []);
 			return $this->response->setJSON(['success' => 'Línea de pedido añadida correctamente']);
 		} else {
 			return $this->response->setJSON(['error' => 'No se pudo añadir la línea de pedido']);
@@ -491,6 +494,7 @@ class Pedidos extends BaseController
 			$this->actualizarTotalPedido($id_pedido);
 			$this->actualizarEstadoPedido($id_pedido);
 			if ($this->request->isAJAX()) {
+				$this->logAction('Pedidos', 'Edita linea pedido, ID: ' . $id_lineapedido, []);
 				return $this->response->setJSON(['success' => true, 'message' => 'Línea de pedido actualizada correctamente']);
 			} else {
 				return redirect()->to(base_url("pedidos/edit/$id_pedido"));
