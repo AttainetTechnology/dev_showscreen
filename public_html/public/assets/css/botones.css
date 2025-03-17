@@ -561,3 +561,8 @@ button.btn.botonTabla.btnEditarTabla {
     margin: 0px;
     padding: 0px;
 }
+
+.botonReset{
+    margin: 0px;
+    padding: 4px;
+}
