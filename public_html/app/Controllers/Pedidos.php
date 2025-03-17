@@ -230,7 +230,7 @@ class Pedidos extends BaseController
 
 		$nuevoPedido = [
 			'id_cliente' => $pedido['id_cliente'],
-			'referencia' => $pedido['referencia'],
+			'referencia' => '[DUPLICADO] ' . $pedido['referencia'],
 			'observaciones' => $pedido['observaciones'],
 			'fecha_entrada' => date('Y-m-d'),
 			'fecha_entrega' => date('Y-m-d', strtotime('+14 days')),
