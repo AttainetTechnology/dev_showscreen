@@ -25,8 +25,7 @@ class Log extends BaseController
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $logModel = new Log_model($db);
-        $logs = $logModel->findAll();
-
+        $logs = $logModel->orderBy('fecha', 'DESC')->findAll();
         if ($logs) {
             return $this->response->setJSON($logs);
         } else {
