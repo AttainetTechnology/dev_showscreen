@@ -559,6 +559,8 @@ class Pedidos extends BaseController
 
 		$lineaPedidoModel = new LineaPedido($db);
 		$procesosPedidoModel = new ProcesosPedido($db);
+		$relacionProcesoUsuarioModel = $db->table('relacion_proceso_usuario');
+
 		$linea = $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)->first();
 
 		if (!$linea) {
@@ -572,8 +574,13 @@ class Pedidos extends BaseController
 		}
 
 		$db->transStart();
+
+		$relacionProcesoUsuarioModel->where('id_linea_pedido', $id_lineapedido)->delete();
+
 		$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)->delete();
+
 		$lineaPedidoModel->delete($id_lineapedido);
+
 		$db->transComplete();
 
 		if ($db->transStatus() === false) {
@@ -582,7 +589,7 @@ class Pedidos extends BaseController
 
 		$this->logAction('Pedidos', 'Elimina Línea pedido, ID: ' . $id_lineapedido, []);
 
-		return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea del pedido y procesos asociados eliminados correctamente');
+		return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea del pedido, procesos asociados y registros en relacion_proceso_usuario eliminados correctamente');
 	}
 
 	public function anularLinea($id_lineapedido, $id_pedido)
@@ -590,6 +597,7 @@ class Pedidos extends BaseController
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$lineaPedidoModel = new LineaPedido($db);
+		$relacionProcesoUsuarioModel = $db->table('relacion_proceso_usuario');
 
 		$linea = $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)->first();
 
@@ -597,17 +605,25 @@ class Pedidos extends BaseController
 			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('error', 'La línea de pedido no existe.');
 		}
 
+		$db->transStart();
+
+		// Anular la línea de pedido
 		$update = $lineaPedidoModel->update($id_lineapedido, ['estado' => 6]);
 
 		if ($update) {
+			// Eliminar registros en relacion_proceso_usuario
+			$relacionProcesoUsuarioModel->where('id_linea_pedido', $id_lineapedido)->delete();
+
 			$totalPedido = $this->actualizarTotalPedido($id_pedido);
 			$this->logAction('Pedidos', 'Anula Línea pedido, ID: ' . $id_lineapedido, []);
-			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea de pedido anulada correctamente y total del pedido actualizado. Total: ' . $totalPedido);
+
+			$db->transComplete();
+			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('success', 'Línea de pedido anulada correctamente, registros en relacion_proceso_usuario eliminados y total del pedido actualizado. Total: ' . $totalPedido);
 		} else {
+			$db->transRollback();
 			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))->with('error', 'No se pudo anular la línea de pedido');
 		}
 	}
-
 	public function actualizarEstadoPedido($id_pedido)
 	{
 		$data = usuario_sesion();
