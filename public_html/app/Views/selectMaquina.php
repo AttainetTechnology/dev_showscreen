@@ -8,7 +8,7 @@
             <h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
         </div>
         <div class="d-flex justify-content-end ">
-            <a href="<?= site_url('salir/' . $usuario['id']); ?>" class="btn volverButton">
+            <a href="<?= site_url('/presentes')?>" class="btn volverButton">
                 <span class="glyphicon glyphicon-arrow-left"></span> Volver
             </a>
         </div>
