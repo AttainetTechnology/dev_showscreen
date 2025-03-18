@@ -198,7 +198,7 @@ class Empresas extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new ClienteModel($db);
-
+        $this->logAction('Empresas', 'Eliminiar empresa ' . $id, []);
         // Intentar eliminar la empresa con el ID proporcionado
         if ($model->delete($id)) {
             return $this->response->setJSON(['success' => true]);
