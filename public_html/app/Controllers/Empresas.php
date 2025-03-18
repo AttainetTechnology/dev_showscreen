@@ -133,7 +133,6 @@ class Empresas extends BaseController
         $this->addBreadcrumb('Empresas', base_url('empresas'));
         $this->addBreadcrumb('Editar Empresa');
         $data['amiga'] = $this->getBreadcrumbs();
-
         return view('editarEmpresa', $data);
     }
 
@@ -162,7 +161,7 @@ class Empresas extends BaseController
             'email' => $this->request->getPost('email'),
             'web' => $this->request->getPost('web'),
         ];
-
+        $this->logAction('Empresas', 'Añadir empresa ' . $formData['nombre_cliente'], []);
         if (!$formData['nombre_cliente'] || !$formData['nif']) {
             return $this->response->setJSON(['success' => false, 'message' => 'Nombre y NIF son obligatorios.']);
         }
@@ -182,14 +181,16 @@ class Empresas extends BaseController
 
         // Recoge y verifica los datos
         $formData = $this->request->getPost();
-
+        $this->logAction('Empresas', 'Editar empresa ' . $id, []);
         if ($model->update($id, $formData)) {
             // Redirige a la misma vista de edición en caso de éxito
             return redirect()->to(base_url('empresas/editForm/' . $id))->with('success', 'La empresa ha sido actualizada correctamente.');
+
         } else {
             // Redirige con un mensaje de error en caso de fallo
             return redirect()->back()->with('error', 'Error al actualizar la empresa.');
         }
+
     }
 
     public function eliminar($id)
