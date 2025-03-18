@@ -280,7 +280,7 @@ class Pedidos extends BaseController
 			];
 			$lineaPedidoModel->insert($nuevaLinea);
 		}
-		$this->logAction('Pedidos', 'Duplica Linea Pedido, ID: ' . $id_pedido, []);
+		$this->logAction('Pedidos', 'Duplica Pedido, ID: ' . $id_pedido, []);
 		return redirect()->to(base_url('pedidos/edit/' . $nuevoPedidoId))->with('success', 'Pedido duplicado correctamente');
 	}
 

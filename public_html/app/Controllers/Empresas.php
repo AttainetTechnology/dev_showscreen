@@ -254,7 +254,6 @@ class Empresas extends BaseController
         $db = db_connect($data['new_db']);
         $contactoModel = new Contactos($db);
 
-        // Intentar eliminar el contacto con el ID proporcionado
         if ($contactoModel->delete($id_contacto)) {
             return $this->response->setJSON(['success' => true]);
         } else {
@@ -293,7 +292,6 @@ class Empresas extends BaseController
             'cargo' => $this->request->getPost('cargo'),
             'email' => $this->request->getPost('email'),
         ];
-
         // Actualiza el contacto
         if ($contactoModel->update($id_contacto, $contactoData)) {
             return $this->response->setJSON(['success' => true]);

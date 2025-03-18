@@ -121,7 +121,7 @@ class Partes_controller extends BaseControllerGC
         $builder->set($data2);
         $builder->where('id_lineapedido', $id_lineapedido);
         $builder->update();
-
+        $this->logAction('Linea Pedido', 'Parte Linea, ID: ' . $id_lineapedido, []);
         // Revisar si todas las líneas han cambiado de estado y actualizar el estado del pedido
         $Lineaspedido_model = model('App\Models\Lineaspedido_model');
         $Lineaspedido_model->actualiza_estado_lineas($id_lineapedido);
