@@ -105,7 +105,7 @@ class Fichar extends BaseFichar
 		$fichajes = new Fichajes($this->db);
 		$relacionProcesoUsuario = new RelacionProcesoUsuario_model($this->db);
 		$hoy = date('Y-m-d H:i:s');
-		$limite = (new DateTime($hoy))->modify('-1 hours')->format('Y-m-d H:i:s');
+		$limite = (new DateTime($hoy))->modify('-10 hours')->format('Y-m-d H:i:s');
 
 		// Buscar todos los fichajes que llevan abiertos más de 8 horas
 		$fichajesAbiertos = $presentes

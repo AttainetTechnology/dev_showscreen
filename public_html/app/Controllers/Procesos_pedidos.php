@@ -397,6 +397,7 @@ class Procesos_pedidos extends BaseControllerGC
                     $pedidoModel->where('id_pedido', $idPedido)->set(['estado' => 4])->update();
                 }
             }
+            $this->logAction('Organizador', 'Termina Proceso, Linea pedido ID: ' . $idLineaPedido, []);
         }
 
         if (!empty($procesosConRestricciones)) {

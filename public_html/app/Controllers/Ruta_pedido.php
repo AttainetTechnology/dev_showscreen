@@ -118,6 +118,7 @@ class Ruta_pedido extends BaseController
                 'id_pedido' => $id_pedido
             ]);
         }
+        $this->logAction('Rutas', 'Añade ruta, pedido ID: ' . $id_pedido, []);
         if ($this->request->isAJAX()) {
             return $this->response->setJSON(['success' => true]);
         }
@@ -136,6 +137,7 @@ class Ruta_pedido extends BaseController
             log_message('error', 'Error al eliminar la ruta: ' . $e->getMessage());
             return $this->response->setStatusCode(500)->setJSON(['error' => 'Error al eliminar la ruta.']);
         }
+        $this->logAction('Rutas', 'Elimina ruta, ID: ' . $id_ruta, []);
     }
     public function obtenerRuta($id_ruta)
     {
