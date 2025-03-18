@@ -11,6 +11,7 @@ use App\Models\Festivos;
 use App\Models\Usuarios_model;
 use App\Models\Hoy;
 use App\Models\ProcesosPedido;
+use App\Models\RelacionProcesoUsuario_model;
 use App\Models\Vacaciones_model;
 use CodeIgniter\I18n\Time;
 use DateTime;
@@ -102,8 +103,9 @@ class Fichar extends BaseFichar
 	{
 		$presentes = new Presentes($this->db);
 		$fichajes = new Fichajes($this->db);
+		$relacionProcesoUsuario = new RelacionProcesoUsuario_model($this->db);
 		$hoy = date('Y-m-d H:i:s');
-		$limite = (new DateTime($hoy))->modify('-10 hours')->format('Y-m-d H:i:s');
+		$limite = (new DateTime($hoy))->modify('-1 hours')->format('Y-m-d H:i:s');
 
 		// Buscar todos los fichajes que llevan abiertos más de 8 horas
 		$fichajesAbiertos = $presentes
@@ -111,6 +113,15 @@ class Fichar extends BaseFichar
 			->findAll();
 
 		foreach ($fichajesAbiertos as $fichaje) {
+			$registroRelacion = $relacionProcesoUsuario
+				->where('id_usuario', $fichaje['id_empleado'])
+				->where('estado', 1)
+				->first(); 
+
+			if ($registroRelacion) {
+				$relacionProcesoUsuario->update($registroRelacion['id'], ['estado' => 2]);
+			}
+
 			// Cerrar fichaje y mover a la tabla de ausentes
 			$data = [
 				'id_usuario' => $fichaje['id_empleado'],
