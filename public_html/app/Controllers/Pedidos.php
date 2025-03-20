@@ -8,6 +8,7 @@ use App\Models\Pedidos_model;
 use App\Models\EstadoModel;
 use App\Models\LineaPedido;
 use App\Models\Productos_model;
+use App\Models\Lineaspedido_model;
 use App\Models\ProcesosPedido;
 use App\Models\RelacionProcesoUsuario_model;
 
@@ -376,24 +377,53 @@ class Pedidos extends BaseController
 		$pedidoModel->update($id_pedido, ['total_pedido' => $totalPedido]);
 		return $totalPedido;
 	}
-
 	public function entregar($id_pedido)
 	{
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
-
 		$Lineaspedido_model = model('App\Models\Lineaspedido_model');
 		$Lineaspedido_model->entrega_lineas($id_pedido);
-
-
 		$RelacionProcesosUsuario_model = new RelacionProcesoUsuario_model($db);
 		if ($RelacionProcesosUsuario_model !== null) {
+			$registros = $RelacionProcesosUsuario_model
+				->where('id_pedido', $id_pedido)
+				->findAll();
+			$dataAgrupada = [];
+			foreach ($registros as $registro) {
+				$id_linea_pedido = $registro['id_linea_pedido'];
+
+				if (!isset($dataAgrupada[$id_linea_pedido])) {
+					$dataAgrupada[$id_linea_pedido] = [];
+				}
+				$Usuarios_model = new \App\Models\Usuarios2_model($db);
+				$usuario = $Usuarios_model->find($registro['id_usuario']);
+				$usuario_nombre = $usuario ? $usuario['nombre_usuario'] . ' ' . $usuario['apellidos_usuario'] : 'Usuario desconocido';
+				$Maquinas_model = new \App\Models\Maquinas($db);
+				$maquina = $Maquinas_model->find($registro['id_maquina']);
+				$maquina_nombre = $maquina ? $maquina['nombre'] : 'Máquina desconocida';
+				$dataAgrupada[$id_linea_pedido][] = [
+					'usuario' => $usuario_nombre,
+					'buenas' => $registro['buenas'],
+					'malas' => $registro['malas'],
+					'repasadas' => $registro['repasadas'],
+					'maquina' => $maquina_nombre,
+				];
+			}
 			$RelacionProcesosUsuario_model->where('id_pedido', $id_pedido)->delete();
+			$Lineaspedido_model = new Lineaspedido_model($db);
+			$fecha_hoy = date('Y-m-d');
+
+			foreach ($dataAgrupada as $id_linea_pedido => $datos) {
+				$escandallo = '';
+				foreach ($datos as $dato) {
+
+					$escandallo .= "[fecha: $fecha_hoy, Usuario: {$dato['usuario']}, B: {$dato['buenas']}, M: {$dato['malas']}, R: {$dato['repasadas']}, Maquina: {$dato['maquina']}] | ";
+				}
+				$updateResult = $Lineaspedido_model->update($id_linea_pedido, ['escandallo' => $escandallo]);
+			}
 		} else {
 			log_message('error', 'No se pudo cargar el modelo RelacionProcesosUsuario_model');
 		}
-
-		$this->logAction('Pedidos', 'Entrega pedido, ID: ' . $id_pedido, []);
 		return redirect()->to('pedidos/edit/' . $id_pedido);
 	}
 

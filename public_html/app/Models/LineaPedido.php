@@ -22,6 +22,7 @@ class LineaPedido extends Model {
         'fecha_entrega', 
         'observaciones', 
         'total_linea',
+        'escandallo'
     ];
     public function obtenerLineasPorPedido($estado, $id_pedido = null) {
         $query = $this->where('estado', $estado);
