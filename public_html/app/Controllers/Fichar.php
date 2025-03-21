@@ -103,25 +103,13 @@ class Fichar extends BaseFichar
 	{
 		$presentes = new Presentes($this->db);
 		$fichajes = new Fichajes($this->db);
-		$relacionProcesoUsuario = new RelacionProcesoUsuario_model($this->db);
 		$hoy = date('Y-m-d H:i:s');
-		$limite = (new DateTime($hoy))->modify('-10 hours')->format('Y-m-d H:i:s');
-
-		// Buscar todos los fichajes que llevan abiertos más de 8 horas
+		$limite = (new DateTime($hoy))->modify('-10 hours')->format('Y-m-d H:i:s');// Buscar todos los fichajes que llevan abiertos más de 8 horas
 		$fichajesAbiertos = $presentes
 			->where('entrada <', $limite)
 			->findAll();
 
 		foreach ($fichajesAbiertos as $fichaje) {
-			$registroRelacion = $relacionProcesoUsuario
-				->where('id_usuario', $fichaje['id_empleado'])
-				->where('estado', 1)
-				->first(); 
-
-			if ($registroRelacion) {
-				$relacionProcesoUsuario->update($registroRelacion['id'], ['estado' => 2]);
-			}
-
 			// Cerrar fichaje y mover a la tabla de ausentes
 			$data = [
 				'id_usuario' => $fichaje['id_empleado'],
@@ -281,20 +269,11 @@ class Fichar extends BaseFichar
 	{
 		$presentes = model('Presentes', true, $this->db);
 		$data1 = $presentes->where('id_empleado', $id)->first();
-
 		if (!$data1) {
 			$session = session();
 			$session->setFlashdata('error', 'No se encontró un registro de entrada para este empleado.');
 			return redirect()->back();
 		}
-
-		$relacionProcesoUsuarioModel = model('RelacionProcesoUsuario_model', true, $this->db);
-		// Cambiando el estado a 2 en relacion_proceso_usuario
-		$relacionProcesoUsuarioModel
-			->where('id_usuario', $id)
-			->where('estado', 1)
-			->set(['estado' => 2])
-			->update();
 
 		$fechaentrada = $data1['entrada'];
 		$fichaextras = $data1['extras'];
