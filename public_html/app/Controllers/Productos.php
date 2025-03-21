@@ -285,7 +285,6 @@ class Productos extends BaseController
 
         $rutaImagenes = "public/assets/uploads/files/{$data['id_empresa']}/productos";
 
-        // Eliminar la imagen del producto si existe
         if ($producto['imagen']) {
             $imagenPath = "{$rutaImagenes}/{$producto['imagen']}";
             if (file_exists($imagenPath)) {
@@ -293,7 +292,6 @@ class Productos extends BaseController
             }
         }
 
-        // Eliminar el producto de la base de datos
         if ($productosModel->delete($id)) {
             return $this->response->setJSON(['success' => true]);
         } else {
@@ -301,21 +299,30 @@ class Productos extends BaseController
         }
 
     }
-
     public function eliminarImagen($id)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $productosModel = new Productos_model($db);
-
-        // Buscar el producto por ID
+    
         $producto = $productosModel->find($id);
         if (!$producto || !$producto['imagen']) {
             return $this->response->setJSON(['success' => false, 'message' => 'Imagen no encontrada.']);
         }
-        // Desasociar la imagen del producto (establecer el campo 'imagen' en NULL)
-        $productosModel->update($id, ['imagen' => null]);
+    
+        $imagePath = "public/assets/uploads/files/{$data['id_empresa']}/productos" . $producto['imagen'];
+    
+        if (file_exists($imagePath)) {
+            if (unlink($imagePath)) {
+                $productosModel->update($id, ['imagen' => null]);
+                return $this->response->setJSON(['success' => true, 'message' => 'Imagen eliminada correctamente.']);
+            } else {
+                return $this->response->setJSON(['success' => false, 'message' => 'No se pudo eliminar el archivo de imagen.']);
+            }
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'La imagen no se encuentra en el servidor.']);
+        }
     }
-
+    
 
 }

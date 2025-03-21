@@ -69,10 +69,8 @@
         <label for="imagen" class="form-label">Imagen</label>
         <input type="file" class="form-control" id="imagen" name="imagen">
 
-        <!-- Campo oculto para almacenar el nombre de la imagen seleccionada -->
         <input type="hidden" id="imagenSeleccionada" name="imagenSeleccionada" value="<?= $producto['imagen'] ?>">
 
-        <!-- Botón para abrir la galería -->
         <br>
         <button type="button" class="btn boton btnEditar" id="abrirModalGaleria">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image"
@@ -81,8 +79,7 @@
                 <path
                     d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z" />
             </svg>Seleccionar de la Galería</button>
-        
-        <!-- Botón para eliminar la imagen -->
+
         <?php if ($producto['imagen']): ?>
             <button type="button" class="btn boton btnEliminar" style="margin-left:10px !important;" onclick="eliminarImagen(<?= $producto['id_producto'] ?>)"><svg
                     xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
@@ -91,7 +88,7 @@
                         fill="white" />
                 </svg></button>
         <?php endif; ?>
-        <!-- Vista previa de la imagen seleccionada -->
+
         <br><br>
         <img id="imagenSeleccionadaPreview"
             src="<?= $producto['imagen'] ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}") : '#' ?>"
@@ -99,11 +96,11 @@
 
     </div>
 
-    <!-- Modal para la galería -->
+
     <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <!-- Cargar la vista de la galería -->
+
                 <?= view('gallery_modal', ['images' => $images]) ?>
             </div>
         </div>
@@ -129,15 +126,13 @@
 </form>
 
 <script>
-    // Función para manejar la selección de una imagen desde el modal
     function selectImage(imageUrl) {
-        const imageName = imageUrl.split('/').pop(); // Extraer el nombre de la imagen
+        const imageName = imageUrl.split('/').pop(); 
 
         // Actualizar el campo oculto y la vista previa
         $('#imagenSeleccionada').val(imageName);
         $('#imagenSeleccionadaPreview').attr('src', imageUrl).show();
 
-        // Enviar el nombre de la imagen al servidor para asociarla al producto
         const productoId = <?= $producto['id_producto'] ?>;
 
         $.ajax({
@@ -149,22 +144,18 @@
             }
         });
 
-        // Cierra el modal
         $('#galleryModal').modal('hide');
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-    // Agrega el evento al botón Guardar
     document.querySelector('.btnGuardar').addEventListener('click', function (e) {
-        e.preventDefault(); // Evita cualquier acción predeterminada
-        // Enviar el formulario manualmente
+        e.preventDefault();
         document.querySelector('form').submit();
     });
 });
 
 
     $(document).ready(function () {
-        // Mostrar el modal de la galería al hacer clic en el botón
         $('#abrirModalGaleria').on('click', function () {
             $('#galleryModal').modal('show');
         });
@@ -173,11 +164,10 @@
         if (confirm('¿Desea quitar la imagen asignada?')) {
             $.ajax({
                 url: `<?= base_url("productos/eliminarImagen") ?>/${idProducto}`,
-                type: 'POST', // Cambia a POST si el método DELETE no está configurado en el backend
+                type: 'POST', 
                 success: function (response) {
                     if (response.success) {
                         alert(response.message);
-                        // Ocultar la vista previa y el botón de eliminar
                         document.getElementById('imagenSeleccionadaPreview').style.display = 'none';
                         location.reload();
                     } else {
