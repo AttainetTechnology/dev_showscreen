@@ -417,7 +417,7 @@ class Pedidos extends BaseController
 				$escandallo = '';
 				foreach ($datos as $dato) {
 
-					$escandallo .= "[fecha: $fecha_hoy, Usuario: {$dato['usuario']}, B: {$dato['buenas']}, M: {$dato['malas']}, R: {$dato['repasadas']}, Maquina: {$dato['maquina']}] | ";
+					$escandallo .= "[fecha: $fecha_hoy, Usuario: {$dato['usuario']}, B: {$dato['buenas']}, M: {$dato['malas']}, R: {$dato['repasadas']}, Maquina: {$dato['maquina']}] ";
 				}
 				$updateResult = $Lineaspedido_model->update($id_linea_pedido, ['escandallo' => $escandallo]);
 			}
