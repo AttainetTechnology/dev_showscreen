@@ -52,7 +52,7 @@
             <?php foreach ($amiga as $index => $breadcrumb): ?>
                 <li class="breadcrumb-item<?= $index === array_key_last($amiga) ? ' active' : '' ?>">
                     <?php if ($breadcrumb['link'] !== '#' && $index !== array_key_last($amiga)): ?>
-                        <a href="<?= esc($breadcrumb['link']) ?>"><?= esc($breadcrumb['title']) ?></a>
+                        <a href=><?= esc($breadcrumb['title']) ?></a>
                     <?php else: ?>
                         <?= esc($breadcrumb['title']) ?>
                     <?php endif; ?>

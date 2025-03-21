@@ -2,7 +2,6 @@
 <?php
 
 use App\Models\Usuarios_model;
-//comienza el foreach
 foreach ($pedido as $ped) { ?>
     <div id="fondo">
         <button onclick="printDiv('printableArea')" class="boton btnImprimir">
@@ -12,14 +11,12 @@ foreach ($pedido as $ped) { ?>
             </svg>
         </button>
         <div id="printableArea">
-            <!-- info row -->
             <div class="fila">
                 <div id="fila_left">
                     <img src="<?php
                                 helper('logo');
                                 $logo = logo();
                                 echo $logo; ?>" class="logo_partes"><br>
-                    <br>
                     <?php
                     function usuarios()
                     {
@@ -108,8 +105,8 @@ foreach ($pedido as $ped) { ?>
                                     $session_data = $session->get('logged_in');
                                     $id_empresa = $session_data['id_empresa'];
 
-                                    $id_producto = $l->id_producto; // Asume que $l es el producto actual y tiene una propiedad id_producto
-                                    $imagen = isset($l->imagen) ? $l->imagen : 'default.png'; // Asegúrate de que $l->imagen esté definida y tenga un valor
+                                    $id_producto = $l->id_producto; 
+                                    $imagen = isset($l->imagen) ? $l->imagen : 'default.png';
 
                                     $imagen_producto = base_url('public/assets/uploads/files') . "/$id_empresa/productos/" . $imagen;
                                     ?>
@@ -136,26 +133,24 @@ foreach ($pedido as $ped) { ?>
                                 <tr>
                                     <td colspan="6"></td>
                                 </tr>
-                            <?php } // Cierro foreach lineas 
+                            <?php } 
                             ?>
 
                         </tbody>
                     </table>
                 </div>
-
-                <!-- /.col -->
             </div>
             <div class="row">
                 <div class="col-xs-6">
 
                 </div>
-                <!-- /.col -->
+
                 <div class="col-xs-6">
 
                 </div>
             </div>
-        </div> <!-- /#Printable area -->
-    </div> <!-- Fondo -->
+        </div> 
+    </div> 
 
-<?php } // Cierro foreach pedido 
+<?php } 
 ?>
