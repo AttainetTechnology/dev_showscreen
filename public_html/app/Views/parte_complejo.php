@@ -128,10 +128,14 @@ foreach ($pedido as $ped) { ?>
                         </thead>
 
                         <tbody>
-                            <?php foreach ($lineas as $l) { ?>
+                            <?php
+                            $contador = 0;
+                            $page_break_added = false; // Variable para controlar si ya se ha agregado el salto de página
+                            foreach ($lineas as $l) {
+                                $contador++;
+                                ?>
                                 <tr>
                                     <td><b><?php echo $l->n_piezas; ?> </b></td>
-
                                     <td><b><?php echo $l->nombre_producto; ?> </b></td>
                                     <td><b><?php echo $l->nom_base; ?></b></td>
                                     <td><b><?php echo $l->med_inicial; ?></b></td>
@@ -143,25 +147,22 @@ foreach ($pedido as $ped) { ?>
 
                                     $id_producto = $l->id_producto;
                                     $imagen = isset($l->imagen) ? $l->imagen : 'default.png';
-
                                     $imagen_producto = base_url('public/assets/uploads/files') . "/$id_empresa/productos/" . $imagen;
                                     ?>
                                     <td><img src="<?php echo $imagen_producto; ?>" style="max-height:60px"></td>
-
                                 </tr>
                                 <tr style="background-color: #eee">
-                                    <td colspan="2"><?php if ($l->observaciones) {
-                                        echo "ATENCIÓN!:<strong> " . $l->observaciones . "</strong>";
-                                    } ?></td>
+                                    <td colspan="2">
+                                        <?php if ($l->observaciones) {
+                                            echo "ATENCIÓN!:<strong> " . $l->observaciones . "</strong>";
+                                        } ?>
+                                    </td>
                                     <td style="text-align: right" colspan="4">
-                                        Buenas:
+                                        Buenas:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Malas:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        Malas:
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        Firma:
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Firma:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </td>
@@ -169,20 +170,26 @@ foreach ($pedido as $ped) { ?>
                                 <tr>
                                     <td colspan="6"></td>
                                 </tr>
-                            <?php }
+                                <?php
+                                if ($contador % 6 == 0 && !$page_break_added) {
+                                    ?>
+                                    <tr>
+                                        <td colspan="6" style="page-break-before: always;"></td>
+                                    </tr>
+                                    <?php
+                                    $page_break_added = true;
+                                }
+                            }
                             ?>
-
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-6">
-
                 </div>
 
                 <div class="col-xs-6">
-
                 </div>
             </div>
         </div>
