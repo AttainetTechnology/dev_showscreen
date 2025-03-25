@@ -151,6 +151,40 @@ class Partes_controller extends BaseControllerGC
         return $this->response->setJSON(['status' => 'success']);
     }
 
+    public function marcarTodasLasLineasComoRecibidas($id_pedido)
+    {
+        $data = datos_user();
+        $db = db_connect($data['new_db']);
+        $builder = $db->table('linea_pedidos');
+        $builder->where('id_pedido', $id_pedido);
+        $lineas_pedido = $builder->get()->getResultArray();
+
+        $data2 = array('estado' => 2);
+        foreach ($lineas_pedido as $linea) {
+            $builder->set($data2);
+            $builder->where('id_lineapedido', $linea['id_lineapedido']);
+            $builder->update();
+        }
+
+        $builder->select('*');
+        $builder->where('id_pedido', $id_pedido);
+        $builder->where('estado !=', 2);
+        $lineas_no_recibidas = $builder->countAllResults();
+
+        if ($lineas_no_recibidas == 0) {
+            $builderPedido = $db->table('pedidos');
+            $builderPedido->set('estado', 2);
+            $builderPedido->where('id_pedido', $id_pedido);
+            $builderPedido->update();
+        }
+
+        $Lineaspedido_model = model('App\Models\Lineaspedido_model');
+        $Lineaspedido_model->actualiza_estado_lineas($id_pedido);
+        $this->obtenerLineasPedidoConEstado2YCrearProcesos();
+
+        return $this->response->setJSON(['status' => 'success']);
+    }
+
     public function obtenerLineasPedidoConEstado2YCrearProcesos()
     {
         $data = datos_user();
