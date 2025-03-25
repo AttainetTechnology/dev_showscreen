@@ -10,10 +10,14 @@ class Escandallo extends BaseController
         helper('controlacceso');
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
+        $procesosPedidosModel = new \App\Models\ProcesosPedido($db);
 
-        // Obtener procesos
-        $procesos = $this->obtenerProcesos($id_linea_pedido, $db);
-        $this->addBreadcrumbs();
+        $procesos = $procesosPedidosModel->where('id_linea_pedido', $id_linea_pedido)->findAll();
+
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
+        $this->addBreadcrumb('Escandallo', base_url('/escandallo'));
+        $data['amiga'] = $this->getBreadcrumbs();
 
         if ($procesos) {
             $agrupadas = $this->agruparRelaciones($procesos, $db);
@@ -25,30 +29,29 @@ class Escandallo extends BaseController
         return view('escandallo', $data);
     }
 
-    private function obtenerProcesos($id_linea_pedido, $db)
-    {
-        $procesosPedidosModel = new \App\Models\ProcesosPedido($db);
-        return $procesosPedidosModel->where('id_linea_pedido', $id_linea_pedido)->findAll();
-    }
-
-    private function addBreadcrumbs()
-    {
-        $this->addBreadcrumb('Inicio', base_url('/'));
-        $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
-        $this->addBreadcrumb('Escandallo', base_url('/escandallo'));
-    }
-
     private function agruparRelaciones($procesos, $db)
     {
         $agrupadas = [];
-        $relacionProcesoUsuarioModel = new RelacionProcesoUsuario_model($db);
+        $relacionProcesoUsuarioModel = new RelacionProcesoUsuario_model($db); 
 
         foreach ($procesos as $proceso) {
             $id_proceso_pedido = $proceso['id_relacion'];
             $relaciones = $relacionProcesoUsuarioModel->where('id_proceso_pedido', $id_proceso_pedido)->findAll();
 
             if (!isset($agrupadas[$id_proceso_pedido])) {
-                $agrupadas[$id_proceso_pedido] = $this->crearEstructuraGrupo($proceso, $relaciones, $id_proceso_pedido, $db);
+                $agrupadas[$id_proceso_pedido] = [
+                    'id_proceso_pedido' => $id_proceso_pedido,
+                    'nombre_maquina' => $this->obtenerNombreMaquina($proceso['id_maquina'], $db),
+                    'buenas' => 0,
+                    'malas' => 0,
+                    'repasadas' => 0,
+                    'usuarios' => [],
+                    'nombre_proceso' => $this->obtenerNombreProceso($id_proceso_pedido, $db),
+                    'estados' => [],
+                    'estado' => null,
+                    'tiene_restricciones' => $this->tieneRestricciones($id_proceso_pedido, $db),
+                    'tiene_relaciones' => !empty($relaciones) 
+                ];
             }
 
             foreach ($relaciones as $relacion) {
@@ -57,35 +60,14 @@ class Escandallo extends BaseController
             }
         }
 
-        $this->finalizarAgrupacion($agrupadas);
-
-        return $agrupadas;
-    }
-
-    private function crearEstructuraGrupo($proceso, $relaciones, $id_proceso_pedido, $db)
-    {
-        return [
-            'id_proceso_pedido' => $id_proceso_pedido,
-            'nombre_maquina' => $this->obtenerNombreMaquina($proceso['id_maquina'], $db),
-            'buenas' => 0,
-            'malas' => 0,
-            'repasadas' => 0,
-            'usuarios' => [],
-            'nombre_proceso' => $this->obtenerNombreProceso($id_proceso_pedido, $db),
-            'estados' => [],
-            'estado' => null,
-            'tiene_restricciones' => $this->tieneRestricciones($id_proceso_pedido, $db),
-            'tiene_relaciones' => !empty($relaciones)
-        ];
-    }
-
-    private function finalizarAgrupacion(&$agrupadas)
-    {
         foreach ($agrupadas as &$grupo) {
             $grupo['estado'] = $this->calcularEstado($grupo['estados']);
             $grupo['estado'] = $this->convertirEstado($grupo['estado']);
         }
+
+        return $agrupadas;
     }
+
 
     private function tieneRestricciones($id_proceso_pedido, $db)
     {
@@ -104,6 +86,7 @@ class Escandallo extends BaseController
 
     private function calcularEstado($estados)
     {
+
         $conteo = array_count_values($estados);
 
         if (count($conteo) == 1 && isset($conteo[3])) {
@@ -121,6 +104,7 @@ class Escandallo extends BaseController
         return 0;
     }
 
+
     private function convertirEstado($estado)
     {
         switch ($estado) {
@@ -132,6 +116,7 @@ class Escandallo extends BaseController
                 return 'Terminado';
             case 4:
                 return 'Falta de material';
+
         }
     }
 
@@ -144,6 +129,7 @@ class Escandallo extends BaseController
 
     private function obtenerNombreProceso($id_proceso_pedido, $db)
     {
+
         $builder = $db->table('procesos_pedidos');
         $builder->select('procesos.nombre_proceso');
         $builder->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso', 'inner');
@@ -161,6 +147,7 @@ class Escandallo extends BaseController
 
     private function obtenerNombreMaquina($id_maquina, $db)
     {
+
         $builder = $db->table('maquinas');
         $builder->select('nombre');
         $builder->where('id_maquina', $id_maquina);
@@ -171,7 +158,6 @@ class Escandallo extends BaseController
             $result = $query->getRow();
             return $result->nombre;
         }
-
         return 'Máquina no encontrada';
     }
 
@@ -187,28 +173,35 @@ class Escandallo extends BaseController
             $result = $query->getRow();
             return $result->nombre_usuario;
         }
-
         return 'Usuario no encontrado';
     }
-
     public function verEscandalloIndividual($id_proceso_pedido)
     {
         helper('controlacceso');
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
+        $model = new RelacionProcesoUsuario_model($db);
 
-        // Obtener relaciones
-        $relaciones = $this->obtenerRelaciones($id_proceso_pedido, $db);
+        $relaciones = $model->where('id_proceso_pedido', $id_proceso_pedido)
+            ->findAll();
+
         $nombre_proceso = $this->obtenerNombreProceso($id_proceso_pedido, $db);
-        $id_linea_pedido = $this->obtenerIdLineaPedido($id_proceso_pedido, $db);
 
-        $this->addBreadcrumbs();
+        $id_linea_pedido = $db->table('procesos_pedidos')->where('id_relacion', $id_proceso_pedido)->get()->getRow()->id_linea_pedido;
+
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Partes', base_url('/lista_produccion/todoslospartes'));
+        $this->addBreadcrumb('Escandallo', base_url('/escandallo/' . $id_linea_pedido));
         $this->addBreadcrumb('Datos Escandallo', base_url('/escandalloIndividual/' . $id_proceso_pedido));
 
         $data['amiga'] = $this->getBreadcrumbs();
 
         if ($relaciones) {
-            $data['relaciones'] = $this->procesarRelaciones($relaciones, $db);
+            foreach ($relaciones as &$relacion) {
+                $relacion['nombre_usuario'] = $this->obtenerNombreUsuario($relacion['id_usuario'], $db);
+                $relacion['estado'] = $this->convertirEstado($relacion['estado']);
+            }
+            $data['relaciones'] = $relaciones;
             $data['nombre_proceso'] = $nombre_proceso;
             $data['id_linea_pedido'] = $id_linea_pedido;
 
@@ -217,27 +210,5 @@ class Escandallo extends BaseController
             $data['error'] = 'No se encontraron registros para este proceso.';
             return view('escandalloIndividual', $data);
         }
-    }
-
-    private function obtenerRelaciones($id_proceso_pedido, $db)
-    {
-        $model = new RelacionProcesoUsuario_model($db);
-        return $model->where('id_proceso_pedido', $id_proceso_pedido)->findAll();
-    }
-
-    private function obtenerIdLineaPedido($id_proceso_pedido, $db)
-    {
-        return $db->table('procesos_pedidos')
-            ->where('id_relacion', $id_proceso_pedido)
-            ->get()->getRow()->id_linea_pedido;
-    }
-
-    private function procesarRelaciones($relaciones, $db)
-    {
-        foreach ($relaciones as &$relacion) {
-            $relacion['nombre_usuario'] = $this->obtenerNombreUsuario($relacion['id_usuario'], $db);
-            $relacion['estado'] = $this->convertirEstado($relacion['estado']);
-        }
-        return $relaciones;
     }
 }

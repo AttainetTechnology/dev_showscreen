@@ -287,36 +287,24 @@ class Procesos_pedidos extends BaseControllerGC
         $db = db_connect($data['new_db']);
         $procesosPedidoModel = new ProcesosPedido($db);
 
+        // Paso 1: Obtener todos los procesos para la máquina especificada, ordenados por 'orden'
         $procesos = $procesosPedidoModel
             ->where('id_maquina', $idMaquina)
-            ->orderBy('orden', 'desc')
+            ->orderBy('orden', 'asc')
             ->findAll();
 
-        if (!$procesos) {
-            log_message('error', "No se encontraron procesos para la máquina con ID: {$idMaquina}");
-            return;
-        }
+        // Paso 2: Reordenar los procesos
         $nuevoOrden = 1;
         foreach ($procesos as $proceso) {
+            // Paso 3: Actualizar la base de datos con el nuevo orden
             $procesosPedidoModel
                 ->where('id_proceso', $proceso['id_proceso'])
                 ->where('id_linea_pedido', $proceso['id_linea_pedido'])
                 ->set(['orden' => $nuevoOrden])
                 ->update();
             $nuevoOrden++;
-            try {
-                $procesosPedidoModel->update();
-            } catch (\Exception $e) {
-                log_message('error', "Error al intentar actualizar el orden: " . $e->getMessage());
-            }
-        }
-
-        if (!$db) {
-            log_message('error', "Error al conectar con la base de datos.");
-            return;
         }
     }
-
     public function marcarTerminado()
     {
         $data = usuario_sesion();

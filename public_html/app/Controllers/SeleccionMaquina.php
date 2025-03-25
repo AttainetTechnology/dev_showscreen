@@ -391,6 +391,7 @@ class SeleccionMaquina extends BaseFichar
         if ($todosTerminado) {
             $this->finalizarProcesoPedido($idRelacionProcesoUsuario);
         }
+        $this->eliminarRegistroSiVacio($registro['id_proceso_pedido']);
         $this->eliminarRestriccion($idRelacionProcesoUsuario);
         $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
         $this->ActualizarEstadoPedido($idRelacionProcesoUsuario);
@@ -402,12 +403,33 @@ class SeleccionMaquina extends BaseFichar
         }
         return redirect()->to('/presentes');
     }
+    private function eliminarRegistroSiVacio($id_proceso_pedido)
+    {
+        $db = $this->db;
+        $builder = $db->table('relacion_proceso_usuario');
+
+        $registro = $builder->where('id_proceso_pedido', $id_proceso_pedido)
+            ->where('buenas', 0)
+            ->where('malas', 0)
+            ->where('repasadas', 0)
+            ->get()
+            ->getRow();
+
+        if ($registro) {
+            $builder->where('id', $registro->id)->delete();
+        }
+    }
+
+
     public function finalizarProcesoPedido($idRelacionProcesoUsuario)
     {
         $db = $this->db;
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
 
+        if (!$registro) {
+            return redirect()->to('/error')->with('error', 'Registro no encontrado.');
+        }
 
         $idProcesoPedido = $registro['id_proceso_pedido'];
 
@@ -444,9 +466,17 @@ class SeleccionMaquina extends BaseFichar
         $procesosModel = $db->table('procesos_pedidos');
         $procesoPedido = $procesosModel->where('id_relacion', $idProcesoPedido)->get()->getRowArray();
 
+        if (!$procesoPedido) {
+            return redirect()->to('/error')->with('error', 'No se encontró el proceso de pedido.');
+        }
+
         $idRelacion = $procesoPedido['id_proceso'];
 
         $procesosPedido = $procesosModel->where('id_linea_pedido', $registro['id_linea_pedido'])->get()->getResultArray();
+
+        if (empty($procesosPedido)) {
+            return redirect()->to('/error')->with('error', 'No se encontraron registros con el mismo id_linea_pedido.');
+        }
 
         foreach ($procesosPedido as $proceso) {
             if (!empty($proceso['restriccion'])) {
@@ -469,17 +499,26 @@ class SeleccionMaquina extends BaseFichar
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
 
+        if (!$registro) {
+            return redirect()->to('/error')->with('error', 'Registro no encontrado.');
+        }
 
         $idProcesoPedido = $registro['id_proceso_pedido'];
 
         $procesosModel = $db->table('procesos_pedidos');
         $procesoPedido = $procesosModel->where('id_relacion', $idProcesoPedido)->get()->getRowArray();
 
+        if (!$procesoPedido) {
+            return redirect()->to('/error')->with('error', 'No se encontró el proceso de pedido.');
+        }
 
         $idLineaPedido = $procesoPedido['id_linea_pedido'];
 
         $procesosPedido = $procesosModel->where('id_linea_pedido', $idLineaPedido)->get()->getResultArray();
 
+        if (empty($procesosPedido)) {
+            return redirect()->to('/error')->with('error', 'No se encontraron registros con el mismo id_linea_pedido.');
+        }
 
         $todosEnEstado4 = true;
         foreach ($procesosPedido as $proceso) {
@@ -505,16 +544,28 @@ class SeleccionMaquina extends BaseFichar
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
 
+        if (!$registro) {
+            return redirect()->to('/error')->with('error', 'Registro no encontrado.');
+        }
+
         $idProcesoPedido = $registro['id_proceso_pedido'];
 
         $procesosModel = $db->table('procesos_pedidos');
         $procesoPedido = $procesosModel->where('id_relacion', $idProcesoPedido)->get()->getRowArray();
 
+        if (!$procesoPedido) {
+            return redirect()->to('/error')->with('error', 'No se encontró el proceso de pedido.');
+        }
 
         $idLineaPedido = $procesoPedido['id_linea_pedido'];
 
         $lineaPedidoModel = $db->table('linea_pedidos');
         $lineasPedido = $lineaPedidoModel->where('id_lineapedido', $idLineaPedido)->get()->getResultArray();
+
+        if (empty($lineasPedido)) {
+            return redirect()->to('/error')->with('error', 'No se encontraron registros con el mismo id_linea_pedido.');
+        }
+
         $todosEnEstado4 = true;
         foreach ($lineasPedido as $linea) {
             if ($linea['estado'] != 4) {
@@ -528,6 +579,9 @@ class SeleccionMaquina extends BaseFichar
             $pedidoModel->where('id_pedido', $registro['id_pedido'])
                 ->update(['estado' => 4]);
         }
+
         return true;
     }
+
+
 }
