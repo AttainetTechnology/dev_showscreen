@@ -59,8 +59,6 @@ foreach ($pedido as $ped) { ?>
                         $data = usuario_sesion();
                         $id_empresa = $data['id_empresa'];
                         $id_usuario = $data['id_user'];
-
-                        // Define los criterios para la consulta a la base de datos
                         $array = ['nivel_acceso' => '1', 'id_empresa' => $id_empresa];
                         $usuarios = $datos->where($array)->findAll();
                         $user_ids = array();
@@ -81,7 +79,6 @@ foreach ($pedido as $ped) { ?>
                                 $usuarios[$row->id] = $row->nombre_usuario . ' ' . $row->apellidos_usuario;
                             }
                         } else {
-                            //Si no se encuentra el usuario, se añade 'Test', Es para cuando cambia de empresa un superadmin
                             $usuarios[$id_usuario] = 'Test';
                         }
                         return $usuarios;
@@ -130,7 +127,7 @@ foreach ($pedido as $ped) { ?>
                         <tbody>
                             <?php
                             $contador = 0;
-                            $page_break_added = false; // Variable para controlar si ya se ha agregado el salto de página
+                            $page_break_added = false; 
                             foreach ($lineas as $l) {
                                 $contador++;
                                 ?>
