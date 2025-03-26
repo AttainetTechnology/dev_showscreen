@@ -226,7 +226,7 @@ class Productos_necesidad extends BaseController
             'productoVentaNombre' => $productoVentaNombre,
             'id_empresa' => $data['id_empresa'],
             'amiga' => $data['amiga'],
-            'images' => $images, // Pasar las imágenes
+            'images' => $images,
         ]);
 
     }
@@ -250,13 +250,12 @@ class Productos_necesidad extends BaseController
 
         // Obtener la imagen actual del producto
         $producto = $productosModel->find($id_producto);
-        $imagenActual = $producto['imagen']; // Imagen actual en la base de datos
+        $imagenActual = $producto['imagen']; 
 
         // Manejo de la nueva imagen
         $image = $this->request->getFile('imagen');
         $productFolder = "public/assets/uploads/files/{$data['id_empresa']}/productos/";
 
-        // Mantener el nombre de imagen actual como valor predeterminado
         $imageName = $imagenActual;
 
         if ($image && $image->isValid() && !$image->hasMoved()) {
