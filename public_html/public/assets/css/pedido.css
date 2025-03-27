@@ -1,0 +1,228 @@
+.estado1 {
+    background-color: #ff9933 !important;
+}
+
+.estado2 {
+    background-color: #fff3cd !important;
+}
+
+.estado3 {
+    background-color: #fcebfa !important;
+}
+
+.estado4 {
+    background-color: #dff0d8 !important;
+}
+
+.estado5 {
+    background-color: #50b752b0 !important;
+    color: #ffffff !important;
+}
+
+.estado6 {
+    background-color: #ff6c6ccc !important;
+    color: #ffffff !important;
+}
+
+.fondo-verde {
+    background-color: #dff0d8 !important;
+}
+
+.estado-pendiente {
+    background-color: #ffcccb !important;
+}
+
+.estado-no-preparado {
+    background-color: #f0e68c !important;
+}
+
+.ag-icon-filter {
+    display: none !important;
+}
+
+.acciones-col {
+    width: 240px !important;
+}
+
+.titlepedidos {
+    margin-top: 50px;
+}
+
+.titleditPedido {
+    margin-top: -10px;
+    margin-bottom: -2px;
+}
+
+.titlepedidosmostrar {
+    margin-top: 30px;
+    margin-left: 25px;
+}
+
+
+.ag-header-cell-text {
+    font-size: 16px !important;
+
+}
+
+.ag-header-cell {
+    border-right: 1px solid #ddd;
+    padding: 10px;
+    border: none;
+}
+
+.ag-floating-filter-input {
+    border-radius: 4px;
+    width: 100%;
+}
+
+.ag-icon {
+    color: #1d9dd5;
+}
+
+input[class^=ag-] {
+    margin: 5px;
+    background-color: var(--ag-background-color);
+    height: 30px !important;
+}
+
+.ag-theme-alpine .ag-cell {
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.ag-theme-alpine .ag-cell.acciones-col {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+#pedidoTable {
+    margin-right: 20px;
+    padding-left: 10px;
+}
+
+/* EDIT PEDIDO */
+
+form label {
+    font-size: 16px;
+}
+
+
+form .form-control {
+    height: 40px;
+    font-size: 15px !important;
+}
+
+form select.form-control {
+    font-size: 15px !important;
+}
+/* LINEA DE PEDIDO */
+
+.btnrecarga:hover {
+    background-color: #ffc107a8 !important;
+    color: #e4eff7 !important;
+}
+
+
+.icono {
+    font-size: 16px !important;
+    /* Tamaño del ícono más pequeño */
+    vertical-align: middle;
+    /* Alinea el ícono con el texto */
+    margin-left: -5px;
+}
+
+/* Ajustar la altura del modal */
+
+
+.botoneseditRuta {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100%;
+}
+
+.tituloRutas {
+    font-size: 25px;
+    margin: 26px;
+}
+
+.ag-root-wrapper {
+    min-width: 1200px;
+    margin-left: 20px;
+
+}
+
+.modal.fade .modal-dialog {
+    max-height: 90vh;
+}
+
+.modal-body {
+    max-height: 70vh;
+
+}
+
+.addpedido,
+.titlepedidosadd {
+    margin-left: 2vw;
+    margin-top: 6vh;
+}
+
+.editpedido {
+    margin-left: 1vw !important;
+    margin-right: 3vw !important;
+}
+
+@media (min-width: 1400px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        max-width: 1500px !important;
+    }
+}
+
+.formeditPedido {
+    font-size: 14px;
+}
+
+.formeditPedido label {
+    font-size: 13px;
+    margin-bottom: 1px;
+}
+
+.formeditPedido .form-control {
+    padding: 2px 6px;
+    font-size: 13px;
+    height: 28px;
+}
+
+.formeditPedido select.form-control,
+.formeditPedido input.form-control,
+.formeditPedido textarea.form-control {
+    box-sizing: border-box;
+}
+
+.formeditPedido .btnsEditPedido {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.formeditPedido,
+.formeditPedido{
+    padding: 4px 8px;
+    font-size: 13px;
+}
+
+.volverLineaPed {
+    float: right;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.ag-theme-alpine .ag-header {
+    height: 30px;
+}

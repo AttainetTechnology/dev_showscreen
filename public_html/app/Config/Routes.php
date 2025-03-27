@@ -55,6 +55,7 @@ $routes->get('Contactos_empresa/add/(:num)'              , 'Contactos_empresa::a
 $routes->get('Contactos_empresa/add/'                    , 'Contactos_empresa::add/*'    );
 
 $routes->add('partes/print/(\d+)', 'Partes_controller::parte_print/$1');
+$routes->add('pedidos/imprimir_parte/(:num)', 'Pedidos::imprimir_parte/$1');
 $routes->add('partes/printproveedor/(\d+)', 'Partes_controller_proveedor::parte_print/$1');
 $routes->add('pedidos/print/(\d+)', 'Pedido_print_controller::pedido_print/$1');
 $routes->add('pedidos_proveedor/print/(\d+)', 'Pedido_print_controller::pedido_print_proveedor/$1');
@@ -76,8 +77,20 @@ $routes->get('usuarios/(:num)', 'Usuarios::show/$1');
 
 $routes->post('procesos_pedidos/actualizarEstadoProcesos', 'Procesos_pedidos::actualizarEstadoProcesos');
 
+$routes->get('presentes/(:any)', 'Presentes::index/$1');
+
 $routes->get('presentes', 'Fichar::index');
 
 $routes->get('comparadorproductos/(:num)', 'ComparadorProductos::index/$1');
 
 $routes->get('familiaproveedor', 'Familia_proveedor::index');
+$routes->post('Ruta_pedido/guardarRuta', 'Ruta_pedido::guardarRuta');
+$routes->get('elegirProveedor/(:num)', 'Proveedores::elegirProveedor/$1');
+$routes->post('productos_necesidad/save', 'Productos_necesidad::save');
+$routes->get('pedidos_proveedor', 'Pedidos_proveedor::todos');
+$routes->get('familiaProveedor/getFamiliasProveedores', 'Familia_proveedor::getFamiliasProveedores');
+$routes->match(['GET', 'POST'], 'familiaProveedor/editar/(:num)', 'Familia_proveedor::editar/$1');
+$routes->post('familiaProveedor/actualizarFamilia', 'Familia_proveedor::actualizarFamilia');
+$routes->post('familiaProveedor/agregarFamilia', 'Familia_proveedor::agregarFamilia');
+$routes->post('familiaProveedor/eliminar/(:num)', 'Familia_proveedor::eliminarFamilia/$1');
+$routes->post('ofertas/eliminar/(:num)/(:num)', 'ComparadorProductos::eliminarOferta/$1/$2');

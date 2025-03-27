@@ -5,6 +5,23 @@ use CodeIgniter\Model;
 
 class Lineaspedido_model extends Model
 {
+    protected $table = 'linea_pedido_proveedor';
+    protected $primaryKey = 'id_lineapedido';
+    protected $allowedFields = [
+        'id_pedido',
+        'fecha_salida',
+        'fecha_entrega',
+        'id_producto',
+        'n_piezas',
+        'observaciones',
+        'id_usuario',
+        'unidades',
+        'precio_compra',
+        'descuento',
+        'add_linea',
+        'total_linea',
+        'estado'
+    ];
     public function index() {}
 
     // Función para obtener las líneas de un pedido concreto 

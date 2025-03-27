@@ -12,13 +12,6 @@ div#report-success,
 	font-size: 13px !important;
 }
 
-.btn {
-	padding: 0.25rem 0.5rem !important;
-}
-
-.row {
-	margin-right: 0px !Important;
-}
 
 a {
 	color: #006192 !Important
@@ -109,11 +102,11 @@ tr:has(.ruta0) {
 }
 
 tr:has(.ruta1) {
-	background-color: var(--amarilloclaro);
+	background-color:  #ffdbb6 !Important;
 }
 
 tr:has(.ruta2) {
-	background-color: var(--verdeclaro);
+	background-color:#dff0d8 !Important;
 }
 
 .estado,
@@ -122,7 +115,7 @@ tr:has(.ruta2) {
 .estado4,
 .estado5 {
 	padding: 2px;
-	text-align: center !important;
+	/* text-align: center !important; */
 }
 
 
@@ -140,9 +133,8 @@ tr:has(.estado2) {
 }
 
 tr:has(.estado3) {
-	background-color: #d9edf7 !Important;
+	background-color: #fcebfa !Important;
 }
-
 tr:has(.estado4) {
 	background-color: #dff0d8 !Important;
 }
@@ -162,7 +154,8 @@ tr:has(.estado5) a {
 }
 
 tr:has(.estado6) {
-	background-color: var(--rojo) !Important;
+	
+	background-color: #ff6c6ccc !Important;
 	color: #ffffff !Important;
 }
 
@@ -262,28 +255,6 @@ input#field-precio {
 	color: var(--rojosocuro) !important;
 }
 
-.btn-secondary {
-	color: var(--negro) !important;
-	background-color: #fff !important;
-	border-color: var(--grisclaro) !important;
-}
-
-.btn-success {
-	color: #fff !Important;
-	background-color: #146c43 !Important;
-	border-color: var(--verdeclaro) !Important;
-}
-
-.btn-info {
-	background-color: var(--azulclaro) !Important;
-	border-color: var(--azulclaro) !Important;
-	color: var(--azuloscuro) !Important;
-}
-
-.btn_anular {
-	color: #fff !Important;
-}
-
 .nav a {
 	color: var(--azuloscuro) !Important;
 }
@@ -310,9 +281,6 @@ div#report-success {
 	max-width: 100% !Important;
 }
 
-/*.partes h2{
-	
-}*/
 input.btn.btn-lg.btn-success.btn-block {
 	font-size: 14px !Important;
 	padding: 10px !Important;
@@ -925,12 +893,124 @@ a:hover.btfichar {
 	display: none;
 }
 
+[for="gc-form-id_producto"] {
+	display: none;
+}
+
 .botonProductos {
 	margin-bottom: 30px;
 }
 
-.comparador {
-	margin-top: 4vw;
-	margin-left: 4vh;
-	margin-right: 4vh;
+#iframe_procesos {
+	height: 100% !important;
 }
+
+/* elimina flechas filtro id pedidos */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+.botonesEditProcesos {
+	display: flex;
+	gap: 10px;
+}
+
+.btn-orange {
+	background-color: #ffc107;
+	color: white !important;
+	border: none;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.btn-orange:hover {
+	background-color: rgb(255, 168, 62);
+}
+
+.btn-success:hover {
+	background-color: #317a57 !important;
+}
+
+/* PEDIDOS NUEVO */
+
+.clear-filter {
+	border-color: #dee2e6;
+}
+
+.clear-filter {
+	border-left-color: white;
+}
+
+.clear-filter:hover {
+	background-color: #dee2e6;
+	border-color: #dee2e6;
+}
+
+
+.table-pedidos {
+	table-layout: auto;
+	width: 100%;
+}
+
+.table-pedidos th,
+.table-pedidos td {
+	white-space: nowrap;
+}
+
+.table-pedidos th {
+	text-align: left;
+}
+
+
+.table-pedidos th:nth-child(1),
+.table-pedidos td:nth-child(1) {
+	width: 6vw;
+}
+
+.table-pedidos th:nth-child(4),
+.table-pedidos td:nth-child(4) {
+	max-width: 10vw;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.table-pedidos th:nth-child(5),
+.table-pedidos td:nth-child(5) {
+	width: 8vw;
+}
+
+
+.table-pedidos th:nth-child(7),
+.table-pedidos td:nth-child(7) {
+	width: 7vw;
+}
+
+.table-pedidos th:nth-child(8),
+.table-pedidos td:nth-child(8) {
+	width: 6vw;
+}
+
+.table-pedidos th:nth-child(9),
+.table-pedidos td:nth-child(9) {
+	width: 10vw;
+}
+
+/* pedidos */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.botoneseditPedido{
+	margin-bottom: -20px;
+}
+
+

@@ -10,68 +10,144 @@ class Proveedores extends BaseControllerGC
 {
     public function index()
     {
-        $crud = $this->_getClientDatabase();
-        $crud->setSubject('Proveedor', 'Proveedores');
-        $crud->setTable('proveedores');
-        // Relaciones
-        $crud->setRelation('id_provincia', 'provincias', 'provincia');
-        $crud->setRelation('pais', 'paises', 'nombre');
-        $crud->setRelation('id_contacto', 'contactos', '{nombre} {apellidos}');
-        // Campos
-        $crud->addFields(['nombre_proveedor', 'nif', 'email', 'telf', 'contacto', 'direccion', 'pais', 'id_provincia', 'poblacion', 'f_pago', 'fax', 'cargaen', 'contacto', 'observaciones_proveedor', 'web']);
-        $crud->editFields(['para_boton', 'nombre_proveedor', 'nif', 'direccion', 'id_provincia', 'poblacion', 'telf', 'cargaen', 'f_pago', 'web', 'email', 'observaciones_proveedor', 'fax', 'contacto']);
-        // Columnas
-        $crud->columns(['nombre_proveedor', 'nif', 'direccion', 'contacto', 'id_provincia', 'telf', 'cargaen', 'web', 'email']);
-        $crud->displayAs('id_provincia', 'Provincia');
-        $crud->displayAs('f_pago', 'Forma Pago');
-        $crud->displayAs('cargaen', 'Carga en');
-        $crud->displayAs('observaciones_proveedor', 'Observaciones');
-        $crud->setLangString('modal_save', 'Guardar Proveedor');
-        // Personalizar el campo id_proveedor para incluir el botón
-        $crud->callbackEditField('para_boton', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $button = "<a href='" . base_url("proveedores/verProductos/{$primaryKeyValue}") . "' class='btn btn-warning btn-sm botonProductos' data-toggle='modal' data-target='#productosModal'><i class='fa fa-box fa-fw'></i> Ver Productos</a>";
-            return $button . "<input type='hidden' name='id_proveedor' value='{$fieldValue}'>";
-        });
-        // Callbacks para LOG
-        $crud->callbackAfterInsert(function ($stateParameters) {
-            $this->logAction('Proveedores', 'Añade proveedor', $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterUpdate(function ($stateParameters) {
-            $this->logAction('Proveedores', 'Edita proveedor, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterDelete(function ($stateParameters) {
-            $this->logAction('Proveedores', 'Elimina proveedor, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Proveedores');
+        $data['amiga'] = $this->getBreadcrumbs();
 
-        // Renderizar salida
-        $output = $crud->render();
-        return $this->_GC_output("layouts/main", $output);
+        return view('proveedores', $data);
+    }
+    public function getProveedores()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $builder = $db->table('proveedores');
+        $builder->select('proveedores.id_proveedor, proveedores.nombre_proveedor, proveedores.nif, proveedores.direccion, proveedores.contacto, proveedores.telf,proveedores.web, proveedores.email, provincias.provincia AS nombre_provincia');
+        $builder->join('provincias', 'proveedores.id_provincia = provincias.id_provincia', 'left');
+        $result = $builder->get()->getResult();
+        foreach ($result as &$row) {
+            $row->acciones = [
+                'editar' => base_url("proveedores/edit/{$row->id_proveedor}"),
+                'eliminar' => base_url("proveedores/delete/{$row->id_proveedor}")
+            ];
+        }
+
+        return $this->response->setJSON($result);
     }
 
+    public function add()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $provinciasModel = new \App\Models\ProvinciasModel($db);
+        $provincias = $provinciasModel->findAll();
+        $builderPaises = $db->table('paises');
+        $paises = $builderPaises->select('id, nombre')->get()->getResultArray();
+        return view('addProveedor', [
+            'provincias' => $provincias,
+            'paises' => $paises,
+        ]);
+    }
+
+    public function save()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $proveedoresModel = new ProveedoresModel($db);
+        $nombreProveedor = $this->request->getPost('nombre_proveedor');
+        if (empty($nombreProveedor)) {
+            return redirect()->back()->with('error', 'El nombre del proveedor es obligatorio.');
+        }
+        $proveedorData = [
+            'nombre_proveedor' => $nombreProveedor,
+            'nif' => $this->request->getPost('nif'),
+            'email' => $this->request->getPost('email'),
+            'telf' => $this->request->getPost('telf'),
+            'contacto' => $this->request->getPost('contacto'),
+            'direccion' => $this->request->getPost('direccion'),
+            'pais' => $this->request->getPost('pais'),
+            'id_provincia' => $this->request->getPost('id_provincia'),
+            'poblacion' => $this->request->getPost('poblacion'),
+            'observaciones_proveedor' => $this->request->getPost('observaciones_proveedor'),
+            'web' => $this->request->getPost('web'),
+        ];
+        if ($proveedoresModel->insert($proveedorData)) {
+            return redirect()->to(base_url('proveedores'))->with('message', 'Proveedor añadido con éxito.');
+        } else {
+            return redirect()->back()->with('error', 'Error al añadir el proveedor.');
+        }
+    }
+    public function edit($id)
+    {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Proveedores', base_url('/proveedores'));
+        $this->addBreadcrumb('Editar Proveedor');
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $proveedoresModel = new ProveedoresModel($db);
+        $data['amiga'] = $this->getBreadcrumbs();
+        $proveedor = $proveedoresModel->find($id);
+        if (!$proveedor) {
+            return redirect()->to(base_url('proveedores'))->with('error', 'Proveedor no encontrado.');
+        }
+        $provinciasModel = new \App\Models\ProvinciasModel($db);
+        $provincias = $provinciasModel->findAll();
+        $builderPaises = $db->table('paises');
+        $paises = $builderPaises->select('id, nombre')->get()->getResultArray();
+        $builderFormasPago = $db->table('formas_pago');
+        $formas_pago = $builderFormasPago->select('id_formapago, formapago')->get()->getResultArray();
+        return view('editProveedores', [
+            'proveedor' => $proveedor,
+            'provincias' => $provincias,
+            'paises' => $paises,
+            'formas_pago' => $formas_pago,
+            'amiga' => $data['amiga']
+        ]);
+    }
+
+    public function update($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $proveedoresModel = new ProveedoresModel($db);
+        $proveedor = $proveedoresModel->find($id);
+        if (!$proveedor) {
+            return redirect()->to(base_url('proveedores'))->with('error', 'Proveedor no encontrado.');
+        }
+        $proveedorData = [
+            'nombre_proveedor' => $this->request->getPost('nombre_proveedor'),
+            'nif' => $this->request->getPost('nif'),
+            'email' => $this->request->getPost('email'),
+            'telf' => $this->request->getPost('telf'),
+            'contacto' => $this->request->getPost('contacto'),
+            'direccion' => $this->request->getPost('direccion'),
+            'pais' => $this->request->getPost('pais'),
+            'id_provincia' => $this->request->getPost('id_provincia'),
+            'poblacion' => $this->request->getPost('poblacion'),
+            'observaciones_proveedor' => $this->request->getPost('observaciones_proveedor'),
+            'web' => $this->request->getPost('web'),
+        ];
+        if ($proveedoresModel->update($id, $proveedorData)) {
+            return redirect()->to(base_url('proveedores'))->with('message', 'Proveedor actualizado con éxito.');
+        } else {
+            return redirect()->back()->with('error', 'Error al actualizar el proveedor.');
+        }
+    }
     public function verProductos($id_proveedor)
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new ProductosProveedorModel($db);
         $proveedoresModel = new ProveedoresModel($db);
-        // Obtener el nombre del proveedor
         $proveedor = $proveedoresModel->find($id_proveedor);
-        // Obtener los productos asociados al proveedor, incluyendo el campo id_producto_necesidad
         $productos = $model
             ->select('productos_proveedor.ref_producto, productos_proveedor.id_producto_necesidad, productos_necesidad.nombre_producto, productos_proveedor.precio')
             ->join('productos_necesidad', 'productos_necesidad.id_producto = productos_proveedor.id_producto_necesidad')
             ->where('productos_proveedor.id_proveedor', $id_proveedor)
             ->findAll();
-        // Obtener todas las familias de productos
         $familiaProveedorModel = new FamiliaProveedorModel($db);
         $familias = $familiaProveedorModel->findAll();
-        // Obtener todos los productos de la tabla productos_necesidad
         $productosNecesidadModel = new \App\Models\ProductosNecesidadModel($db);
         $productos_necesidad = $productosNecesidadModel->findAll();
-        // Cargar la vista con los productos, el nombre del proveedor, las familias, el desplegable y el id_proveedor
         return view('productos_proveedor', [
             'productos' => $productos,
             'productos_necesidad' => $productos_necesidad,
@@ -80,41 +156,27 @@ class Proveedores extends BaseControllerGC
             'familias' => $familias
         ]);
     }
-
     public function agregarProducto()
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $model = new ProductosProveedorModel($db);
-
-        // Validar que el campo id_producto_necesidad no esté vacío
         if (empty($this->request->getPost('id_producto_necesidad'))) {
             return redirect()->back()->with('error', 'El ID del producto necesidad es obligatorio.');
         }
-
         $productoData = [
             'id_proveedor' => $this->request->getPost('id_proveedor'),
             'id_producto_necesidad' => $this->request->getPost('id_producto_necesidad'),
             'precio' => $this->request->getPost('precio'),
             'ref_producto' => $this->request->getPost('ref_producto'),
         ];
-
-        // Log de adición de producto
-        $log = "Producto añadido al proveedor ID: " . $productoData['id_proveedor'];
-        $seccion = "Productos de proveedor";
-        $this->logAction($seccion, $log, $data);
-
-        // Insertar el producto en la base de datos
         $model->insert($productoData);
-
-        // Verificar que la inserción fue exitosa antes de redirigir
         if ($db->affectedRows() > 0) {
             return redirect()->back()->with('message', 'Producto añadido con éxito.');
         } else {
             echo "Error al añadir el producto.";
         }
     }
-
 
     public function eliminarProducto()
     {
@@ -123,17 +185,12 @@ class Proveedores extends BaseControllerGC
         $model = new ProductosProveedorModel($db);
         $idProveedor = $this->request->getPost('id_proveedor');
         $idProductoNecesidad = $this->request->getPost('id_producto_necesidad');
-        // Eliminar el producto asociado al proveedor
         $model->where('id_proveedor', $idProveedor)
             ->where('id_producto_necesidad', $idProductoNecesidad)
             ->delete();
-        // Log de eliminación de producto
-        $log = "Producto eliminado del proveedor ID: " . $idProveedor;
-        $seccion = "Productos de proveedor";
-        $this->logAction($seccion, $log, $data);
-
         return redirect()->back()->with('message', 'Producto eliminado con éxito.');
     }
+
     public function actualizarProducto()
     {
         $data = usuario_sesion();
@@ -144,23 +201,63 @@ class Proveedores extends BaseControllerGC
         $refProducto = $this->request->getPost('ref_producto');
         $precio = $this->request->getPost('precio');
 
-        // Validación de los campos
         if (empty($precio) || empty($refProducto)) {
             return $this->response->setJSON(['success' => false, 'message' => 'Los campos de precio y referencia son obligatorios.']);
         }
-        // Actualizar el producto
+
         $model->where('id_proveedor', $idProveedor)
             ->where('id_producto_necesidad', $idProductoNecesidad)
+            ->where('ref_producto', $refProducto)
             ->set([
                 'ref_producto' => $refProducto,
                 'precio' => $precio
             ])
             ->update();
-        // Log de actualización de producto
-        $log = "Producto actualizado para el proveedor ID: " . $idProveedor;
-        $seccion = "Productos de proveedor";
-        $this->logAction($seccion, $log, $data);
 
         return $this->response->setJSON(['success' => true]);
+    }
+    public function asociarProveedor()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new ProductosProveedorModel($db);
+        $id_producto = $this->request->getPost('id_producto');
+        $id_proveedor = $this->request->getPost('id_proveedor');
+        $ref_producto = $this->request->getPost('ref_producto');
+        $precio = $this->request->getPost('precio');
+        if (empty($id_producto) || empty($id_proveedor) || empty($ref_producto) || empty($precio)) {
+            return redirect()->back()->with('error', 'Todos los campos son obligatorios.');
+        }
+        $model->insert([
+            'id_producto_necesidad' => $id_producto,
+            'id_proveedor' => $id_proveedor,
+            'ref_producto' => $ref_producto,
+            'precio' => $precio,
+        ]);
+        return redirect()->to(base_url('comparadorproductos/' . $id_producto))->with('message', 'Proveedor asociado exitosamente.');
+    }
+    public function elegirProveedor($id_producto)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $proveedoresModel = new ProveedoresModel($db);
+        $proveedores = $proveedoresModel->findAll();
+
+        return view('elegirProveedor', [
+            'id_producto' => $id_producto,
+            'proveedores' => $proveedores,
+        ]);
+    }
+    public function delete($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $proveedoresModel = new ProveedoresModel($db);
+
+        if ($proveedoresModel->delete($id)) {
+            return $this->response->setJSON(['success' => true, 'message' => 'Proveedor eliminado con éxito.']);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'No se pudo eliminar el proveedor.']);
+        }
     }
 }

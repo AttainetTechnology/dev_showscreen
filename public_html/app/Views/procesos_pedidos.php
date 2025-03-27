@@ -10,11 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/organizador.css') ?>?v=<?= time() ?>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-    <!-- Cargamos Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <!-- Iconos Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <div class="wrapper">
     <div id="organizador">
@@ -49,7 +50,7 @@
                         <tr>
                             <th><input type="checkbox" id="selectAllCol2" class="selectAll"></th>
                             <th class="columna-id">
-                                id
+                                ID Linea
                                 <br>
                                 <input type="text" id="idSearchInputCol2" class="form-control d-inline-block" style="width: 90%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol2();">
                             </th>
@@ -137,13 +138,14 @@
             </div>
         </div>
         <div class="column" id="col3">
-            <button data-action="move-left" class="btn btn-md btn-primary"><i class="bi bi-arrow-left"></i></button><br>
-            <button data-action="move-right" class="btn btn-md btn-primary"><i class="bi bi-arrow-right"></i></button><br>
-            <button data-action="confirm" class="btn btn-md btn-info"><i class="bi bi-floppy"></i></button><br>
-            <button data-action="btn-terminado" class="btn btn-md" style="background-color: #50b752; color: white;"><i class="bi bi-clipboard2-check"></i></button><br>
-            <button data-action="btn-imprimir" onclick="printDiv('printableArea')" class="btn btn-secondary btn-md"><i class='bi bi-printer'></i></button><br>
-            <button data-action="cancelar" onclick="window.location.reload();" class="btn btn-md btn-warning"><i class="bi bi-arrow-clockwise"></i></button><br>
-            <button data-action="pedido" class="btn btn-md btn-success"><i class="bi bi-box"></i></button><br>
+
+            <button data-action="cancelar" onclick="window.location.reload();" class="btn btn-md btn-warning" style="background-color: #8B8B8B; border:none; color: white; margin-bottom:40px;" data-bs-toggle="tooltip" title="Recargar"><i class="bi bi-arrow-clockwise"></i></button><br>
+            <button data-action="move-left" class="btn btn-md btn-primary" data-bs-toggle="tooltip" title="Mover a lista para producir"><i class="bi bi-arrow-left"></i></button><br>
+            <button data-action="move-right" class="btn btn-md btn-primary" data-bs-toggle="tooltip" title="Mover a maquinas"><i class="bi bi-arrow-right"></i></button><br>
+            <button data-action="confirm" class="btn btn-md btn-info" style="background-color: #146C43; border:none; color: white;" data-bs-toggle="tooltip" title="Guardar"><i class="bi bi-floppy"></i></button><br>
+            <button data-action="btn-terminado" class="btn btn-md" style="background-color: #59AB5A; color: white;" data-bs-toggle="tooltip" title="Terminar"><i class="bi bi-clipboard2-check"></i></button><br>
+            <button data-action="btn-imprimir" onclick="printDiv('printableArea')" class="btn btn-secondary btn-md" style="background-color: #259CB4; border:none" data-bs-toggle="tooltip" title="Imprimir"><i class='bi bi-printer'></i></button><br>
+            <button data-action="pedido" class="btn btn-md btn-warning" data-bs-toggle="tooltip" title="Revertir"><i class="bi bi-arrow-counterclockwise"></i></button><br>
             <?php echo view('procesosTerminados'); ?>
 
         </div>
@@ -178,9 +180,9 @@
                         <tr>
                             <th><input type="checkbox" id="selectAllCol4" class="selectAll"></th>
                             <th class="columna-id">
-                                id
+                                ID Linea
                                 <br>
-                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block"style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
+                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
                             </th>
                             <th>
                                 Cliente
@@ -207,7 +209,6 @@
                                 </select>
 
                             </th>
-
                             <th>Nº Piezas</th>
                             <th>Proceso</th>
                             <th>Base</th>
@@ -250,12 +251,11 @@
                                     <tr>
                                         <th>ID Línea Pedido</th>
                                         <th>Cliente</th>
-                                        <th>Medidas</th>
-                                        <th>Fecha Entrega</th>
                                         <th>Producto</th>
                                         <th>Nº Piezas</th>
-                                        <th>Proceso</th>
                                         <th>Base</th>
+                                        <th>Medidas</th>
+                                        <th>Proceso</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -264,12 +264,11 @@
                                             <tr>
                                                 <td><?= esc($linea['id_linea_pedido']); ?></td>
                                                 <td><?= esc($linea['cliente']); ?></td>
-                                                <td><?= esc($linea['medidas']); ?></td>
-                                                <td><?= esc($linea['fecha']); ?></td>
                                                 <td><?= esc($linea['producto']); ?></td>
                                                 <td><?= esc($linea['n_piezas']); ?></td>
-                                                <td><?= esc($linea['proceso']); ?></td>
                                                 <td><?= esc($linea['base']); ?></td>
+                                                <td><?= esc($linea['medidas']); ?></td>
+                                                <td><?= esc($linea['proceso']); ?></td>
                                             </tr>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
@@ -282,6 +281,40 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        ocultarFilasSinFiltro();
+
+        // Evento de cambio en el filtro de máquina
+        document.getElementById('maquinaFilterCol4').addEventListener('change', function() {
+            const selectedMachine = this.value;
+            filtrarProcesosPorMaquina(selectedMachine);
+        });
+
+        // Evento para eliminar filtro de máquina
+        document.getElementById('clearMachineFilter').addEventListener('click', function() {
+            document.getElementById('maquinaFilterCol4').value = '';
+            ocultarFilasSinFiltro();
+        });
+    });
+    // Función para ocultar todas las filas al inicio
+    function ocultarFilasSinFiltro() {
+        document.querySelectorAll('#col4 tbody tr').forEach(function(row) {
+            row.style.display = 'none';
+        });
+    }
+    // Función para filtrar las filas por la máquina seleccionada
+    function filtrarProcesosPorMaquina(machineId) {
+        document.querySelectorAll('#col4 tbody tr').forEach(function(row) {
+            const rowMachineId = row.getAttribute('data-id-maquina');
+            if (rowMachineId === machineId || machineId === '') {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+</script>
 <script>
     function printDiv(divId) {
         // Verificar si hay una máquina seleccionada
@@ -411,12 +444,12 @@
                         <tr>
                             <th>ID Línea Pedido</th>
                             <th>Cliente</th>
-                            <th>Medidas</th>
-                            <th>Fecha Entrega</th>
                             <th>Producto</th>
                             <th>Nº Piezas</th>
-                            <th>Proceso</th>
                             <th>Base</th>
+                            <th>Medidas</th>
+                            <th>Proceso</th>
+                           
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -430,12 +463,12 @@
                         row.innerHTML = `
                             <td>${linea.id_linea_pedido}</td>
                             <td>${linea.cliente}</td>
-                            <td>${linea.medidas}</td>
-                            <td>${linea.fecha}</td>
                             <td>${linea.producto}</td>
                             <td>${linea.n_piezas}</td>
-                            <td>${linea.proceso}</td>
                             <td>${linea.base}</td>
+                            <td>${linea.medidas}</td>                 
+                            <td>${linea.proceso}</td>
+                           
                         `;
                         tbody.appendChild(row);
                     }
@@ -453,7 +486,6 @@
 </html>
 <script>
     // Variables globales
-    // Variables globales
     let selectedMachineId = null;
     let selectedClientFilterCol2 = '';
     let selectedProcesoFilterCol2 = '';
@@ -465,6 +497,9 @@
     let idFilterCol4 = '';
 
     let sortable;
+    $(document).ready(function() {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
 
     $(document).ready(function() {
         // Inicializar select2 en el select con id 'searchInput'
@@ -481,32 +516,104 @@
     });
 
     $(document).ready(function() {
-    // Manejar el clic en el botón "pedido"
-    $('[data-action="pedido"]').click(function() {
-        // Hacemos la petición AJAX para obtener los procesos con estado 4
-        $.ajax({
-            url: '<?= base_url('procesos_pedidos/getProcesosEstado4') ?>',
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                var tabla = '';
-                $.each(response, function(index, proceso) {
-                    tabla += '<tr>';
-                    tabla += '<td>' + proceso.id_linea_pedido + '</td>';
-                    tabla += '<td>' + proceso.nombre_proceso + '</td>';
-                    tabla += '<td>' + proceso.nombre_producto + '</td>';
-                    tabla += '<td><button class="btn btn-warning revertir-estado" data-id-relacion="' + proceso.id_relacion + '">Revertir</button></td>';
-                    tabla += '</tr>';
-                });
-                $('#tablaProcesos').html(tabla);
-                $('#modalProcesos').modal('show');
-            },
-            error: function() {
-                alert('Error al cargar los datos.');
-            }
+        // Manejar el clic en el botón "pedido"
+        $('[data-action="pedido"]').click(function() {
+            // Hacemos la petición AJAX para obtener los procesos con estado 4
+            $.ajax({
+                url: '<?= base_url('procesos_pedidos/getProcesosEstado4') ?>',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    var tabla = '';
+                    $.each(response, function(index, proceso) {
+                        tabla += '<tr>';
+                        tabla += '<td>' + proceso.id_linea_pedido + '</td>';
+                        tabla += '<td>' + proceso.nombre_proceso + '</td>';
+                        tabla += '<td>' + proceso.nombre_producto + '</td>';
+                        tabla += '<td><button class="btn btn-warning revertir-estado" data-id-relacion="' + proceso.id_relacion + '">Revertir</button></td>';
+                        tabla += '</tr>';
+                    });
+                    $('#tablaProcesos').html(tabla);
+                    $('#modalProcesos').modal('show');
+                },
+                error: function() {
+                    alert('Error al cargar los datos.');
+                }
+            });
+        });
+
+        // Reactivar sortable después de ciertas acciones
+        document.querySelectorAll('button[data-action]').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                if (action === 'confirm') {
+                    confirmarProcesos();
+                }
+                inicializarSortable();
+            });
         });
     });
 
+    function inicializarSortable() {
+        var el = document.getElementById('sortableTable').getElementsByTagName('tbody')[0];
+        if (sortable) {
+            sortable.destroy();
+        }
+        sortable = Sortable.create(el, {
+            animation: 150,
+            scroll: true,
+            onStart: function(evt) {
+                document.addEventListener('dragover', handleDragScroll);
+            },
+            onEnd: function(evt) {
+                document.removeEventListener('dragover', handleDragScroll);
+                guardarOrdenEnLocalStorage();
+                actualizarOrdenProcesos();
+            }
+        });
+    }
+
+    function handleDragScroll(event) {
+        const scrollContainer = document.getElementById('sortableTable').parentElement;
+        const sensitivity = 30;
+        const scrollSpeed = 10;
+
+        const mouseY = event.clientY;
+        const containerRect = scrollContainer.getBoundingClientRect();
+
+        if (mouseY < containerRect.top + sensitivity) {
+            scrollContainer.scrollTop -= scrollSpeed;
+        } else if (mouseY > containerRect.bottom - sensitivity) {
+            scrollContainer.scrollTop += scrollSpeed;
+        }
+    }
+
+    function guardarOrdenEnLocalStorage() {
+        const filas = document.querySelectorAll('#sortableTable tbody tr');
+        let orden = Array.from(filas).map(fila => fila.getAttribute('data-id'));
+        localStorage.setItem('ordenProcesos', JSON.stringify(orden));
+    }
+
+    // Cargar el orden desde localStorage
+    function cargarOrdenDesdeLocalStorage() {
+        let orden = localStorage.getItem('ordenProcesos');
+        if (orden) {
+            orden = JSON.parse(orden);
+            const tbody = document.querySelector('#sortableTable tbody');
+            orden.forEach(id => {
+                const fila = document.querySelector(`#sortableTable tbody tr[data-id="${id}"]`);
+                if (fila) {
+                    tbody.appendChild(fila);
+                }
+            });
+        }
+    }
+
+    // Función que asegura que Sortable se reinicie después de cargar el DOM
+    $(document).ready(function() {
+        cargarOrdenDesdeLocalStorage();
+        inicializarSortable();
+    });
     // Manejar el clic en el botón "Revertir Estado"
     $(document).on('click', '.revertir-estado', function() {
         var idRelacion = $(this).data('id-relacion');
@@ -516,15 +623,15 @@
             type: 'POST',
             success: function(response) {
                 if (response.success) {
-            $('#modalProcesos').modal('hide');
-            location.reload(); 
+                    $('#modalProcesos').modal('hide');
+                    location.reload();
                 } else {
                     alert('Error al revertir el estado del proceso.');
                 }
             },
         });
     });
-});
+
     // Funciones de filtrado
     function aplicarFiltros(columna) {
         const tableRows = document.querySelectorAll(`#col${columna} tbody tr`);
@@ -611,19 +718,16 @@
         });
 
         selectedMachineId = idMaquina;
-        console.log("Maquina seleccionada:", selectedMachineId);
 
         document.querySelectorAll('#col4 .linea').forEach(row => {
             const estado = row.getAttribute('data-estado');
             const idMaquinaFila = row.getAttribute('data-id-maquina');
             const shouldDisplay = (estado === 'no-guardado' || idMaquinaFila === idMaquina);
             row.style.display = shouldDisplay ? '' : 'none';
-            console.log("Fila:", row, "Visible:", shouldDisplay);
         });
 
         if (sortable) {
             sortable.option("disabled", false); // Habilitar Sortable al seleccionar una máquina
-            console.log("Sortable activado");
         }
         aplicarFiltros(4);
     }
@@ -945,8 +1049,6 @@
                 id_maquina: fila.getAttribute('data-id-maquina').trim()
             }));
 
-        console.log('Ordenes a enviar:', ordenes);
-
         fetch('<?php echo base_url('procesos_pedidos/actualizarOrdenProcesos'); ?>', {
                 method: 'POST',
                 headers: {
@@ -960,10 +1062,6 @@
             .then(data => {
                 if (data.success) {
                     console.log('Orden actualizado correctamente.');
-                    console.log('Procesos actualizados:', data.procesos_actualizados);
-                    if (data.procesos_no_encontrados.length > 0) {
-                        console.warn('Algunos procesos no se encontraron:', data.procesos_no_encontrados);
-                    }
                 } else {
                     alert('Error al actualizar el orden: ' + data.error);
                 }
@@ -972,27 +1070,23 @@
 
 
     function eliminarFiltroMaquina() {
-        // Restablecer el valor del select de máquinas a vacío (sin selección)
-        document.getElementById('maquinaFilterCol4').value = '';
-
-        // Eliminar la máquina seleccionada de la variable global
+        $('#maquinaFilterCol4').val('').trigger('change');
         selectedMachineId = null;
-
-        // Mostrar todas las filas en la columna 4
+        $('#clienteFilterCol4').val('').trigger('change');
+        $('#productoFilterCol4').val('').trigger('change');
+        $('#idSearchInputCol4').val('');
         mostrarTodasLasLineas();
-
-        // Deshabilitar el sortable si no hay una máquina seleccionada
         if (sortable) {
             sortable.option("disabled", true);
         }
+        aplicarFiltros(4);
     }
 
     function mostrarTodasLasLineas() {
         document.querySelectorAll('#col4 .linea').forEach(linea => {
-            linea.style.display = ''; // Mostrar todas las líneas
+            linea.style.display = '';
         });
     }
-
 
     function marcarComoTerminado(button) {
         event.stopPropagation();

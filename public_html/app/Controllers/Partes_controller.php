@@ -9,119 +9,79 @@ use App\Models\LineaPedido;
 
 class Partes_controller extends BaseControllerGC
 {
-
-
     public function parte_print($id_lineapedido)
     {
-
         /** APARTADO STANDARD PARA TODOS LOS CONTROLADORES **/
-        //Control de login	
+        // Control de login
         helper('controlacceso');
         control_login();
-
-        //Saco los datos del usuario
+    
+        // Saco los datos del usuario
         $data = datos_user();
-
-        //Conecto la BDD
+    
+        // Conecto la BDD
         $db = db_connect($data['new_db']);
-
+    
+        // Obtener la línea de pedido
         $builder = $db->table('linea_pedidos');
         $builder->select('*');
         $builder->where('id_lineapedido', $id_lineapedido);
         $query = $builder->get();
-
         $data['lineas'] = $query->getResult();
-
-        //Saco los detalles del pedido
+    
+        // Inicializar `$data['clientes']` como un array vacío por si no se encuentra el cliente
+        $data['clientes'] = [];
+    
+        // Obtener los detalles del pedido y cliente
         foreach ($query->getResult() as $row) {
             $elpedido = $row->id_pedido;
             $builder = $db->table('pedidos');
             $builder->select('*');
             $builder->where('id_pedido', $elpedido);
             $query2 = $builder->get();
-
-
-
-            foreach ($query2->getResult() as $row) {
-                $data['pedidos'] = $query2->getResult();
-
-                // Comprobar si la propiedad 'id_cliente' existe en el objeto $row
-                if (isset($row->id_cliente)) {
-                    $elcliente = $row->id_cliente;
-
-                    $builder = $db->table('clientes');
-                    $builder->select('*');
-                    $builder->where('id_cliente', $elcliente);
-                    $query5 = $builder->get();
-
-                    foreach ($query5->getResult() as $row) {
-                        $data['clientes'] = $query5->getResult();
-                    }
-                } else {
-                    // Mostrar un mensaje de error si 'id_cliente' no existe
-                    echo "No se encontró el id_cliente.";
-                }
-            }
-
-
-
-            //Declaro la variable mas_de_una_linea
-            $data['mas_de_una_linea'] = "";
-            //Comprobamos si el pedido tiene mas de una linea
-
-            $builder = $db->table('linea_pedidos');
-            $builder->select('*');
-            $builder->join('productos', 'productos.id_producto = linea_pedidos.id_producto', 'left');
-            //Elimino el producto transporte de los resultados
-            $builder->where('linea_pedidos.id_pedido', $elpedido);
-            $builder->where('linea_pedidos.id_producto != ', 55, FALSE);
-            $query6 = $builder->get();
-            if ($query6->getResultArray() > 1) {
-                foreach ($query6->getResult() as $linea) {
-                    $data['mas_de_una_linea'] = $query6->getResult();
-                }
+            $data['pedidos'] = $query2->getResult();
+    
+            // Obtener el cliente si existe
+            if (!empty($data['pedidos']) && isset($data['pedidos'][0]->id_cliente)) {
+                $elcliente = $data['pedidos'][0]->id_cliente;
+    
+                $builder = $db->table('clientes');
+                $builder->select('*');
+                $builder->where('id_cliente', $elcliente);
+                $query5 = $builder->get();
+                $data['clientes'] = $query5->getResult();
             }
         }
-
-        //Saco los detalles del producto
+    
+        // Saco los detalles del producto
         foreach ($query->getResult() as $row) {
             $elproducto = $row->id_producto;
-
             $builder = $db->table('productos');
             $builder->select('*');
             $builder->where('id_producto', $elproducto);
             $query3 = $builder->get();
-
-            foreach ($query3->getResult() as $row) {
-                $laimagen = $row->imagen;
-                $data['productos'] = $query3->getResult();
-            }
+            $data['productos'] = $query3->getResult();
         }
-        //Saco los procesos
-
+    
+        // Saco los procesos
         $builder = $db->table('procesos_productos');
         $builder->select('*');
-        $builder->where(array("id_producto" => $elproducto));
+        $builder->where(['id_producto' => $elproducto]);
         $builder->join('procesos', 'procesos.id_proceso=procesos_productos.id_proceso', 'left');
-        $builder->orderby('nombre_proceso', 'asc');
+        $builder->orderby('procesos_productos.orden', 'asc');
         $query4 = $builder->get();
-
-
-        if ($query4->getResultArray() != 0) {
-            $procesos = $query4->getResult();
-            foreach ($procesos as $proceso) {
-                $proceso->nombre_proceso = ltrim($proceso->nombre_proceso, " 0..9");
-            }
-            $data['procesos'] = $procesos;
+        $data['procesos'] = $query4->getResult();
+    
+        // Devolver la vista de acuerdo con el tipo de solicitud
+        if ($this->request->isAJAX()) {
+            return view('partes', (array)$data); // solo el contenido
         } else {
-            return false;
+            echo view('header_partes');
+            echo view('partes', (array)$data);
+            echo view('footer');
         }
-
-
-        echo view('header_partes');
-        echo view('partes', (array)$data);
-        echo view('footer');
     }
+    
 
     public function pedido_print($id_pedido)
     {
@@ -139,6 +99,7 @@ class Partes_controller extends BaseControllerGC
     //Cambio el estado de la linea de pedido a "material recibido" cuando sacamos el parte.
     public function CambiaEstado($id_lineapedido)
     {
+        // Cambiar el estado de la línea de pedido
         $data2 = array('estado' => '2');
         helper('controlacceso');
         $data = datos_user();
@@ -148,17 +109,14 @@ class Partes_controller extends BaseControllerGC
         $builder->where('id_lineapedido', $id_lineapedido);
         $builder->update();
 
-        //Reviso si todas las lineas han cambiado de estado y le cambio el estado al pedido
-
+        // Revisar si todas las líneas han cambiado de estado y actualizar el estado del pedido
         $Lineaspedido_model = model('App\Models\Lineaspedido_model');
         $Lineaspedido_model->actualiza_estado_lineas($id_lineapedido);
-
-        if (isset($_GET['volver'])) {
-            $volver = $_GET['volver'];
-        }
         $this->obtenerLineasPedidoConEstado2YCrearProcesos();
-        helper('url');
-        return redirect()->to($volver);
+
+        // Enviar respuesta para cerrar la pestaña actual
+        echo "<script>window.close();</script>";
+        exit;
     }
 
 

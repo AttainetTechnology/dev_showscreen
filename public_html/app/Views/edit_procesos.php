@@ -11,7 +11,10 @@
 
     <form id="edit-form" action="<?= base_url('procesos/restriccion/' . $proceso_principal['id_proceso']); ?>" method="post">
         <input type="hidden" name="redirect_url" value="<?= current_url(); ?>">
-        <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
+        <div class="botonesEditProcesos">
+            <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
+            <a href="<?= base_url('procesos'); ?>" class="btn btn-orange mt-3 ml-2">Ver Procesos</a>
+        </div>
 
         <h2 class="text-center mb-4"><?= $proceso_principal['nombre_proceso'] ?></h2>
         <div class="form-group">
@@ -31,7 +34,7 @@
         <!-- Campo de búsqueda -->
         <div class="form-group">
             <label for="search-proceso"></label>
-            <input type="text" class="form-control" id="search-proceso" placeholder="Busuca el nombre del proceso">
+            <input type="text" class="form-control" id="search-proceso" placeholder="Busca el nombre del proceso">
         </div>
 
         <?php
@@ -64,14 +67,24 @@
         const inputs = form.querySelectorAll('input, select');
         const searchInput = document.getElementById('search-proceso');
         const procesoItems = document.querySelectorAll('.proceso-item');
+        const nombreProcesoInput = document.getElementById('nombre_proceso');
+        // Validar que el nombre del proceso no contenga puntos
+        form.addEventListener('submit', function(event) {
+            let nombreProceso = nombreProcesoInput.value;
 
+            if (nombreProceso.includes('.')) {
+                alert('No se permite el uso de puntos en el nombre del proceso.');
+                event.preventDefault(); // Evita que el formulario se envíe
+                return;
+            }
+            nombreProcesoInput.value = nombreProceso.toUpperCase();
+        });
         // Detectar cambios en los campos del formulario
         inputs.forEach(function(input) {
             input.addEventListener('change', function() {
                 isDirty = true;
             });
         });
-
         // Interceptar clicks en las flechas de navegación
         document.getElementById('prev-link').addEventListener('click', function(event) {
             if (isDirty && !confirm('Tienes cambios sin guardar. ¿Estás seguro de que deseas salir sin guardar?')) {
@@ -84,7 +97,6 @@
                 event.preventDefault();
             }
         });
-
         // Detectar clicks en los cuadros de restricción para marcar el formulario como modificado
         document.querySelectorAll('.proceso-box').forEach(function(box) {
             box.addEventListener('click', function() {
@@ -96,7 +108,6 @@
                 isDirty = true; // Marcar el formulario como modificado
             });
         });
-
         // Filtrar procesos por nombre
         searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase();
@@ -111,21 +122,16 @@
         });
     });
 </script>
-
-
 <style>
     .proceso-box {
         cursor: pointer;
         transition: all 0.3s ease-in-out;
     }
-
     .proceso-box.selected {
         background-color: #f0f8ff;
     }
-
     .proceso-box:hover {
         box-shadow: 0 0 11px rgba(33, 33, 33, .2);
     }
 </style>
-
 <?= $this->endSection() ?>

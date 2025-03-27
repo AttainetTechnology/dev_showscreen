@@ -36,32 +36,29 @@ class Lista_produccion extends BaseControllerGC
         // Control de login    
         helper('controlacceso');
         $nivel = control_login();
-        // Fin Control de Login    
-
         // Comienza Grocery CRUD a montar la tabla    
         $crud = $this->_getClientDatabase();
         // Definimos las columnas y la tabla
         $crud->setTable('v_linea_pedidos_con_familia');
         $crud->setPrimaryKey('id_lineapedido', 'v_linea_pedidos_con_familia');
-        $crud->columns(['fecha_entrada', 'id_cliente', 'id_producto', 'id_familia', 'id_pedido', 'estado']);
+        $crud->columns(['id_lineapedido', 'fecha_entrada', 'med_inicial', 'med_final', 'id_cliente', 'nom_base', 'id_producto', 'id_pedido', 'estado', 'id_familia']);
         $crud->setRelation('id_cliente', 'clientes', 'nombre_cliente');
         $crud->setRelation('id_familia', 'familia_productos', 'nombre');
         $crud->setRelation('id_producto', 'productos', 'nombre_producto');
         $crud->displayAs('fecha_entrada', 'Fecha de Entrada');
         $crud->displayAs('id_cliente', 'Cliente');
+        $crud->displayAs('nom_base', 'Base');
+        $crud->displayAs('id_lineapedido', 'Linea Pedido');
         $crud->displayAs('id_producto', 'Producto');
         $crud->displayAs('id_familia', 'Familia');
         $crud->displayAs('id_pedido', 'Pedido');
         $crud->displayAs('estado', 'Estado');
-
         // Aplicamos el filtro según la situación
         $crud->where($coge_estado . $where_estado);
-
         // Definimos el título de la tabla
         $ahora = date('d-m-y');
         $titulo_pagina = "Partes " . $situacion . " - fecha: " . $ahora;
         $crud->setSubject($titulo_pagina, $titulo_pagina);
-
         // Acciones personalizadas según el estado
         if ($where_estado == '0') {
             $crud->setActionButton('Parte', 'fa fa-print', function ($row) {
@@ -69,10 +66,8 @@ class Lista_produccion extends BaseControllerGC
                 $uri = current_url(true);
                 $pg2 = urlencode($uri); // Codifica la URL para evitar caracteres no permitidos
                 return base_url('partes/print/' . $row->id_lineapedido) . '?volver=' . $pg2 .  'target="_blank"';
-            }, true); // El último parámetro indica que es un enlace
+            }, true);
         }
-
-
         if ($where_estado == '4') {
             $crud->setActionButton('Entregar', 'fa fa-truck', function ($row) {
                 $uri = service('uri');
@@ -81,26 +76,20 @@ class Lista_produccion extends BaseControllerGC
                 return base_url('/lista_produccion/actualiza_linea/') . '/' . $row->id_lineapedido . '/5/?volver=' . $pg2;
             }, false);
         }
-
         $crud->callbackColumn('estado', array($this, '_cambia_color_lineas'));
         $crud->unsetEdit();
         $crud->unsetDelete();
         $crud->unsetAdd();
         $crud->unsetRead();
-
         $crud->callbackColumn('id_pedido', array($this, 'nombre_cliente'));
-
         $output = $crud->render();
-
         if ($output->isJSONResponse) {
             header('Content-Type: application/json; charset=utf-8');
             echo $output->output;
             exit;
         }
-
         echo view('layouts/main', (array)$output);
     }
-
     function _cambia_color_lineas($estado)
     {
         $nombre_estado = "";
@@ -131,32 +120,31 @@ class Lista_produccion extends BaseControllerGC
         $pedido = $Pedidos_model->obtener_datos_pedido($id_pedido);
         foreach ($pedido as $row) {
             $cliente = $row->nombre_cliente;
-            return "<b><a href=" . base_url() . "Pedidos2/enmarcha#/edit/" . $id_pedido . " target='_blank'>" . $id_pedido . " - " . $cliente . "</a></b>";
+            return "<b><a href=" . base_url() . "Pedidos/edit/" . $id_pedido . " >" . $id_pedido . " - " . $cliente . "</a></b>";
         }
     }
-
 
     public function actualiza_linea($id_lineapedido, $estado)
     {
         $Lineaspedido_model = model('App\Models\Lineaspedido_model');
         $Lineaspedido_model->actualiza_linea($id_lineapedido, $estado);
-    
+
         // Conectar a la base de datos
-        $data = datos_user();     
+        $data = datos_user();
         $db = db_connect($data['new_db']);
-        
+
         // Eliminar todos los registros de la tabla procesos_pedidos con la misma id_linea_pedido
         $builder = $db->table('procesos_pedidos');
         $builder->where('id_linea_pedido', $id_lineapedido);
         $builder->delete();
-        
+
         // Obtener el id_pedido asociado a la línea de pedido
         $builder = $db->table('linea_pedidos');
         $builder->select('id_pedido');
         $builder->where('id_lineapedido', $id_lineapedido);
         $query = $builder->get();
         $id_pedido = $query->getRow()->id_pedido;
-    
+
         // Comprobar si todas las líneas de pedido asociadas al id_pedido están en estado 5
         $builder = $db->table('linea_pedidos');
         $builder->select('estado');
@@ -169,7 +157,7 @@ class Lista_produccion extends BaseControllerGC
                 break;
             }
         }
-    
+
         // Si todas las líneas de pedido están en estado 5, actualizar el estado del pedido a 5
         if ($allInState5) {
             $builder = $db->table('pedidos');
@@ -177,7 +165,7 @@ class Lista_produccion extends BaseControllerGC
             $builder->where('id_pedido', $id_pedido);
             $builder->update();
         }
-    
+
         // Redirigir a la URL de retorno si está definida
         if (isset($_GET['volver'])) {
             $volver = $_GET['volver'];

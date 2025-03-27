@@ -78,15 +78,11 @@
                     dataType: 'json',
                 })
                 .done(function(response) {
-                    // Aquí puedes hacer algo cuando la solicitud sea exitosa, como cerrar el modal y recargar la página
                     $('#addFamiliaProductoModal').modal('hide');
                     location.reload();
-    
-                    // Mostrar un mensaje de éxito
                     alert(response.message);
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
-                    // Aquí puedes manejar los errores
                     console.error("Error: ", textStatus, errorThrown);
                     alert('Hubo un error al guardar la familia de producto. Por favor, inténtalo de nuevo.');
                 });

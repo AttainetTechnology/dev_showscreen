@@ -7,9 +7,22 @@ use CodeIgniter\Model;
 class LineaPedido extends Model {
     protected $table = 'linea_pedidos';
     protected $primaryKey = 'id_lineapedido';
-
-    protected $allowedFields = ['fecha_entrega', 'id_pedido', 'n_piezas', 'id_producto', 'estado', 'nom_base']; 
-
+    protected $allowedFields = [
+        'id_producto', 
+        'n_piezas', 
+        'id_pedido',
+        'precio_venta', 
+        'nom_base', 
+        'med_inicial', 
+        'med_final', 
+        'lado', 
+        'distancia', 
+        'estado', 
+        'fecha_entrada', 
+        'fecha_entrega', 
+        'observaciones', 
+        'total_linea',
+    ];
     public function obtenerLineasPorPedido($estado, $id_pedido = null) {
         $query = $this->where('estado', $estado);
         
@@ -20,8 +33,6 @@ class LineaPedido extends Model {
         return $query->orderBy('id_lineapedido', 'asc')->findAll();
     }
 }
-
-
 class Pedido extends Model {
     protected $table = 'pedidos';
     protected $primaryKey = 'id_pedido';

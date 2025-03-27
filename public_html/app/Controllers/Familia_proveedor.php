@@ -1,47 +1,82 @@
-<?php
+<?php 
 namespace App\Controllers;
+
+use App\Models\FamiliaProveedorModel;
 
 class Familia_proveedor extends BaseControllerGC
 {
+
     public function index()
     {
-        // Inicialización del objeto CRUD
-        $crud = $this->_getClientDatabase();
-        $crud->setSubject('Familia de Proveedor', 'Familias de Proveedores');
-        $crud->setTable('familia_proveedor');
-
-        // Campos para añadir y editar
-        $crud->requiredFields(['nombre']);
-        $crud->addFields(['nombre']);
-        $crud->editFields(['nombre']);
-
-        // Columnas que se mostrarán en la vista de lista
-        $crud->columns(['id_familia', 'nombre']);
-        $crud->displayAs('nombre', 'Nombre Familia');
-
-        $crud->setLangString('modal_save', 'Guardar Familia');
-
-        // Callbacks para LOG
-        $crud->callbackAfterInsert(function ($stateParameters) {
-            $this->logAction('FamiliaProveedor', 'Añade familia de proveedor', $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterUpdate(function ($stateParameters) {
-            $this->logAction('FamiliaProveedor', 'Edita familia de proveedor, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterDelete(function ($stateParameters) {
-            $this->logAction('FamiliaProveedor', 'Elimina familia de proveedor, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-
-        // Renderizar salida
-        $output = $crud->render();
-        return $this->_GC_output("layouts/main", $output);
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Familia Productos');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('familiaProveedor', $data);
     }
-    public function test()
+
+    public function getFamiliasProveedores()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new FamiliaProveedorModel($db);
+        $familias = $model->findAll();
+        foreach ($familias as &$familia) {
+            $familia['acciones'] = [
+                'editar' => base_url('familiaProveedor/editar/' . $familia['id_familia']),
+                'eliminar' => base_url('familiaProveedor/eliminar/' . $familia['id_familia'])
+            ];
+        }
+        return $this->response->setJSON($familias);
+    }
+    public function eliminarFamilia($id_familia)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new FamiliaProveedorModel($db);
+        $model->delete($id_familia);
+        return $this->response->setJSON(['success' => true]);
+    }
+    public function actualizarFamilia()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new FamiliaProveedorModel($db);
+        $idFamilia = $this->request->getPost('id_familia');
+        $nombre = $this->request->getPost('nombre');
+    
+        if (empty($nombre)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'El campo nombre es obligatorio.']);
+        }
+        $model->set('nombre', $nombre)
+              ->where('id_familia', $idFamilia)
+              ->update();
+    
+        return $this->response->setJSON(['success' => true]);
+    }
+    
+    public function editar($id_familia)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new FamiliaProveedorModel($db);
+        $familia = $model->find($id_familia);
+        if (!$familia) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Familia no encontrada.']);
+        }
+        return view('editFamiliaProveedorModal', ['familia' => $familia]);
+    }
+
+    public function agregarFamilia()
 {
-    echo "El método test funciona correctamente.";
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $model = new FamiliaProveedorModel($db);
+    $nombre = $this->request->getPost('nombre');
+    if (empty($nombre)) {
+        return $this->response->setJSON(['success' => false, 'message' => 'El campo nombre es obligatorio.']);
+    }
+    $model->insert(['nombre' => $nombre]);
+    return $this->response->setJSON(['success' => true]);
 }
 
 }

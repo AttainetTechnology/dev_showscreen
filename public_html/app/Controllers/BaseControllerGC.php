@@ -18,6 +18,8 @@ class BaseControllerGC extends Controller
     protected $crud;
     protected $nivel;
     protected $data;
+    protected $amiga = [];
+
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         parent::initController($request, $response, $logger);
@@ -178,5 +180,15 @@ protected function logAction($seccion, $log, $stateParameters) {
 
     // Insertar el registro de log en la base de datos
     $logModel->insert($data);
+}
+
+public function addBreadcrumb($title, $link = '#')
+{
+    $this->amiga[] = ['title' => $title, 'link' => $link];
+}
+
+public function getBreadcrumbs()
+{
+    return $this->amiga;
 }
 }

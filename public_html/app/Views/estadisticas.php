@@ -164,7 +164,7 @@ use App\Models\Menu_familias_model; ?>
 												endif;
 											endforeach;
 											foreach ($piezasfamilia as $pz) :
-												$ancho = ((100 * $pz['total_piezas']) / $mayor);
+												$ancho = ($mayor > 0) ? ((100 * $pz['total_piezas']) / $mayor) : 0;
 												$linea .= "<tr>
                             			<td>" . $pz['nombre'] . "</td>
                             			<td>" . $pz['total_piezas'] . "</td>

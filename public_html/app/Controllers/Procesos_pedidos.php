@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\LineaPedido;
-use App\Models\Pedido;
+use App\Models\Pedidos_model;
 use App\Models\Producto;
-use App\Models\Cliente;
+use App\Models\ClienteModel;
 use App\Models\ProcesoProducto;
 use App\Models\Proceso;
 use App\Models\Maquinas;
@@ -19,9 +19,9 @@ class Procesos_pedidos extends BaseControllerGC
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $lineaPedidoModel = new LineaPedido($db);
-        $pedidoModel = new Pedido($db);
+        $pedidoModel = new Pedidos_model($db);
         $productoModel = new Producto($db);
-        $clienteModel = new Cliente($db);
+        $clienteModel = new ClienteModel($db);
         $procesoProducto = new ProcesoProducto($db);
         $procesoModel = new Proceso($db);
         $maquinasModel = new Maquinas($db);
@@ -37,9 +37,8 @@ class Procesos_pedidos extends BaseControllerGC
         foreach ($lineas as $linea) {
             foreach ($procesosPedido as $procesoPedido) {
                 if ($linea['id_lineapedido'] == $procesoPedido['id_linea_pedido']) {
-
                     $pedido = $pedidoModel->find($linea['id_pedido']);
-                    $cliente = $clienteModel->find($pedido['id_cliente']);
+                    $cliente = $clienteModel->find($pedido->id_cliente);
                     $producto = $productoModel->find($linea['id_producto']);
                     $proceso = $procesoModel->find($procesoPedido['id_proceso']);
 
@@ -66,7 +65,7 @@ class Procesos_pedidos extends BaseControllerGC
         foreach ($lineasEstado3 as $lineaEstado3) {
             $lineaPedido = $lineaPedidoModel->find($lineaEstado3['id_linea_pedido']);
             $pedido = $pedidoModel->find($lineaPedido['id_pedido']);
-            $cliente = $clienteModel->find($pedido['id_cliente']);
+            $cliente = $clienteModel->find($pedido->id_cliente);
             $producto = $productoModel->find($lineaPedido['id_producto']);
             $proceso = $procesoModel->find($lineaEstado3['id_proceso']);
 
@@ -110,21 +109,19 @@ class Procesos_pedidos extends BaseControllerGC
         $procesosPedidoModel = new ProcesosPedido($db);
         $procesoModel = new Proceso($db);
         $lineaPedidoModel = new LineaPedido($db);
-        $pedidoModel = new Pedido($db);
-
+        $pedidoModel = new Pedidos_model($db);
         $data = $this->request->getJSON(true);
 
         if (!isset($data['procesos']) || !is_array($data['procesos'])) {
             return $this->response->setJSON(['error' => 'Datos inválidos']);
         }
-
         foreach ($data['procesos'] as $proceso) {
             if (isset($proceso['nombre_proceso']) && isset($proceso['id_linea_pedido']) && isset($proceso['id_maquina']) && isset($proceso['orden'])) {
-                $procesoEncontrado = $procesoModel->where('nombre_proceso', $proceso['nombre_proceso'])->first();
-
+                $procesoEncontrado = $procesoModel
+                    ->where('nombre_proceso', $this->db->escapeLikeString($proceso['nombre_proceso'])) // Escapando caracteres especiales
+                    ->first();
                 if ($procesoEncontrado) {
                     $idProceso = $procesoEncontrado['id_proceso'];
-
                     // Pasar el orden específico
                     $this->calcularYActualizarOrdenParaMaquina($proceso['id_maquina'], $idProceso, $proceso['id_linea_pedido'], $proceso['orden']);
 
@@ -132,7 +129,6 @@ class Procesos_pedidos extends BaseControllerGC
                     $procesosDeLaLinea = $procesosPedidoModel
                         ->where('id_linea_pedido', $proceso['id_linea_pedido'])
                         ->findAll();
-
                     foreach ($procesosDeLaLinea as $procesoPedido) {
                         if ($procesoPedido['estado'] < 3) {
                             $actualizarLineaPedido = false;
@@ -144,7 +140,6 @@ class Procesos_pedidos extends BaseControllerGC
                             ->where('id_lineapedido', $proceso['id_linea_pedido'])
                             ->set(['estado' => 3])
                             ->update();
-
                         // Obtener el ID del pedido asociado a la línea de pedido actualizada
                         $idPedido = $lineaPedidoModel->where('id_lineapedido', $proceso['id_linea_pedido'])->first()['id_pedido'];
                         // Actualizar el estado del pedido a 3 sin verificar el estado de todas las líneas
@@ -158,8 +153,6 @@ class Procesos_pedidos extends BaseControllerGC
         }
         return $this->response->setJSON(['success' => 'Estados actualizados correctamente.']);
     }
-
-
     private function calcularYActualizarOrdenParaMaquina($idMaquina, $idProceso, $idLineaPedido, $orden)
     {
         $data = usuario_sesion();
@@ -174,14 +167,13 @@ class Procesos_pedidos extends BaseControllerGC
             ->set(['estado' => 3, 'id_maquina' => $idMaquina, 'orden' => $orden])
             ->update();
     }
-
     public function actualizarEstadoLineaPedido()
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $lineaPedidoModel = new LineaPedido($db);
         $procesosPedidoModel = new ProcesosPedido($db);
-        $pedidoModel = new Pedido($db); // Asumiendo que existe un modelo Pedido para la tabla pedidos
+        $pedidoModel = new Pedidos_model($db); // Asumiendo que existe un modelo Pedido para la tabla pedidos
 
         // Obtener todos los id_linea_pedido únicos de procesos_pedidos
         $procesosPedido = $procesosPedidoModel->select('id_linea_pedido')->distinct()->findAll();
@@ -216,7 +208,7 @@ class Procesos_pedidos extends BaseControllerGC
         $procesosPedidoModel = new ProcesosPedido($db);
         $procesoModel = new Proceso($db);
         $lineaPedidoModel = new LineaPedido($db);
-        $pedidoModel = new Pedido($db);
+        $pedidoModel = new Pedidos_model($db);
 
         $data = $this->request->getJSON(true);
 
@@ -226,7 +218,6 @@ class Procesos_pedidos extends BaseControllerGC
 
         $idsPedidoActualizados = [];
         $idsMaquinaAfectadas = []; // Nuevo array para almacenar los IDs de máquinas afectadas
-
         foreach ($data['procesos'] as $proceso) {
             if (isset($proceso['nombre_proceso']) && isset($proceso['id_linea_pedido'])) {
                 $procesoEncontrado = $procesoModel->where('nombre_proceso', $proceso['nombre_proceso'])->first();
@@ -311,7 +302,7 @@ class Procesos_pedidos extends BaseControllerGC
         $db = db_connect($data['new_db']);
         $procesosPedidoModel = new ProcesosPedido($db);
         $lineaPedidoModel = new LineaPedido($db);
-        $pedidoModel = new Pedido($db);
+        $pedidoModel = new Pedidos_model($db);
         $procesoModel = new Proceso($db);
         $data = $this->request->getJSON(true);
         if (!isset($data['lineItems']) || !is_array($data['lineItems'])) {
@@ -325,7 +316,7 @@ class Procesos_pedidos extends BaseControllerGC
                 continue;
             }
             // Limpiar el nombre del proceso: eliminar espacios y emojis
-            $nombreProcesoLimpio = trim(preg_replace('/\s+/', ' ', preg_replace('/[^\w\s\+\/-]/u', '', $nombreProceso)));
+            $nombreProcesoLimpio = trim(preg_replace('/\s+/', ' ', preg_replace('/[^\w\s\+\-\/\(\)]/u', '', $nombreProceso))); // Ajuste para caracteres especiales
             $proceso = $procesoModel->where('nombre_proceso', $nombreProcesoLimpio)->first();
             if (!$proceso) {
                 continue;
@@ -361,8 +352,6 @@ class Procesos_pedidos extends BaseControllerGC
                 ->set(['estado' => 4])
                 ->update();
 
-            // Registrar en el log la actualización del estado del proceso
-            $this->logAction('Organizador', "El proceso $nombreProcesoLimpio para id $idLineaPedido terminada", $data);
             // Reordenar los procesos en la máquina
             $this->reordenarProcesosParaMaquina($idMaquina);
             // Eliminar id_proceso de las restricciones en otros procesos
@@ -407,8 +396,6 @@ class Procesos_pedidos extends BaseControllerGC
         }
         return $this->response->setJSON(['success' => 'Estados actualizados y líneas eliminadas']);
     }
-
-
 
     private function eliminarRestricciones($idLineaPedido, $idProcesoTerminado)
     {
@@ -522,7 +509,7 @@ class Procesos_pedidos extends BaseControllerGC
     {
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
-        $modeloCliente = new Cliente($db);
+        $modeloCliente = new ClienteModel($db);
         $clientes = $modeloCliente->obtenerClientes();
 
         // Pasar la lista de clientes a la vista
@@ -589,6 +576,8 @@ class Procesos_pedidos extends BaseControllerGC
             ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
             ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = procesos_pedidos.id_linea_pedido')
             ->join('productos', 'productos.id_producto = linea_pedidos.id_producto')
+            ->orderBy('procesos_pedidos.id_relacion', 'DESC')
+            ->limit(15)
             ->where('procesos_pedidos.estado', 4)
             ->findAll();
 

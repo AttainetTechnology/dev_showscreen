@@ -22,50 +22,104 @@ div#fondo_rutas {
     display: block !Important;
     page-break-before: always;
     position: relative;
-    border-bottom: 10px solid #eee;
-    margin-bottom: 70px;
     padding-top: 70px;
 }
-
-.pagina1 {
-    display: block;
-    page-break-after: always;
-    position: relative;
-}
-
 @media print {
+
     body {
-        font-size: 12px;
+        font-size: 12px !important;
     }
 
     .pie_de_parte {
-        display: block !Important;
+        display: block !important;
+        page-break-inside: avoid;
     }
 
-    .pagina2 {
-        padding-top: 0px;
-        display: block !Important;
-        page-break-before: always;
-        position: relative;
-        border-bottom: none;
-        margin-bottom: 0px;
-    }
 
     .pagina1 {
         display: block;
         page-break-after: always;
         position: relative;
     }
+
+    .table {
+        page-break-inside: avoid;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table tr {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        page-break-inside: avoid;
+    }
+
+    .row,
+    .col-xs-12 {
+        page-break-inside: avoid;
+    }
+
+    /* Márgenes para la impresión */
+    @page {
+        size: A4;
+        margin-left: 15mm;
+        margin-right: 15mm;
+        margin-top: 15mm;
+        margin-bottom: 15mm;
+    }
+
+    #printableArea {
+        padding-left: 15mm; 
+        padding-right: 15mm;
+        overflow: hidden;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between; 
+        align-items: flex-start; 
+        margin: 5px !important;
+    }
+    #parte_fila_left {
+        flex: 0 1 48%;
+        margin-right: 2%;
+        box-sizing: border-box;
+        margin-left: 15px !important;
+    }
+    #parte_fila_left img {
+        max-width: 100%; 
+        height: auto;
+        display: block;
+    }
+
+    #parte_fila_left address,
+    #parte_fila_left strong {
+        word-wrap: break-word;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    #parte_fila_right {
+        flex: 0 1 48%; 
+        text-align: right;
+        padding-right: 15px !important;
+    }
+
+    #parte_fila_right .capa-numero-parte,
+    #parte_fila_right h3,
+    #parte_fila_right .parte-fechas {
+        text-align: right !important;
+    }
+    #parte_fila_right img {
+        max-width: 80%;
+        height: auto;
+    }
 }
 
-div#printableArea {
-    padding: 25px 70px;
-    background-color: #ffffff;
-    margin: 10px;
-    min-height: 1159px;
-    padding: 5rem;
-
-}
 
 div#fondo {
     background-color: #eeeeee;
@@ -192,6 +246,8 @@ div.total {
     width: 100%;
     height: 100px;
     display: none;
+    margin-left: 15px !important;
+    margin-right: 10px !important;
 }
 
 .revisado {
@@ -224,7 +280,7 @@ div.total {
     max-width: 165px;
     margin-bottom: 25px;
     margin-top: 30px;
-   margin-left: 20px;
+    margin-left: 20px;
 }
 
 img.logo_partes {
@@ -293,8 +349,12 @@ img.imagen_parte {
 }
 
 #parte_fila_left {
-    padding-right: 40px;
-    width: 60%;
+    width: 56%;
+    margin:-5px;
+}
+
+.table-responsive{
+    padding-left: 18px !important;
 }
 
 #parte_fila_right {
@@ -392,7 +452,9 @@ img.imagen_parte {
 }
 
 .modal-content {
-    height: 100%;
+    height: 80vh;
+    width: 60vw;
+    margin-left: -179px;
 }
 
 #DatosAcceso {
@@ -426,34 +488,44 @@ img.imagen_parte {
     margin-top: 4rem !important;
 }
 
+.navbar-nav .btn {
+    margin-right: 10px;
+}
+
+.navbar-collapse {
+    padding-top: 20px;
+}
+
+@media (max-width: 767.98px) {
     .navbar-nav .btn {
-        margin-right: 10px; 
-    }
-    .navbar-collapse {
-        padding-top: 20px;
-    }
-
-    @media (max-width: 767.98px) {
-        .navbar-nav .btn {
-            margin: 10px 0;
-            margin-bottom: 10px;
-        }
-    }
-
-    #navbarNav{
+        margin: 10px 0;
         margin-bottom: 10px;
     }
-    
+}
+
+#navbarNav {
+    margin-bottom: 10px;
+}
+
 .btn-close-custom {
-	background-color: transparent;
-	border: none;
-	font-size: 2.5rem;
-	color: #000;
-	cursor: pointer;
-	padding: 0;
-	margin-right: 35px;
+    background-color: transparent;
+    border: none;
+    font-size: 2.5rem;
+    color: #000;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 35px;
     margin-top: -10px;
 }
+
 .btn-close-custom:hover {
-	color: #ff0000; /* Cambia el color al pasar el cursor */
+    color: #ff0000;
+    /* Cambia el color al pasar el cursor */
+}
+.pedido-completo-pie{
+    margin-left: 15px;
+}
+.imgParte2hoja{
+    margin-right: -25px !important;
+
 }
