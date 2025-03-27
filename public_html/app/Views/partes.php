@@ -282,8 +282,7 @@
                         Entrega:
                         <strong><? echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
                         <br>
-                        User: <strong><?php echo $nombre_usuario; ?>                 <?php echo $apellidos_usuario; ?></strong> | Impresi&oacute;n:
-                        <? echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
+                        Imprime: <strong><?php echo $nombre_usuario; ?>  <?php echo $apellidos_usuario; ?></strong> (<? echo ' ' . date('d-m-Y') . "\n"; ?>)</small><br>
                     </div>
                 </div>
                 <!-- /#Printable area -->

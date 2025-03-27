@@ -52,42 +52,8 @@ foreach ($pedido as $ped) { ?>
                     helper('logo');
                     $logo = logo();
                     echo $logo; ?>" class="logo_partes"><br>
-                    <?php
-                    function usuarios()
-                    {
-                        $datos = new \App\Models\Usuarios2_Model();
-                        $data = usuario_sesion();
-                        $id_empresa = $data['id_empresa'];
-                        $id_usuario = $data['id_user'];
-                        $array = ['nivel_acceso' => '1', 'id_empresa' => $id_empresa];
-                        $usuarios = $datos->where($array)->findAll();
-                        $user_ids = array();
-                        foreach ($usuarios as $usuario) {
-                            $user_ids[] = $usuario['id'];
-                        }
-
-                        $db_cliente = db_connect($data['new_db']);
-                        $builder = $db_cliente->table('users');
-                        $builder->select('id, nombre_usuario, apellidos_usuario');
-                        $builder->where('id', $id_usuario);
-                        $builder->where('user_activo', '1');
-                        $query = $builder->get();
-
-                        $usuarios = array();
-                        if ($query->getNumRows() > 0) {
-                            foreach ($query->getResult() as $row) {
-                                $usuarios[$row->id] = $row->nombre_usuario . ' ' . $row->apellidos_usuario;
-                            }
-                        } else {
-                            $usuarios[$id_usuario] = 'Test';
-                        }
-                        return $usuarios;
-                    }
-                    $user_ped = usuarios();
-                    ?>
-                    <b><?php echo $ped->pedido_por; ?></b><br>
-                    Id.Ped: <b><?php echo $ped->id_pedido; ?></b> | User:
-                    <b><?php echo isset($user_ped[$ped->id_usuario]) ? $user_ped[$ped->id_usuario] : 'test'; ?> </b>
+                    Id.Ped: <b><?php echo $ped->id_pedido; ?></b><br>User:
+                    <b><?php echo $ped->pedido_por; ?></b>
                 </div>
 
                 <!-- /.col -->
@@ -185,8 +151,10 @@ foreach ($pedido as $ped) { ?>
             <div class="row">
                 <div class="col-xs-6">
                 </div>
-
-                <div class="col-xs-6">
+                <div class="col-xs-6 detalles-pie">
+    
+                        Imprime: <strong><?php echo $nombre_usuario; ?>  <?php echo $apellidos_usuario; ?></strong>
+                        (<? echo ' ' . date('d-m-Y') . "\n"; ?>)</small>
                 </div>
             </div>
         </div>
