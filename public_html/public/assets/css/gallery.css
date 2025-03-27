@@ -1,0 +1,110 @@
+
+    .gallery-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 18px;
+    }
+    .gallery-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 150px;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-align: center;
+        position: relative;
+    }
+
+    .gallery-item img {
+        width: 80%;
+        object-fit: cover;
+    }
+
+    .gallery-item .image-title {
+        width: 100%;
+        height: 40px;
+        /* Altura fija */
+        line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        /* Evitar saltos de línea */
+        background-color: #f4f4f4;
+        /* Fondo de la caja */
+        border-top: 1px solid #ddd;
+        font-size: 12px;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+
+    .btnEliminarGaleria {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: #D9534F !important;
+        color: white;
+        border: none;
+        border-radius: 30%;
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        cursor: pointer;
+        z-index: 10;
+        /* Asegura que esté por encima del contenido */
+    }
+
+    .btnEliminarGaleria:hover {
+        background-color: #AC1E1A !important;
+        color: white;
+    }
+
+    .btnEliminarGaleria:active {
+        background-color: #EE8A88 !important;
+        color: white !important;
+    }
+
+    .btnEliminarGaleria svg {
+        width: 57px !important;
+        height: 44px !important;
+        margin: -14px;
+        padding: 4px;
+    }
+    .btnEliminarModal {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: #D9534F !important;
+        color: white;
+        border: none;
+        border-radius: 30%;
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+
+    .btnEliminarModal:hover {
+        background-color: #AC1E1A !important;
+        color: white;
+    }
+
+    .btnEliminarModal:active {
+        background-color: #EE8A88 !important;
+        color: white !important;
+    }
+
+    .btnEliminarModal svg {
+        width: 25px;
+        height: 25px;
+        color: white;
+        margin-left: -6px;
+        margin-top: 0px;
+            z-index: 10; /* Asegúrate de que esté en el frente */
+    }

@@ -1,6 +1,25 @@
 <?php
-// Esta función comprueba si el usuario está logueado 
-// y dependiendo del nivel lo lleva a una página u otra
+if (!function_exists('check_access_level')) {
+
+    function check_access_level() {
+        $session = session();
+        
+        if ($session->get('logged_in')) {
+            $userData = $session->get('logged_in');  
+            $userLevel = $userData['nivel'];
+            
+            // Si el nivel del usuario es 1, establece la URL de redirección
+            if ((int)$userLevel === 1) {
+                // Establece la URL de redirección
+                $session->setFlashdata('redirect', base_url('Rutas_transporte/rutas'));
+                return true;  // Indica que se debe redirigir
+            }
+        }
+        // Si no está logueado o no se cumple la condición, no hace nada
+        return false;  // No hay necesidad de redirigir
+    }
+}
+
 function control_acceso() {
     $session = session();
     if (empty($session->get('logged_in'))) { 

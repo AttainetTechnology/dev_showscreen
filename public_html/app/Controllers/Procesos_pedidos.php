@@ -16,6 +16,17 @@ class Procesos_pedidos extends BaseControllerGC
 {
     public function index()
     {
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $lineaPedidoModel = new LineaPedido($db);
@@ -294,8 +305,6 @@ class Procesos_pedidos extends BaseControllerGC
             $nuevoOrden++;
         }
     }
-
-
     public function marcarTerminado()
     {
         $data = usuario_sesion();
@@ -386,6 +395,7 @@ class Procesos_pedidos extends BaseControllerGC
                     $pedidoModel->where('id_pedido', $idPedido)->set(['estado' => 4])->update();
                 }
             }
+            $this->logAction('Organizador', 'Termina Proceso, Linea pedido ID: ' . $idLineaPedido, []);
         }
 
         if (!empty($procesosConRestricciones)) {
@@ -700,9 +710,11 @@ class Procesos_pedidos extends BaseControllerGC
             }
         }
     }
-
     private function agregarRestriccionProceso($procesosPedidoModel, $procesoModel, $proceso, $idProcesoActual, $idLineaPedido)
     {
+        if ($proceso['id_linea_pedido'] != $idLineaPedido) {
+            return;
+        }
         if ($proceso['estado'] < 4 && $proceso['id_proceso'] != $idProcesoActual) {
             $restriccionesConfig = $procesoModel->where('id_proceso', $proceso['id_proceso'])->first();
 
@@ -722,4 +734,5 @@ class Procesos_pedidos extends BaseControllerGC
             }
         }
     }
+
 }

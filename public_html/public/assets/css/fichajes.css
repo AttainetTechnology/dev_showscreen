@@ -1,250 +1,309 @@
-/* Defino colores Globales */ 
+/* Defino colores Globales */
 :root {
-    --verdeclaro: 		#bfb;
-    --verdeintenso:		#52970E;
-    --rojoclaro:			#eaa;
-    --rojointenso:		#ba5b5b;
-    --amarilloclaro:		#fff3cd;
-    --amarillointenso:	#ffc107;
-    --movil:				679px;
-  }
-  
-  body{
-          font-size: 12px;
-          background-color: #000;
-  }
-  .maquina {
-      font-weight: bold;
-  }
-  .boton {
-      font-size: 24px;
-  }
-  
-  a:hover {
-      text-decoration: none;
-  }
-  div#txt {
-      font-size: 40px;
-      color: #fff;
-  }
-  .cabecera {
-      background-color: #000;
-      padding: 1rem 1rem 0rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-  }
-  .pestanas-navegacion {
-      display: flex;
-      justify-content: center;
-  }
-  
-  .boton.ausentes,
-  .boton.presentes {
-      background-color: transparent;
-      padding: 1rem;
-      border-radius: 5px;
-      margin-left: 20px;
-  }
-  .boton.ausentes a,
-  .boton.presentes a{
-      color:#fff!important;
-  }
-  
-  a.boton.entrar {
-      background-color: var(--verdeintenso);
-      border-radius: 10px;
-      color: #fff;
-      font-weight: bold;
-      padding: 23px 110px;
-  }
-  .botonentrar {
-      padding: 50px;
-  }
-  .botonentrar a.btn.btn-lg.btn-success,
-  .botonentrar a.btn.btn-lg.btn-danger
-   {
-      font-size: xx-large;
-  }
-  .botonextras a {
-      background-color: var(--amarillointenso);
-      color: #000;
-      border-radius: 6px;
-      padding: 10px 16px;
-  }
-  .page-ausentes .ausentes
-  {
-      background-color: var(--rojoclaro);
-  }
-  .page-presentes .presentes
-  {
-      background-color: var(--verdeclaro);
-  }
-  .page-ausentes .ausentes a,
-  .page-presentes .presentes a{
-      color: #000!important;
-  }
-  .fondo-empleados{
-      background-color: #000;
-      margin: 0rem 1rem;
-      padding: 1rem;
-      height: 88vh;
-  }
-  .tarjeta-empleado {
-      margin: 0.3vw;
-      padding: 1vw;
-      width: 10vw;
-      border-radius: 5px;
-      text-align: center;
-  }
-  .tarjeta_horasextras{
-      background-color: var(--amarillointenso)!important;
-  }
-  .page-presentes .tarjeta-empleado {
-      background-color: var(--verdeclaro);
-  }
-  .page-ausentes .tarjeta-empleado {
-      background-color: var(--rojoclaro);
-  }
-  .logo img {
-      max-width: 136px;
-  }
-  .ficha-entrada {
-      display: flex;
-      align-items: center;
-      width: 50% !important;
-  }
-  .fichafoto {
-      width: 47vw;
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      height: 78vh!Important;
-      flex-direction: column-reverse;
-      flex-wrap: wrap;
-  }
-  .fichafoto img {
-      max-height: 45vh;
-  }
-  .fichabotones {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      justify-content: space-evenly;
-      align-items: center;
-      height: 40vh;
-      width: 50% !important;
-      margin-top: 7%;
-  }
-  .titulopagina {
-      font-size: 1.8rem;
-      color: var(--verdeintenso);
-  }
-  .fichar-nombre-empleado {
-      font-size: xx-large;
-      color: #fff;
-  }
-  .foto_empleado{
-      height: 18vh;
-  }
-  .nombre-empleado {
-      font-size: 10px;
-      font-weight: bold;
-      margin-bottom: 5px;
-      color:#000;
-  }
-  .estrella {
-      position: absolute;
-      width: 100%;
-  }
-  .estrella img {
-      position: relative;
-      top: -10px;
-      left: 100px;
-      width: 40px;
-  }
-  .tarjeta-empleado img {
-      max-width: 7vw;
-      margin-bottom: 10px;
-      max-height: 17vh;
-      height: auto;
-  }
-  .volver {
-      margin-top: 40px;
-      text-align: center;
-  }
-  .alert-success {
-      position: absolute;
-      width: 96vw;
-      padding: 6px;
-      text-align: center;
-      left: 10px;
-  }
-  .alert-danger {
-      position: absolute;
-      width: 96vw;
-      padding: 6px;
-      text-align: center;
-      left: 10px;
-  }
-  .dummie{
-      width: auto;
-      margin-bottom: 10px;
-      height: 17vh;
-  }
-  .hora_entrada {
-      color: #000;
-      font-size: 10px;
-  }
-  .alert-success {
-  position: absolute;
-  bottom: 0px;
-  }
-  @media only screen and (max-width:680px) {
-      .boton {
-          font-size: 14px!important;
-      }
-      .pestanas-navegacion {
-          margin-top: 10px!important;
-      }
-      .tarjeta-empleado {
-          width: 26vw!important;
-      }
-      .foto_empleado{
-      max-width: 24vw;
-      max-height: 14vh;
-      }
-      .tarjeta-empleado img {
-          max-width: 17vw;
-      }
-      .ficha-entrada {
-          display: block;
-      }
-      .fichafoto img {
-          max-height: 20vh;
-      }
-      .fichafoto {
-          text-align: center!important;
-          width: 100%!important;
-          height: auto!Important;
-          display: block!important;
-          margin-bottom: 20px;
-      }
-      .fichabotones {
-          display: block!important;
-          height: auto!important;
-          text-align: center;
-      }
-      .botonentrar {
-          padding: 0px!important;
-          margin-bottom: 20px;
-      }
-      .botonentrar a.btn.btn-lg.btn-success,
-      .botonentrar a.btn.btn-lg.btn-danger
-       {
-          font-size: x-large!important;
-      }
-      .container-fluid {
-          margin-top: 50px;
-      }
-  }
+    --verdeclaro: #bfb;
+    --verdeintenso: #52970E;
+    --rojoclaro: #eaa;
+    --rojointenso: #ba5b5b;
+    --amarilloclaro: #fff3cd;
+    --amarillointenso: #ffc107;
+    --movil: 679px;
+}
+
+body {
+    font-size: 12px;
+    background-color: #000;
+}
+
+.maquina {
+    font-weight: bold;
+}
+
+.boton {
+    font-size: 24px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+div#txt {
+    font-size: 40px;
+    color: #fff;
+}
+
+.cabecera {
+    background-color: #000;
+    padding: 1rem 1rem 0rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pestanas-navegacion {
+    display: flex;
+    justify-content: center;
+}
+
+.boton.ausentes,
+.boton.presentes {
+    background-color: transparent;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+.boton.ausentes a,
+.boton.presentes a {
+    color: #fff !important;
+}
+
+a.boton.entrar {
+    background-color: var(--verdeintenso);
+    border-radius: 10px;
+    color: #fff;
+    font-weight: bold;
+    padding: 23px 110px;
+}
+
+.botonentrar {
+    padding: 50px;
+}
+
+.botonentrar a.btn.btn-lg.btn-success,
+.botonentrar a.btn.btn-lg.btn-danger {
+    font-size: xx-large;
+}
+
+.botonextras a {
+    background-color: var(--amarillointenso);
+    color: #000;
+    border-radius: 6px;
+    padding: 10px 16px;
+}
+
+.page-ausentes .ausentes {
+    background-color: var(--rojoclaro);
+}
+
+.page-presentes .presentes {
+    background-color: var(--verdeclaro);
+}
+
+.page-ausentes .ausentes a,
+.page-presentes .presentes a {
+    color: #000 !important;
+}
+
+.fondo-empleados {
+    background-color: #000;
+    margin: 0rem 1rem;
+    padding: 1rem;
+    height: 88vh;
+}
+
+.tarjeta-empleado {
+    margin: 0.3vw;
+    padding: 1vw;
+    width: 10vw;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.tarjeta_horasextras {
+    background-color: var(--amarillointenso) !important;
+}
+
+.page-presentes .tarjeta-empleado {
+    background-color: var(--verdeclaro);
+}
+
+.page-ausentes .tarjeta-empleado {
+    background-color: var(--rojoclaro);
+}
+
+.logo img {
+    max-width: 136px;
+}
+
+.ficha-entrada {
+    display: flex;
+    align-items: center;
+    width: 50% !important;
+}
+
+.fichafoto {
+    width: 47vw;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 78vh !Important;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+}
+
+.fichafoto img {
+    max-height: 45vh;
+}
+
+.fichabotones {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 40vh;
+    width: 50% !important;
+    margin-top: 7%;
+}
+
+.titulopagina {
+    font-size: 1.8rem;
+    color: var(--verdeintenso);
+}
+
+.fichar-nombre-empleado {
+    font-size: xx-large;
+    color: #fff;
+}
+
+.foto_empleado {
+    height: 18vh;
+}
+
+.nombre-empleado {
+    font-size: 10px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #000;
+}
+
+.estrella {
+    position: absolute;
+    width: 100%;
+}
+
+.estrella img {
+    position: relative;
+    top: -10px;
+    left: 100px;
+    width: 40px;
+}
+
+.tarjeta-empleado img {
+    max-width: 7vw;
+    margin-bottom: 10px;
+    max-height: 17vh;
+    height: auto;
+}
+
+.volver {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.alert-success {
+    position: absolute;
+    width: 96vw;
+    padding: 6px;
+    text-align: center;
+    left: 10px;
+}
+
+.alert-danger {
+    position: absolute;
+    width: 96vw;
+    padding: 6px;
+    text-align: center;
+    left: 10px;
+}
+
+.dummie {
+    width: auto;
+    margin-bottom: 10px;
+    height: 17vh;
+}
+
+.hora_entrada {
+    color: #000;
+    font-size: 10px;
+}
+
+.alert-success {
+    position: absolute;
+    bottom: 0px;
+}
+
+@media only screen and (max-width:680px) {
+    .boton {
+        font-size: 14px !important;
+    }
+
+    .pestanas-navegacion {
+        margin-top: 10px !important;
+    }
+
+    .tarjeta-empleado {
+        width: 26vw !important;
+    }
+
+    .foto_empleado {
+        max-width: 24vw;
+        max-height: 14vh;
+    }
+
+    .tarjeta-empleado img {
+        max-width: 17vw;
+    }
+
+    .ficha-entrada {
+        display: block;
+    }
+
+    .fichafoto img {
+        max-height: 20vh;
+    }
+
+    .fichafoto {
+        text-align: center !important;
+        width: 100% !important;
+        height: auto !Important;
+        display: block !important;
+        margin-bottom: 20px;
+    }
+
+    .fichabotones {
+        display: block !important;
+        height: auto !important;
+        text-align: center;
+    }
+
+    .botonentrar {
+        padding: 0px !important;
+        margin-bottom: 20px;
+    }
+
+    .botonentrar a.btn.btn-lg.btn-success,
+    .botonentrar a.btn.btn-lg.btn-danger {
+        font-size: x-large !important;
+    }
+
+    .container-fluid {
+        margin-top: 50px;
+    }
+}
+
+.maquinas {
+    color: black;
+}
+
+a.btn.btnFaltaMaterial {
+    background-color: #E29752;
+    color: #ffffff;
+    padding: 17px;
+    font-size: 21px;
+}
+
+a.btn.btnFaltaMaterial:hover {
+    background-color: #f18d2f;
+    color: #ffffff;
+}

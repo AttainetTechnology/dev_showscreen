@@ -10,6 +10,8 @@ use App\Models\Fichajes;
 use App\Models\Festivos;
 use App\Models\Usuarios_model;
 use App\Models\Hoy;
+use App\Models\ProcesosPedido;
+use App\Models\RelacionProcesoUsuario_model;
 use App\Models\Vacaciones_model;
 use CodeIgniter\I18n\Time;
 use DateTime;
@@ -20,6 +22,12 @@ class Fichar extends BaseFichar
 {
 	public function index()
 	{
+		helper('controlacceso');
+		$redirect = check_access_level();
+		$redirectUrl = session()->getFlashdata('redirect');
+		if ($redirect && is_string($redirectUrl)) {
+			return redirect()->to($redirectUrl);
+		}
 		helper('controlacceso');
 
 		// Comprobamos si hemos cambiado de día y activamos las comprobaciones
@@ -32,11 +40,16 @@ class Fichar extends BaseFichar
 			->findAll();
 		$datos['presentes'] = array();
 		$i = 0;
+
 		// De cada fichaje saco sus datos de usuario y creamos la variable datos[presentes]
 		foreach ($a1 as $usera1) {
 			$a2 = model('Usuarios1_Model', true, $this->db)->where('id', $usera1['id_empleado'])->findAll();
 			if (!empty($a2)) {
-				$datos['presentes'][$i] = array_merge($a2[0], $usera1);
+				$usuario = $a2[0];
+				// Obtener las máquinas asociadas a este usuario
+				$maquinas = $this->obtenerMaquinasPorUsuario($usuario['id']);
+				$usuario['maquinas'] = $maquinas;  // Añadimos las máquinas al array del usuario
+				$datos['presentes'][$i] = array_merge($usuario, $usera1);
 				$i += 1;
 			}
 		}
@@ -47,6 +60,21 @@ class Fichar extends BaseFichar
 		$datos['recarga_hora'] = view('template/recarga_hora');
 
 		return view('presentes', $datos);
+	}
+
+	public function obtenerMaquinasPorUsuario($id_usuario)
+	{
+		helper('controlacceso');
+		$db = $this->db;
+		$query = $db->table('relacion_proceso_usuario')
+			->select('relacion_proceso_usuario.*, maquinas.nombre')
+			->join('maquinas', 'maquinas.id_maquina = relacion_proceso_usuario.id_maquina')
+			->where('relacion_proceso_usuario.id_usuario', $id_usuario)
+			->where('relacion_proceso_usuario.estado', 1)
+			->get();
+
+		$resultados = $query->getResultArray();
+		return $resultados;
 	}
 
 	public function CompruebaDia()
@@ -75,6 +103,7 @@ class Fichar extends BaseFichar
 	{
 		$presentes = new Presentes($this->db);
 		$fichajes = new Fichajes($this->db);
+		$relacionProcesoUsuario = new RelacionProcesoUsuario_model($this->db);
 		$hoy = date('Y-m-d H:i:s');
 		$limite = (new DateTime($hoy))->modify('-10 hours')->format('Y-m-d H:i:s');
 
@@ -84,6 +113,15 @@ class Fichar extends BaseFichar
 			->findAll();
 
 		foreach ($fichajesAbiertos as $fichaje) {
+			$registroRelacion = $relacionProcesoUsuario
+				->where('id_usuario', $fichaje['id_empleado'])
+				->where('estado', 1)
+				->first(); 
+
+			if ($registroRelacion) {
+				$relacionProcesoUsuario->update($registroRelacion['id'], ['estado' => 2]);
+			}
+
 			// Cerrar fichaje y mover a la tabla de ausentes
 			$data = [
 				'id_usuario' => $fichaje['id_empleado'],
@@ -107,7 +145,7 @@ class Fichar extends BaseFichar
 	{
 		$ayer = date('d.m.Y', strtotime("-1 days"));
 		$date = new DateTime($ayer);
-		$day =  $date->format("w");
+		$day = $date->format("w");
 		if ($day == 6 || $day == 0) {
 			$session = session();
 			$aviso .= 'Ayer fue fin de semana, no genero ausencias.</br>';
@@ -141,7 +179,8 @@ class Fichar extends BaseFichar
 			} else {
 				$session = session();
 				$aviso .= "Ayer no fue festivo.<br>";
-				$this->ComprobarAusencias($aviso);;
+				$this->ComprobarAusencias($aviso);
+				;
 			}
 		}
 	}
@@ -181,7 +220,7 @@ class Fichar extends BaseFichar
 				->where('entrada <', $hoy)
 				->select('entrada')
 				->findAll();
-				//->where('entrada',$ayer)
+			//->where('entrada',$ayer)
 			;
 			foreach ($fichajesayer as $fila) {
 				foreach ($fila as $clave) {
@@ -208,7 +247,8 @@ class Fichar extends BaseFichar
 			->where('desde <=', $ayer)
 			->where('hasta >=', $ayer)
 			->select('desde')
-			->findAll();;
+			->findAll();
+		;
 		$aviso = '';
 		foreach ($vacacionessayer as $fila) {
 			foreach ($fila as $clave) {
@@ -220,9 +260,9 @@ class Fichar extends BaseFichar
 			} else {
 				// echo "El usuario".$empleado." no fichó, genero Ausencia.<br>";
 				$datos = [
-					'id_usuario'    => $empleado,
-					'entrada'       => $ayer,
-					'incidencia'    => 'Ausencia'
+					'id_usuario' => $empleado,
+					'entrada' => $ayer,
+					'incidencia' => 'Ausencia'
 				];
 				$fichajes = model('Fichajes', true, $this->db);
 				$fichajes->insert($datos);
@@ -248,6 +288,14 @@ class Fichar extends BaseFichar
 			return redirect()->back();
 		}
 
+		$relacionProcesoUsuarioModel = model('RelacionProcesoUsuario_model', true, $this->db);
+		// Cambiando el estado a 2 en relacion_proceso_usuario
+		$relacionProcesoUsuarioModel
+			->where('id_usuario', $id)
+			->where('estado', 1)
+			->set(['estado' => 2])
+			->update();
+
 		$fechaentrada = $data1['entrada'];
 		$fichaextras = $data1['extras'];
 		$fichajes = model('Fichajes', true, $this->db);
@@ -259,7 +307,6 @@ class Fichar extends BaseFichar
 		$diff = $date1->diff($date2);
 		$totalMinutos = ($diff->h * 60) + $diff->i;
 
-		// Si el total de minutos trabajados es menor a 465 minutos (7 horas y 45 minutos)
 		if ($totalMinutos < 465 && $fichaextras != '1') {
 			$incidencia = "Menos de 8 Horas";
 		} else {

@@ -1,0 +1,233 @@
+a:hover {
+    text-decoration: none;
+}
+
+h2 {
+    margin-top: 0px !important;
+    margin-bottom: 5px !important;
+    font-weight: bold !important;
+}
+
+h3 {
+    color: #f0c33c !important;
+    font-weight: bold !important;
+}
+
+div#txt {
+    font-size: 40px;
+    color: #000000;
+}
+
+.cabecera2 {
+    margin: 10px 0px 10px 15px;
+}
+
+.cabecera {
+    padding: 10px 20px 0px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo img {
+    max-width: 136px;
+}
+
+.page-select,
+.fondo-select {
+    margin: 10px;
+    font-size: 17px;
+}
+
+.container {
+    width: 95vw !important;
+}
+
+/* Tablas */
+.maquina {
+    background-color: #f0d78e !important;
+    border: 3px solid #f0d78e;
+}
+
+.maquina tbody tr {
+    border: 5px solid #f0d78e;
+}
+
+button.btn.btn-light.btn-block {
+    font-size: 19px;
+}
+
+.maquina {
+    background-color: #f0d78e;
+    border: 3px solid #f0d78e;
+}
+
+.maquina tbody tr {
+    border: 5px solid #f0d78e;
+}
+
+
+.procesos {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0px !important;
+}
+
+.procesos thead {
+    background-color: #f0d78e;
+    color: black;
+    border-bottom: 2px solid #f0d78e !important;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.procesos tbody {
+    background-color: white;
+}
+
+.procesos th,
+.procesos td,
+.maquina th,
+.maquina td {
+    border: 2px solid #f0d78e !important;
+    text-align: center;
+}
+
+.procesos tbody tr {
+    border-bottom: 2px solid #f0d78e !important;
+}
+
+.procesos th {
+    font-weight: bold;
+}
+
+.nombre_proceso {
+    font-weight: bold;
+}
+
+
+table.procesos.table.table-bordered {
+    font-size: 16px;
+}
+
+.col10 {
+    padding: 0px !important;
+}
+
+.volverButtonEdit {
+    margin-bottom: 10px !important;
+}
+
+/* calculadora */
+.calculator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    margin: 2px;
+}
+
+.btnCalculadora {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+    margin: 3px;
+    border: none !important;
+    border-radius: 5px;
+}
+
+.btnNumero {
+    background-color: #b0b0b0;
+}
+
+.btnNumero:hover,
+.btnNumero:active {
+    background-color: #d0cfcd;
+}
+
+.butons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.butons button {
+    font-size: 18px;
+    width: 250px;
+    text-align: center;
+}
+
+.bntApuntar {
+    background-color: #f5cf5f;
+    border: none !important;
+    color: white;
+}
+
+.bntApuntar:hover,
+.bntApuntar:active {
+    background-color: #fade91;
+    color: white !important;
+}
+
+.btnSalir {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btnSalir:hover,
+.btnSalir:active {
+    background-color: #ed8a87;
+    color: white !important;
+}
+
+
+.btnTerminarPedido {
+    background-color: #448244;
+    color: white;
+
+}
+
+.btnTerminarPedido:hover,
+.btnTerminarPedido:active {
+    background-color: #6c8b6c;
+    color: white !important;
+}
+
+
+.btnFaltaMaterial {
+    background-color: #e29752;
+    color: white;
+
+}
+
+.btnFaltaMaterial:hover,
+.btnFaltaMaterial:active {
+    background-color: #ecb37d;
+    color: white !important;
+}
+
+.btnApuntarGenerico {
+    height: 45px;
+    font-size: 25px;
+}
+
+.container-fluid {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+
+.divMaquinas {
+    margin: 0px !important;
+}
+
+table.maquina td button {
+    width: 100%;
+    white-space: normal;
+}

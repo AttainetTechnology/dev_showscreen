@@ -4,15 +4,27 @@
     justify-content: center;
     gap: 4px !important;
     cursor: pointer;
-    padding: 3px 8px 3px 10px;
-    margin: 0px;
+    padding: 3px 8px 3px 10px !important;
+    margin: 0px !important;
     border-radius: 5px;
     font-size: 14px !important;
     text-decoration: none !important;
     border: none !important;
 }
 
-
+.botonMover {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px !important;
+    cursor: pointer;
+    padding: 8px 15px 8px 15px !important;
+    margin: 0px;
+    border-radius: 5px;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    border: none !important;
+}
 
 .botonTabla {
     display: inline-flex;
@@ -33,6 +45,12 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.botonOrganizador {
+    height: 50px;
+    width: 50px;
+    border: none !important;
 }
 
 .buttonsEditProductProveedAbajo {
@@ -75,21 +93,34 @@
 }
 
 .volverButton,
-.volverButtonTabla {
+.volverButtonTabla,
+.btnSubmenu,
+.accederButtonTabla {
     background-color: #337AB7 !important;
     color: white !important;
 }
 
 .volverButton:hover,
-.volverButtonTabla:hover {
+.volverButtonTabla:hover,
+.btnSubmenu:hover,
+.accederButtonTabla:hover {
     background-color: #125692 !important;
     color: white;
 }
 
 .volverButton:active,
-.volverButtonTabla:active {
+.volverButtonTabla:active,
+.btnSubmenu:active,
+.accederButtonTabla:hover {
     background-color: #6897C0 !important;
     color: white !important;
+}
+
+.accederButtonTabla svg {
+    width: 22px;
+    height: 22px;
+    color: white;
+    margin-left: 1px;
 }
 
 .volverButton svg {
@@ -100,6 +131,12 @@
 
 .volverButtonTabla svg {
     width: 15px;
+    height: auto;
+    color: white;
+}
+
+.btnSubmenu svg {
+    width: 18px;
     height: auto;
     color: white;
 }
@@ -229,6 +266,7 @@
 .btnEliminarTabla {
     background-color: #D9534F !important;
     color: white !important;
+
 }
 
 .btnEliminar:hover,
@@ -273,18 +311,24 @@
     height: 18px !important;
 }
 
-.btnMover {
-    background-color: #37CDED!important;
+.btnMover,
+.botonMover,
+.btnMoverOrg {
+    background-color: #37cded !important;
     color: white !important;
 }
 
-.btnMover:hover {
-    background-color: #06B0D4 !important;
+.btnMover:hover,
+.botonMover:hover,
+.btnMoverOrg:hover {
+    background-color: #06b0d4 !important;
     color: white;
 }
 
-.btnMover:active {
-    background-color:#89DEF0 !important;
+.btnMover:active,
+.botonMover:active,
+.btnMoverOrg:active {
+    background-color: #89def0 !important;
     color: white !important;
 }
 
@@ -294,9 +338,231 @@
     margin-top: 2px;
 }
 
+.btnMoverOrg svg {
+    width: 35px !important;
+    height: 35px !important;
+    margin-left: -5px;
+}
+
+.botonMover svg {
+    width: 15px !important;
+    height: 15px !important;
+    margin-top: 2px;
+}
+
 .container-buttons {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
+}
+
+.btnRecarga {
+    background-color: #337ab7 !important
+}
+
+.btnRecarga:hover {
+    background-color: #125691 !important;
+}
+
+.btnRecarga:active {
+    background-color: #6897c0 !important;
+}
+
+.btnGuardarOrg {
+    background-color: #5cb85c !important
+}
+
+.btnGuardarOrg:hover {
+    background-color: #268626 !important;
+}
+
+.btnGuardarOrg:active {
+    background-color: #8ad18a !important;
+}
+
+.btnTerminOrg {
+    background-color: #448244 !important
+}
+
+.btnTerminOrg:hover {
+    background-color: #045404 !important;
+}
+
+.btnTerminOrg:active {
+    background-color: #5b8a5b !important;
+}
+
+
+.btnRecarga svg,
+.btnTerminOrg svg,
+.btnGuardarOrg svg,
+.btnImprimOrg svg,
+.btnRevertirOrg svg {
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.btnImprimOrg {
+    background-color: #e4eff7 !important
+}
+
+.btnImprimOrg:hover {
+    background-color: #d0e9fc !important;
+}
+
+.btnImprimOrg:active {
+    background-color: #fbfdff !important;
+}
+
+.btnRevertirOrg {
+    background-color: #d9534f !important
+}
+
+.btnRevertirOrg:hover {
+    background-color: #ac1e1a !important;
+}
+
+.btnRevertirOrg:active {
+    background-color: #ed8a87 !important;
+}
+
+/* Botones */
+#BotonSalir {
+    color: #fffcfc !important;
+    background-color: #d9534f !important;
+    border: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+#BotonSalir:hover {
+    background-color: #ac1e1a !important;
+    border-color: #d9edf7;
+}
+
+#BotonSalir:active {
+    background-color: #ed8a87 !important;
+}
+
+#DatosAcceso {
+    color: #fffcfc !important;
+    background-color: #f0ad4e !important;
+    border: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 5px;
+
+}
+
+#DatosAcceso:hover {
+    background-color: #f59a19 !important;
+    border-color: #d9edf7;
+}
+
+#DatosAcceso:active {
+    background-color: #fac271 !important;
+}
+
+.btnRutaNoPreparado {
+    height: 30px !important;
+    background-color: #f0ad4e !important;
+    color: white !important;
+}
+
+.btnRutaNoPreparado:hover {
+    background-color: #f59a19 !important;
+    color: white !important;
+}
+
+.btnRutaNoPreparado:active {
+    background-color: #fac271 !important;
+    color: white !important;
+}
+
+.btnRutaFinaliza {
+    height: 30px !important;
+    background-color: #448244 !important;
+    color: white !important;
+}
+
+.btnRutaFinaliza:hover {
+    background-color: #045404 !important;
+    color: white !important;
+}
+
+.btnRutaFinaliza {
+    background-color: #5b8a5b !important;
+    color: white !important;
+}
+
+button.btn.botonTabla.btnEditarTabla {
+    height: 27px;
+}
+
+
+.btnIcono {
+    border-radius: 5px;
+    margin-right: 21px;
+    padding: 2px 6px !important;
+}
+
+.btnEscandallo {
+    height: 30px !important;
+    background-color: #f3bb42 !important;
+    color: white !important;
+}
+
+.btnCopiar {
+    padding: 7px !important;
+    margin-left: 10px;
+    margin-top: 2px;
+    background-color: #337AB7 !important;
+    color: white !important;
+}
+
+
+.btnCopiar:hover {
+    background-color: #125692 !important;
+    color: white;
+}
+
+.btnCopiar:active {
+    background-color: #6897C0 !important;
+    color: white !important;
+}
+
+.btnCopiar svg {
+    width: 15px;
+    height: 15px;
+    color: white;
+    margin-left: 1px;
+}
+
+.btnDuplicar {
+    background-color: #5CB85C !important;
+    color: white !important;
+}
+
+.btnDuplicar:hover {
+    background-color: #268626 !important;
+    color: white I !important;
+}
+
+.btnDuplicar:active {
+    background-color: #8AD18A !important;
+    color: white !important;
+}
+
+.btnDuplicar svg {
+    width: 16px;
+    height: 16px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.botonReset{
+    margin: 0px;
+    padding: 4px;
 }

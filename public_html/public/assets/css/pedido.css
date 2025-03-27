@@ -1,27 +1,51 @@
-.estado1 {
+.estado1{
     background-color: #ff9933 !important;
 }
 
-.estado2 {
-    background-color: #fff3cd !important;
+.estado2{
+    background-color: #D8EDF7 !important;
 }
 
-.estado3 {
-    background-color: #fcebfa !important;
+.estado3{
+    background-color: #FDF0AB !important;
 }
 
 .estado4 {
-    background-color: #dff0d8 !important;
+    background-color: #DFEFD8 !important;
 }
 
-.estado5 {
-    background-color: #50b752b0 !important;
-    color: #ffffff !important;
+.estado5{
+    background-color: #69C869 !important;
+
 }
 
 .estado6 {
-    background-color: #ff6c6ccc !important;
-    color: #ffffff !important;
+    background-color: #EBAAAA!important;
+
+}
+ .ag-row.estado1 {
+    background-color: #ff9933 !important;
+}
+
+ .ag-row.estado2 {
+    background-color: #D8EDF7  !important;
+}
+
+ .ag-row.estado3 {
+    background-color: #FDF0AB  !important;
+}
+
+ .ag-row.estado4 {
+    background-color: #DFEFD8 !important;
+}
+.ag-row.estado5 {
+    background-color: #69C869 !important;
+
+}
+
+.ag-row.estado6 {
+    background-color: #EBAAAA !important;
+
 }
 
 .fondo-verde {
@@ -85,16 +109,6 @@ input[class^=ag-] {
     height: 30px !important;
 }
 
-.ag-theme-alpine .ag-cell {
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-.ag-theme-alpine .ag-cell.acciones-col {
-    padding-right: 0px;
-    padding-left: 0px;
-}
 
 #pedidoTable {
     margin-right: 20px;

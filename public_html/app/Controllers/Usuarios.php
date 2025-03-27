@@ -2,220 +2,202 @@
 
 namespace App\Controllers;
 
-use \Gumlet\ImageResize;
+use App\Models\Usuarios2_Model;
+use App\Models\Usuarios1_Model;
 
-class Usuarios extends BaseControllerGC
+class Usuarios extends BaseController
 {
     public function index()
     {
-        $crud = $this->_getClientDatabase();
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Usuarios');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('usuarios', $data);
+    }
+    public function getUsuarios()
+    {
+        $data = usuario_sesion(); // Recuperas la sesión del usuario
+        $db = db_connect($data['new_db']);
+        $model = new Usuarios2_Model($db);
+        $usuarios = $model->findAll();
 
-        // Obtener el NIF de la empresa
-        $dbConnectionsModel = new \App\Models\DbConnectionsModel();
-        $nif = $dbConnectionsModel->getNIF($this->data['id_empresa']);
-
-        // Configuración del CRUD
-        $crud->setSubject('Usuario', 'Usuarios');
-        $crud->setTable('users');
-
-        if (!empty($nif)) {
-            $crud->columns(['nombre_usuario', 'apellidos_usuario', 'email', 'telefono', 'user_activo', 'user_ficha', 'fecha_alta', 'fecha_baja', 'userfoto']);
-        } else {
-            $crud->columns(['nombre_usuario', 'apellidos_usuario', 'email', 'telefono', 'user_activo', 'fecha_alta', 'fecha_baja', 'userfoto']);
+        // Asegúrate de incluir id_empresa en cada usuario
+        foreach ($usuarios as &$usuario) {
+            $usuario['id_empresa'] = $data['id_empresa']; // Añadir id_empresa al dato del usuario
         }
 
-        $crud->unsetCssTheme();
-
-        // Configuración de los tipos de campo
-        if (!empty($nif)) {
-            $crud->fieldType('user_ficha', 'dropdown_search', ['0' => '❌', '1' => '✅']);
-        }
-        $crud->fieldType('user_activo', 'dropdown_search', ['0' => '❌', '1' => '✅']);
-        $crud->fieldType('id', 'hidden');
-
-        // Configuración de las etiquetas de visualización
-        $crud->displayAs('id', ' ');
-        if (!empty($nif)) {
-            $crud->displayAs('user_ficha', 'Fichaje');
-        }
-        $crud->displayAs('nombre_usuario', 'Nombre');
-        $crud->displayAs('apellidos_usuario', 'Apellidos');
-        $crud->displayAs('userfoto', 'Foto');
-        $crud->defaultOrdering('nombre_usuario', 'asc');
-
-        // Configuración de las columnas de búsqueda
-        $crud->unsetSearchColumns(['userfoto']);
-
-        if (!empty($nif)) {
-            $crud->fields(['id', 'nombre_usuario', 'apellidos_usuario', 'email', 'telefono', 'user_activo', 'user_ficha', 'fecha_alta', 'fecha_baja', 'userfoto']);
-            $crud->addFields(['nombre_usuario', 'apellidos_usuario', 'email', 'telefono', 'user_ficha', 'fecha_alta']);
-        } else {
-            $crud->fields(['id', 'nombre_usuario', 'apellidos_usuario', 'email', 'telefono', 'user_activo', 'fecha_alta', 'fecha_baja', 'userfoto']);
-            $crud->addFields(['nombre_usuario', 'apellidos_usuario', 'email', 'telefono', 'fecha_alta']);
-        }
-
-        //Añade fecha_alta automatico
-        $crud->callbackAddForm(function ($data) {
-            $data['fecha_alta'] = date('Y-m-d');
-            return $data;
-        });
-
-        $crud->callbackBeforeInsert(function ($stateParameters) {
-            $db = db_connect();
-
-            // Use a more robust way to find the next available ID
-            $query = $db->query('SELECT MAX(id) + 1 as next_id FROM users');
-            $row = $query->getRow();
-            $nextId = $row->next_id ? $row->next_id : 1;
-            // $stateParameters->data['id'] = $nextId;
-            $db->close();
-            return $stateParameters;
-        });
-
-        // Callbacks Insertar en la tabla LOG las acciones realizadas
-        $crud->callbackAfterInsert(function ($stateParameters) {
-            $this->logAction('Usuarios', 'Añade usuario', $stateParameters);
-            return $stateParameters;
-        });
-
-        $crud->callbackAfterUpdate(function ($stateParameters) {
-            $this->logAction('Usuarios', 'Edita usuario, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-
-        $crud->callbackAfterDelete(function ($stateParameters) {
-            $this->logAction('Usuarios', 'Elimina usuario, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-
-        // Callback para añadir 'Datos Acceso' en el modo edición
-        $crud->callbackEditField('id', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $_SESSION['usuario_actual'] = $fieldValue;
-            $id = $this->data['id_user'];
-            if ($this->nivel > '7') {
-                return '<input type="hidden" name="id" value="' . $fieldValue . '">' .
-                    '<div class="botones_user"><a href="' . base_url('usuarios/' . $fieldValue) . '" class="btn btn-warning btn-sm"><i class="fa fa-user fa-fw"></i> Datos de acceso</a></div>';
-            }
-            return $this->nivel . '<input type="hidden" name="id" value="' . $fieldValue . '">';
-        });
-
-        // Definimos la ruta de subida de archivos
-        $globalUploadPath = 'public/assets/uploads/files/' . $this->data['id_empresa'] . '/usuarios/';
-        if (!is_dir($globalUploadPath)) {
-            mkdir($globalUploadPath, 0777, true);
-        }
-        // Configuración de validaciones para la carga de archivos
-        $uploadValidations = [
-            'maxUploadSize' => '7M', // 20 Mega Bytes
-            'minUploadSize' => '1K', // 1 Kilo Byte
-            'allowedFileTypes' => [
-                'gif',
-                'jpeg',
-                'jpg',
-                'png',
-                'tiff'
-            ]
-        ];
-
-        // Formatos permitidos para 'userfoto'
-        $crud->setFieldUpload('userfoto', $globalUploadPath, $globalUploadPath, $uploadValidations);
-
-        // Callback para mostrar la imagen del usuario en la vista columnas
-        $id_empresa = $this->data['id_empresa'];
-        $crud->callbackColumn('userfoto', function ($value, $row) use ($id_empresa) {
-            if ($value === null || $value === '') {
-                return '';
-            } else {
-                $specificPath = "public/assets/uploads/files/" . $id_empresa . "/usuarios/";
-                return "<img src='" . base_url($specificPath . $value) . "' height='60' class='foto_user'>";
-            }
-        });
-
-        // Elimina al usuario de la BDD1 y la carpeta de img del id que hemos eliminado de bbdd cliente
-        $crud->callbackBeforeDelete(function ($stateParameters) use ($globalUploadPath) {
-            $userId = $stateParameters->primaryKeyValue;
-            $db = db_connect();
-            $db->table('users')->delete(['id' => $userId]);
-            $userFolder = $globalUploadPath . $userId;
-            if (is_dir($userFolder)) {
-                array_map('unlink', glob("$userFolder/*.*"));
-                rmdir($userFolder);
-            }
-            return $stateParameters;
-        });
-
-        // Creamos el directorio para subir el archivo
-        $crud->callbackBeforeUpload(function ($stateParameters) use ($globalUploadPath) {
-            // Obtenemos la id del usuario
-            $userId = $_POST['pk_value'] ?? null;
-            // Crea un directorio para el usuario si no existe.
-            $uploadPath = $globalUploadPath . $userId . '/';
-            if (!is_dir($uploadPath) && !mkdir($uploadPath, 0755, true)) {
-                return false;
-            }
-            // Busca todas las imágenes existentes en el directorio del usuario.
-            $existingImages = glob($uploadPath . "*.{jpg,jpeg,png}", GLOB_BRACE);
-            // Elimina todas las imágenes existentes en el directorio del usuario.
-            foreach ($existingImages as $image) {
-                unlink($image);
-            }
-            // Establece la ruta de subida en los parámetros del estado.
-            $stateParameters->uploadPath = $uploadPath;
-            return $stateParameters;
-        });
-
-        // Callback para que la ruta de las fotos incluyan la id del user
-        $crud->callbackAfterUpload(function ($result) {
-            // Si isSuccess no está definido o es falso, establece un valor predeterminado
-            $isSuccess = isset($result->isSuccess) ? $result->isSuccess : true;
-
-            if ($isSuccess && is_string($result->uploadResult)) {
-                $fileName = $result->uploadResult;
-                $usuario = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_SESSION['usuario_actual'] ?? '');
-                $Newname = $usuario . "/" . $fileName;
-                $result->uploadResult = $Newname;
-
-                // Redimensión de archivos
-                $fullPath = $result->stateParameters->uploadPath . $fileName;
-
-                if (file_exists($fullPath)) {
-                    // Crea una nueva instancia de ImageResize y cambia tamaño img
-                    $image = new ImageResize($fullPath);
-                    $image->resizeToBestFit(400, 200);
-
-                    // Guarda la imagen redimensionada en la misma ruta
-                    $image->save($fullPath);
-                }
-            }
-
-            return $result;
-        });
-
-        $crud->setLangString('modal_save', 'Guardar Usuario');
-        if (!empty($nif)) {
-            $crud->setRelation('user_ficha', 'valoresboleanos', 'valor');
-        }
-
-        $output = $crud->render();
-        return $this->_GC_output('layouts/main', $output);
+        return $this->response->setJSON($usuarios);
     }
 
-    public function show($id)
+
+    public function editar($id)
     {
-        // Conexión a la base de datos original
-        $db = db_connect();
-        $query = $db->table('users')->getWhere(['id' => $id]);
-        $user = $query->getRow();
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Usuarios', base_url('/usuarios'));
+        $this->addBreadcrumb('Editar usuario');
+        $data['amiga'] = $this->getBreadcrumbs();
+        $sessionData = usuario_sesion();
+        $db = db_connect($sessionData['new_db']);
+        $model = new Usuarios2_Model($db);
+        $usuario = $model->findUserById($id);
 
-        // Conexión a la base de datos del cliente
-        $database = datos_user('new_db');
-        $dbClient = db_connect($database['new_db']);
+        return view('editar_usuarios', ['usuario' => $usuario, 'amiga' => $data['amiga']]);
+    }
+    public function actualizarUsuario()
+    {
+        $data = usuario_sesion();
+        if (!isset($data['id_user'])) {
+            return redirect()->back()->with('error', 'No se pudo obtener el usuario autenticado.');
+        }
 
-        // Buscar los niveles de acceso en la base de datos del cliente
-        $query = $dbClient->table('niveles_acceso')->get();
-        $niveles_acceso = $query->getResult();
+        $db = db_connect($data['new_db']);
+        $model = new Usuarios2_Model($db);
+        $id = $this->request->getPost('id');
 
-        // Pasar los niveles de acceso y el usuario a la vista
-        return view('editUser', ['user' => $user, 'niveles_acceso' => $niveles_acceso]);
+        $dataFormulario = [
+            'nombre_usuario' => $this->request->getPost('nombre_usuario'),
+            'apellidos_usuario' => $this->request->getPost('apellidos_usuario'),
+            'email' => $this->request->getPost('email'),
+            'telefono' => $this->request->getPost('telefono'),
+            'user_activo' => $this->request->getPost('user_activo'),
+            'id_empresa' => $data['id_empresa'],
+            'dni' => $this->request->getPost('dni'),
+            'seguridad_social' => $this->request->getPost('seguridad_social'),
+        ];
+
+        if ($this->request->getFile('userfoto')->isValid()) {
+            $userfoto = $this->request->getFile('userfoto');
+            $id_empresa = $data['id_empresa'];
+            $user_id = $id; // ID del usuario que se está editando
+            $user_sesion_id = $data['id_user']; // ID del usuario autenticado en la sesión
+            $uploadPath = ROOTPATH . 'public/assets/uploads/files/' . $id_empresa . '/usuarios/' . $user_id . '/';
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $this->eliminarImagenesExistentes($uploadPath);
+
+            $originalName = $userfoto->getName();
+            $extension = $userfoto->getExtension();
+            $newFileName = pathinfo($originalName, PATHINFO_FILENAME) . '_IDUser' . $user_sesion_id . '.' . $extension;
+
+            $userfoto->move($uploadPath, $newFileName);
+
+            $dataFormulario['userfoto'] = $user_id . '/' . $newFileName;
+        }
+
+        if ($model->update($id, $dataFormulario)) {
+            return redirect()->to('/usuarios')->with('success', 'Usuario actualizado correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'No se pudo actualizar el usuario.')->withInput();
+        }
+    }
+
+    public function eliminarUsuario($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+
+        $modelUsuarios2 = new Usuarios2_Model($db);
+        $modelUsuarios1 = new Usuarios1_Model();
+
+        $usuario = $modelUsuarios2->find($id);
+        if ($usuario) {
+            $id_acceso = $usuario['id_acceso'];
+            $modelUsuarios1->where('id', $id_acceso)->delete();
+            if ($modelUsuarios2->delete($id)) {
+                return $this->response->setJSON(['success' => true, 'message' => 'Usuario y su acceso eliminados correctamente']);
+            } else {
+                return $this->response->setJSON(['success' => false, 'message' => 'No se pudo eliminar el usuario de Usuarios2_Model']);
+            }
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'No se encontró el usuario en Usuarios2_Model']);
+        }
+    }
+
+    public function crearUsuario()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Usuarios2_Model($db);
+
+        $data = [
+            'nombre_usuario' => $this->request->getPost('nombre_usuario'),
+            'apellidos_usuario' => $this->request->getPost('apellidos_usuario'),
+            'dni' => $this->request->getPost('dni'),
+            'seguridad_social' => $this->request->getPost('seguridad_social'),
+            'email' => $this->request->getPost('email'),
+            'telefono' => $this->request->getPost('telefono'),
+            'user_activo' => $this->request->getPost('user_activo') ?? 1,
+        ];
+
+        if ($model->insert($data)) {
+            return $this->response->setJSON(['success' => true, 'message' => 'Usuario añadido correctamente']);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'No se pudo añadir el usuario']);
+        }
+    }
+
+    public function datosAcceso($id)
+    {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Usuarios', base_url('/usuarios'));
+        $this->addBreadcrumb('Editar usuario', base_url('/usuarios/editar/' . $id));
+        $this->addBreadcrumb('Datos de acceso');
+        $breadcrumbs = $this->getBreadcrumbs();
+
+        $sessionData = usuario_sesion();
+        $db = db_connect($sessionData['new_db']);
+        $usuariosModel = new Usuarios1_Model($db);
+        $usuariosModel2 = new Usuarios1_Model();
+        $usuario = $usuariosModel->find($id);
+
+        $usuarioConNivel = $usuariosModel2->find($id);
+        $nivelUsuario = $usuarioConNivel['nivel_acceso'] ?? null;
+
+        $nivelesAcceso = $db->table('niveles_acceso')->get()->getResultArray();
+
+        $usuario['username'] = $usuarioConNivel['username'] ?? null;
+
+        return view('datosAcceso', [
+            'user' => $usuario,
+            'niveles_acceso' => $nivelesAcceso,
+            'nivel_usuario' => $nivelUsuario,
+            'amiga' => $breadcrumbs
+        ]);
+    }
+    public function eliminarFoto($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $model = new Usuarios2_Model($db);
+        $usuario = $model->find($id);
+        if ($usuario && !empty($usuario['userfoto'])) {
+            $path = ROOTPATH . 'public/assets/uploads/files/' . $data['id_empresa'] . '/usuarios/' . $usuario['userfoto'];
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            $model->update($id, ['userfoto' => null]);
+            return redirect()->to('/usuarios/editar/' . $id)->with('success', 'Foto eliminada correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'No se pudo eliminar la foto.');
+        }
+    }
+    private function eliminarImagenesExistentes($uploadPath)
+    {
+        $archivos = glob($uploadPath . '*');
+
+        foreach ($archivos as $archivo) {
+            if (is_file($archivo)) {
+                unlink($archivo);
+            }
+        }
     }
 }

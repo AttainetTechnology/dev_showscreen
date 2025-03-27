@@ -1,0 +1,31 @@
+INFO - 2024-08-06 10:26:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-06 10:26:49 --> GuzzleHttp\Exception\ClientException: Client error: `POST https://oauth2.googleapis.com/token` resulted in a `400 Bad Request` response:
+{
+  "error": "invalid_grant",
+  "error_description": "Bad Request"
+}
+
+[Method: GET, Route: google_login]
+in FCPATH/vendor/guzzlehttp/guzzle/src/Exception/RequestException.php on line 113.
+ 1 FCPATH/vendor/guzzlehttp/guzzle/src/Middleware.php(72): GuzzleHttp\Exception\RequestException::create(Object(GuzzleHttp\Psr7\Request), Object(GuzzleHttp\Psr7\Response), null, [], null)
+ 2 FCPATH/vendor/guzzlehttp/promises/src/Promise.php(209): GuzzleHttp\Middleware::GuzzleHttp\{closure}(Object(GuzzleHttp\Psr7\Response))
+ 3 FCPATH/vendor/guzzlehttp/promises/src/Promise.php(158): GuzzleHttp\Promise\Promise::callHandler(1, Object(GuzzleHttp\Psr7\Response), null)
+ 4 FCPATH/vendor/guzzlehttp/promises/src/TaskQueue.php(52): GuzzleHttp\Promise\Promise::GuzzleHttp\Promise\{closure}()
+ 5 FCPATH/vendor/guzzlehttp/promises/src/Promise.php(251): GuzzleHttp\Promise\TaskQueue->run(true)
+ 6 FCPATH/vendor/guzzlehttp/promises/src/Promise.php(227): GuzzleHttp\Promise\Promise->invokeWaitFn()
+ 7 FCPATH/vendor/guzzlehttp/promises/src/Promise.php(272): GuzzleHttp\Promise\Promise->waitIfPending()
+ 8 FCPATH/vendor/guzzlehttp/promises/src/Promise.php(229): GuzzleHttp\Promise\Promise->invokeWaitList()
+ 9 FCPATH/vendor/guzzlehttp/promises/src/Promise.php(69): GuzzleHttp\Promise\Promise->waitIfPending()
+10 FCPATH/vendor/guzzlehttp/guzzle/src/Client.php(124): GuzzleHttp\Promise\Promise->wait()
+11 FCPATH/vendor/google/auth/src/HttpHandler/Guzzle6HttpHandler.php(47): GuzzleHttp\Client->send(Object(GuzzleHttp\Psr7\Request), [...])
+12 FCPATH/vendor/google/auth/src/OAuth2.php(675): Google\Auth\HttpHandler\Guzzle6HttpHandler->__invoke(Object(GuzzleHttp\Psr7\Request))
+13 FCPATH/vendor/google/apiclient/src/Client.php(292): Google\Auth\OAuth2->fetchAuthToken(Object(Google\Auth\HttpHandler\Guzzle7HttpHandler))
+14 APPPATH/Controllers/Login.php(29): Google\Client->fetchAccessTokenWithAuthCode('4/0AcvDMrB-yZRfd1Eldo39hvS3OIKYs89TP1ujitkuajGKKTuDaKbx27QfJI6jZS-Z3-N4EA')
+15 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Login->google_login()
+16 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+17 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+18 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+19 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+20 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-06 10:31:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-06 11:34:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

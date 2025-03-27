@@ -48,7 +48,7 @@ foreach ($pedido as $ped) { ?>
             </div>
 
             <div class="tituparte">Pedido interno</div>
-            <div id="observaciones">
+            <div id="observaciones" style="font-size:24px !important;">
                 <div class="seccionparte">Observaciones de pedido:</div>
                 <?php echo $ped->observaciones; ?>
             </div>
@@ -77,7 +77,11 @@ foreach ($pedido as $ped) { ?>
                                     <td style=" font-size:20px !important;"><b><?php echo $l->nom_base; ?></b></td>
                                     <td style=" font-size:20px !important;"><b><?php echo $l->med_inicial; ?></b></td>
                                     <td style=" font-size:20px !important;"><b><?php echo $l->med_final; ?></b></td>
+<<<<<<< HEAD
                                     <!--<td style=" font-size:20px !important;"><b><?php echo $l->total_linea; ?></b> &euro;</td>-->
+=======
+                                    <td style=" font-size:20px !important;"><b><?php echo $l->total_linea; ?></b> &euro;</td>
+>>>>>>> 0693ad9688c54a1a598131b8322aac6073842306
                                     <?php $total += $l->total_linea; ?>
                                 </tr>
                             <?php } ?>
@@ -105,7 +109,11 @@ foreach ($pedido as $ped) { ?>
                             </thead>
                             <tbody style=" font-size:40px !important;">
                                 <?php
+<<<<<<< HEAD
                                 $lineas_pag2 = array_slice($lineas, 12); // Líneas para la segunda página
+=======
+                                $lineas_pag2 = array_slice($lineas, 9); // Líneas para la segunda página
+>>>>>>> 0693ad9688c54a1a598131b8322aac6073842306
                                 foreach ($lineas_pag2 as $l) { ?>
                                     <tr>
                                         <td style=" font-size:20px !important;"><b><?php echo $l->n_piezas; ?> </b></td>
@@ -113,7 +121,11 @@ foreach ($pedido as $ped) { ?>
                                         <td style=" font-size:20px !important;"><b><?php echo $l->nom_base; ?></b></td>
                                         <td style=" font-size:20px !important;"><b><?php echo $l->med_inicial; ?></b></td>
                                         <td style=" font-size:20px !important;"><b><?php echo $l->med_final; ?></b></td>
+<<<<<<< HEAD
                                         <!--<td style=" font-size:20px !important;"><b><?php echo $l->total_linea; ?></b> &euro;</td>-->
+=======
+                                        <td style=" font-size:20px !important;"><b><?php echo $l->total_linea; ?></b> &euro;</td>
+>>>>>>> 0693ad9688c54a1a598131b8322aac6073842306
                                         <?php $total += $l->total_linea; ?>
                                     </tr>
                                 <?php } ?>

@@ -2,265 +2,320 @@
 
 namespace App\Controllers;
 
-use \Gumlet\ImageResize;
+use App\Models\Productos_model;
 
-class Productos extends BaseControllerGC
+class Productos extends BaseController
 {
     public function index()
     {
-        $crud = $this->_getClientDatabase();
-        $crud->setSubject('Producto', 'Productos');
-        $crud->setTable('productos');
-        $crud->setRelation('id_familia', 'familia_productos', 'nombre');
-        $crud->columns(['nombre_producto', 'id_familia', 'precio', 'unidad', 'estado_producto', 'imagen']);
-        $crud->setRelation('unidad', 'unidades', 'nombre_unidad');
-        $crud->displayAs('id_familia', 'Familia');
-        $crud->displayAs('nombre_producto', 'Nombre');
-        $crud->requiredFields(['nombre_producto', 'id_familia', 'unidad']);
-        $crud->setRelationNtoN('procesos', 'procesos_productos', 'procesos', 'id_producto', 'id_proceso', '{nombre_proceso}');
-        $crud->setLangString('modal_save', 'Guardar Producto');
-        $crud->addFields(['nombre_producto', 'id_familia', 'precio', 'unidad', 'estado_producto']);
-        $crud->editFields(['id_producto', 'nombre_producto', 'id_familia', 'imagen', 'precio', 'unidad', 'estado_producto']);
-        $crud->unsetRead();
-
-        $crud->fieldType('estado_producto', 'dropdown_search', [
-            '1' => 'Activo',
-            '0' => 'Inactivo'
-        ]);
-        $crud->callbackEditField('id_producto', function ($fieldValue, $primaryKeyValue, $rowData) {
-            $id_producto = $rowData->id_producto;
-
-            return '
-            <input type="hidden" name="id_producto" value="' . $fieldValue . '">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#procesosModal">
-                <i class="fa fa-cogs fa-fw"></i> Ver Procesos
-            </button>
-        
-            <!-- Modal -->
-            <div class="modal fade" id="procesosModal" tabindex="-1" role="dialog" aria-labelledby="procesosModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" style="max-width: 70%; height: 100%;">
-                    <div class="modal-content" style="height: 90vh;">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="procesosModalLabel">Procesos del Producto</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body" style="height: 100%; overflow-y: auto;">
-                           <iframe id="iframe_procesos" src="' . base_url('productos/verProcesos/' . $id_producto) . '" frameborder="0" width="100%" height="100%" style="height: 100%;"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>';
-        });
-
-        // Callbacks para registrar las acciones realizadas en LOG
-        $crud->callbackAfterInsert(function ($stateParameters) {
-            $this->logAction('Productos', 'Añade producto', $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterUpdate(function ($stateParameters) {
-            $this->logAction('Productos', 'Edita producto, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-        $crud->callbackAfterDelete(function ($stateParameters) {
-            $this->logAction('Productos', 'Elimina producto, ID: ' . $stateParameters->primaryKeyValue, $stateParameters);
-            return $stateParameters;
-        });
-
-        $globalUploadPath = 'public/assets/uploads/files/' . $this->data['id_empresa'] . '/productos/';
-        if (!is_dir($globalUploadPath)) {
-            mkdir($globalUploadPath, 0777, true);
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
         }
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Productos');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('productos_view', ['amiga' => $data['amiga']]);
 
-        $uploadValidations = [
-            'maxUploadSize' => '7M',
-            'minUploadSize' => '200B',
-            'allowedFileTypes' => ['gif', 'jpeg', 'jpg', 'png', 'tiff']
-        ];
-
-        $crud->setFieldUpload('imagen', $globalUploadPath, $globalUploadPath, $uploadValidations);
-
-        $id_empresa = $this->data['id_empresa'];
-        $crud->callbackColumn('imagen', function ($value, $row) use ($id_empresa) {
-            if ($value === null || $value === '') {
-                return '';
-            } else {
-                $specificPath = "public/assets/uploads/files/" . $id_empresa . "/productos/";
-                return "<img src='" . base_url($specificPath . $value) . "' height='60' class='img_produco'>";
-            }
-        });
-
-        $crud->callbackBeforeDelete(function ($stateParameters) use ($globalUploadPath) {
-            $productoId = $stateParameters->primaryKeyValue;
-
-            // Delete related rows in the procesos_productos table
-            helper('controlacceso');
-            $data = usuario_sesion();
-            $db = db_connect($data['new_db']);
-
-            $db->table('procesos_productos')->where('id_producto', $productoId)->delete();
-
-            $productoFolder = $globalUploadPath . $productoId;
-            if (is_dir($productoFolder)) {
-                // Obtén todos los archivos en el directorio y elimínalos
-                $files = glob("$productoFolder/*");
-                foreach ($files as $file) {
-                    if (is_file($file)) {
-                        unlink($file);
-                    }
-                }
-                rmdir($productoFolder);
-            }
-            return $stateParameters;
-        });
-
-        $crud->callbackBeforeUpload(function ($stateParameters) use ($globalUploadPath) {
-            $productoId = $_POST['pk_value'] ?? null;
-            $uploadPath = $globalUploadPath . $productoId . '/';
-            if (!is_dir($uploadPath) && !mkdir($uploadPath, 0755, true)) {
-                return false;
-            }
-            $existingImages = glob($uploadPath . "*.{jpg,jpeg,png}", GLOB_BRACE);
-            foreach ($existingImages as $image) {
-                unlink($image);
-            }
-            $stateParameters->uploadPath = $uploadPath;
-            return $stateParameters;
-        });
-
-        $crud->callbackAfterUpload(function ($result) {
-            $isSuccess = isset($result->isSuccess) ? $result->isSuccess : true;
-
-            if ($isSuccess && is_string($result->uploadResult)) {
-                $fileName = $result->uploadResult;
-                $producto = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_SESSION['producto_actual'] ?? '');
-                $idProducto = $_POST['pk_value'] ?? '';
-                $Newname = $producto . $idProducto . "/" . $fileName;
-                $result->uploadResult = $Newname;
-
-                $fullPath = $result->stateParameters->uploadPath . $fileName;
-                if (file_exists($fullPath)) {
-                    $image = new ImageResize($fullPath);
-                    $image->resizeToBestFit(300, 300);
-                    $image->save($fullPath);
-                }
-            }
-            return $result;
-        });
-        $output = $crud->render();
-        return $this->_GC_output("layouts/main", $output);
     }
-
     public function verProcesos($id_producto)
     {
         helper('controlacceso');
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
 
-        $builderProducto = $db->table('productos');
-        $builderProducto->select('*');
-        $builderProducto->where('id_producto', $id_producto);
-        $producto = $builderProducto->get()->getRow();
+        // Obtener el producto
+        $producto = $db->table('productos')
+            ->where('id_producto', $id_producto)
+            ->get()
+            ->getRow();
 
-        $builderProcesos = $db->table('procesos');
-        $allProcesses = $builderProcesos->get()->getResult();
+        if (!$producto) {
+            return redirect()->to(base_url('productos'))->with('error', 'Producto no encontrado');
+        }
 
-        $builder = $db->table('procesos_productos');
-        $builder->select('*');
-        $builder->where('id_producto', $id_producto);
-        $builder->join('procesos', 'procesos.id_proceso = procesos_productos.id_proceso', 'left');
-        $builder->orderby('procesos_productos.orden', 'asc');
-        $query = $builder->get();
+        // Obtener todos los procesos
+        $allProcesses = $db->table('procesos')->get()->getResult();
 
-        $data['procesos'] = $query->getResult();
+        // Obtener los procesos asociados al producto
+        $procesos = $db->table('procesos_productos')
+            ->select('procesos_productos.*, procesos.nombre_proceso')
+            ->join('procesos', 'procesos.id_proceso = procesos_productos.id_proceso', 'left')
+            ->where('id_producto', $id_producto)
+            ->orderBy('procesos_productos.orden', 'asc')
+            ->get()
+            ->getResult();
+
+        // Añadir migas de pan
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Productos', base_url('/productos'));
+        $this->addBreadcrumb("Procesos de {$producto->nombre_producto}");
+
+        // Preparar datos para la vista
         $data['producto'] = $producto;
         $data['allProcesses'] = $allProcesses;
+        $data['procesos'] = $procesos;
+        $data['amiga'] = $this->getBreadcrumbs();
 
         return view('procesos_view', $data);
     }
 
-    public function show($id)
-    {
-        helper('controlacceso');
-        $data = usuario_sesion();
-        $dbClient = db_connect($data['new_db']);
-
-        $query = $dbClient->table('productos')->getWhere(['id_producto' => $id]);
-        $producto = $query->getRow();
-
-        $query = $dbClient->table('procesos')->get();
-        $allProcesses = $query->getResult();
-
-        $builder = $dbClient->table('procesos_productos');
-        $builder->select('procesos_productos.*, procesos.nombre_proceso');
-        $builder->where(['id_producto' => $id]);
-        $builder->join('procesos', 'procesos.id_proceso=procesos_productos.id_proceso', 'left');
-        $builder->orderby('orden', 'asc');
-        $query = $builder->get();
-
-        $orderedProcesses = $query->getResult();
-
-        return view('procesos_view', [
-            'producto' => $producto,
-            'procesos' => $orderedProcesses,
-            'allProcesses' => $allProcesses
-        ]);
-    }
 
     public function updateOrder()
     {
         helper('controlacceso');
         $data = usuario_sesion();
-        $dbClient = db_connect($data['new_db']);
-        $postData = $this->request->getPost();
+        $db = db_connect($data['new_db']);
 
-        if (!isset($postData['data']) || !is_string($postData['data'])) {
-            return $this->response->setStatusCode(400, 'Bad Request: Missing or invalid data parameter');
+        $jsonData = $this->request->getJSON(); // Decodificar JSON automáticamente
+
+        if (!is_object($jsonData) || !isset($jsonData->id_producto) || !isset($jsonData->procesos)) {
+            return $this->response->setStatusCode(400, 'Datos no válidos');
         }
 
-        $newOrder = json_decode($postData['data'], true);
-        $id_producto = $newOrder[0]['id_producto'];
-        $dbClient->table('procesos_productos')->where('id_producto', $id_producto)->delete();
+        $id_producto = $jsonData->id_producto;
+        $procesos = $jsonData->procesos;
 
-        foreach ($newOrder as $item) {
-            $id_proceso = $item['id_proceso'];
-            $orden = $item['orden'];
-
-            // Obtener las restricciones del proceso actual
-            $proceso = $dbClient->table('procesos')->where('id_proceso', $id_proceso)->get()->getRow();
-            $restricciones = $proceso->restriccion;
-
-            if (!empty($restricciones)) {
-                $restriccionesArray = explode(',', $restricciones);
-
-                // Filtrar las restricciones para que solo incluyan procesos asociados al mismo producto
-                $builder = $dbClient->table('procesos_productos');
-                $builder->select('id_proceso');
-                $builder->where('id_producto', $id_producto);
-                $query = $builder->get();
-                $procesosProducto = $query->getResultArray();
-
-                $procesosProductoIds = array_column($procesosProducto, 'id_proceso');
-                $restriccionesFiltradas = array_intersect($restriccionesArray, $procesosProductoIds);
-
-                // Convertir las restricciones filtradas de nuevo a string
-                $restriccionesFiltradasString = implode(',', $restriccionesFiltradas);
-            } else {
-                $restriccionesFiltradasString = '';
+        if (empty($id_producto) || !is_array($procesos)) {
+            return $this->response->setStatusCode(400, 'Datos incompletos');
+        }
+        // Eliminar procesos existentes
+        $db->table('procesos_productos')->where('id_producto', $id_producto)->delete();
+        foreach ($procesos as $proceso) {
+            if (!isset($proceso->id_proceso) || !isset($proceso->orden)) {
+                log_message('error', 'Proceso malformado: ' . json_encode($proceso));
+                continue; // Saltar procesos malformados
             }
-
-            // Insertar el proceso en la tabla procesos_productos con las restricciones filtradas
-            $dbClient->table('procesos_productos')->insert([
+            $db->table('procesos_productos')->insert([
                 'id_producto' => $id_producto,
-                'id_proceso' => $id_proceso,
-                'orden' => $orden,
-                'restriccion' => $restriccionesFiltradasString
+                'id_proceso' => $proceso->id_proceso,
+                'orden' => $proceso->orden
             ]);
         }
-
-        $log = "Actualización procesos para producto ID: {$id_producto}";
-        $this->logAction('Productos/Procesos', $log, $data);
-
-        return $this->response->setStatusCode(200, 'Order updated successfully');
+        return $this->response->setJSON(['success' => true, 'message' => 'Orden actualizado correctamente']);
     }
+
+    public function getProductos()
+    {
+        // Lógica existente para obtener productos
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+
+        $productos = $productosModel->select('productos.*, 
+                                              familia_productos.nombre AS nombre_familia, 
+                                              unidades.nombre_unidad AS unidad_nombre')
+            ->join('familia_productos', 'productos.id_familia = familia_productos.id_familia', 'left')
+            ->join('unidades', 'productos.unidad = unidades.id_unidad', 'left')
+            ->findAll();
+
+        foreach ($productos as &$producto) {
+            $producto['estado_nombre'] = $producto['estado_producto'] == 1 ? 'Activo' : 'Inactivo';
+            $producto['imagen_url'] = $producto['imagen']
+                ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}")
+                : null; // Devuelve null si no hay imagen
+        }
+
+
+        return $this->response->setJSON($productos);
+    }
+
+    public function getProducto($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+
+        $producto = $productosModel->find($id);
+        if ($producto) {
+            $producto['imagen_url'] = $producto['imagen']
+                ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}")
+                : base_url('public/assets/images/default.png');
+            return $this->response->setJSON($producto);
+        } else {
+            return $this->response->setStatusCode(404, 'Producto no encontrado');
+        }
+    }
+    public function getUnidades()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $unidades = $db->table('unidades')->select('id_unidad, nombre_unidad')->get()->getResultArray();
+
+        return $this->response->setJSON($unidades);
+    }
+    public function getFamilias()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $familias = $db->table('familia_productos')->select('id_familia, nombre')->get()->getResultArray();
+
+        return $this->response->setJSON($familias);
+    }
+
+    public function agregarProducto()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+
+        $postData = $this->request->getPost();
+        if ($productosModel->insert($postData)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al añadir el producto.']);
+        }
+    }
+
+    public function editarVista($id)
+    {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Productos', base_url('/productos'));
+        $this->addBreadcrumb('Editar Producto');
+
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+
+        $producto = $productosModel->find($id);
+        if (!$producto) {
+            return redirect()->back()->with('error', 'Producto no encontrado');
+        }
+
+        $producto['imagen_url'] = $producto['imagen']
+            ? base_url("public/assets/uploads/files/{$data['id_empresa']}/productos/{$producto['imagen']}")
+            : null;
+
+        $familias = $db->table('familia_productos')->get()->getResultArray();
+        $unidades = $db->table('unidades')->get()->getResultArray();
+
+        // Cargar imágenes desde la galería
+        $gallery = new \App\Controllers\Gallery();
+        $currentDirectory = $gallery->buildDirectoryPath('productos');
+        [$folders, $images] = $gallery->scanDirectory($currentDirectory, 'productos');
+
+        return view('editProducto', [
+            'producto' => $producto,
+            'familias' => $familias,
+            'unidades' => $unidades,
+            'amiga' => $this->getBreadcrumbs(),
+            'data' => $data, // Pasar $data
+            'images' => $images, // Pasar las imágenes a la vista
+        ]);
+    }
+
+    public function editarProducto($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+
+        $postData = $this->request->getPost();
+        $file = $this->request->getFile('imagen');
+
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $rutaProductos = "public/assets/uploads/files/{$data['id_empresa']}/productos";
+
+            // Crear la carpeta principal si no existe
+            if (!is_dir($rutaProductos)) {
+                mkdir($rutaProductos, 0777, true);
+            }
+
+            // Generar un nombre único con el ID del usuario
+            $nombreBase = pathinfo($file->getName(), PATHINFO_FILENAME);
+            $extension = $file->getExtension();
+            $idUser = $data['id_user']; // ID del usuario desde la sesión
+            $nombreConId = "{$nombreBase}_IDUser{$idUser}.{$extension}";
+
+            $rutaArchivo = "{$rutaProductos}/{$nombreConId}";
+
+            if (file_exists($rutaArchivo)) {
+                // Si la imagen ya existe con el ID del usuario, simplemente asociarla
+                $postData['imagen'] = $nombreConId;
+            } else {
+                // Si no existe, moverla y asociarla
+                $file->move($rutaProductos, $nombreConId);
+                $postData['imagen'] = $nombreConId;
+            }
+        }
+
+        if ($productosModel->update($id, $postData)) {
+            return redirect()->to(base_url("productos/editarVista/{$id}"));
+        } else {
+            return redirect()->to(base_url("productos/editarVista/{$id}"))->with('error', 'Error al actualizar el producto');
+        }
+    }
+
+    public function asociarImagen()
+    {
+        $id_producto = $this->request->getPost('id_producto');
+        $imagen = $this->request->getPost('imagen');
+
+        if (!$id_producto || !$imagen) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Faltan datos.']);
+        }
+
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+
+        $producto = $productosModel->find($id_producto);
+
+        if (!$producto) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado.']);
+        }
+
+        $productosModel->update($id_producto, ['imagen' => $imagen]);
+
+    }
+
+
+    public function eliminarProducto($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+
+        $producto = $productosModel->find($id);
+        if (!$producto) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Producto no encontrado.']);
+        }
+
+        $rutaImagenes = "public/assets/uploads/files/{$data['id_empresa']}/productos";
+
+        // Eliminar la imagen del producto si existe
+        if ($producto['imagen']) {
+            $imagenPath = "{$rutaImagenes}/{$producto['imagen']}";
+            if (file_exists($imagenPath)) {
+                unlink($imagenPath);
+            }
+        }
+
+        // Eliminar el producto de la base de datos
+        if ($productosModel->delete($id)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al eliminar el producto.']);
+        }
+
+    }
+
+    public function eliminarImagen($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $productosModel = new Productos_model($db);
+
+        // Buscar el producto por ID
+        $producto = $productosModel->find($id);
+        if (!$producto || !$producto['imagen']) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Imagen no encontrada.']);
+        }
+        // Desasociar la imagen del producto (establecer el campo 'imagen' en NULL)
+        $productosModel->update($id, ['imagen' => null]);
+    }
+
+
 }

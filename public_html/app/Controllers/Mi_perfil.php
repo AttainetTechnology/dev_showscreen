@@ -3,7 +3,7 @@ namespace App\Controllers;
 use \Gumlet\ImageResize;
 
 class Mi_perfil extends BaseController
-{ 
+{
     public function index($id = null)
     {
         return $this->edit($id);
@@ -41,10 +41,10 @@ class Mi_perfil extends BaseController
 
         // Verificar si el nombre de usuario ya existe
         $existingUser = $dbOriginal->table('users')
-                                   ->where('username', $post_array['username'])
-                                   ->where('id !=', $userId)
-                                   ->get()
-                                   ->getRow();
+            ->where('username', $post_array['username'])
+            ->where('id !=', $userId)
+            ->get()
+            ->getRow();
 
         if ($existingUser) {
             $session->setFlashdata('error', 'El nombre de usuario ya existe.');
@@ -74,17 +74,23 @@ class Mi_perfil extends BaseController
                 return redirect()->back()->withInput();
             }
 
+            // Crear la carpeta si no existe
             if (!is_dir($specificPath)) {
                 mkdir($specificPath, 0777, true);
             } else {
                 array_map('unlink', glob($specificPath . "*"));
             }
 
-            $imageFile->move($specificPath);
-            $imagePath = $specificPath . $imageFile->getName();
+            // Agregar el ID del usuario autenticado al nombre de la imagen
+            $newName = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . "_IDUser{$userId}." . $imageFile->getExtension();
+            $imageFile->move($specificPath, $newName);
+
+            // Redimensionar y comprimir la imagen
+            $imagePath = $specificPath . $newName;
             $this->compressAndResizeImage($imagePath, 400, 200);
 
-            $updateDataCliente['userfoto'] = $userId . '/' . $imageFile->getName();
+            // Actualizar el nombre de la imagen en la base de datos
+            $updateDataCliente['userfoto'] = $userId . '/' . $newName;
         }
 
         if (!empty($updateDataOriginal)) {
@@ -127,7 +133,7 @@ class Mi_perfil extends BaseController
     }
 
     public function edit($id = null)
-    {   
+    {
         if ($id === null) {
             return redirect()->to('/');
         }
@@ -154,6 +160,9 @@ class Mi_perfil extends BaseController
             $imageNameWithoutPrefix = substr($userClient->userfoto, $slashPosition + 1);
             $user->imagePath = $specificPath . $imageNameWithoutPrefix;
         }
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Mi perfil');
+        $data['amiga'] = $this->getBreadcrumbs();
 
         $data['user'] = $user;
         return view('edit_mi_perfil', $data);

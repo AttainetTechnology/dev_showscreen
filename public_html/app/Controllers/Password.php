@@ -16,10 +16,11 @@ class Password extends BaseControllerGC
         $post_array['id'] = $id;
 
         if (!empty($post_array['password'])) {
-            if ($this->isValidPassword($post_array['password'])) {
-                $post_array['password'] = md5($post_array['password']);
-            } else {
+            if (!$this->isValidPassword($post_array['password'])) {
+                error_log("ERROR: Contraseña no válida: " . $post_array['password']);
                 return redirect()->back()->with('error', 'La contraseña no cumple con los requisitos de seguridad.');
+            } else {
+                $post_array['password'] = md5($post_array['password']);
             }
         }
 
@@ -87,7 +88,7 @@ class Password extends BaseControllerGC
         $post_array = $request->getPost();
         $post_array['id'] = $id;
 
-        unset($post_array['nombre_usuario']); 
+        unset($post_array['nombre_usuario']);
 
         if (!empty($post_array['password'])) {
             if ($this->isValidPassword($post_array['password'])) {
@@ -142,34 +143,43 @@ class Password extends BaseControllerGC
 
     private function isValidPassword($password)
     {
+        // Validar longitud mínima
         if (strlen($password) < 8) {
+            error_log("ERROR: Contraseña demasiado corta.");
             return false;
         }
+        // Validar que contenga al menos una mayúscula
         if (!preg_match('/[A-Z]/', $password)) {
+            error_log("ERROR: Falta mayúscula.");
             return false;
         }
+        // Validar que contenga al menos una minúscula
         if (!preg_match('/[a-z]/', $password)) {
+            error_log("ERROR: Falta minúscula.");
             return false;
         }
+        // Validar que contenga al menos un número
         if (!preg_match('/[0-9]/', $password)) {
+            error_log("ERROR: Falta número.");
             return false;
         }
 
         return true;
     }
 
-    public function getNivelAcceso($id) {
+    public function getNivelAcceso($id)
+    {
         $db = db_connect();
         $query = $db->table('users')->where('id', $id)->get();
         $user = $query->getRow();
-        
+
         if ($user) {
             return $this->response->setJSON(['nivel_acceso' => $user->nivel_acceso]);
         } else {
             return $this->response->setJSON(['error' => 'Usuario no encontrado'], 404);
         }
     }
-    
+
 
     public function getNombreUsuario($id)
     {

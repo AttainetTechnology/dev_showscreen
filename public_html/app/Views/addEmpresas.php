@@ -17,7 +17,7 @@
         </div>
         <div class="mb-3">
             <label for="nif" class="form-label">NIF</label>
-            <input type="text" class="form-control" id="nif" name="nif" required>
+            <input type="text" class="form-control" id="nif" name="nif">
         </div>
         <div class="mb-3">
             <label for="direccion" class="form-label">Dirección</label>
@@ -25,7 +25,12 @@
         </div>
         <div class="mb-3">
             <label for="pais" class="form-label">País</label>
-            <input type="text" class="form-control" id="pais" name="pais">
+            <select class="form-control" id="pais" name="pais">
+                <option value="">Seleccione un país</option>
+                <?php foreach ($paises as $pais): ?>
+                    <option value="<?= $pais['id']; ?>"><?= $pais['nombre']; ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="mb-3">
             <label for="id_provincia" class="form-label">Provincia</label>
@@ -38,7 +43,12 @@
         </div>
         <div class="mb-3">
             <label for="poblacion" class="form-label">Población</label>
-            <input type="text" class="form-control" id="poblacion" name="poblacion">
+            <select class="form-control" id="poblacion" name="poblacion">
+                <option value="">Seleccione una población</option>
+                <?php foreach ($poblaciones as $poblacion): ?>
+                    <option value="<?= $poblacion['id_poblacion']; ?>"><?= $poblacion['poblacion']; ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="mb-3">
             <label for="telf" class="form-label">Teléfono</label>
@@ -58,15 +68,12 @@
         </div>
         <div class="mb-3">
             <label for="f_pago" class="form-label">Forma de Pago</label>
-            <input type="text" class="form-control" id="f_pago" name="f_pago">
-        </div>
-        <div class="mb-3">
-            <label for="otros_contactos" class="form-label">Otros Contactos</label>
-            <input type="text" class="form-control" id="otros_contactos" name="otros_contactos">
-        </div>
-        <div class="mb-3">
-            <label for="observaciones_cliente" class="form-label">Observaciones Cliente</label>
-            <textarea class="form-control" id="observaciones_cliente" name="observaciones_cliente"></textarea>
+            <select class="form-control" id="f_pago" name="f_pago">
+                <option value="">Seleccione una forma de pago</option>
+                <?php foreach ($formas_pago as $forma): ?>
+                    <option value="<?= $forma['id_formapago']; ?>"><?= $forma['formapago']; ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
@@ -75,6 +82,10 @@
         <div class="mb-3">
             <label for="web" class="form-label">Web</label>
             <input type="text" class="form-control" id="web" name="web">
+        </div>
+        <div class="mb-3">
+            <label for="observaciones_cliente" class="form-label">Observaciones Cliente</label>
+            <textarea class="form-control" id="observaciones_cliente" name="observaciones_cliente"></textarea>
         </div>
     </div>
     <div class="modal-footer buttonsEditProductProveedAbajo">

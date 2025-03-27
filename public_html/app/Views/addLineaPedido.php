@@ -103,7 +103,7 @@
         <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" value="<?= esc($fecha_entrega) ?>">
     </div>
 
-    <div class="modal-footer">
+    <div class="buttonsEditProductProveedAbajo">
         <button type="button" class="boton volverButton" data-bs-dismiss="modal">
             Volver
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -122,7 +122,7 @@
 <script>
     $(document).ready(function() {
         $('#id_producto').select2({
-            placeholder: "Selecciona un producto",
+            placeholder: "Selecciona un producto", 
             dropdownParent: $('#addLineaPedidoForm')
         });
     });

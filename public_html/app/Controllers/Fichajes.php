@@ -1,115 +1,39 @@
 <?php
-
 namespace App\Controllers;
-// use App\Libraries\GroceryCrud;
 
-class Fichajes extends BaseControllerGC
+use App\Models\FichajesModel;
+use App\Models\Usuarios2_Model;
+
+class Fichajes extends BaseController
 {
-
     public function index()
     {
-        //Control de login	
         helper('controlacceso');
-        $nivel = control_login();
-        //Fin Control de Login
-        $this->SacaFichajes(
-            'Fichaje',
-            'Fichajes',
-            '',
-            ''
-        );
-    }
-    public function incidencias()
-    {
-        $this->SacaFichajes(
-            'Incidencia',
-            'Incidencias',
-            'fichajes.incidencia NOT LIKE ?',
-            ''
-        );
-    }
-
-    public function extras()
-    {
-        $this->SacaFichajes(
-            'Extra',
-            'Extras',
-            'fichajes.extras',
-            '1'
-        );
-    }
-    public function SacaFichajes($titulo, $titulos, $comparador, $valor)
-    {
-
-        $crud = $this->_getClientDatabase();
-
-        $crud->setSubject($titulo, $titulos);
-        $crud->setTable('fichajes');
-        $crud->columns(['id_usuario', 'entrada', 'salida', 'total', 'incidencia', 'extras']);
-        $this->groceryCRUDAddExtraColumn($crud, 'fecha');
-        if ($comparador != '') {
-            $crud->where([
-                $comparador => $valor
-            ]);
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
         }
-        $crud->setRelation('id_usuario', 'users', 'nombre_usuario');
-        $crud->displayAs('total', 'Horas');
-        $crud->displayAs('id_usuario', 'Nombre');
-        //$crud->displayAs('id','Fecha');
-        $crud->fieldType('extras', 'dropdown', [
-            '1' => 'Sí',
-            '0' => ' '
-        ]);
-        $crud->fieldType('incidencia', 'dropdown', [
-            ' '    => ' ',
-            'No 8 horas' => 'Menos de 8H',
-            'sin cerrar' => 'Sin cerrar',
-            'Ausencia' => 'Ausencia'
-        ]);
-
-        $crud->callbackColumn('total', array($this, 'Pasa_a_Horas'));
-        $crud->unsetRead();
-        $crud->unsetSearchColumns(['entrada', 'salida', 'total']);
-        $crud->setLangString('modal_save', 'Guardar Fichaje');
-        $output = $crud->render();
-
-        if ($output->isJSONResponse) {
-            header('Content-Type: application/json; charset=utf-8');
-            echo $output->output;
-            exit;
-        }
-        //Paso las fechas de búsqueda
-        // $output->data['inicio'] = "01/01/2022";
-        // $output->data['fin'] = "02/01/2022";
-
-        echo view('layouts/main', (array)$output);
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Fichajes');
+        $data['amiga'] = $this->getBreadcrumbs();
+        return view('fichajes_view', $data);
     }
 
-    function groceryCRUDAddExtraColumn($crud, $columnName)
+    private function Pasa_a_Horas($entrada, $salida)
     {
-        $crud->fieldTypeColumn($columnName, 'varchar');
-        $crud->mapColumn($columnName, 'id');
-    }
 
-
-    function Pasa_a_Horas($value, $row)
-    {
-        // Verifica que los valores de entrada y salida estén definidos
-        if (!isset($row->entrada) || !isset($row->salida)) {
-            return 'Datos insuficientes';
+        if (empty($salida) || $salida == '0000-00-00 00:00:00' || $salida == '00:00:00') {
+            return '';
         }
 
-        // Convertir las fechas y horas a objetos DateTime
-        $entrada = new \DateTime($row->entrada);
-        $salida = new \DateTime($row->salida);
+        $entrada = new \DateTime($entrada);
+        $salida = new \DateTime($salida);
 
-        // Calcular la diferencia
         $intervalo = $entrada->diff($salida);
 
-        // Convertir la diferencia a minutos totales
         $totalMinutos = ($intervalo->days * 24 * 60) + ($intervalo->h * 60) + $intervalo->i;
 
-        // Calcular días, horas y minutos
         $dias = intval($totalMinutos / (24 * 60));
         $totalMinutos = $totalMinutos % (24 * 60);
         $totalhoras = intval($totalMinutos / 60);
@@ -128,4 +52,91 @@ class Fichajes extends BaseControllerGC
 
         return trim($resultado);
     }
+    public function getFichajes()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $fichajesModel = new FichajesModel($db);
+        $usuariosModel = new Usuarios2_Model($db);
+
+        $fichajes = $fichajesModel->findAll();
+
+        foreach ($fichajes as &$fichaje) {
+            $usuario = $usuariosModel->findUserById($fichaje['id_usuario']);
+            if ($usuario) {
+                $fichaje['nombre_usuario'] = $usuario['nombre_usuario'] . ' ' . $usuario['apellidos_usuario'];
+            } else {
+                $fichaje['nombre_usuario'] = 'Usuario no encontrado';
+            }
+            $fichaje['salida'] = ($fichaje['salida'] == '0000-00-00 00:00:00' || empty($fichaje['salida'])) ? '' : $fichaje['salida'];
+            $fichaje['total'] = $this->Pasa_a_Horas($fichaje['entrada'], $fichaje['salida']);
+            $fichaje['extras'] = ($fichaje['extras'] == 1) ? 'Sí' : 'No';
+            $fichaje['acciones'] = [
+                'editar' => base_url('fichajes/editar/' . $fichaje['id']),
+                'eliminar' => base_url('fichajes/eliminar/' . $fichaje['id'])
+            ];
+        }
+
+        return $this->response->setJSON($fichajes);
+    }
+    public function editar($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $fichajesModel = new FichajesModel($db);
+        $usuariosModel = new Usuarios2_Model($db);
+        $fichaje = $fichajesModel->find($id);
+        if (!$fichaje) {
+            return $this->response->setJSON(['error' => 'Fichaje no encontrado']);
+        }
+        $usuarios = $usuariosModel->findAll();
+        return $this->response->setJSON([
+            'fichaje' => $fichaje,
+            'usuarios' => $usuarios
+        ]);
+    }
+
+    public function actualizar()
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $fichajesModel = new FichajesModel($db);
+
+        $id = $this->request->getPost('id');
+        $entrada = $this->request->getPost('entrada');
+        $salida = $this->request->getPost('salida');
+        $incidencia = $this->request->getPost('incidencia');
+        $extras = $this->request->getPost('extras');
+        $id_usuario = $this->request->getPost('nombre');
+        $fichaje = $fichajesModel->find($id);
+        if (!$fichaje) {
+            return $this->response->setJSON(['error' => 'Fichaje no encontrado']);
+        }
+        $fichajesModel->update($id, [
+            'entrada' => $entrada,
+            'salida' => $salida,
+            'incidencia' => $incidencia,
+            'extras' => $extras,
+            'id_usuario' => $id_usuario
+        ]);
+
+        return $this->response->setJSON(['success' => true]);
+    }
+
+    public function eliminar($id)
+    {
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $fichajesModel = new FichajesModel($db);
+
+        $fichaje = $fichajesModel->find($id);
+        if (!$fichaje) {
+            return $this->response->setJSON(['error' => 'Fichaje no encontrado']);
+        }
+
+        $fichajesModel->delete($id);
+
+        return $this->response->setJSON(['success' => true]);
+    }
+
 }

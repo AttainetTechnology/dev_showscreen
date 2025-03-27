@@ -2,6 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Models\Lineaspedido_model;
+use App\Models\Pedidos_model;
+use App\Models\RelacionProcesoUsuario_model;
+
 class Lista_produccion extends BaseControllerGC
 {
     protected $Menu_familias_model;
@@ -10,22 +14,33 @@ class Lista_produccion extends BaseControllerGC
     {
         $this->todos('estado=', '0', 'Pendientes');
     }
+
     public function enmarcha()
     {
         $this->todos('estado=', '2', 'En cola');
     }
+
     public function enmaquina()
     {
         $this->todos('estado=', '3', 'En máquina');
     }
+
     public function terminados()
     {
         $this->todos('estado=', '4', 'Terminados');
     }
+
     public function entregados()
     {
         $this->todos('estado=', '5', 'Entregados');
     }
+
+    public function anulados()
+    {
+        $this->todos('estado=', '6', 'Anulados');
+    }
+
+
     public function todoslospartes()
     {
         $this->todos('estado<', '7', '(Todos)');
@@ -33,119 +48,140 @@ class Lista_produccion extends BaseControllerGC
 
     public function todos($coge_estado, $where_estado, $situacion)
     {
-        // Control de login    
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Partes');
+
+        // Control de login
         helper('controlacceso');
         $nivel = control_login();
-        // Comienza Grocery CRUD a montar la tabla    
-        $crud = $this->_getClientDatabase();
-        // Definimos las columnas y la tabla
-        $crud->setTable('v_linea_pedidos_con_familia');
-        $crud->setPrimaryKey('id_lineapedido', 'v_linea_pedidos_con_familia');
-        $crud->columns(['id_lineapedido', 'fecha_entrada', 'med_inicial', 'med_final', 'id_cliente', 'nom_base', 'id_producto', 'id_pedido', 'estado', 'id_familia']);
-        $crud->setRelation('id_cliente', 'clientes', 'nombre_cliente');
-        $crud->setRelation('id_familia', 'familia_productos', 'nombre');
-        $crud->setRelation('id_producto', 'productos', 'nombre_producto');
-        $crud->displayAs('fecha_entrada', 'Fecha de Entrada');
-        $crud->displayAs('id_cliente', 'Cliente');
-        $crud->displayAs('nom_base', 'Base');
-        $crud->displayAs('id_lineapedido', 'Linea Pedido');
-        $crud->displayAs('id_producto', 'Producto');
-        $crud->displayAs('id_familia', 'Familia');
-        $crud->displayAs('id_pedido', 'Pedido');
-        $crud->displayAs('estado', 'Estado');
-        // Aplicamos el filtro según la situación
-        $crud->where($coge_estado . $where_estado);
-        // Definimos el título de la tabla
+
+        // Conectar a la base de datos
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+
+        // Configuración de paginación
+        $perPage = 2000; // Número de registros cargados
+        $page = $this->request->getVar('page') ?? 1;
+        $offset = ($page - 1) * $perPage;
+
+        // Obtener los datos paginados de la tabla
+        $builder = $db->table('v_linea_pedidos_con_familia');
+        $relacionProcesosUsuariosModel = new RelacionProcesoUsuario_model($db);
+        $builder->select('id_lineapedido, fecha_entrada, med_inicial, med_final, id_cliente, nom_base, id_producto, id_pedido, estado, id_familia');
+        $builder->where($coge_estado . $where_estado);
+        $builder->orderBy('fecha_entrada', 'DESC');
+
+        $total = $builder->countAllResults(false);
+        $query = $builder->limit($perPage, $offset)->get();
+        $result = $query->getResultArray();
+
+        // Procesar relaciones (igual que antes)
+        $clientesModel = new \App\Models\ClienteModel($db);
+        $familiasModel = new \App\Models\Familia_productos_model($db);
+        $productosModel = new \App\Models\Productos_model($db);
+        foreach ($result as &$row) {
+            $cliente = $clientesModel->find($row['id_cliente'])['nombre_cliente'] ?? 'Desconocido';
+            $row['pedido_completo'] = $row['id_pedido'] . ' - ' . $cliente;
+            $row['nombre_cliente'] = $cliente;
+            $row['nombre_familia'] = $familiasModel->find($row['id_familia'])['nombre'] ?? 'Desconocido';
+            $row['nombre_producto'] = $productosModel->find($row['id_producto'])['nombre_producto'] ?? 'Desconocido';
+            $estado = $this->asignaEstado($row['estado']);
+            $row['estado'] = $estado['nombre_estado'];
+            $row['estado_clase'] = $estado['estado_clase'];
+            $row['accion_parte'] = base_url('partes/print/' . $row['id_lineapedido']) . '?volver=' . urlencode(current_url());
+        }
+
         $ahora = date('d-m-y');
         $titulo_pagina = "Partes " . $situacion . " - fecha: " . $ahora;
-        $crud->setSubject($titulo_pagina, $titulo_pagina);
-        // Acciones personalizadas según el estado
-        if ($where_estado == '0') {
-            $crud->setActionButton('Parte', 'fa fa-print', function ($row) {
-                $uri = service('uri');
-                $uri = current_url(true);
-                $pg2 = urlencode($uri); // Codifica la URL para evitar caracteres no permitidos
-                return base_url('partes/print/' . $row->id_lineapedido) . '?volver=' . $pg2 .  'target="_blank"';
-            }, true);
+        // Verificar la existencia de registros en relacion_procesos_usuarios para cada línea de pedido
+        foreach ($result as &$row) {
+            $row['tiene_escandallo'] = $relacionProcesosUsuariosModel->where('id_linea_pedido', $row['id_lineapedido'])->countAllResults() > 0;
         }
-        if ($where_estado == '4') {
-            $crud->setActionButton('Entregar', 'fa fa-truck', function ($row) {
-                $uri = service('uri');
-                $uri = current_url(true);
-                $pg2 = $uri;
-                return base_url('/lista_produccion/actualiza_linea/') . '/' . $row->id_lineapedido . '/5/?volver=' . $pg2;
-            }, false);
-        }
-        $crud->callbackColumn('estado', array($this, '_cambia_color_lineas'));
-        $crud->unsetEdit();
-        $crud->unsetDelete();
-        $crud->unsetAdd();
-        $crud->unsetRead();
-        $crud->callbackColumn('id_pedido', array($this, 'nombre_cliente'));
-        $output = $crud->render();
-        if ($output->isJSONResponse) {
-            header('Content-Type: application/json; charset=utf-8');
-            echo $output->output;
-            exit;
-        }
-        echo view('layouts/main', (array)$output);
+        $data['titulo_pagina'] = $titulo_pagina;
+        $data['result'] = $result;
+        $data['amiga'] = $this->getBreadcrumbs();
+
+        $pager = \Config\Services::pager();
+        $data['pager'] = $pager->makeLinks($page, $perPage, $total);
+
+        echo view('lista_produccion_view', $data);
     }
-    function _cambia_color_lineas($estado)
+
+    function asignaEstado($estado)
     {
+        $estado_clase = "";
         $nombre_estado = "";
-        if ($estado == '0') {
-            $nombre_estado = "0. Pendiente de material";
+
+        switch ($estado) {
+            case '0':
+                $nombre_estado = "Pendiente de material";
+                $estado_clase = "estado0"; // Clase para el estado 1
+                break;
+            case '1':
+                $nombre_estado = "Falta material";
+                $estado_clase = "estado1"; // Clase para el estado 2
+                break;
+            case '2':
+                $nombre_estado = "Material recibido";
+                $estado_clase = "estado2"; // Clase para el estado 3
+                break;
+            case '3':
+                $nombre_estado = "En máquinas";
+                $estado_clase = "estado3"; // Clase para el estado 4
+                break;
+            case '4':
+                $nombre_estado = "Terminado";
+                $estado_clase = "estado4"; // Clase para el estado 5
+                break;
+            case '5':
+                $nombre_estado = "Entregado";
+                $estado_clase = "estado5"; // Clase para el estado 6
+                break;
+            case '6':
+                $nombre_estado = "Anulado";
+                $estado_clase = "estado6"; // Clase para el estado 7 (si lo necesitas)
+                break;
+            default:
+                $nombre_estado = "Desconocido";
+                $estado_clase = "estado-default"; // Clase por defecto
+                break;
         }
-        if ($estado == '1') {
-            $nombre_estado = "1. Falta material";
-        }
-        if ($estado == '2') {
-            $nombre_estado = "2. Material recibido";
-        }
-        if ($estado == '3') {
-            $nombre_estado = "3. En máquinas";
-        }
-        if ($estado == '4') {
-            $nombre_estado = "4. Terminado";
-        }
-        if ($estado == '5') {
-            $nombre_estado = "5. Entregado";
-        }
-        return "<div class='estado estado" . (($estado) ?: 'error') . "'>$nombre_estado</div>";
+
+        return ['nombre_estado' => $nombre_estado, 'estado_clase' => $estado_clase];
     }
+
 
     function nombre_cliente($id_pedido)
     {
-        $Pedidos_model = model('App\Models\Pedidos_model');
-        $pedido = $Pedidos_model->obtener_datos_pedido($id_pedido);
-        foreach ($pedido as $row) {
-            $cliente = $row->nombre_cliente;
-            return "<b><a href=" . base_url() . "Pedidos/edit/" . $id_pedido . " >" . $id_pedido . " - " . $cliente . "</a></b>";
+        $Pedidos_model = new Pedidos_model();
+        $pedido = $Pedidos_model->find($id_pedido);
+        if ($pedido) {
+            $cliente = $pedido->nombre_cliente;
+            return "<b><a href='" . base_url("Pedidos/edit/{$id_pedido}") . "'>{$id_pedido} - {$cliente}</a></b>";
         }
+        return "Desconocido";
     }
+
 
     public function actualiza_linea($id_lineapedido, $estado)
     {
-        $Lineaspedido_model = model('App\Models\Lineaspedido_model');
+        $data = usuario_sesion();
+        $db = db_connect($data['new_db']);
+        $Lineaspedido_model = new Lineaspedido_model($db);
         $Lineaspedido_model->actualiza_linea($id_lineapedido, $estado);
-
-        // Conectar a la base de datos
         $data = datos_user();
         $db = db_connect($data['new_db']);
 
-        // Eliminar todos los registros de la tabla procesos_pedidos con la misma id_linea_pedido
         $builder = $db->table('procesos_pedidos');
         $builder->where('id_linea_pedido', $id_lineapedido);
         $builder->delete();
 
-        // Obtener el id_pedido asociado a la línea de pedido
         $builder = $db->table('linea_pedidos');
         $builder->select('id_pedido');
         $builder->where('id_lineapedido', $id_lineapedido);
         $query = $builder->get();
         $id_pedido = $query->getRow()->id_pedido;
 
-        // Comprobar si todas las líneas de pedido asociadas al id_pedido están en estado 5
         $builder = $db->table('linea_pedidos');
         $builder->select('estado');
         $builder->where('id_pedido', $id_pedido);
@@ -157,8 +193,6 @@ class Lista_produccion extends BaseControllerGC
                 break;
             }
         }
-
-        // Si todas las líneas de pedido están en estado 5, actualizar el estado del pedido a 5
         if ($allInState5) {
             $builder = $db->table('pedidos');
             $builder->set('estado', 5);
@@ -166,11 +200,11 @@ class Lista_produccion extends BaseControllerGC
             $builder->update();
         }
 
-        // Redirigir a la URL de retorno si está definida
         if (isset($_GET['volver'])) {
             $volver = $_GET['volver'];
         }
         helper('url');
         return redirect()->to($volver);
     }
+
 }

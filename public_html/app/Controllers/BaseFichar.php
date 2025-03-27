@@ -7,7 +7,7 @@ class BaseFichar extends Controller
 {
     protected $db; // Para almacenar la conexión a la base de datos
 
-//  Esta función se llama automáticamente al crear una instancia de BaseFichar.
+    //  Esta función se llama automáticamente al crear una instancia de BaseFichar.
 // Establece la conexión a la base de datos y la asigna a $this->db.
     public function initController($request, $response, $logger)
     {
@@ -45,29 +45,29 @@ class BaseFichar extends Controller
         if ($dbConfigRow) {
             // Construir el array de configuración
             $new_db = [
-                'DSN'      => '',
-                'hostname' => 'localhost', 
+                'DSN' => '',
+                'hostname' => 'localhost',
                 'username' => $dbConfigRow['db_user'],
                 'password' => $dbConfigRow['db_password'],
                 'database' => $dbConfigRow['db_name'],
                 'DBDriver' => 'MySQLi',
                 'DBPrefix' => '',
                 'pConnect' => false,
-                'DBDebug'  => (ENVIRONMENT !== 'production'),
-                'cacheOn'  => false,
+                'DBDebug' => (ENVIRONMENT !== 'production'),
+                'cacheOn' => false,
                 'cacheDir' => '',
-                'charset'  => 'utf8',
+                'charset' => 'utf8',
                 'DBCollat' => 'utf8_general_ci',
-                'swapPre'  => '',
-                'encrypt'  => false,
+                'swapPre' => '',
+                'encrypt' => false,
                 'compress' => false,
                 'strictOn' => false,
                 'failover' => [],
-                'port'     => 3306,
+                'port' => 3306,
             ];
-           
+
             // Conectar a la base de datos del cliente
-            $db = Database::connect($new_db);
+            $db = \Config\Database::connect($new_db);
 
             // Iniciar el servicio de sesión
             $session = \Config\Services::session();

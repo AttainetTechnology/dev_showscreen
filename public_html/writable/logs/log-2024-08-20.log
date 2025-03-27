@@ -1,0 +1,1088 @@
+INFO - 2024-08-20 08:24:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:24:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:24:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:24:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:24:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:25:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:25:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:25:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:25:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:25:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-20 08:25:44 --> ErrorException: Undefined array key "nombre_usuario"
+[Method: GET, Route: Index]
+in APPPATH/Controllers/BaseController.php on line 57.
+ 1 APPPATH/Controllers/BaseController.php(57): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "nombre_usuario"', '/home/customer/www/dev.showscreen.app/public_html/app/Controllers/BaseController.php', 57)
+ 2 SYSTEMPATH/CodeIgniter.php(904): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 3 SYSTEMPATH/CodeIgniter.php(500): CodeIgniter\CodeIgniter->createController()
+ 4 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 08:26:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:26:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:26:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:26:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:26:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:26:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:28:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:28:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:28:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:28:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:28:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:29:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:29:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:29:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:29:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:29:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:29:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:29:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-20 08:29:51 --> ErrorException: Undefined array key "restriccion"
+[Method: GET, Route: procesos_pedidos/index]
+in APPPATH/Controllers/Procesos_pedidos.php on line 591.
+ 1 APPPATH/Controllers/Procesos_pedidos.php(591): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "restriccion"', '/home/customer/www/dev.showscreen.app/public_html/app/Controllers/Procesos_pedidos.php', 591)
+ 2 APPPATH/Controllers/Procesos_pedidos.php(29): App\Controllers\Procesos_pedidos->obtenerLineasPedidoConEstado2YCrearProcesos()
+ 3 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Procesos_pedidos->index()
+ 4 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Procesos_pedidos))
+ 5 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 08:30:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:30:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:30:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:30:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:32:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-20 08:32:35 --> ErrorException: Undefined array key "restriccion"
+[Method: GET, Route: procesos_pedidos/index]
+in APPPATH/Controllers/Procesos_pedidos.php on line 607.
+ 1 APPPATH/Controllers/Procesos_pedidos.php(607): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "restriccion"', '/home/customer/www/dev.showscreen.app/public_html/app/Controllers/Procesos_pedidos.php', 607)
+ 2 APPPATH/Controllers/Procesos_pedidos.php(29): App\Controllers\Procesos_pedidos->obtenerLineasPedidoConEstado2YCrearProcesos()
+ 3 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Procesos_pedidos->index()
+ 4 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Procesos_pedidos))
+ 5 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 08:33:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:33:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:33:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:33:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:33:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:33:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2024-08-20 08:33:43 --> [DEPRECATED] explode(): Passing null to parameter #2 ($string) of type string is deprecated in APPPATH/Views/edit_procesos.php on line 32.
+ 1 APPPATH/Views/edit_procesos.php(32): explode(',', null)
+ 2 SYSTEMPATH/View/View.php(234): include('/home/customer/www/dev.showscreen.app/public_html/app/Views/edit_procesos.php')
+ 3 SYSTEMPATH/View/View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1171): CodeIgniter\View\View->render('edit_procesos', [], true)
+ 5 APPPATH/Controllers/Procesos.php(79): view('edit_procesos', [...])
+ 6 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Procesos->restriccion('1')
+ 7 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Procesos))
+ 8 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 08:33:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2024-08-20 08:33:49 --> mysqli_sql_exception: Unknown column 'restriccion' in 'field list' in /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/MySQLi/Connection.php:312
+Stack trace:
+#0 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/MySQLi/Connection.php(312): mysqli->query('INSERT INTO `pr...', 0)
+#1 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pr...')
+#2 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pr...')
+#3 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pr...', Array, false)
+#4 /home/customer/www/dev.showscreen.app/public_html/app/Controllers/Procesos.php(119): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 /home/customer/www/dev.showscreen.app/public_html/app/Controllers/Procesos.php(90): App\Controllers\Procesos->updateOrderLogic(Object(CodeIgniter\Database\MySQLi\Connection), '16')
+#6 /home/customer/www/dev.showscreen.app/public_html/app/Controllers/Procesos.php(66): App\Controllers\Procesos->updateOrderAfterRestrictionChange('1', '2,6,12,13,14,17...')
+#7 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(933): App\Controllers\Procesos->restriccion('1')
+#8 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Procesos))
+#9 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Boot.php(325): CodeIgniter\CodeIgniter->run()
+#11 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 /home/customer/www/dev.showscreen.app/public_html/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2024-08-20 08:33:49 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'restriccion' in 'field list'
+[Method: POST, Route: procesos/restriccion/1]
+in SYSTEMPATH/Database/BaseConnection.php on line 688.
+ 1 SYSTEMPATH/Database/BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `procesos_productos` (`id_producto`, `id_proceso`, `orden`, `restriccion`) VALUES (:id_producto:, :id_proceso:, :orden:, :restriccion:)', [...], false)
+ 2 APPPATH/Controllers/Procesos.php(119): CodeIgniter\Database\BaseBuilder->insert([...])
+ 3 APPPATH/Controllers/Procesos.php(90): App\Controllers\Procesos->updateOrderLogic(Object(CodeIgniter\Database\MySQLi\Connection), '16')
+ 4 APPPATH/Controllers/Procesos.php(66): App\Controllers\Procesos->updateOrderAfterRestrictionChange('1', '2,6,12,13,14,17,18,19,21,22')
+ 5 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Procesos->restriccion('1')
+ 6 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Procesos))
+ 7 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 08:33:49 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'restriccion' in 'field list'
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 317.
+ 1 SYSTEMPATH/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `procesos_productos` (`id_producto`, `id_proceso`, `orden`, `restriccion`) VALUES (\'16\', \'1\', \'0\', \'\')')
+ 2 SYSTEMPATH/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `procesos_productos` (`id_producto`, `id_proceso`, `orden`, `restriccion`) VALUES (\'16\', \'1\', \'0\', \'\')')
+ 3 SYSTEMPATH/Database/BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `procesos_productos` (`id_producto`, `id_proceso`, `orden`, `restriccion`) VALUES (:id_producto:, :id_proceso:, :orden:, :restriccion:)', [...], false)
+ 4 APPPATH/Controllers/Procesos.php(119): CodeIgniter\Database\BaseBuilder->insert([...])
+ 5 APPPATH/Controllers/Procesos.php(90): App\Controllers\Procesos->updateOrderLogic(Object(CodeIgniter\Database\MySQLi\Connection), '16')
+ 6 APPPATH/Controllers/Procesos.php(66): App\Controllers\Procesos->updateOrderAfterRestrictionChange('1', '2,6,12,13,14,17,18,19,21,22')
+ 7 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Procesos->restriccion('1')
+ 8 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Procesos))
+ 9 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 08:33:49 --> [Caused by] mysqli_sql_exception: Unknown column 'restriccion' in 'field list'
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 312.
+ 1 SYSTEMPATH/Database/MySQLi/Connection.php(312): mysqli->query('INSERT INTO `procesos_productos` (`id_producto`, `id_proceso`, `orden`, `restriccion`) VALUES (\'16\', \'1\', \'0\', \'\')', 0)
+ 2 SYSTEMPATH/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `procesos_productos` (`id_producto`, `id_proceso`, `orden`, `restriccion`) VALUES (\'16\', \'1\', \'0\', \'\')')
+ 3 SYSTEMPATH/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `procesos_productos` (`id_producto`, `id_proceso`, `orden`, `restriccion`) VALUES (\'16\', \'1\', \'0\', \'\')')
+ 4 SYSTEMPATH/Database/BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `procesos_productos` (`id_producto`, `id_proceso`, `orden`, `restriccion`) VALUES (:id_producto:, :id_proceso:, :orden:, :restriccion:)', [...], false)
+ 5 APPPATH/Controllers/Procesos.php(119): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH/Controllers/Procesos.php(90): App\Controllers\Procesos->updateOrderLogic(Object(CodeIgniter\Database\MySQLi\Connection), '16')
+ 7 APPPATH/Controllers/Procesos.php(66): App\Controllers\Procesos->updateOrderAfterRestrictionChange('1', '2,6,12,13,14,17,18,19,21,22')
+ 8 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Procesos->restriccion('1')
+ 9 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Procesos))
+10 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 08:34:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:34:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:34:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:34:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:34:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:35:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 08:35:16 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"43075","nombreProceso":"200 CORTE DE TIRAS                                                                    \ud83d\udd12"}]}
+DEBUG - 2024-08-20 08:35:16 --> Procesando item: {"idLineaPedido":"43075","nombreProceso":"200 CORTE DE TIRAS"}
+INFO - 2024-08-20 08:55:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:55:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:55:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:55:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:55:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:55:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:55:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:55:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:56:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:56:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:57:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:58:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:58:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 08:59:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:00:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:00:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:00:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:00:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:01:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:01:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:02:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:02:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:02:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:03:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:03:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:03:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:03:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:03:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:04:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:04:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:04:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:05:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:06:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:06:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:06:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:07:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:07:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:15:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:15:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:15:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:15:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:16:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:16:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:16:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:16:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:38:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:40:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:43:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:44:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:44:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:45:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:46:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 09:47:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:20:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:20:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:24:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:24:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:24:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:24:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:25:12 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"DEBASTADO DE BASES                                                                    \ud83d\udd12"},{"idLineaPedido":"200","nombreProceso":"INGLETADO TIRA INFERIOR"},{"idLineaPedido":"199","nombreProceso":"99 LIMPIEZA Y ENCAJADO                                                                    \ud83d\udd12"}]}
+DEBUG - 2024-08-20 10:25:12 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"DEBASTADO DE BASES"}
+DEBUG - 2024-08-20 10:25:12 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"INGLETADO TIRA INFERIOR"}
+DEBUG - 2024-08-20 10:25:12 --> Actualizando estado del proceso: {"id_relacion":"633","id_proceso":"13","id_linea_pedido":"200","id_maquina":"1","estado":"3","orden":"3","restriccion":""}
+DEBUG - 2024-08-20 10:25:12 --> Procesando item: {"idLineaPedido":"199","nombreProceso":"99 LIMPIEZA Y ENCAJADO"}
+INFO - 2024-08-20 10:25:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:25:48 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"INGLETADO TIRA FRONTAL"}]}
+DEBUG - 2024-08-20 10:25:48 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"INGLETADO TIRA FRONTAL"}
+DEBUG - 2024-08-20 10:25:48 --> Actualizando estado del proceso: {"id_relacion":"628","id_proceso":"4","id_linea_pedido":"200","id_maquina":"1","estado":"3","orden":"1","restriccion":""}
+DEBUG - 2024-08-20 10:25:48 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:25:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:25:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:25:57 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"99 LIMPIEZA Y ENCAJADO                                                                    \ud83d\udd12"}]}
+DEBUG - 2024-08-20 10:25:57 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"99 LIMPIEZA Y ENCAJADO"}
+INFO - 2024-08-20 10:26:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:26:00 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"02 PEGADO TIRAS                                                                    \ud83d\udd12"}]}
+DEBUG - 2024-08-20 10:26:00 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"02 PEGADO TIRAS"}
+INFO - 2024-08-20 10:26:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:26:07 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"199","nombreProceso":"CORTE DE TIRAS"}]}
+DEBUG - 2024-08-20 10:26:07 --> Procesando item: {"idLineaPedido":"199","nombreProceso":"CORTE DE TIRAS"}
+DEBUG - 2024-08-20 10:26:07 --> Actualizando estado del proceso: {"id_relacion":"616","id_proceso":"1","id_linea_pedido":"199","id_maquina":"1","estado":"3","orden":"5","restriccion":""}
+DEBUG - 2024-08-20 10:26:07 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:26:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:26:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:26:10 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"02 PEGADO TIRAS                                                                    \ud83d\udd12"}]}
+DEBUG - 2024-08-20 10:26:10 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"02 PEGADO TIRAS"}
+INFO - 2024-08-20 10:26:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:26:17 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"CORTE DE TIRAS"}]}
+DEBUG - 2024-08-20 10:26:17 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"CORTE DE TIRAS"}
+DEBUG - 2024-08-20 10:26:17 --> Actualizando estado del proceso: {"id_relacion":"626","id_proceso":"1","id_linea_pedido":"200","id_maquina":"1","estado":"3","orden":"7","restriccion":""}
+DEBUG - 2024-08-20 10:26:17 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:26:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:26:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:26:24 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"02 PEGADO TIRAS                                                                    \ud83d\udd12"}]}
+DEBUG - 2024-08-20 10:26:24 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"02 PEGADO TIRAS"}
+INFO - 2024-08-20 10:26:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:26:29 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"DEBASTADO DE BASES                                                                    \ud83d\udd12"}]}
+DEBUG - 2024-08-20 10:26:29 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"DEBASTADO DE BASES"}
+INFO - 2024-08-20 10:26:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:26:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:26:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:26:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:26:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:26:44 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"PINTADO EN FR\u00cdO                                                                    \ud83d\udd12"}]}
+DEBUG - 2024-08-20 10:26:44 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"PINTADO EN FR\u00cdO"}
+INFO - 2024-08-20 10:26:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:26:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:26:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:27:09 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"RAYADO (SIST. ANTIDESLIZANTE)"}]}
+DEBUG - 2024-08-20 10:27:09 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"RAYADO SIST ANTIDESLIZANTE"}
+ERROR - 2024-08-20 10:27:09 --> Proceso no encontrado: RAYADO SIST ANTIDESLIZANTE
+DEBUG - 2024-08-20 10:27:09 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:27:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:27:15 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"RAYADO (SIST. ANTIDESLIZANTE)"}]}
+DEBUG - 2024-08-20 10:27:15 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"RAYADO SIST ANTIDESLIZANTE"}
+ERROR - 2024-08-20 10:27:15 --> Proceso no encontrado: RAYADO SIST ANTIDESLIZANTE
+DEBUG - 2024-08-20 10:27:15 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:27:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:27:17 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"RAYADO (SIST. ANTIDESLIZANTE)"}]}
+DEBUG - 2024-08-20 10:27:17 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"RAYADO SIST ANTIDESLIZANTE"}
+ERROR - 2024-08-20 10:27:17 --> Proceso no encontrado: RAYADO SIST ANTIDESLIZANTE
+DEBUG - 2024-08-20 10:27:17 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:27:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:27:36 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"INGLETADO DE BASES"},{"idLineaPedido":"200","nombreProceso":"RAYADO (SIST. ANTIDESLIZANTE)"},{"idLineaPedido":"197","nombreProceso":"ENCAJADO \/ ETIQUETADO \/ PALETIZADO"}]}
+DEBUG - 2024-08-20 10:27:36 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"INGLETADO DE BASES"}
+DEBUG - 2024-08-20 10:27:36 --> Actualizando estado del proceso: {"id_relacion":"629","id_proceso":"5","id_linea_pedido":"200","id_maquina":"1","estado":"3","orden":"6","restriccion":""}
+DEBUG - 2024-08-20 10:27:36 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"RAYADO SIST ANTIDESLIZANTE"}
+ERROR - 2024-08-20 10:27:36 --> Proceso no encontrado: RAYADO SIST ANTIDESLIZANTE
+DEBUG - 2024-08-20 10:27:36 --> Procesando item: {"idLineaPedido":"197","nombreProceso":"ENCAJADO \/ ETIQUETADO \/ PALETIZADO"}
+DEBUG - 2024-08-20 10:27:36 --> Actualizando estado del proceso: {"id_relacion":"608","id_proceso":"18","id_linea_pedido":"197","id_maquina":"4","estado":"3","orden":"1","restriccion":""}
+DEBUG - 2024-08-20 10:27:36 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:27:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:27:45 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"RAYADO (SIST. ANTIDESLIZANTE)"}]}
+DEBUG - 2024-08-20 10:27:45 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"RAYADO SIST ANTIDESLIZANTE"}
+ERROR - 2024-08-20 10:27:45 --> Proceso no encontrado: RAYADO SIST ANTIDESLIZANTE
+DEBUG - 2024-08-20 10:27:45 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:27:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2024-08-20 10:27:48 --> Datos recibidos en marcarTerminado: {"lineItems":[{"idLineaPedido":"200","nombreProceso":"RAYADO (SIST. ANTIDESLIZANTE)"}]}
+DEBUG - 2024-08-20 10:27:48 --> Procesando item: {"idLineaPedido":"200","nombreProceso":"RAYADO SIST ANTIDESLIZANTE"}
+ERROR - 2024-08-20 10:27:48 --> Proceso no encontrado: RAYADO SIST ANTIDESLIZANTE
+DEBUG - 2024-08-20 10:27:48 --> Finalización de marcarTerminado
+INFO - 2024-08-20 10:27:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:27:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:36:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:39:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:39:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:39:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:42:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:42:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:42:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:42:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:43:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:43:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:43:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:43:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:43:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:43:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:43:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:43:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:44:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:44:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:44:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:44:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:45:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:45:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:45:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:45:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:47:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:47:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:47:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:48:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:48:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:48:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:48:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:48:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:48:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:48:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:50:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:50:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:50:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:50:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:50:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:50:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:52:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:57:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:57:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 10:58:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:13:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:20:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:20:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:20:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:20:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:20:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:20:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:22:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:24:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:26:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:27:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:28:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:28:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:28:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:28:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:28:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:28:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:29:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:31:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:31:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:31:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:33:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:33:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:34:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:35:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:36:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:36:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:37:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:41:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:43:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:43:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:45:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:46:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:50:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2024-08-20 11:50:22 --> mysqli_sql_exception: Table 'dbkhynyv81gzoh.fichajes' doesn't exist in /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/MySQLi/Connection.php:312
+Stack trace:
+#0 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/MySQLi/Connection.php(312): mysqli->query('SELECT `fichaje...', 0)
+#1 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fichaje...')
+#2 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fichaje...')
+#3 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT `fichaje...', Array, false)
+#4 /home/customer/www/dev.showscreen.app/public_html/app/Models/Incidencias_model.php(46): CodeIgniter\Database\BaseBuilder->get()
+#5 /home/customer/www/dev.showscreen.app/public_html/app/Controllers/Index.php(33): App\Models\Incidencias_model->getIncidencias()
+#6 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(933): App\Controllers\Index->index()
+#7 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Index))
+#8 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Boot.php(325): CodeIgniter\CodeIgniter->run()
+#10 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 /home/customer/www/dev.showscreen.app/public_html/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2024-08-20 11:50:22 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'dbkhynyv81gzoh.fichajes' doesn't exist
+[Method: GET, Route: Index/]
+in SYSTEMPATH/Database/BaseConnection.php on line 688.
+ 1 SYSTEMPATH/Database/BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT `fichajes`.`id`, `fichajes`.`entrada`, `fichajes`.`incidencia`, `users`.`nombre_usuario`
+FROM `fichajes`
+INNER JOIN `users` ON `users`.`id` = `fichajes`.`id_usuario`
+WHERE `fichajes`.`incidencia` != :fichajes.incidencia:
+AND DATE(fichajes.entrada) >= :DATE(fichajes.entrada):
+AND DATE(fichajes.entrada) <= :DATE(fichajes.entrada).1:
+ORDER BY `fichajes`.`entrada` DESC', [...], false)
+ 2 APPPATH/Models/Incidencias_model.php(46): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH/Controllers/Index.php(33): App\Models\Incidencias_model->getIncidencias()
+ 4 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Index->index()
+ 5 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Index))
+ 6 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 11:50:22 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'dbkhynyv81gzoh.fichajes' doesn't exist
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 317.
+ 1 SYSTEMPATH/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fichajes`.`id`, `fichajes`.`entrada`, `fichajes`.`incidencia`, `users`.`nombre_usuario`
+FROM `fichajes`
+INNER JOIN `users` ON `users`.`id` = `fichajes`.`id_usuario`
+WHERE `fichajes`.`incidencia` != \'\'
+AND DATE(fichajes.entrada) >= \'2024-08-13\'
+AND DATE(fichajes.entrada) <= \'2024-08-20\'
+ORDER BY `fichajes`.`entrada` DESC')
+ 2 SYSTEMPATH/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fichajes`.`id`, `fichajes`.`entrada`, `fichajes`.`incidencia`, `users`.`nombre_usuario`
+FROM `fichajes`
+INNER JOIN `users` ON `users`.`id` = `fichajes`.`id_usuario`
+WHERE `fichajes`.`incidencia` != \'\'
+AND DATE(fichajes.entrada) >= \'2024-08-13\'
+AND DATE(fichajes.entrada) <= \'2024-08-20\'
+ORDER BY `fichajes`.`entrada` DESC')
+ 3 SYSTEMPATH/Database/BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT `fichajes`.`id`, `fichajes`.`entrada`, `fichajes`.`incidencia`, `users`.`nombre_usuario`
+FROM `fichajes`
+INNER JOIN `users` ON `users`.`id` = `fichajes`.`id_usuario`
+WHERE `fichajes`.`incidencia` != :fichajes.incidencia:
+AND DATE(fichajes.entrada) >= :DATE(fichajes.entrada):
+AND DATE(fichajes.entrada) <= :DATE(fichajes.entrada).1:
+ORDER BY `fichajes`.`entrada` DESC', [...], false)
+ 4 APPPATH/Models/Incidencias_model.php(46): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH/Controllers/Index.php(33): App\Models\Incidencias_model->getIncidencias()
+ 6 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Index->index()
+ 7 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Index))
+ 8 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 11:50:22 --> [Caused by] mysqli_sql_exception: Table 'dbkhynyv81gzoh.fichajes' doesn't exist
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 312.
+ 1 SYSTEMPATH/Database/MySQLi/Connection.php(312): mysqli->query('SELECT `fichajes`.`id`, `fichajes`.`entrada`, `fichajes`.`incidencia`, `users`.`nombre_usuario`
+FROM `fichajes`
+INNER JOIN `users` ON `users`.`id` = `fichajes`.`id_usuario`
+WHERE `fichajes`.`incidencia` != \'\'
+AND DATE(fichajes.entrada) >= \'2024-08-13\'
+AND DATE(fichajes.entrada) <= \'2024-08-20\'
+ORDER BY `fichajes`.`entrada` DESC', 0)
+ 2 SYSTEMPATH/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fichajes`.`id`, `fichajes`.`entrada`, `fichajes`.`incidencia`, `users`.`nombre_usuario`
+FROM `fichajes`
+INNER JOIN `users` ON `users`.`id` = `fichajes`.`id_usuario`
+WHERE `fichajes`.`incidencia` != \'\'
+AND DATE(fichajes.entrada) >= \'2024-08-13\'
+AND DATE(fichajes.entrada) <= \'2024-08-20\'
+ORDER BY `fichajes`.`entrada` DESC')
+ 3 SYSTEMPATH/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fichajes`.`id`, `fichajes`.`entrada`, `fichajes`.`incidencia`, `users`.`nombre_usuario`
+FROM `fichajes`
+INNER JOIN `users` ON `users`.`id` = `fichajes`.`id_usuario`
+WHERE `fichajes`.`incidencia` != \'\'
+AND DATE(fichajes.entrada) >= \'2024-08-13\'
+AND DATE(fichajes.entrada) <= \'2024-08-20\'
+ORDER BY `fichajes`.`entrada` DESC')
+ 4 SYSTEMPATH/Database/BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT `fichajes`.`id`, `fichajes`.`entrada`, `fichajes`.`incidencia`, `users`.`nombre_usuario`
+FROM `fichajes`
+INNER JOIN `users` ON `users`.`id` = `fichajes`.`id_usuario`
+WHERE `fichajes`.`incidencia` != :fichajes.incidencia:
+AND DATE(fichajes.entrada) >= :DATE(fichajes.entrada):
+AND DATE(fichajes.entrada) <= :DATE(fichajes.entrada).1:
+ORDER BY `fichajes`.`entrada` DESC', [...], false)
+ 5 APPPATH/Models/Incidencias_model.php(46): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH/Controllers/Index.php(33): App\Models\Incidencias_model->getIncidencias()
+ 7 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Index->index()
+ 8 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Index))
+ 9 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 11:52:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:52:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:52:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:52:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:52:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:54:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:55:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:56:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:57:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:57:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:57:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:57:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:57:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:57:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:57:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:58:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-20 11:59:21 --> Laminas\Db\Adapter\Exception\InvalidQueryException: Statement could not be executed (23000 - 1062 - Duplicate entry '11' for key 'users.PRIMARY')
+[Method: POST, Route: usuarios]
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 223.
+ 1 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 7 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 8 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+ 9 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+10 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 11:59:21 --> [Caused by] PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '11' for key 'users.PRIMARY'
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 212.
+ 1 FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php(212): PDOStatement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 7 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 8 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 9 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+10 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+11 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 11:59:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 11:59:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:00:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:00:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-20 12:00:05 --> Laminas\Db\Adapter\Exception\InvalidQueryException: Statement could not be executed (23000 - 1062 - Duplicate entry '11' for key 'users.PRIMARY')
+[Method: POST, Route: usuarios]
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 223.
+ 1 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 7 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 8 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+ 9 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+10 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 12:00:05 --> [Caused by] PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '11' for key 'users.PRIMARY'
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 212.
+ 1 FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php(212): PDOStatement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 7 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 8 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 9 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+10 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+11 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 12:00:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-20 12:00:48 --> Laminas\Db\Adapter\Exception\InvalidQueryException: Statement could not be executed (23000 - 1062 - Duplicate entry '11' for key 'users.PRIMARY')
+[Method: POST, Route: usuarios]
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 223.
+ 1 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 7 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 8 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+ 9 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+10 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 12:00:48 --> [Caused by] PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '11' for key 'users.PRIMARY'
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 212.
+ 1 FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php(212): PDOStatement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 7 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 8 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 9 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+10 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+11 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 12:00:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:00:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:00:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:00:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:00:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:00:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-20 12:01:23 --> Laminas\Db\Adapter\Exception\InvalidQueryException: Statement could not be executed (23000 - 1062 - Duplicate entry '11' for key 'users.PRIMARY')
+[Method: POST, Route: usuarios]
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 223.
+ 1 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 7 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 8 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+ 9 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+10 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 12:01:23 --> [Caused by] PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '11' for key 'users.PRIMARY'
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 212.
+ 1 FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php(212): PDOStatement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 7 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 8 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 9 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+10 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+11 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 12:01:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:01:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:02:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:02:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:05:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-08-20 12:05:49 --> Laminas\Db\Adapter\Exception\InvalidQueryException: Statement could not be executed (23000 - 1062 - Duplicate entry '11' for key 'users.PRIMARY')
+[Method: POST, Route: usuarios]
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 223.
+ 1 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 7 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 8 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+ 9 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+10 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 12:05:49 --> [Caused by] PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '11' for key 'users.PRIMARY'
+in FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php on line 212.
+ 1 FCPATH/vendor/laminas/laminas-db/src/Adapter/Driver/Pdo/Statement.php(212): PDOStatement->execute()
+ 2 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/Model.php(515): Laminas\Db\Adapter\Driver\Pdo\Statement->execute()
+ 3 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(94): GroceryCrud\Core\Model->insert([...])
+ 4 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(1159): GroceryCrud\Core\State\InsertState->GroceryCrud\Core\State\{closure}(Object(stdClass))
+ 5 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/StateAbstract.php(328): GroceryCrud\Core\State\StateAbstract->stateOperation(null, Object(stdClass), Object(Closure))
+ 6 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/State/InsertState.php(92): GroceryCrud\Core\State\StateAbstract->stateOperationWithCallbacks(Object(stdClass), 'Insert', Object(Closure))
+ 7 FCPATH/vendor/grocery-crud/enterprise/src/GroceryCrud/Core/GroceryCrud.php(2940): GroceryCrud\Core\State\InsertState->render()
+ 8 APPPATH/Controllers/Usuarios.php(198): GroceryCrud\Core\GroceryCrud->render()
+ 9 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Usuarios->index()
+10 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Usuarios))
+11 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 12:07:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:07:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:08:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:09:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:10:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:10:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:10:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:10:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:10:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:10:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2024-08-20 12:10:18 --> mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails in /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/MySQLi/Connection.php:312
+Stack trace:
+#0 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/MySQLi/Connection.php(312): mysqli->query('UPDATE `users` ...', 0)
+#1 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `users` ...')
+#2 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `users` ...')
+#3 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Database/BaseBuilder.php(2508): CodeIgniter\Database\BaseConnection->query('UPDATE `users` ...', Array, false)
+#4 /home/customer/www/dev.showscreen.app/public_html/app/Controllers/Password.php(72): CodeIgniter\Database\BaseBuilder->update(Array)
+#5 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(933): App\Controllers\Password->save('101')
+#6 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Password))
+#7 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Boot.php(325): CodeIgniter\CodeIgniter->run()
+#9 /home/customer/www/dev.showscreen.app/public_html/vendor/codeigniter4/codeigniter4/system/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 /home/customer/www/dev.showscreen.app/public_html/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 {main}
+CRITICAL - 2024-08-20 12:10:18 --> CodeIgniter\Database\Exceptions\DatabaseException: Cannot add or update a child row: a foreign key constraint fails
+[Method: POST, Route: password/save/101]
+in SYSTEMPATH/Database/BaseConnection.php on line 688.
+ 1 SYSTEMPATH/Database/BaseBuilder.php(2508): CodeIgniter\Database\BaseConnection->query('UPDATE `users` SET `email` = :email:, `id_acceso` = :id_acceso:
+WHERE `id` = :id:', [...], false)
+ 2 APPPATH/Controllers/Password.php(72): CodeIgniter\Database\BaseBuilder->update([...])
+ 3 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Password->save('101')
+ 4 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Password))
+ 5 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 12:10:18 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Cannot add or update a child row: a foreign key constraint fails
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 317.
+ 1 SYSTEMPATH/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `users` SET `email` = \'\', `id_acceso` = \'101\'
+WHERE `id` = \'101\'')
+ 2 SYSTEMPATH/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `users` SET `email` = \'\', `id_acceso` = \'101\'
+WHERE `id` = \'101\'')
+ 3 SYSTEMPATH/Database/BaseBuilder.php(2508): CodeIgniter\Database\BaseConnection->query('UPDATE `users` SET `email` = :email:, `id_acceso` = :id_acceso:
+WHERE `id` = :id:', [...], false)
+ 4 APPPATH/Controllers/Password.php(72): CodeIgniter\Database\BaseBuilder->update([...])
+ 5 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Password->save('101')
+ 6 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Password))
+ 7 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-20 12:10:18 --> [Caused by] mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 312.
+ 1 SYSTEMPATH/Database/MySQLi/Connection.php(312): mysqli->query('UPDATE `users` SET `email` = \'\', `id_acceso` = \'101\'
+WHERE `id` = \'101\'', 0)
+ 2 SYSTEMPATH/Database/BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `users` SET `email` = \'\', `id_acceso` = \'101\'
+WHERE `id` = \'101\'')
+ 3 SYSTEMPATH/Database/BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `users` SET `email` = \'\', `id_acceso` = \'101\'
+WHERE `id` = \'101\'')
+ 4 SYSTEMPATH/Database/BaseBuilder.php(2508): CodeIgniter\Database\BaseConnection->query('UPDATE `users` SET `email` = :email:, `id_acceso` = :id_acceso:
+WHERE `id` = :id:', [...], false)
+ 5 APPPATH/Controllers/Password.php(72): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\Password->save('101')
+ 7 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Password))
+ 8 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH/Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH/index.php(29): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-20 12:11:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:11:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:11:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:11:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:11:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:12:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:15:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:15:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:15:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:15:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:15:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:18:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:18:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:18:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:20:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:20:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:20:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:20:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:29:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:30:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:30:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:30:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:31:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:32:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:33:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:47:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 12:59:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:02:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:02:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:02:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:02:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:08:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:29:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 13:59:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:06:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:06:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:06:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:06:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:06:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:16:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:16:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:16:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:16:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:16:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:16:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-20 16:16:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

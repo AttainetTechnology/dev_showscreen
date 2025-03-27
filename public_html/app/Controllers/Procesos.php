@@ -5,17 +5,64 @@ namespace App\Controllers;
 use App\Models\Proceso;
 use CodeIgniter\Controller;
 
-class Procesos extends BaseControllerGC
+class Procesos extends BaseController
 {
     public function index()
     {
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Procesos');
+
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
         $procesos = $procesoModel->where('estado_proceso', 1)->orderBy('nombre_proceso', 'ASC')->findAll();
-        // Pasar estado_proceso a la vista para mostrar botón correcto
-        return view('procesos', ['procesos' => $procesos, 'estado_proceso' => 1]);
+
+        // Pasar las migas de pan a la vista
+        return view('procesos', [
+            'procesos' => $procesos,
+            'estado_proceso' => 1,
+            'amiga' => $this->getBreadcrumbs()
+        ]);
     }
+
+    public function getProcesos($estado = null)
+    {
+        $data = datos_user();
+        $db = db_connect($data['new_db']);
+        $procesoModel = new Proceso($db);
+
+        // Ordenar por estado primero (activos primero) y luego por nombre
+        if ($estado !== null) {
+            $procesos = $procesoModel
+                ->where('estado_proceso', $estado)
+                ->orderBy('nombre_proceso', 'ASC')
+                ->findAll();
+        } else {
+            $procesos = $procesoModel
+                ->orderBy('estado_proceso', 'DESC') // Activos (1) primero
+                ->orderBy('nombre_proceso', 'ASC') // Orden alfabético dentro de cada grupo
+                ->findAll();
+        }
+
+        // Añadir acciones para cada proceso
+        foreach ($procesos as &$proceso) {
+            $proceso['acciones'] = [
+                'editar' => base_url('procesos/restriccion/' . $proceso['id_proceso']),
+                'cambiar_estado' => base_url('procesos/cambiaEstado/' . $proceso['id_proceso'] . '/' . $proceso['estado_proceso']),
+            ];
+        }
+
+        return $this->response->setJSON($procesos);
+    }
+
+
+
     public function add()
     {
         return view('add_procesos');
@@ -42,6 +89,9 @@ class Procesos extends BaseControllerGC
     }
     public function restriccion($primaryKey)
     {
+        $this->addBreadcrumb('Inicio', base_url('/'));
+        $this->addBreadcrumb('Procesos', base_url('procesos'));
+        $this->addBreadcrumb('Editar Proceso');
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
@@ -81,7 +131,8 @@ class Procesos extends BaseControllerGC
             'procesos' => $procesos,
             'primaryKey' => $primaryKey,
             'previous_proceso_id' => $previous_proceso_id,
-            'next_proceso_id' => $next_proceso_id
+            'next_proceso_id' => $next_proceso_id,
+            'amiga' => $this->getBreadcrumbs()
         ];
         return view('edit_procesos', $data);
     }
@@ -131,27 +182,23 @@ class Procesos extends BaseControllerGC
         $data = datos_user();
         $db = db_connect($data['new_db']);
         $procesoModel = new Proceso($db);
-        // Obtener el proceso actual
-        $proceso = $procesoModel->find($id);
-        // Alternar el estado del proceso
-        $nuevo_estado = ($proceso['estado_proceso'] == 1) ? 0 : 1;
-        // Actualizar el estado del proceso
-        $procesoModel->update($id, ['estado_proceso' => $nuevo_estado]);
-        // Si el proceso pasa a inactivo, realizar la eliminación en la tabla procesos_productos
-        if ($nuevo_estado == 0) {
-            $this->removeProcesoFromProductos($db, $id);
-        }
-        // Registrar la acción en el log
-        $accion = $nuevo_estado == 1 ? 'activado' : 'desactivado';
-        $log = "Proceso ID: {$id} ha sido {$accion}";
-        $this->logAction('Procesos', $log, $data);
-        // Redirigir de vuelta a la vista que estaba antes del cambio
-        if ($estado_actual == 1) {
-            return redirect()->to(base_url('procesos'));
-        } else {
-            return redirect()->to(base_url('procesos/inactivos'));
+
+        try {
+            $proceso = $procesoModel->find($id);
+            $nuevo_estado = ($proceso['estado_proceso'] == 1) ? 0 : 1;
+            $procesoModel->update($id, ['estado_proceso' => $nuevo_estado]);
+            if ($nuevo_estado == 0) {
+                $this->removeProcesoFromProductos($db, $id);
+            }
+            $accion = $nuevo_estado == 1 ? 'activado' : 'desactivado';
+
+            return $this->response->setJSON(['success' => true, 'message' => "Proceso {$accion} correctamente."]);
+        } catch (\Exception $e) {
+            // Manejar errores y devolver un JSON
+            return $this->response->setJSON(['success' => false, 'message' => 'Error al cambiar el estado del proceso.', 'error' => $e->getMessage()]);
         }
     }
+
     //Controla la desactivacion de procesos asociados a productos
     private function removeProcesoFromProductos($db, $id_proceso)
     {

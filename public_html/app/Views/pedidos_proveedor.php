@@ -68,7 +68,7 @@ foreach ($pedido as $ped) { ?>
                             <?php foreach ($lineas as $l) { ?>
                                 <tr>
                                     <td><b><?php echo $l->n_piezas; ?></b></td>
-                                    <td><b><?php echo $l->nombre_producto; ?></b></td>
+                                    <td><?php echo $l->ref_producto; ?></td>
                                     <td><b><?php echo $l->precio_compra; ?></b> &euro;</td>
                                     <td><?php echo $l->observaciones; ?></td>
                                     <td><b><?php echo $l->total_linea; ?></b> &euro;</td>
@@ -83,8 +83,6 @@ foreach ($pedido as $ped) { ?>
                         </tbody>
                     </table>
                 </div>
-
-
                 <!-- /.col -->
             </div>
             <div class="row">

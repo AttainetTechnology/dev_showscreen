@@ -15,5 +15,6 @@ class ProductosNecesidadModel extends Model
         'unidad', 
         'estado_producto',
         'id_producto_venta',
+        'mejor'
     ];
 }

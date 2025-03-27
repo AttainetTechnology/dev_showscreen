@@ -22,8 +22,9 @@ div#fondo_rutas {
     display: block !Important;
     page-break-before: always;
     position: relative;
-    padding-top: 70px;
+    padding-top: 40px;
 }
+
 @media print {
 
     body {
@@ -73,25 +74,27 @@ div#fondo_rutas {
     }
 
     #printableArea {
-        padding-left: 15mm; 
+        padding-left: 15mm;
         padding-right: 15mm;
         overflow: hidden;
     }
 
     .row {
         display: flex;
-        justify-content: space-between; 
-        align-items: flex-start; 
+        justify-content: space-between;
+        align-items: flex-start;
         margin: 5px !important;
     }
+
     #parte_fila_left {
         flex: 0 1 48%;
         margin-right: 2%;
         box-sizing: border-box;
         margin-left: 15px !important;
     }
+
     #parte_fila_left img {
-        max-width: 100%; 
+        max-width: 100%;
         height: auto;
         display: block;
     }
@@ -104,7 +107,7 @@ div#fondo_rutas {
     }
 
     #parte_fila_right {
-        flex: 0 1 48%; 
+        flex: 0 1 48%;
         text-align: right;
         padding-right: 15px !important;
     }
@@ -114,6 +117,7 @@ div#fondo_rutas {
     #parte_fila_right .parte-fechas {
         text-align: right !important;
     }
+
     #parte_fila_right img {
         max-width: 80%;
         height: auto;
@@ -143,10 +147,10 @@ div#fondo {
 #observaciones {
     padding: 0px;
     width: 100%;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     clear: both;
-    padding: 20px;
+    padding: 10px;
     background-color: #eee;
 }
 
@@ -350,10 +354,10 @@ img.imagen_parte {
 
 #parte_fila_left {
     width: 56%;
-    margin:-5px;
+    margin: -5px;
 }
 
-.table-responsive{
+.table-responsive {
     padding-left: 18px !important;
 }
 
@@ -443,7 +447,7 @@ img.imagen_parte {
 }
 
 .modal-body {
-    margin: 30px;
+    margin: 10px !important;
 }
 
 .modal-dialog {
@@ -455,27 +459,6 @@ img.imagen_parte {
     height: 80vh;
     width: 60vw;
     margin-left: -179px;
-}
-
-#DatosAcceso {
-    font-size: 18px;
-    padding: 10px 20px;
-
-}
-
-/* Botones */
-#BotonSalir {
-    color: #fffcfc !important;
-    background-color: rgb(235, 118, 118);
-    border-color: #d9edf7;
-    font-size: 18px;
-    padding: 10px 20px;
-}
-
-#BotonSalir:hover {
-    background-color: rgb(238, 74, 74);
-    border-color: #d9edf7;
-
 }
 
 
@@ -522,10 +505,12 @@ img.imagen_parte {
     color: #ff0000;
     /* Cambia el color al pasar el cursor */
 }
-.pedido-completo-pie{
+
+.pedido-completo-pie {
     margin-left: 15px;
 }
-.imgParte2hoja{
+
+.imgParte2hoja {
     margin-right: -25px !important;
 
 }

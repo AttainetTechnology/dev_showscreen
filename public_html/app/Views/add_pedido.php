@@ -88,6 +88,4 @@
     });
 </script>
 
-</script>
-
 <?= $this->endSection() ?>

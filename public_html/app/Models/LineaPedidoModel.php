@@ -10,9 +10,9 @@ class LineaPedidoModel extends Model
     protected $primaryKey = 'id_lineapedido';
     protected $allowedFields = [
         'id_pedido',
+        'ref_producto',
         'fecha_salida',
         'fecha_entrega',
-        'id_producto',
         'n_piezas',
         'observaciones',
         'id_usuario',
@@ -31,7 +31,7 @@ class LineaPedidoModel extends Model
 
         $builder = $db->table('linea_pedido_proveedor');
         $builder->select('*');
-        $builder->join('productos_necesidad', 'productos_necesidad.id_producto = linea_pedido_proveedor.id_producto', 'left');
+        $builder->join('productos_proveedor', 'productos_proveedor.ref_producto = linea_pedido_proveedor.ref_producto', 'left');
         $builder->where('id_pedido', $id_pedido);
         $query = $builder->get();
 

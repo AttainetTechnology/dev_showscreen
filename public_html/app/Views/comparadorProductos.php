@@ -65,7 +65,7 @@
                                                 <button class="btn botonTabla btnAddtabla btn-nuevo-pedido"
                                                     data-id-proveedor="<?= $oferta['id_proveedor'] ?>"
                                                     data-id-producto="<?= $item['producto']['id_producto'] ?>"
-                                                    data-id-registro="<?= $oferta['id'] ?>"> <!-- Añadir el data-id-registro aquí -->
+                                                    data-id-registro="<?= $oferta['id'] ?>">
                                                     Nuevo pedido
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="31" height="32" viewBox="0 0 26 27" fill="none">
                                                         <path d="M13 7C13.2155 7 13.4222 7.0856 13.5745 7.23798C13.7269 7.39035 13.8125 7.59701 13.8125 7.8125V12.6875H18.6875C18.903 12.6875 19.1097 12.7731 19.262 12.9255C19.4144 13.0778 19.5 13.2845 19.5 13.5C19.5 13.7155 19.4144 13.9222 19.262 14.0745C19.1097 14.2269 18.903 14.3125 18.6875 14.3125H13.8125V19.1875C13.8125 19.403 13.7269 19.6097 13.5745 19.762C13.4222 19.9144 13.2155 20 13 20C12.7845 20 12.5778 19.9144 12.4255 19.762C12.2731 19.6097 12.1875 19.403 12.1875 19.1875V14.3125H7.3125C7.09701 14.3125 6.89035 14.2269 6.73798 14.0745C6.5856 13.9222 6.5 13.7155 6.5 13.5C6.5 13.2845 6.5856 13.0778 6.73798 12.9255C6.89035 12.7731 7.09701 12.6875 7.3125 12.6875H12.1875V7.8125C12.1875 7.59701 12.2731 7.39035 12.4255 7.23798C12.5778 7.0856 12.7845 7 13 7Z" fill="white" />
@@ -84,10 +84,11 @@
                                         <td><?= esc($oferta['ref_producto']) ?></td>
                                         <td><?= esc($oferta['precio']) ?></td>
                                         <td class="star-column text-center" style="border-top: none; border-bottom: none; border-left: none;">
-                                            <svg class="star-icon <?= $oferta['seleccion_mejor'] == 1 ? 'selected' : '' ?>" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <svg class="star-icon <?= $oferta['es_mejor'] ? 'selected' : '' ?>" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                                 <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z" />
                                             </svg>
                                         </td>
+
 
                                     </tr>
                                 <?php endforeach; ?>
@@ -186,10 +187,18 @@
                 }
             });
         });
-
+        $('#precio').on('input', function() {
+            var value = $(this).val();
+            $(this).val(value.replace(',', '.'));
+        });
         // Enviar el formulario para actualizar la oferta
         $(document).on('submit', '#formEditarOferta', function(event) {
             event.preventDefault(); // Prevenir el envío normal del formulario
+            // Asegurar que cualquier coma en el campo de precio se convierta en un punto antes de enviar
+            var precioField = $('#precio');
+            var value = precioField.val();
+            precioField.val(value.replace(',', '.'));
+
             var formData = $(this).serialize();
 
             // Enviar solicitud POST al controlador
@@ -205,7 +214,6 @@
                 alert("Error al actualizar la oferta. Inténtalo más tarde.");
             });
         });
-
         $('.btn-eliminar').on('click', function() {
             var idOferta = $(this).data('id');
             var idProducto = $(this).data('id-producto');
@@ -232,9 +240,7 @@
             var idProveedor = $(this).data('id-proveedor');
             var idProducto = $(this).data('id-producto');
             var idRegistro = $(this).data('id-registro');
-
             var url = `<?= base_url("Pedidos_proveedor/add") ?>?id_proveedor=${idProveedor}&id_producto=${idProducto}&id_registro=${idRegistro}`;
-
             $('#pedidoModalContent').load(url, function(response, status, xhr) {
                 if (status === "error") {
                     console.error("Error al cargar el contenido: " + xhr.status + " " + xhr.statusText);
@@ -246,7 +252,6 @@
                 }
             });
         });
-
         $('.btn-elegir-proveedor').on('click', function() {
             var idProducto = $(this).data('id-producto');
             $('#modalContent').load('<?= base_url("elegirProveedor") ?>/' + idProducto, function() {
@@ -291,6 +296,7 @@
                 });
             }
         });
+
     });
 
     document.getElementById('volverButton').addEventListener('click', function() {

@@ -7,6 +7,7 @@ use App\Models\Contador_model;
 use App\Models\Lineapedidosnew_model;
 use App\Models\Rutas_model;
 use App\Models\Incidencias_model;
+use App\Models\RelacionProcesoUsuario_model;
 
 class Index extends BaseController
 {
@@ -26,16 +27,20 @@ class Index extends BaseController
     {
         $this->index('4');
     }
-
     public function index($estado = 2)
     {
-        /** APARTADO STANDARD PARA TODOS LOS CONTROLADORES **/
-        // Control de login    
+        // Control de login
         helper('controlacceso');
         control_login();
 
         // Saco los datos del usuario
         $data = datos_user();
+
+        // Verificar si el nivel del usuario es 1
+        if (isset($data['nivel']) && $data['nivel'] == 1) {
+            // Redirigir a la página deseada si el nivel es 1
+            return redirect()->to('/rutas_transporte/rutas'); // Cambia "/pagina-deseada" por la URL o ruta correcta
+        }
 
         // Conecto la BDD
         $db = db_connect($data['new_db']);
@@ -45,12 +50,14 @@ class Index extends BaseController
         $incidenciasModel = new Incidencias_model();
         $data['incidencias'] = $incidenciasModel->getIncidencias();
         $data['pendientes'] = $this->cuenta('0', $db);
-        $data['en_cola']    = $this->cuenta('2', $db);
+        $data['en_cola'] = $this->cuenta('2', $db);
         $data['en_maquina'] = $this->cuenta('3', $db);
         $data['terminados'] = $this->cuenta('4', $db);
 
         $data['piezasfamilia'] = $this->pedidos_tabla($estado, $db);
         $data['rutas'] = $this->rutas_home($db);
+        $data['faltaMaterial'] = $this->obtenerFaltaMaterial($db);
+
 
         if ($estado == 0) {
             $data['titulo'] = "Piezas en espera de material";
@@ -66,11 +73,61 @@ class Index extends BaseController
             $data['clase'] = "panel-success";
         }
 
-        // Cargamos las vistas
         echo view('estadisticas', $data);
     }
+    public function obtenerFaltaMaterial($db)
+    {
+        $query = $db->table('relacion_proceso_usuario')
+            ->select('relacion_proceso_usuario.*, procesos.nombre_proceso, users.nombre_usuario, users.apellidos_usuario, 
+                 maquinas.nombre, linea_pedidos.n_piezas')
+            ->join('procesos_pedidos', 'procesos_pedidos.id_relacion = relacion_proceso_usuario.id_proceso_pedido')
+            ->join('procesos', 'procesos.id_proceso = procesos_pedidos.id_proceso')
+            ->join('users', 'users.id = relacion_proceso_usuario.id_usuario')
+            ->join('maquinas', 'maquinas.id_maquina = relacion_proceso_usuario.id_maquina')
+            ->join('linea_pedidos', 'linea_pedidos.id_lineapedido = relacion_proceso_usuario.id_linea_pedido')
+            ->where('relacion_proceso_usuario.estado', 4)
+            ->get();
 
-    // Esta función cuenta las líneas de una tabla
+        $resultados = $query->getResultArray();
+
+        foreach ($resultados as &$registro) {
+            $sumaBuenas = $this->obtenerSumaBuenas($db, $registro['id_proceso_pedido']);
+            $registro['total_buenas'] = $sumaBuenas;
+        }
+
+        return $resultados;
+    }
+
+
+    public function obtenerSumaBuenas($db, $idProcesoPedido)
+    {
+        $query = $db->table('relacion_proceso_usuario')
+            ->selectSum('buenas') 
+            ->where('id_proceso_pedido', $idProcesoPedido)
+            ->get();
+
+        $resultado = $query->getRowArray();
+        return $resultado['buenas'] ?? 0;
+    }
+
+    public function resetMaterial()
+    {
+        $id = $this->request->getPost('id');
+
+        if ($id) {
+            $data = datos_user();
+            $db = db_connect($data['new_db']);
+
+            $db->table('relacion_proceso_usuario')
+                ->where('id', $id)
+                ->update(['estado' => 2]);
+
+            return redirect()->to('/index')->with('message', 'Material reseteado exitosamente.');
+        } else {
+            return redirect()->to('/index')->with('message', 'ID no válido.');
+        }
+    }
+
     function cuenta($estado, $db)
     {
         $contador = new Contador_model($db);
@@ -78,7 +135,6 @@ class Index extends BaseController
             $query = $contador->where('estado', $estado)->countAllResults();
             return $query ?: "0";
         } catch (\Exception $e) {
-            // Log the error or handle it appropriately
             log_message('error', $e->getMessage());
             return "0";
         }
