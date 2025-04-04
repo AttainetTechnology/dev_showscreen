@@ -50,22 +50,13 @@
                                 required>
                         </div>
                         <div class="form-group">
-                            <label for="dni">DNI</label>
-                            <input type="text" class="form-control" id="dni" name="dni" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="seguridad_social">Nº Seguridad Social</label>
-                            <input type="text" class="form-control" id="seguridad_social" name="seguridad_social"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
                             <label for="telefono">Teléfono:</label>
                             <input type="text" class="form-control" id="telefono" name="telefono">
                         </div>
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>   
                     </form>
                 </div>
                 <div class="modal-footer buttonsEditProductProveedAbajo">
@@ -93,6 +84,13 @@
         document.addEventListener('DOMContentLoaded', function () {
             let gridApi; // Guardar la referencia de la API de ag-Grid
 
+            // Renderer personalizado para columna "Activo"
+            const activoRenderer = (params) => {
+             return params.value === "1" || params.value === 1
+            ? '<span style="color: green; font-size:18px;">&#10004;</span>'
+            : '<span style="color: red; font-size:18px;">&#10008;</span>';
+            };
+
             const columnDefs = [
                 {
                     headerName: "Acciones",
@@ -106,13 +104,10 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
                     <path d="M7.66753 6.776C7.41733 6.776 7.17737 6.87593 7.00045 7.05379C6.82353 7.23166 6.72414 7.47289 6.72414 7.72443V8.67286C6.72414 8.9244 6.82353 9.16563 7.00045 9.3435C7.17737 9.52136 7.41733 9.62129 7.66753 9.62129H8.13923V18.1571C8.13923 18.6602 8.33802 19.1427 8.69186 19.4984C9.0457 19.8541 9.52561 20.054 10.026 20.054H15.6864C16.1868 20.054 16.6667 19.8541 17.0206 19.4984C17.3744 19.1427 17.5732 18.6602 17.5732 18.1571V9.62129H18.0449C18.2951 9.62129 18.5351 9.52136 18.712 9.3435C18.8889 9.16563 18.9883 8.9244 18.9883 8.67286V7.72443C18.9883 7.47289 18.8889 7.23166 18.712 7.05379C18.5351 6.87593 18.2951 6.776 18.0449 6.776H14.743C14.743 6.52446 14.6436 6.28323 14.4667 6.10536C14.2898 5.9275 14.0498 5.82758 13.7996 5.82758H11.9128C11.6626 5.82758 11.4227 5.9275 11.2457 6.10536C11.0688 6.28323 10.9694 6.52446 10.9694 6.776H7.66753ZM10.4977 10.5697C10.6228 10.5697 10.7428 10.6197 10.8313 10.7086C10.9197 10.7975 10.9694 10.9182 10.9694 11.0439V17.6829C10.9694 17.8087 10.9197 17.9293 10.8313 18.0182C10.7428 18.1072 10.6228 18.1571 10.4977 18.1571C10.3726 18.1571 10.2526 18.1072 10.1642 18.0182C10.0757 17.9293 10.026 17.8087 10.026 17.6829V11.0439C10.026 10.9182 10.0757 10.7975 10.1642 10.7086C10.2526 10.6197 10.3726 10.5697 10.4977 10.5697ZM12.8562 10.5697C12.9813 10.5697 13.1013 10.6197 13.1898 10.7086C13.2782 10.7975 13.3279 10.9182 13.3279 11.0439V17.6829C13.3279 17.8087 13.2782 17.9293 13.1898 18.0182C13.1013 18.1072 12.9813 18.1571 12.8562 18.1571C12.7311 18.1571 12.6111 18.1072 12.5227 18.0182C12.4342 17.9293 12.3845 17.8087 12.3845 17.6829V11.0439C12.3845 10.9182 12.4342 10.7975 12.5227 10.7086C12.6111 10.6197 12.7311 10.5697 12.8562 10.5697ZM15.6864 11.0439V17.6829C15.6864 17.8087 15.6367 17.9293 15.5482 18.0182C15.4598 18.1072 15.3398 18.1571 15.2147 18.1571C15.0896 18.1571 14.9696 18.1072 14.8812 18.0182C14.7927 17.9293 14.743 17.8087 14.743 17.6829V11.0439C14.743 10.9182 14.7927 10.7975 14.8812 10.7086C14.9696 10.6197 15.0896 10.5697 15.2147 10.5697C15.3398 10.5697 15.4598 10.6197 15.5482 10.7086C15.6367 10.7975 15.6864 10.9182 15.6864 11.0439Z" fill="white"/>
                     </svg></button>
-            `
+                `
                 },
                 { headerName: "Nombre", field: "nombre_usuario", sortable: true, filter: true },
                 { headerName: "Apellidos", field: "apellidos_usuario", sortable: true, filter: true },
-                { headerName: "DNI", field: "dni", sortable: true, filter: true },
-                { headerName: "Seguridad Social", field: "seguridad_social", sortable: true, filter: true },
-                { headerName: "Email", field: "email", sortable: true, filter: true },
                 { headerName: "Teléfono", field: "telefono", sortable: true, filter: true },
                 {
                     headerName: "Foto",
@@ -125,9 +120,36 @@
                         }
                         return " ";
                     },
+                    cellStyle: { textAlign: 'center' },
                     sortable: true,
-                    filter: true
+                    filter: false
                 },
+                {
+                    headerName: "Activo (1-0)",
+                    field: "user_activo",
+                    sortable: true,
+                    filter: true,
+                    cellRenderer: activoRenderer,
+                    cellStyle: { textAlign: 'center' },
+                    valueFormatter: params => params.value == 1 ? 'Activo' : 'Inactivo',
+                    filterParams: {
+                        buttons: ['reset', 'apply'],
+                        debounceMs: 200,
+                    }
+                },
+                {
+                headerName: "Ficha",
+                field: "user_ficha",
+                sortable: true,
+                filter: true,
+                cellRenderer: params => params.value == 1 
+                    ? '<span style="color: green; font-size:18px;">&#10004;</span>' 
+                    : '<span style="color: red; font-size:18px;">&#10008;</span>',
+                cellStyle: { textAlign: 'center' },
+                valueFormatter: params => params.value == 1 ? 'Sí' : 'No',
+                filterParams: { buttons: ['reset', 'apply'], debounceMs: 200 }
+                }
+
             ];
             const gridOptions = {
                 columnDefs: columnDefs,
@@ -140,11 +162,19 @@
                 },
                 rowData: [],
                 pagination: true,
-                paginationPageSize: 10,
+                paginationPageSize: 20,
                 domLayout: 'autoHeight',
                 rowHeight: 60,
                 onGridReady: params => {
                     gridApi = params.api;
+
+                // Filtro inicial: usuarios activos
+                gridApi.setFilterModel({
+                    user_activo: {
+                        type: 'equals',
+                        filter: '1'
+                    }
+                });
                     fetchUsuarios(params.api);
                 }
             };

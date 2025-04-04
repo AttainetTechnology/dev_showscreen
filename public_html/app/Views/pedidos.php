@@ -130,8 +130,7 @@ foreach ($pedido as $ped) { ?>
 
             <!-- Pie de página -->
             <div class="detalles-pie">
-                <small>User: <strong><?php echo $user_ped; ?> </strong> | Impresión:
-                    <?php echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
+                <small>Imprime: <strong><?php echo $user_ped; ?> </strong> (<?php echo ' ' . date('d-m-Y') . "\n"; ?>)</small><br>
             </div>
         </div>
     </div>
