@@ -130,8 +130,7 @@
                             terminar
                             pedido</button>
                         <button type="submit" class="btn btnApuntarGenerico btnSalir" name="action"
-                            value="apuntar_continuar">Apuntar y
-                            terminar jornada</button>
+                            value="apuntar_continuar">salir sin terminar</button>
                         <button type="submit" class="btn btnApuntarGenerico btnFaltaMaterial" name="action"
                             value="falta_material">FALTA DE
                             MATERIAL</button>

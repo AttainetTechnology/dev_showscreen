@@ -54,8 +54,8 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="user_ficha">Activo:</label>
-            <select class="form-control" id="user_activo" name="user_ficha">
+            <label for="user_ficha">Fichaje:</label>
+            <select class="form-control" id="user_ficha" name="user_ficha">
                 <option value="1" <?= $usuario['user_ficha'] == 1 ? 'selected' : '' ?>>Sí</option>
                 <option value="0" <?= $usuario['user_ficha'] == 0 ? 'selected' : '' ?>>No</option>
             </select>

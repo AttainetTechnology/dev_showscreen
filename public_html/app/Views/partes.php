@@ -87,10 +87,10 @@
                         </div>
                         <div id="parte_fila_right" class="imagenparte">
                             <div class="capa-numero-parte">
-                                <div class="numero_parte">Id: <strong><?php echo $p->id_pedido; ?></strong></div>
+                                <div class="numero_parte">Pedido: <strong><?php echo $p->id_pedido; ?></strong></div>
                             </div>
                             <h3><b><?php echo $prod->nombre_producto; ?></b> </h3>
-                            <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong></small><br>
+                            <small>Parte nº: <strong><?php echo $l->id_lineapedido; ?></strong></small><br>
 
                             <!-- Aquí modificamos la ruta de la imagen para que incluya el id_empresa -->
                             <img src="<?php echo base_url("public/assets/uploads/files/" . $this->data['id_empresa'] . "/productos/" . $prod->imagen); ?>"
