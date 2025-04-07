@@ -92,7 +92,8 @@ class Procesos_pedidos extends BaseControllerGC
                 'orden' => $lineaEstado3['orden'],
                 'base' => $lineaPedido['nom_base'],
                 'guardado' => $lineaEstado3['guardado'] ?? 'nuevo',
-                'restriccion' => $lineaEstado3['restriccion'] ?? null
+                'restriccion' => $lineaEstado3['restriccion'] ?? null,
+                'id_relacion' => $lineaEstado3['id_relacion']
             ];
         }
 
@@ -111,6 +112,27 @@ class Procesos_pedidos extends BaseControllerGC
             'clientes' => $clientes,
             'productos' => $productos,
         ]);
+    }
+
+    public function eliminarRestriccion()
+    {
+        $id_relacion = $this->request->getPost('id_relacion'); 
+
+        if ($id_relacion) {
+            $data = usuario_sesion();
+            $db = db_connect($data['new_db']);
+            $builder = $db->table('procesos_pedidos');
+
+            $builder->where('id_relacion', $id_relacion); 
+            $builder->update(['restriccion' => NULL]);
+            if ($db->affectedRows() > 0) {
+                return redirect()->to('/procesos_pedidos/index')->with('success', 'Restricción eliminada correctamente');
+            } else {
+                return redirect()->to('/procesos_pedidos/index')->with('error', 'No se pudo eliminar la restricción');
+            }
+        }
+
+        return redirect()->to('/procesos_pedidos/index')->with('error', 'ID de relación no proporcionado');
     }
 
     public function actualizarEstadoProcesos()
@@ -734,5 +756,4 @@ class Procesos_pedidos extends BaseControllerGC
             }
         }
     }
-
 }
