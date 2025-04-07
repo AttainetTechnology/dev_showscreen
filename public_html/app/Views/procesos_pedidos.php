@@ -972,27 +972,22 @@
     }
 
     function seleccionarMaquinaGuardada() {
-        // Revisar si hay un ID de máquina guardado
         const savedMachineId = localStorage.getItem('selectedMachineId');
         if (savedMachineId) {
             const maquina = document.querySelector(`#maquinaFilterCol4 option[value="${savedMachineId}"]`);
             if (maquina) {
-                // Selecciona la opción en el select y simula un cambio para aplicar el filtro
                 maquina.selected = true;
                 filtrarProcesosPorMaquina(savedMachineId);
             }
-            localStorage.removeItem('selectedMachineId'); // Elimina la máquina guardada del almacenamiento local
+            localStorage.removeItem('selectedMachineId');
         }
     }
 
-    // Inicialización y eventos
     document.addEventListener('DOMContentLoaded', function() {
-        // Inicializar Select2
         ['#searchInput', '#clienteFilter', '#medidasFilter', '#productoFilterCol2', '#productoFilterCol4', '#clienteFilterCol4', '#searchInputCol4'].forEach(selector => {
             $(selector).select2();
         });
 
-        // Seleccionar la máquina guardada (si hay alguna)
         seleccionarMaquinaGuardada();
 
         // Eventos de filtrado
@@ -1031,13 +1026,12 @@
 
         document.querySelectorAll('.selectAll').forEach(selectAllCheckbox => {
             selectAllCheckbox.addEventListener('click', function(event) {
-                event.preventDefault(); // Evita que el checkbox principal se marque o desmarque
+                event.preventDefault(); 
                 const columnId = this.id === 'selectAllCol2' ? 'Col2' : 'Col4';
                 const checkboxes = document.querySelectorAll(`input[name="selectedLine${columnId}[]"]`);
                 const isChecked = !this.classList.contains('highlight');
-                // Filtrar solo los checkboxes visibles
                 checkboxes.forEach(checkbox => {
-                    if (checkbox.offsetParent !== null) { // Verifica si el checkbox es visible
+                    if (checkbox.offsetParent !== null) {
                         checkbox.checked = isChecked;
                     }
                 });
@@ -1205,13 +1199,12 @@
         }
     }
 
-function confirmarEliminacion() {
-    // Mostrar la alerta de confirmación
-    var confirmacion = confirm("¿Estás seguro de eliminar las restricciones de este proceso?");
-    if (confirmacion) {
-        return true; // Si el usuario confirma, el formulario se enviará
-    } else {
-        return false; // Si el usuario cancela, el formulario no se enviará
+    function confirmarEliminacion() {
+        var confirmacion = confirm("¿Estás seguro de eliminar las restricciones de este proceso?");
+        if (confirmacion) {
+            return true;
+        } else {
+            return false;
+        }
     }
-}
 </script>
