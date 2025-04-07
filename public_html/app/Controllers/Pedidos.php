@@ -512,6 +512,12 @@ class Pedidos extends BaseController
 		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
 			$id_pedido = $this->request->getPost('id_pedido');
 
+			if (isset($updateData['estado']) && $updateData['estado'] == 4) {
+				$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)
+					->set('estado', $updateData['estado'])
+					->update();
+			}
+	
 			if (isset($updateData['estado']) && $updateData['estado'] == 5) {
 				$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)
 					->set('estado', $updateData['estado'])
