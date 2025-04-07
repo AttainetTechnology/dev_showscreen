@@ -220,7 +220,7 @@ class SeleccionMaquina extends BaseFichar
             ->where('id !=', $nuevo_id)
             ->update(['estado' => 3]);
 
-        return redirect()->to('/presentes')->with('success', 'Proceso seleccionado correctamente.');
+        return redirect()->to('/selectMaquina')->with('success', 'Proceso seleccionado correctamente.');
     }
 
     public function obtenerProcesosUsuario($id_usuario)
@@ -350,9 +350,8 @@ class SeleccionMaquina extends BaseFichar
             $relacionModel->where('id', $idRelacionProcesoUsuario)
                 ->update(['estado' => 4]);
 
-            return redirect()->to('/presentes');
+            return redirect()->to('/selectMaquina');
         }
-
 
         $estadoActual = 3;
         $relacionModel->where('id', $idRelacionProcesoUsuario)
@@ -399,9 +398,9 @@ class SeleccionMaquina extends BaseFichar
         if ($action === 'apuntar_terminar') {
             return redirect()->to('/selectMaquina');
         } elseif ($action === 'apuntar_continuar') {
-            return redirect()->to("/sal/$usuario");
+            return redirect()->to("selectMaquina");
         }
-        return redirect()->to('/presentes');
+        return redirect()->to('/selectMaquina');
     }
     private function eliminarRegistroSiVacio($id_proceso_pedido)
     {
