@@ -330,33 +330,38 @@ class SeleccionMaquina extends BaseFichar
         $malas = $this->request->getPost('malas');
         $repasadas = $this->request->getPost('repasadas');
         $action = $this->request->getPost('action');
-
-
+    
         if ($buenas < 0 || $malas < 0 || $repasadas < 0) {
             return redirect()->to('/error')->with('error', 'Los valores no pueden ser negativos.');
         }
-
+    
         $idRelacionProcesoUsuario = $this->request->getPost('id_relacion_proceso_usuario');
-
+    
         $db = $this->db;
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
-
+    
         if (!$registro) {
             return redirect()->to('/error')->with('error', 'Registro no encontrado.');
         }
-
+    
         if ($action === 'falta_material') {
             $relacionModel->where('id', $idRelacionProcesoUsuario)
                 ->update(['estado' => 4]);
-
+    
+            // Finalizar explícitamente el proceso pedido aquí:
+            $this->finalizarProcesoPedido($idRelacionProcesoUsuario);
+            $this->eliminarRestriccion($idRelacionProcesoUsuario);
+            $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
+            $this->ActualizarEstadoPedido($idRelacionProcesoUsuario);
+    
             return redirect()->to('/selectMaquina');
         }
-
+    
         $estadoActual = 3;
         $relacionModel->where('id', $idRelacionProcesoUsuario)
             ->update(['estado' => $estadoActual]);
-
+    
         if ($action === 'apuntar_terminar') {
             $nuevoEstado = 3;
         } elseif ($action === 'apuntar_continuar') {
@@ -364,44 +369,35 @@ class SeleccionMaquina extends BaseFichar
         } else {
             $nuevoEstado = 1;
         }
-
-        $nuevasBuenas = $buenas;
-        $nuevasMalas = $malas;
-        $nuevasRepasadas = $repasadas;
-
+    
         $nuevoRegistro = [
             'id_proceso_pedido' => $registro['id_proceso_pedido'],
             'id_usuario' => $registro['id_usuario'],
             'id_linea_pedido' => $registro['id_linea_pedido'],
             'id_pedido' => $registro['id_pedido'],
             'id_maquina' => $registro['id_maquina'],
-            'buenas' => $nuevasBuenas,
-            'malas' => $nuevasMalas,
-            'repasadas' => $nuevasRepasadas,
+            'buenas' => $buenas,
+            'malas' => $malas,
+            'repasadas' => $repasadas,
             'estado' => $nuevoEstado
         ];
-
+    
         $relacionModel->insert($nuevoRegistro);
-
-        $todosTerminado = $relacionModel->where('id_proceso_pedido', $registro['id_proceso_pedido'])
-            ->where('estado !=', 3)
-            ->countAllResults() == 0;
-
-        if ($todosTerminado) {
-            $this->finalizarProcesoPedido($idRelacionProcesoUsuario);
-        }
-        $this->eliminarRegistroSiVacio($registro['id_proceso_pedido']);
-        $this->eliminarRestriccion($idRelacionProcesoUsuario);
-        $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
-        $this->ActualizarEstadoPedido($idRelacionProcesoUsuario);
-
+    
+        // Aquí está la clave de tu corrección:
         if ($action === 'apuntar_terminar') {
-            return redirect()->to('/selectMaquina');
-        } elseif ($action === 'apuntar_continuar') {
-            return redirect()->to("selectMaquina");
+            $this->finalizarProcesoPedido($idRelacionProcesoUsuario);
+            $this->eliminarRestriccion($idRelacionProcesoUsuario);
+            $this->ActualizarEstadoLineaPedido($idRelacionProcesoUsuario);
+            $this->ActualizarEstadoPedido($idRelacionProcesoUsuario);
         }
+    
+        $this->eliminarRegistroSiVacio($registro['id_proceso_pedido']);
+    
         return redirect()->to('/selectMaquina');
     }
+    
+    
     private function eliminarRegistroSiVacio($id_proceso_pedido)
     {
         $db = $this->db;
