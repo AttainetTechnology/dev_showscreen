@@ -46,32 +46,29 @@ foreach ($pedido as $ped) { ?>
             </svg>
         </button>
         <div id="printableArea">
-            <div class="fila">
-                <div id="fila_left">
-                    <img src="<?php
-                    helper('logo');
-                    $logo = logo();
-                    echo $logo; ?>" class="logo_partes"><br>
-                    Id.Ped: <b><?php echo $ped->id_pedido; ?></b><br>User:
-                    <b><?php echo $ped->pedido_por; ?></b>
-                </div>
 
-                <!-- /.col -->
-                <div id="fila_center">
-                    Fecha de entrada:<br>
-                    <strong><?php echo date("d/m/Y", strtotime($ped->fecha_entrada)); ?></strong><br>
-                    Fecha de entrega:<br>
-                    <strong><?php echo date("d/m/Y", strtotime($ped->fecha_entrega)); ?></strong><br>
-                </div>
-                <!-- /.col -->
-                <div id="fila_right">
-                    Cliente:<br>
-                    <strong><?php echo $ped->nombre_cliente; ?></strong><br>
-                    Referencia ped:<br>
-                    <strong><?php echo $ped->referencia; ?></strong>
-                </div>
-            </div> <!-- Cierro fila -->
-            <div class="tituparte">Parte de trabajo</div>
+                    <!-- Cabecera -->
+                    <div class="row">
+                        <div id="parte_fila_left">
+                            <img src="<?php echo base_url("public/assets/uploads/files") . "/" . $url_logo; ?>" class="logo_partes"><br>
+                            Cliente:
+                            <address>
+                                <strong><? echo $ped->nombre_cliente; ?></strong>
+                            </address>
+                            Referencia ped:
+                            <address>
+                                <strong><? echo $ped->referencia; ?></strong>
+                            </address>
+                        </div>
+                        <div id="parte_fila_right" class="imagenparte">
+                            <div class="capa-numero-parte">
+                                <div class="numero_parte">Pedido: <strong><?php echo $ped->id_pedido; ?></strong></div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- END Cabecera -->
+
+            <div class="tituparte">Parte Complejo</div>
             <div id="observaciones">
                 <div class="seccionparte">Observaciones de pedido:</div>
                 <?php echo $ped->observaciones; ?>
@@ -87,6 +84,7 @@ foreach ($pedido as $ped) { ?>
                                 <th>Med. inic.</th>
                                 <th>Med. fin.</th>
                                 <th>Modelo</th>
+                                <th>ID. Parte</th>
                             </tr>
                         </thead>
 
@@ -113,9 +111,10 @@ foreach ($pedido as $ped) { ?>
                                     $imagen_producto = base_url('public/assets/uploads/files') . "/$id_empresa/productos/" . $imagen;
                                     ?>
                                     <td><img src="<?php echo $imagen_producto; ?>" style="max-height:60px"></td>
+                                    <td><b><?php echo $l->id_lineapedido; ?></b></td>
                                 </tr>
                                 <tr style="background-color: #eee">
-                                    <td colspan="2">
+                                    <td colspan="3">
                                         <?php if ($l->observaciones) {
                                             echo "ATENCIÓN!:<strong> " . $l->observaciones . "</strong>";
                                         } ?>
@@ -131,13 +130,13 @@ foreach ($pedido as $ped) { ?>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6"></td>
+                                    <td colspan="7"></td>
                                 </tr>
                                 <?php
                                 if ($contador % 6 == 0 && !$page_break_added) {
                                     ?>
                                     <tr>
-                                        <td colspan="6" style="page-break-before: always;"></td>
+                                        <td colspan="7" style="page-break-before: always;"></td>
                                     </tr>
                                     <?php
                                     $page_break_added = true;
@@ -149,11 +148,11 @@ foreach ($pedido as $ped) { ?>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-7">
                 </div>
-                <div class="col-xs-6 detalles-pie">
+                <div class="col-xs-7 detalles-pie">
     
-                        Imprime: <strong><?php echo $nombre_usuario; ?>  <?php echo $apellidos_usuario; ?></strong>
+                       Creado por: <b><?php echo $ped->pedido_por; ?></b> | Imprime: <strong><?php echo $nombre_usuario; ?>  <?php echo $apellidos_usuario; ?></strong>
                         (<? echo ' ' . date('d-m-Y') . "\n"; ?>)</small>
                 </div>
             </div>
