@@ -15,11 +15,16 @@
                         <input type="text" class="form-control" id="nombre_proceso" name="nombre_proceso" required>
                     </div>
                     <div class="form-group">
-                        <label for="estado_proceso">Estado del Proceso</label>
-                        <select class="form-control" id="estado_proceso" name="estado_proceso" required>
-                            <option value="1">Activo</option>
-                            <option value="0">Inactivo</option>
+                        <label for="maq_preasignada">Máquina preasignada</label>
+                        <select class="form-control" id="maq_preasignada" name="maq_preasignada">
+                            <option value="">Selecciona una máquina</option>
+                            <?php foreach ($maquinas as $maquina): ?>
+                                <option value="<?= $maquina['id_maquina'] ?>"><?= esc($maquina['nombre']) ?></option>
+                            <?php endforeach; ?>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="estado_proceso" value="1">
                     </div>
                 </div>
                 <div class="modal-footer">

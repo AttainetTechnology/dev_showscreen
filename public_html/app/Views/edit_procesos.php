@@ -49,6 +49,17 @@
                 value="<?= esc($proceso_principal['nombre_proceso']); ?>" required>
         </div>
         <div class="form-group">
+            <label for="nombre_proceso">Máquina pre-asignada</label>
+            <select name="maq_preasignada" class="form-control">
+            <?php foreach ($maquinas as $maq): ?>
+                <option value="<?= $maq['id_maquina'] ?>" 
+                    <?= $maq['id_maquina'] == $proceso_principal['maq_preasignada'] ? 'selected' : '' ?>>
+                    <?= $maq['nombre'] ?>
+                </option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="estado_proceso">Estado del Proceso</label>
             <select class="form-control" id="estado_proceso" name="estado_proceso" required>
                 <option value="1" <?= $proceso_principal['estado_proceso'] == '1' ? 'selected' : ''; ?>>Activo</option>

@@ -38,17 +38,12 @@ class Procesos extends BaseController
         $procesoModel = new Proceso($db);
 
         // Ordenar por estado primero (activos primero) y luego por nombre
-        if ($estado !== null) {
-            $procesos = $procesoModel
-                ->where('estado_proceso', $estado)
-                ->orderBy('nombre_proceso', 'ASC')
-                ->findAll();
-        } else {
-            $procesos = $procesoModel
-                ->orderBy('estado_proceso', 'DESC') // Activos (1) primero
-                ->orderBy('nombre_proceso', 'ASC') // Orden alfabético dentro de cada grupo
-                ->findAll();
-        }
+        $procesos = $procesoModel
+        ->select('procesos.*, maquinas.nombre AS nombre_maquina')
+        ->join('maquinas', 'procesos.maq_preasignada = maquinas.id_maquina', 'left')
+        ->orderBy('estado_proceso', 'DESC')
+        ->orderBy('nombre_proceso', 'ASC')
+        ->findAll();
 
         // Añadir acciones para cada proceso
         foreach ($procesos as &$proceso) {
@@ -64,31 +59,41 @@ class Procesos extends BaseController
 
 
     public function add()
-    {
-        return view('add_procesos');
-    }
-    public function create()
-    {
-        $data = datos_user();
-        $db = db_connect($data['new_db']);
-        $procesoModel = new Proceso($db);
-        $nombre_proceso = $this->request->getPost('nombre_proceso');
-        $nombre_proceso = strtoupper($nombre_proceso);
-        $estado_proceso = $this->request->getPost('estado_proceso');
-        // Insertar el nuevo proceso si la validación es correcta
-        $procesoModel->insert([
-            'nombre_proceso' => $nombre_proceso,
-            'estado_proceso' => $estado_proceso,
-            'restriccion' => null
-        ]);
-        // Registrar la acción en el log
-        $id_proceso = $procesoModel->insertID(); // Obtener el ID del nuevo proceso
-        $log = "Nuevo proceso añadido: {$nombre_proceso} con ID: {$id_proceso}";
-        $this->logAction('Procesos', $log, $data);
-        return redirect()->to(base_url('procesos'));
-    }
+{
+    $data = datos_user();
+    $db = db_connect($data['new_db']);
+    $maquinas = $db->table('maquinas')->orderBy('nombre', 'ASC')->get()->getResultArray();
+
+    return view('add_procesos', ['maquinas' => $maquinas]);
+}
+public function create()
+{
+    $data = datos_user();
+    $db = db_connect($data['new_db']);
+    $procesoModel = new Proceso($db);
+
+    $nombre_proceso = strtoupper($this->request->getPost('nombre_proceso'));
+    $estado_proceso = $this->request->getPost('estado_proceso');
+    $maq_preasignada = $this->request->getPost('maq_preasignada'); // <- NUEVO
+
+    $procesoModel->insert([
+        'nombre_proceso' => $nombre_proceso,
+        'estado_proceso' => $estado_proceso,
+        'restriccion' => null,
+        'maq_preasignada' => $maq_preasignada // <- NUEVO
+    ]);
+
+    $id_proceso = $procesoModel->insertID();
+    $log = "Nuevo proceso añadido: {$nombre_proceso} con ID: {$id_proceso}";
+    $this->logAction('Procesos', $log, $data);
+
+    return redirect()->to(base_url('procesos'));
+}
+
     public function restriccion($primaryKey)
     {
+       
+
         $this->addBreadcrumb('Inicio', base_url('/'));
         $this->addBreadcrumb('Procesos', base_url('procesos'));
         $this->addBreadcrumb('Editar Proceso');
@@ -104,6 +109,9 @@ class Procesos extends BaseController
             ->findAll();
 
         $proceso_principal = $procesoModel->find($primaryKey);
+        // Obtener la lista de máquinas
+        $maquinas = $db->table('maquinas')->orderBy('nombre', 'ASC')->get()->getResultArray();
+
         // Verificar que estado_proceso esté bien definido
         if ($proceso_principal['estado_proceso'] === null) {
             $proceso_principal['estado_proceso'] = '1';
@@ -113,14 +121,20 @@ class Procesos extends BaseController
         if ($this->request->is('post')) {
             $nombre_proceso = strtoupper($this->request->getPost('nombre_proceso'));
             $estado_proceso = $this->request->getPost('estado_proceso') ?? '1';
+            $maq_preasignada = $this->request->getPost('maq_preasignada');
+
             $restricciones = $this->request->getPost('restricciones');
             $redirect_url = $this->request->getPost('redirect_url');
             $restricciones_string = $restricciones ? implode(',', $restricciones) : '';
+           
             $procesoModel->update($primaryKey, [
                 'nombre_proceso' => $nombre_proceso,
                 'estado_proceso' => $estado_proceso,
-                'restriccion' => $restricciones_string
+                'restriccion' => $restricciones_string,
+                'maq_preasignada' => $maq_preasignada // <- NUEVO
             ]);
+            
+
             $log = "Actualización de restriccion del proceso ID: {$primaryKey}";
             $this->logAction('Procesos', $log, $data);
             $this->updateOrderAfterRestrictionChange($primaryKey, $restricciones_string);
@@ -132,9 +146,12 @@ class Procesos extends BaseController
             'primaryKey' => $primaryKey,
             'previous_proceso_id' => $previous_proceso_id,
             'next_proceso_id' => $next_proceso_id,
-            'amiga' => $this->getBreadcrumbs()
+            'amiga' => $this->getBreadcrumbs(),
+            'maquinas' => $maquinas 
         ];
+        
         return view('edit_procesos', $data);
+        
     }
     private function updateOrderAfterRestrictionChange($id_proceso, $restricciones)
     {

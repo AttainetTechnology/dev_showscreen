@@ -63,6 +63,14 @@
                 floatingFilter: true,
                 minWidth: 150
             },
+            {
+            headerName: "Máquina Preasignada",
+            field: "nombre_maquina",
+            sortable: true,
+            filter: "agTextColumnFilter",
+            floatingFilter: true,
+            minWidth: 200
+            },
 
         ];
         // Opciones del grid

@@ -7,7 +7,7 @@ class Proceso extends Model {
     protected $table = 'procesos';
     protected $primaryKey = 'id_proceso';
 
-    protected $allowedFields = ['nombre_proceso', 'id_maquina', 'estado_proceso', 'restriccion'];
+    protected $allowedFields = ['nombre_proceso', 'estado_proceso', 'restriccion','maq_preasignada'];
 
     public function obtenerProcesos() {
         return $this->findAll();
