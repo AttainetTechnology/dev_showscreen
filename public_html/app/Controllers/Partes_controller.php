@@ -175,33 +175,44 @@ class Partes_controller extends BaseControllerGC
     {
         $data = datos_user();
         $db = db_connect($data['new_db']);
+    
         $lineaPedidoModel = new LineaPedido($db);
         $procesosPedidoModel = new ProcesosPedido($db);
         $procesosProductosModel = new ProcesosProductos($db);
-
+        $procesoModel = $db->table('procesos');
+    
         $lineasConEstado2 = $lineaPedidoModel->where('estado', 2)->findAll();
-
+    
         foreach ($lineasConEstado2 as $linea) {
             $idProducto = $linea['id_producto'];
             $procesosProductos = $procesosProductosModel->where('id_producto', $idProducto)->findAll();
-
+    
             foreach ($procesosProductos as $procesoProducto) {
+                $idProceso = $procesoProducto['id_proceso'];
+    
+                // Comprobar si ya existe
                 $existe = $procesosPedidoModel->where([
-                    'id_proceso' => $procesoProducto['id_proceso'],
+                    'id_proceso' => $idProceso,
                     'id_linea_pedido' => $linea['id_lineapedido']
                 ])->first();
-
+    
                 if (!$existe) {
+                    // Obtener maq_preasignada desde la tabla procesos
+                    $proceso = $procesoModel->where('id_proceso', $idProceso)->get()->getRowArray();
+                    $maqPreasignada = $proceso ? $proceso['maq_preasignada'] : null;
+    
+                    // Insertar en procesos_pedidos
                     $procesosPedidoModel->insert([
-                        'id_proceso' => $procesoProducto['id_proceso'],
+                        'id_proceso' => $idProceso,
                         'id_linea_pedido' => $linea['id_lineapedido'],
-                        'id_maquina' => null,
-                        'estado' => 2,
+                        'id_maquina' => $maqPreasignada,
+                        'estado' => 3 // ← Estado "En máquina"
                     ]);
                 }
             }
         }
-
+    
         return $lineasConEstado2;
     }
+    
 }
