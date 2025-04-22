@@ -172,47 +172,62 @@ class Partes_controller extends BaseControllerGC
     }
 
     public function obtenerLineasPedidoConEstado2YCrearProcesos()
-    {
-        $data = datos_user();
-        $db = db_connect($data['new_db']);
-    
-        $lineaPedidoModel = new LineaPedido($db);
-        $procesosPedidoModel = new ProcesosPedido($db);
-        $procesosProductosModel = new ProcesosProductos($db);
-        $procesoModel = $db->table('procesos');
-    
-        $lineasConEstado2 = $lineaPedidoModel->where('estado', 2)->findAll();
-    
-        foreach ($lineasConEstado2 as $linea) {
-            $idProducto = $linea['id_producto'];
-            $procesosProductos = $procesosProductosModel->where('id_producto', $idProducto)->findAll();
-    
-            foreach ($procesosProductos as $procesoProducto) {
-                $idProceso = $procesoProducto['id_proceso'];
-    
-                // Comprobar si ya existe
-                $existe = $procesosPedidoModel->where([
-                    'id_proceso' => $idProceso,
-                    'id_linea_pedido' => $linea['id_lineapedido']
-                ])->first();
-    
-                if (!$existe) {
-                    // Obtener maq_preasignada desde la tabla procesos
-                    $proceso = $procesoModel->where('id_proceso', $idProceso)->get()->getRowArray();
-                    $maqPreasignada = $proceso ? $proceso['maq_preasignada'] : null;
-    
-                    // Insertar en procesos_pedidos
-                    $procesosPedidoModel->insert([
-                        'id_proceso' => $idProceso,
-                        'id_linea_pedido' => $linea['id_lineapedido'],
-                        'id_maquina' => $maqPreasignada,
-                        'estado' => 3 // ← Estado "En máquina"
-                    ]);
+{
+    $data = datos_user();
+    $db = db_connect($data['new_db']);
+
+    $lineaPedidoModel = new LineaPedido($db);
+    $procesosPedidoModel = new ProcesosPedido($db);
+    $procesosProductosModel = new ProcesosProductos($db);
+    $procesoModel = $db->table('procesos');
+
+    $lineasConEstado2 = $lineaPedidoModel->where('estado', 2)->findAll();
+
+    foreach ($lineasConEstado2 as $linea) {
+        $idProducto = $linea['id_producto'];
+        $procesosProductos = $procesosProductosModel->where('id_producto', $idProducto)->findAll();
+
+        foreach ($procesosProductos as $procesoProducto) {
+            $idProceso = $procesoProducto['id_proceso'];
+
+            $existe = $procesosPedidoModel->where([
+                'id_proceso' => $idProceso,
+                'id_linea_pedido' => $linea['id_lineapedido']
+            ])->first();
+
+            if (!$existe) {
+                // Obtener maq_preasignada
+                $proceso = $procesoModel->where('id_proceso', $idProceso)->get()->getRowArray();
+                $maqPreasignada = $proceso ? $proceso['maq_preasignada'] : null;
+
+                // Calcular el nuevo orden
+                $orden = 1; // valor por defecto
+                if ($maqPreasignada) {
+                    $maxOrden = $db->table('procesos_pedidos')
+                        ->selectMax('orden')
+                        ->where('id_maquina', $maqPreasignada)
+                        ->get()
+                        ->getRow();
+
+                    if ($maxOrden && $maxOrden->orden !== null) {
+                        $orden = $maxOrden->orden + 1;
+                    }
                 }
+
+                // Insertar nuevo proceso en procesos_pedidos
+                $procesosPedidoModel->insert([
+                    'id_proceso' => $idProceso,
+                    'id_linea_pedido' => $linea['id_lineapedido'],
+                    'id_maquina' => $maqPreasignada,
+                    'estado' => 3, // En máquina
+                    'orden' => $orden
+                ]);
             }
         }
-    
-        return $lineasConEstado2;
     }
+
+    return $lineasConEstado2;
+}
+
     
 }
