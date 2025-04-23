@@ -1,6 +1,17 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <?= $this->include('partials/amiga') ?>
+<?php
+        $estados_texto = [
+            "0" => "Pendiente de material",
+            "1" => "Falta Material",
+            "2" => "Material recibido",
+            "3" => "En Máquinas",
+            "4" => "Terminado",
+            "5" => "Entregado",
+            "6" => "Anulado"
+        ];
+        ?>
 
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/pedido.css') ?>?v=<?= time() ?>">
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
@@ -16,6 +27,11 @@
 <div class="container mt-5 editpedido">
 
     <h2 class="titleditPedido">Editar Pedido</h2>
+    <div class="mb-3">
+    <span class="badge bg-secondary" style="font-size: 16px;">
+        Estado actual: <strong><?= $estados_texto[$pedido->estado] ?? 'Desconocido' ?></strong>
+    </span>
+</div>
     <div class="mb-3">
         <label for="acciones" class="form-label"></label>
         <div class="d-flex gap-2">
@@ -152,17 +168,7 @@
         </div>
     </form>
     <div class="form-group">
-        <?php
-        $estados_texto = [
-            "0" => "Pendiente de material",
-            "1" => "Falta Material",
-            "2" => "Material recibido",
-            "3" => "En Máquinas",
-            "4" => "Terminado",
-            "5" => "Entregado",
-            "6" => "Anulado"
-        ];
-        ?>
+
         <h3 style="margin-left:5px; margin-top:-5px;">Líneas del Pedido</h3>
         <hr style="border: 5px solid #FFCC32; margin-top: 10px; margin-bottom: 20px;">
         <br>

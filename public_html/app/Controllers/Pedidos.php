@@ -191,6 +191,8 @@ class Pedidos extends BaseController
 		$usuarioModel = new Usuarios2_Model($db);
 
 		$pedido = $pedidoModel->findPedidoWithUser($id_pedido);
+		$this->actualizarEstadoPedido($id_pedido);
+
 		if (!$pedido) {
 			return redirect()->back()->with('error', 'Pedido no encontrado');
 		}
@@ -661,25 +663,42 @@ class Pedidos extends BaseController
 		}
 	}
 	public function actualizarEstadoPedido($id_pedido)
-	{
-		$data = usuario_sesion();
-		$db = db_connect($data['new_db']);
-		$builder = $db->table('linea_pedidos');
-		$builder->select('estado');
-		$builder->where('id_pedido', $id_pedido);
-		$query = $builder->get();
-		$estados = $query->getResultArray();
-		if (empty($estados)) {
-			return;
-		}
-		$estados_array = array_column($estados, 'estado');
-		if (count(array_unique($estados_array)) === 1) {
-			$nuevo_estado = $estados_array[0];
-		} else {
-			$nuevo_estado = min($estados_array);
-		}
-		$pedidoModel = new Pedidos_model($db);
-		$pedidoModel->update($id_pedido, ['estado' => $nuevo_estado]);
-		return $nuevo_estado;
+{
+	$data = usuario_sesion();
+	$db = db_connect($data['new_db']);
+	$builder = $db->table('linea_pedidos');
+	$builder->select('estado');
+	$builder->where('id_pedido', $id_pedido);
+	$query = $builder->get();
+	$estados = $query->getResultArray();
+
+	if (empty($estados)) {
+		return;
 	}
+
+	$estados_array = array_column($estados, 'estado');
+	$unicos = array_unique($estados_array);
+	sort($unicos);
+
+	// Si hay al menos una línea en estado 2 ("Material recibido") o 3 ("En Máquinas"), el pedido se pone como estado 3
+	if (in_array(2, $unicos) || in_array(3, $unicos)) {
+		$nuevo_estado = 3;
+	} elseif (count($unicos) === 1) {
+		$nuevo_estado = $unicos[0];
+	} elseif ($unicos === [5, 6]) {
+		$nuevo_estado = 5; // entregado
+	} elseif ($unicos === [4, 5, 6] || $unicos === [4, 5] || $unicos === [4, 6]) {
+		$nuevo_estado = 4; // terminado
+	} else {
+		$activos = array_filter($unicos, fn($e) => $e != 6); // eliminamos anulados
+		$nuevo_estado = min($activos);
+	}
+
+	$pedidoModel = new Pedidos_model($db);
+	$pedidoModel->update($id_pedido, ['estado' => $nuevo_estado]);
+
+	return $nuevo_estado;
+}
+
+
 }
