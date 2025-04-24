@@ -8,7 +8,7 @@
 // Comienza el foreach		
 foreach ($pedido as $ped) { ?>
     <div id="fondo">
-        <button onclick="printDiv('printableArea')" class="boton btnImprimir">
+        <button onclick="printPedido(<?= $ped->id_pedido ?>)" class="boton btnImprimir">
             Imprimir Pedido
         </button>
         <div id="printableArea">
@@ -135,3 +135,39 @@ foreach ($pedido as $ped) { ?>
     </div>
 
 <?php } ?>
+
+<script>
+    function printPedido(idPedido) {
+        // Realiza la solicitud AJAX para actualizar bt_imprimir
+        fetch('<?= base_url("pedidos/updateBtImprimir") ?>/' + idPedido, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ bt_imprimir: 2 }) // Actualiza bt_imprimir a 2
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('El pedido se ha marcado como "Impreso".');
+                printDiv('printableArea'); // Llama a la función para imprimir
+            } else {
+                alert('Error al actualizar el estado de impresión: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un error al procesar la solicitud.');
+        });
+    }
+
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>

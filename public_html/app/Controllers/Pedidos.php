@@ -700,5 +700,41 @@ class Pedidos extends BaseController
 	return $nuevo_estado;
 }
 
+public function updateBtImprimir($id_pedido)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $pedidoModel = new Pedidos_model($db);
+
+    try {
+        // Verificar si el pedido existe
+        $pedido = $pedidoModel->find($id_pedido);
+        if (!$pedido) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Pedido no encontrado.']);
+        }
+
+        // Obtener el valor de bt_imprimir de la solicitud (procesar JSON)
+        $requestData = $this->request->getJSON(true); // Procesa el cuerpo JSON como un array asociativo
+        $bt_imprimir = $requestData['bt_imprimir'] ?? null;
+
+        if (!isset($bt_imprimir)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'El valor de bt_imprimir es obligatorio.']);
+        }
+
+        // Actualizar el campo bt_imprimir
+        $update = $pedidoModel->update($id_pedido, ['bt_imprimir' => $bt_imprimir]);
+
+        if ($update) {
+            return $this->response->setJSON(['success' => true, 'message' => 'El campo bt_imprimir se actualizó correctamente.']);
+        } else {
+            $error = $db->error(); // Obtener el error de la base de datos
+            log_message('error', 'Error al actualizar bt_imprimir para el pedido ID: ' . $id_pedido . '. Error: ' . $error['message']);
+            return $this->response->setJSON(['success' => false, 'message' => 'No se pudo actualizar el campo bt_imprimir. Error: ' . $error['message']]);
+        }
+    } catch (\Exception $e) {
+        // Manejar errores del servidor
+        return $this->response->setJSON(['success' => false, 'message' => 'Error del servidor: ' . $e->getMessage()]);
+    }
+}
 
 }
