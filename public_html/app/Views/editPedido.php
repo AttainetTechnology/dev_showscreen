@@ -5,11 +5,13 @@
         $estados_texto = [
             "0" => "Pendiente de material",
             "1" => "Falta Material",
-            "2" => "Material recibido",
+            "2" => "Partes para imprimir", // Modificado
             "3" => "En Máquinas",
             "4" => "Terminado",
             "5" => "Entregado",
-            "6" => "Anulado"
+            "6" => "Anulado",
+            "7" => "Pendiente de Alb", // Nuevo estado
+            "8" => "Pendiente de Carga" // Nuevo estado
         ];
         ?>
 
@@ -389,7 +391,7 @@
                                 return 'estado0';
                             case "Falta Material":
                                 return 'estado1';
-                            case "Material recibido":
+                            case "Partes para imprimir":
                                 return 'estado2';
                             case "En Máquinas":
                                 return 'estado3';
@@ -399,6 +401,10 @@
                                 return 'estado5';
                             case "Anulado":
                                 return 'estado6';
+                            case "Pendiente de Alb":
+                                return 'estado7';
+                            case "Pendiente de Carga":
+                                return 'estado8';
                             default:
                                 return '';
                         }
