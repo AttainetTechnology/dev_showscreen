@@ -725,7 +725,7 @@ public function updateBtImprimir($id_pedido)
         $update = $pedidoModel->update($id_pedido, ['bt_imprimir' => $bt_imprimir]);
 
         if ($update) {
-            return $this->response->setJSON(['success' => true, 'message' => 'El campo bt_imprimir se actualizó correctamente.']);
+            return $this->response->setJSON(['success' => true, 'message' => 'El pedido ya se puede imprimir.']);
         } else {
             $error = $db->error(); // Obtener el error de la base de datos
             log_message('error', 'Error al actualizar bt_imprimir para el pedido ID: ' . $id_pedido . '. Error: ' . $error['message']);
