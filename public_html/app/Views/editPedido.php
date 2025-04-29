@@ -158,7 +158,7 @@
         </div>
         <div class="form-group" style="font-size:15px;">
             <label>ID del Pedido:</label>
-            <strong><?= esc($pedido->id_pedido) ?></strong>
+            <strong><?= esc($pedido->id_pedido) ?></strong> <label>- pedido por:</label> <strong><?= esc($pedido->pedido_por) ?></strong>
         </div>
         <div class="btnsEditPedido">
             <a href="<?= base_url('/pedidos/enmarcha') ?>" class="boton volverButton">
