@@ -37,7 +37,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </form>
                 </div>
                 <div class="col-md-8 col-sm-12 columna2">
@@ -48,12 +47,11 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Parte <input type="text" id="searchParte" onkeyup="filtrarPartes()" placeholder="Buscar..." style="width:80%;"></th>
+                                        <th>Parte </th>
                                         <th>Cliente</th>
                                         <th>Proceso</th>
-                                        <th>Producto</th>
                                         <th>Nº de Piezas</th>
-                                        <th>Nombre Base</th>
+                                        <th>Producto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,14 +68,14 @@
                                                     <button type="submit" class="btn boton btnAdd">Seleccionar</button>
                                                 </form>
                                             </td>
-                                            <td><?= $proceso['id_linea_pedido'] ?></td>
-                                            <td><?= $proceso['nombre_cliente'] ?></td>
-                                            <td class="nombre_proceso"><?= $proceso['nombre_proceso'] ?></td>
-                                            <td>
-                                                <strong><?= $proceso['nombre_producto'] ?></strong>
-                                            </td>
-                                            <td><?= $proceso['n_piezas'] ?></td>
-                                            <td><?= $proceso['nom_base'] ?></td>
+                                            <td class="nombre_proceso"><?= $proceso['id_linea_pedido'] ?></td>
+                                                <td><?= $proceso['nombre_cliente'] ?></td>
+                                                <td>
+                                                <?= $proceso['nombre_proceso'] ?>
+                                                </td>
+                                                <td><strong><?= $proceso['n_piezas'] ?></strong> pzas <?= $proceso['nom_base'] ?></td>
+                                                <td><strong><?= $proceso['nombre_producto'] ?></strong><br><img src="<?= $proceso['imagen_producto'] ?>" alt="Imagen de producto"
+                                                        width="100"></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -91,11 +89,12 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Proceso</th>
+                                        <th>Parte </th>
                                         <th>Cliente</th>
-                                        <th>Producto</th>
-                                        <th>Observaciones</th>
+                                        <th>Proceso</th>
                                         <th>Nº de Piezas</th>
+                                        <th>Producto</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -106,16 +105,14 @@
                                                     <a href="<?= site_url('editarProceso/' . $proceso['id']) ?>"
                                                         class="btn boton btnEditar">Editar</a>
                                                 </td>
-                                                <td class="nombre_proceso"><?= $proceso['nombre_proceso'] ?></td>
+                                                <td class="nombre_proceso"><?= $proceso['id_linea_pedido'] ?></td>
                                                 <td><?= $proceso['nombre_cliente'] ?></td>
                                                 <td>
-                                                    <img src="<?= $proceso['imagen_producto'] ?>" alt="Imagen de producto"
-                                                        width="100">
-                                                    <br>
-                                                    <strong><?= $proceso['nombre_producto'] ?></strong>
+                                                <?= $proceso['nombre_proceso'] ?>
                                                 </td>
-                                                <td><?= $proceso['observaciones'] ?></td>
-                                                <td><?= $proceso['n_piezas'] ?></td>
+                                                <td><strong><?= $proceso['n_piezas'] ?></strong> pzas <?= $proceso['nom_base'] ?></td>
+                                                <td><strong><?= $proceso['nombre_producto'] ?></strong><br><img src="<?= $proceso['imagen_producto'] ?>" alt="Imagen de producto"
+                                                        width="100"></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>

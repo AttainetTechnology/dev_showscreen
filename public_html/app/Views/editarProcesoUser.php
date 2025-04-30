@@ -8,45 +8,45 @@
             <a href="<?= site_url('presentes/'); ?>" class="btn volverButton volverButtonEdit">
                 <span class="glyphicon glyphicon-arrow-left"></span> Volver
             </a>
-            <table class="procesos table table-responsive">
+            <div class="row">
+            <table class="procesos table table-responsive" style="width: 100%;">
                 <thead class="table-primary">
                     <tr>
-                        <th>Proceso</th>
+                        <th>Parte</th>
                         <th>Cliente</th>
-                        <th>Producto</th>
-                        <th>Observaciones</th>
+                        <th>Proceso</th>
                         <th>Nº de Piezas</th>
-                        <th>Nombre Base</th>
                         <th>Med. Inicial</th>
                         <th>Med. Final</th>
-                        <th>Distancia</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?= esc($proceso['nombre_proceso']) ?></td>
+                        <td><?= esc($proceso['id_linea_pedido']) ?></td>
                         <td><?= esc($proceso['nombre_cliente']) ?></td>
                         <td>
-                            <img src="<?= esc($proceso['imagen_producto']) ?>"
-                                alt="<?= esc($proceso['nombre_producto']) ?>" style="max-width: 100px;">
+                            <?= esc($proceso['nombre_producto']) ?><br>
+                            <img src="<?= esc($proceso['imagen_producto']) ?>" alt="<?= esc($proceso['nombre_producto']) ?>" style="max-width: 100px;">
                             <br>
-                            <?= esc($proceso['nombre_producto']) ?>
+                            <?= esc($proceso['nombre_proceso']) ?>
                         </td>
-                        <td><?= esc($proceso['observaciones']) ?></td>
-                        <td><?= esc($proceso['n_piezas']) ?></td>
-                        <td><?= esc($proceso['nom_base']) ?></td>
+                        <td><strong><?= esc($proceso['n_piezas']) ?></strong> pzas <?= esc($proceso['nom_base']) ?></td>
                         <td><?= esc($proceso['med_inicial']) ?></td>
                         <td><?= esc($proceso['med_final']) ?></td>
-                        <td><?= esc($proceso['distancia']) ?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-left">
+                            <strong>Observaciones:</strong> <span style="color: red;"><?= esc($proceso['observaciones']) ?></span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+            </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h3>Añadir piezas</h3>
                     <form action="<?= site_url('editarPiezas') ?>" method="POST">
-                        <input type="hidden" name="id_relacion_proceso_usuario"
-                            value="<?= esc($unidadesIndividuales['id']) ?>">
+                        <input type="hidden" name="id_relacion_proceso_usuario" value="<?= esc($unidadesIndividuales['id']) ?>">
 
                         <div class="form-group">
                             <label for="buenas">Buenas:</label>
@@ -62,7 +62,8 @@
                             <label for="repasadas">Repasadas:</label>
                             <input type="text" id="repasadas" name="repasadas" class="form-control" value="0" readonly>
                         </div>
-                        <div class="col-md-10 col10 ">
+
+                        <div class="">
                             <h3>Piezas</h3>
                             <table class="procesos table table-bordered">
                                 <thead class="table-secondary">
@@ -90,15 +91,12 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="volver">
-
-                            </div>
+                            <div class="volver"></div>
                         </div>
-
+                    </form>
                 </div>
-                <br>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="calculator">
                         <div class="row">
                             <button type="button" class="btnCalculadora btnNumero" onclick="addNumber(1)">1</button>
@@ -121,26 +119,18 @@
                             <button type="button" class="btnCalculadora btn-warning" onclick="deleteLast()">⌫</button>
                         </div>
                     </div>
+                </div>
 
+                <div class="col-md-4">
                     <div class="butons">
-                        <button type="submit" class="btn btnApuntarGenerico bntApuntar" name="action"
-                            value="apuntar_cambios">Apuntar</button>
-                            <button type="submit" class="btn btnApuntarGenerico btnTerminarPedido" name="action"
-                            value="apuntar_terminar">Apuntar y
-                            terminar
-                            pedido</button>
-                        <button type="submit" class="btn btnApuntarGenerico btnSalir" name="action"
-                            value="apuntar_continuar">Salir sin terminar</button>
-                        <button type="submit" class="btn btnApuntarGenerico btnFaltaMaterial" name="action"
-                            value="falta_material">FALTA DE
-                            MATERIAL</button>
+                        <button type="submit" class="btn btnApuntarGenerico bntApuntar" name="action" value="apuntar_cambios">Apuntar</button>
+                        <button type="submit" class="btn btnApuntarGenerico btnTerminarPedido" name="action" value="apuntar_terminar">Apuntar y terminar pedido</button>
+                        <button type="submit" class="btn btnApuntarGenerico btnSalir" name="action" value="apuntar_continuar">Salir sin terminar</button>
+                        <button type="submit" class="btn btnApuntarGenerico btnFaltaMaterial" name="action" value="falta_material">FALTA DE MATERIAL</button>
                     </div>
-                    </form>
-
                 </div>
             </div>
-            <div class="row">
-            </div>
+
             <script>
                 let activeField = 'buenas';
 
@@ -180,18 +170,20 @@
                     function resetTemporizador() {
                         clearTimeout(temporizador);
                         temporizador = setTimeout(function() {
-                            window.location.href = '/presentes'; 
+                            window.location.href = '/presentes';
                         }, tiempoInactividad);
                     }
 
                     // Eventos que reiniciarán el temporizador
                     window.onload = resetTemporizador;
                     window.onmousemove = resetTemporizador;
-                    window.onmousedown = resetTemporizador;  //interacción táctil/teclado
+                    window.onmousedown = resetTemporizador; // interacción táctil/teclado
                     window.ontouchstart = resetTemporizador;
-                    window.onclick = resetTemporizador;     //clics
+                    window.onclick = resetTemporizador; // clics
                     window.onkeypress = resetTemporizador;
-                    window.addEventListener('scroll', resetTemporizador, true);  //scroll
-
+                    window.addEventListener('scroll', resetTemporizador, true); // scroll
                 })();
-</script>
+            </script>
+        </div>
+    </div>
+</body>

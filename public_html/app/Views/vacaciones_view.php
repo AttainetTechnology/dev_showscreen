@@ -146,10 +146,11 @@
         fetch('<?= base_url("vacaciones/getUsuarios") ?>')
             .then(response => response.json())
             .then(data => {
-                usuarios = data;
+                // Filtrar usuarios con user_activo = 1
+                usuarios = data.filter(user => user.user_activo == 1);
                 const userSelect = document.getElementById('user_id');
                 userSelect.innerHTML = '<option value="" disabled selected>Seleccione un usuario</option>';
-                data.forEach(user => {
+                usuarios.forEach(user => {
                     const option = document.createElement('option');
                     option.value = user.id;
                     option.textContent = user.nombre_usuario;
