@@ -47,7 +47,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Parte </th>
+                                        <th>Parte <input type="text" id="searchParte" onkeyup="filtrarPartes()" placeholder="Buscar..." style="width:80%;"></th> </th>
                                         <th>Cliente</th>
                                         <th>Proceso</th>
                                         <th>Nº de Piezas</th>
