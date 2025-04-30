@@ -22,8 +22,7 @@
             </div>
             <div class="botonentrar"><a href="<?= base_url('/sal/') ?>/<?= $ausentes['id']; ?>"
                   class="btn btn-danger btn-lg">TERMINAR JORNADA</a></div>
-            <a href="<?= base_url('/selectMaquina') ?>" class="btn btnFaltaMaterial">FICHAR
-               MAQUINA</a>
+            <a href="<?= base_url('/selectMaquina') ?>/<?= $ausentes['id']; ?>" class="btn btnFaltaMaterial">FICHAR MAQUINA</a> 
             <?php
             // Obtener el id_empresa desde la sesión
             $id_empresa = session()->get('id');
@@ -35,7 +34,7 @@
             }
 
             // Construir la URL
-            $url = "https://dev.showscreen.app/presentes/" . $nif;
+            $url = "https://showscreen.app/presentes/" . $nif;
             ?>
 
             <div class="volver">

@@ -1,4 +1,5 @@
-<?php //print_r($presentes); ?>
+<?php //print_r($presentes); 
+?>
 <?= $cabecera; ?>
 
 <body class="page-select" onload="startTime()">
@@ -8,7 +9,7 @@
             <h2><?= $usuario['nombre_usuario']; ?> <?= $usuario['apellidos_usuario']; ?></h2>
         </div>
         <div class="d-flex justify-content-end ">
-            <a href="<?= site_url('/presentes')?>" class="btn volverButton">
+            <a href="<?= site_url('/presentes') ?>" class="btn volverButton">
                 <span class="glyphicon glyphicon-arrow-left"></span> Volver
             </a>
         </div>
@@ -23,7 +24,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Si hay procesos activos --> 
+                                    <!-- Si hay procesos activos -->
                                     <?php foreach ($maquinas as $maquina): ?>
                                         <tr>
                                             <td style="word-wrap: break-word; overflow: hidden; text-overflow: ellipsis;">
@@ -47,7 +48,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Parte</th>
+                                        <th>Parte <input type="text" id="searchParte" onkeyup="filtrarPartes()" placeholder="Buscar..." style="width:80%;"></th>
                                         <th>Cliente</th>
                                         <th>Proceso</th>
                                         <th>Producto</th>
@@ -71,7 +72,7 @@
                                             </td>
                                             <td><?= $proceso['id_linea_pedido'] ?></td>
                                             <td><?= $proceso['nombre_cliente'] ?></td>
-                                            <td class="nombre_proceso"><?= $proceso['nombre_proceso'] ?></td> 
+                                            <td class="nombre_proceso"><?= $proceso['nombre_proceso'] ?></td>
                                             <td>
                                                 <strong><?= $proceso['nombre_producto'] ?></strong>
                                             </td>
@@ -82,7 +83,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    <!-- Si hay procesos asignados --> 
+                        <!-- Si hay procesos asignados -->
                     <?php elseif (!isset($idMaquina) || $idMaquina == null): ?>
                         <h2>Tus partes activos</h2>
                         <div class="table-responsive">
@@ -137,13 +138,13 @@
 
     </div>
     <script>
-        (function () {
+        (function() {
             var tiempoInactividad = 30000; // 30 segundos
             var temporizador;
 
             function resetTemporizador() {
                 clearTimeout(temporizador);
-                temporizador = setTimeout(function () {
+                temporizador = setTimeout(function() {
                     window.location.href = '/presentes';
                 }, tiempoInactividad);
             }
@@ -151,11 +152,31 @@
             // Eventos que reiniciarán el temporizador
             window.onload = resetTemporizador;
             window.onmousemove = resetTemporizador;
-            window.onmousedown = resetTemporizador;  //interacción táctil/teclado
+            window.onmousedown = resetTemporizador; //interacción táctil/teclado
             window.ontouchstart = resetTemporizador;
-            window.onclick = resetTemporizador;     //clics
+            window.onclick = resetTemporizador; //clics
             window.onkeypress = resetTemporizador;
-            window.addEventListener('scroll', resetTemporizador, true);  //scroll
+            window.addEventListener('scroll', resetTemporizador, true); //scroll
 
         })();
+
+        function filtrarPartes() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchParte");
+            filter = input.value.toUpperCase();
+            table = document.querySelector(".table-responsive .procesos");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) { // Empieza en 1 para evitar el encabezado
+                td = tr[i].getElementsByTagName("td")[1]; // Index 1, segunda columna
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
     </script>
