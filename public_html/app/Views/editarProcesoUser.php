@@ -93,7 +93,7 @@
                             </table>
                             <div class="volver"></div>
                         </div>
-                    </form>
+                    
                 </div>
 
                 <div class="col-md-4">
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="col-md-4">
                     <div class="butons">
                         <button type="submit" class="btn btnApuntarGenerico bntApuntar" name="action" value="apuntar_cambios">Apuntar</button>
@@ -130,7 +130,7 @@
                     </div>
                 </div>
             </div>
-
+            </form>
             <script>
                 let activeField = 'buenas';
 
