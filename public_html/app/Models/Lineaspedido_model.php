@@ -21,7 +21,9 @@ class Lineaspedido_model extends Model
         'add_linea',
         'total_linea',
         'estado',
-        'escandallo'
+        'escandallo',
+        'ultimo_fichaje',
+        'proceso'
     ];
     public function index() {}
 

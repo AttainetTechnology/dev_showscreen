@@ -21,7 +21,9 @@ class LineaPedidoModel extends Model
         'descuento',
         'add_linea',
         'total_linea',
-        'estado'
+        'estado', 
+        'ultimo_fichaje',
+        'proceso'
     ];
 
     public function obtener_lineas_pedido($id_pedido)

@@ -334,9 +334,11 @@ class SeleccionMaquina extends BaseFichar
         if ($buenas < 0 || $malas < 0 || $repasadas < 0) {
             return redirect()->to('/error')->with('error', 'Los valores no pueden ser negativos.');
         }
-    
+    // Creo la variable para almacenar el id de la relación del proceso usuario 
+    // y la inicializo con el valor del post.
         $idRelacionProcesoUsuario = $this->request->getPost('id_relacion_proceso_usuario');
-    
+
+    // Verifico que el id de la relación del proceso usuario no esté vacío.
         $db = $this->db;
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
@@ -344,6 +346,42 @@ class SeleccionMaquina extends BaseFichar
         if (!$registro) {
             return redirect()->to('/error')->with('error', 'Registro no encontrado.');
         }
+    // Obtengo el id de la línea de pedido del registro actual para guardar el valor de "buenas" en el último fichaje
+    $id_lineapedido = $registro['id_linea_pedido'];
+    $id_proceso = $registro['id_proceso_pedido'];
+    $lineaPedidoModel = $db->table('linea_pedidos');
+    $lineaPedido = $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)->get()->getRowArray();
+
+    // Obtengo el nombre del proceso asociado al id_proceso_pedido
+    $procesosModel = $db->table('procesos_pedidos');
+    $procesoPedido = $procesosModel->where('id_relacion', $id_proceso)->get()->getRowArray();
+
+    if ($procesoPedido) {
+        $idProceso = $procesoPedido['id_proceso'];
+        $procesoModel = $db->table('procesos');
+        $proceso = $procesoModel->where('id_proceso', $idProceso)->get()->getRowArray();
+
+        if ($proceso) {
+            $nom_proceso = $proceso['nombre_proceso'];
+        } else {
+            $nom_proceso = 'Proceso no encontrado';
+        }
+    } else {
+        $nom_proceso = 'Proceso pedido no encontrado';
+    }
+    //Si es el mismo proceso que el último fichaje, sumo el valor de "buenas" al último fichaje
+    if ($lineaPedido && $lineaPedido['id_proceso_actual'] == $registro['id_proceso_pedido']) {
+        $buenas += $lineaPedido['ultimo_fichaje'];
+        
+    } 
+    // Guardo el valor de "buenas" en el último fichaje de la línea de pedido y la id de proceso actual
+    $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)
+        ->update([
+            'ultimo_fichaje' => $buenas,
+            'id_proceso_actual' => $id_proceso,
+            'proceso' => $nom_proceso
+        ]);
+
     
         if ($action === 'falta_material') {
             $relacionModel->where('id', $idRelacionProcesoUsuario)
