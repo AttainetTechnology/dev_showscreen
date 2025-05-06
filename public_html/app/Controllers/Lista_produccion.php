@@ -64,10 +64,12 @@ class Lista_produccion extends BaseControllerGC
         $page = $this->request->getVar('page') ?? 1;
         $offset = ($page - 1) * $perPage;
 
+        // Carga el modelo de RelacionProcesoUsuario_model para verificar si hay escandallos
+        $relacionProcesosUsuariosModel = new RelacionProcesoUsuario_model($db);
+
         // Obtener los datos paginados de la tabla
         $builder = $db->table('v_linea_pedidos_con_familia');
-        $relacionProcesosUsuariosModel = new RelacionProcesoUsuario_model($db);
-        $builder->select('id_lineapedido, fecha_entrada, med_inicial, med_final, id_cliente, nom_base, id_producto, id_pedido, estado, id_familia');
+        $builder->select('id_lineapedido, n_piezas, ultimo_fichaje, proceso, fecha_entrada, med_inicial, med_final, id_cliente, nom_base, id_producto, id_pedido, estado, id_familia');
         $builder->where($coge_estado . $where_estado);
         $builder->orderBy('fecha_entrada', 'DESC');
 
