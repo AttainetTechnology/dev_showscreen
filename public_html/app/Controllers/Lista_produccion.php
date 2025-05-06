@@ -71,7 +71,7 @@ class Lista_produccion extends BaseControllerGC
         $builder = $db->table('v_linea_pedidos_con_familia');
         $builder->select('id_lineapedido, n_piezas, ultimo_fichaje, proceso, fecha_entrada, med_inicial, med_final, id_cliente, nom_base, id_producto, id_pedido, estado, id_familia');
         $builder->where($coge_estado . $where_estado);
-        $builder->orderBy('fecha_entrada', 'DESC');
+        $builder->orderBy('id_pedido', 'DESC');
 
         $total = $builder->countAllResults(false);
         $query = $builder->limit($perPage, $offset)->get();
@@ -94,7 +94,7 @@ class Lista_produccion extends BaseControllerGC
         }
 
         $ahora = date('d-m-y');
-        $titulo_pagina = "Partes " . $situacion . " - fecha: " . $ahora;
+        $titulo_pagina = "Partes " . $situacion;
         // Verificar la existencia de registros en relacion_procesos_usuarios para cada línea de pedido
         foreach ($result as &$row) {
             $row['tiene_escandallo'] = $relacionProcesosUsuariosModel->where('id_linea_pedido', $row['id_lineapedido'])->countAllResults() > 0;
