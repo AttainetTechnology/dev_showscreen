@@ -615,7 +615,9 @@ class Pedidos extends BaseController
 		if ($update) {
 			// Eliminar registros en relacion_proceso_usuario
 			$relacionProcesoUsuarioModel->where('id_linea_pedido', $id_lineapedido)->delete();
-
+			$procesosPedidoModel = new ProcesosPedido($db);
+			$procesosPedidoModel->where('id_linea_pedido', $id_lineapedido)->delete();
+			
 			// Actualizar el total del pedido
 			$this->actualizarTotalPedido($id_pedido);
 
