@@ -28,7 +28,11 @@ class Pedido_print_controller extends BaseControllerGC
         $Pedidos_model = model('App\Models\Pedidos_model');
         $data['pedido'] = $Pedidos_model->obtener_datos_pedido($id_pedido);
         $Lineaspedido_model = model('App\Models\Lineaspedido_model');
-        $data['lineas'] = $Lineaspedido_model->obtener_lineas_pedido($id_pedido);
+        
+        $lineas = $Lineaspedido_model->obtener_lineas_pedido($id_pedido);
+        $data['lineas'] = array_filter($lineas, function ($linea) {
+            return $linea->estado !== '6';
+        });
 
         echo view('header_partes');
         echo view('pedidos', (array) $data);
