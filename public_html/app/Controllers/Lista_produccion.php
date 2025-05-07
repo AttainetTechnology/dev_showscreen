@@ -81,12 +81,26 @@ class Lista_produccion extends BaseControllerGC
         $clientesModel = new \App\Models\ClienteModel($db);
         $familiasModel = new \App\Models\Familia_productos_model($db);
         $productosModel = new \App\Models\Productos_model($db);
+        $pedidosModel = new Pedidos_model($db);
         foreach ($result as &$row) {
-            $cliente = $clientesModel->find($row['id_cliente'])['nombre_cliente'] ?? 'Desconocido';
-            $row['pedido_completo'] = $row['id_pedido'] . ' - ' . $cliente;
-            $row['nombre_cliente'] = $cliente;
-            $row['nombre_familia'] = $familiasModel->find($row['id_familia'])['nombre'] ?? 'Desconocido';
-            $row['nombre_producto'] = $productosModel->find($row['id_producto'])['nombre_producto'] ?? 'Desconocido';
+            // Obtener el cliente
+            $clienteData = $clientesModel->asArray()->find($row['id_cliente']);
+            $cliente = $clienteData['nombre_cliente'] ?? 'Desconocido';
+
+            // Obtener la referencia desde la tabla pedidos
+            $pedido = $pedidosModel->asArray()->find($row['id_pedido']);
+            $referencia = $pedido['referencia'] ?? 'Sin referencia';
+
+            // Concatenar cliente y referencia en pedido_completo
+            $row['pedido_completo'] = $row['id_pedido'] . ' - ' . $cliente . ' - ' . $referencia;
+
+            // Otros campos
+            $familiaData = $familiasModel->asArray()->find($row['id_familia']);
+            $row['nombre_familia'] = $familiaData['nombre'] ?? 'Desconocido';
+
+            $productoData = $productosModel->asArray()->find($row['id_producto']);
+            $row['nombre_producto'] = $productoData['nombre_producto'] ?? 'Desconocido';
+
             $estado = $this->asignaEstado($row['estado']);
             $row['estado'] = $estado['nombre_estado'];
             $row['estado_clase'] = $estado['estado_clase'];

@@ -292,11 +292,17 @@
                     }
                 },
                 {
-                    headerName: 'Uds.',
-                    field: 'n_piezas',
-                    maxWidth: 100,
-                    filter: 'agTextColumnFilter',
-                    floatingFilter: true,
+                headerName: "Pzas",
+                field: "n_piezas",
+                filter: 'agTextColumnFilter',
+                minWidth: 10,
+                cellRenderer: function (params) {
+                    const nPzas = params.value || '';
+                    const ultimoFichaje = params.data.ultimo_fichaje && params.data.ultimo_fichaje != 0 
+                        ? `<a href="#" title="${params.data.proceso}" style="text-decoration: none; color: #007bff;">${params.data.ultimo_fichaje}</a>` 
+                        : '';
+                    return `${nPzas}${ultimoFichaje ? ` / ${ultimoFichaje}` : ''}`;
+                    }
                 },
                 {
                     headerName: 'Base',

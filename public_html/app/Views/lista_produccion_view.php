@@ -8,7 +8,7 @@
 
 <style>
     .row-separator {
-        border-top: 2px solid #999; /* Grey line */
+        border-top: 2px solid #222; /* Grey line */
     }
 </style>
 
@@ -44,10 +44,10 @@
     document.addEventListener('DOMContentLoaded', function () {
         const columnDefs = [
             {
-                headerName: "Pedido",
+                headerName: "Pedido - Cliente - Referencia",
                 field: "pedido_completo",
                 filter: 'agTextColumnFilter',
-                minWidth: 230,
+                minWidth: 300,
                 cellRenderer: params => {
                     return `<a href="/pedidos/edit/${params.data.id_pedido}" style="text-decoration: none; color: #007bff;">
                         ${params.value}
@@ -77,12 +77,9 @@
                 hide: true
             },
             {
-                headerClass: 'text-center',
-                cellClass: 'text-center',
                 headerName: "Pzas",
                 field: "n_piezas",
-                floatingFilter: 'false',
-                filter: 'false',
+                filter: 'agTextColumnFilter',
                 minWidth: 10,
                 cellRenderer: function (params) {
                     const nPzas = params.value || '';
@@ -96,6 +93,7 @@
                 headerName: "Base",
                 field: "nom_base",
                 filter: 'agTextColumnFilter',
+                minWidth: 290,
             },
             {
                 headerName: "Producto",

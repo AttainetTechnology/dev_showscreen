@@ -438,6 +438,7 @@ class Pedidos extends BaseController
 	}
 
 	// LOGICA LINEA PEDIDO
+	/*
 	public function mostrarLineasPedido($id_pedido)
 	{
 		$data = usuario_sesion();
@@ -445,7 +446,8 @@ class Pedidos extends BaseController
 		$lineaspedidoModel = new LineaPedido($db);
 		$lineas_pedido = $lineaspedidoModel->where('id_pedido', $id_pedido)->findAll();
 		return view('mostrarLineasPedido', ['lineas_pedido' => $lineas_pedido, 'pedido_id' => $id_pedido]);
-	}
+	}*/
+	
 	public function addLineaPedido()
 	{
 		$data = usuario_sesion();
