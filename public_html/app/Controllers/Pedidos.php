@@ -56,7 +56,10 @@ class Pedidos extends BaseController
 	{
 		$this->todos('estado<=', '6 AND (estado_incidencia=1 OR estado_incidencia=2)');
 	}
-
+	public function pendientes_albaran()
+	{
+		$this->todos('estado=', '4 AND albaran=""');
+	}
 
 	public function todos($coge_estado, $where_estado)
 	{
@@ -229,6 +232,7 @@ class Pedidos extends BaseController
 	}
 
 
+
 	public function duplicar($id_pedido)
 	{
 		$session = session();
@@ -328,6 +332,7 @@ class Pedidos extends BaseController
 			'observaciones' => $this->request->getPost('observaciones'),
 			'incidencia' => $this->request->getPost('incidencia'), // Actualizar incidencia
         	'estado_incidencia' => $this->request->getPost('estado_incidencia'),
+			'albaran' => $this->request->getPost('albaran'),
 		];
 
 		$updateData['estado'] = $pedido->estado;
@@ -709,9 +714,9 @@ class Pedidos extends BaseController
 		$nuevo_estado = min($activos);
 	}
 
+    
 	$pedidoModel = new Pedidos_model($db);
 	$pedidoModel->update($id_pedido, ['estado' => $nuevo_estado]);
-
 	return $nuevo_estado;
 }
 

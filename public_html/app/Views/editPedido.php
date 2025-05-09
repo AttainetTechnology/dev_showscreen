@@ -150,6 +150,11 @@
                 value="<?= esc($pedido->referencia) ?>">
         </div>
         <div class="form-group">
+            <label for="referencia">Albarán:</label>
+            <input type="text" id="albaran" name="albaran" class="form-control"
+                value="<?= esc($pedido->albaran) ?>">
+        </div>
+        <div class="form-group">
             <label for="fecha_entrada">Fecha de Entrada:</label>
             <input type="date" id="fecha_entrada" name="fecha_entrada" class="form-control"
                 value="<?= esc($pedido->fecha_entrada) ?>" required>

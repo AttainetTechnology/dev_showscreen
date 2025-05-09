@@ -126,6 +126,7 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
             },
 
             { headerName: "Referencia", field: "referencia", filter: 'agTextColumnFilter', flex: 1 },
+            { headerName: "Albarán", field: "albaran", filter: 'agTextColumnFilter', flex: 1 }, 
             { headerName: "Estado", field: "estado", filter: 'agTextColumnFilter', flex: 1 },
             {
                 headerName: "Fecha Entrada",
@@ -168,6 +169,7 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
 
 
                 referencia: "<?= $pedido->referencia ?>",
+                albaran: "<?= $pedido->albaran ?>",
                 estado: "<?= $estadoMap[$pedido->estado] ?>",
                 nombre_usuario: "<?= $pedido->nombre_usuario ?>",
                 total: "<?= $pedido->total_pedido ?>€",
