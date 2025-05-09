@@ -44,6 +44,18 @@ class Pedidos extends BaseController
 	{
 		$this->todos('estado=', '5');
 	}
+	public function incidencia_abierta()
+	{
+		$this->todos('estado<=', '6 AND estado_incidencia=1');
+	}
+	public function incidencia_espera()
+	{
+		$this->todos('estado<=', '6 AND estado_incidencia=2');
+	}
+	public function incidencia_todas()
+	{
+		$this->todos('estado<=', '6 AND (estado_incidencia=1 OR estado_incidencia=2)');
+	}
 
 
 	public function todos($coge_estado, $where_estado)
