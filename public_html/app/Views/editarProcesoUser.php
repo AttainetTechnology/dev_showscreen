@@ -76,7 +76,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><strong>Ultimo</strong></td>
+                                        <td><strong>Ultimos</strong></td>
                                         <td><?= esc($unidadesIndividuales['buenas']) ?></td>
                                         <td><?= esc($unidadesIndividuales['malas']) ?></td>
                                         <td><?= esc($unidadesIndividuales['repasadas']) ?></td>

@@ -574,6 +574,8 @@ class SeleccionMaquina extends BaseFichar
     public function ActualizarEstadoPedido($idRelacionProcesoUsuario)
     {
         $db = $this->db;
+
+        // Obtener el registro de la relación proceso-usuario
         $relacionModel = $db->table('relacion_proceso_usuario');
         $registro = $relacionModel->where('id', $idRelacionProcesoUsuario)->get()->getRowArray();
 
@@ -581,37 +583,36 @@ class SeleccionMaquina extends BaseFichar
             return redirect()->to('/error')->with('error', 'Registro no encontrado.');
         }
 
-        $idProcesoPedido = $registro['id_proceso_pedido'];
+        // Obtener el id_pedido desde la línea de pedido
+        $lineaPedidoModel = $db->table('linea_pedidos');
+        $lineaPedido = $lineaPedidoModel->where('id_lineapedido', $registro['id_linea_pedido'])->get()->getRowArray();
 
-        $procesosModel = $db->table('procesos_pedidos');
-        $procesoPedido = $procesosModel->where('id_relacion', $idProcesoPedido)->get()->getRowArray();
-
-        if (!$procesoPedido) {
-            return redirect()->to('/error')->with('error', 'No se encontró el proceso de pedido.');
+        if (!$lineaPedido) {
+            return redirect()->to('/error')->with('error', 'Línea de pedido no encontrada.');
         }
 
-        $idLineaPedido = $procesoPedido['id_linea_pedido'];
+        $idPedido = $lineaPedido['id_pedido'];
 
-        $lineaPedidoModel = $db->table('linea_pedidos');
-        $lineasPedido = $lineaPedidoModel->where('id_lineapedido', $idLineaPedido)->get()->getResultArray();
+        // Obtener todas las líneas de pedido asociadas al id_pedido
+        $lineasPedido = $lineaPedidoModel->where('id_pedido', $idPedido)->get()->getResultArray();
 
         if (empty($lineasPedido)) {
-            return redirect()->to('/error')->with('error', 'No se encontraron registros con el mismo id_linea_pedido.');
+            return redirect()->to('/error')->with('error', 'No se encontraron líneas de pedido asociadas al pedido.');
         }
 
-        $todosEnEstado4 = true;
+        // Verificar si todas las líneas están en estado 4
+        $todasEnEstado4 = true;
         foreach ($lineasPedido as $linea) {
             if ($linea['estado'] != 4) {
-                $todosEnEstado4 = false;
+                $todasEnEstado4 = false;
                 break;
             }
         }
 
-        if ($todosEnEstado4) {
-            $pedidoModel = $db->table('pedidos');
-            $pedidoModel->where('id_pedido', $registro['id_pedido'])
-                ->update(['estado' => 4]);
-        }
+        // Actualizar el estado del pedido
+        $pedidoModel = $db->table('pedidos');
+        $nuevoEstado = $todasEnEstado4 ? 4 : 3;
+        $pedidoModel->where('id_pedido', $idPedido)->update(['estado' => $nuevoEstado]);
 
         return true;
     }
