@@ -35,6 +35,27 @@ $estadoMap = [
     "5" => "Entregado",
     "6" => "Anulado"
 ];
+
+
+
+function iconoEstado($svg, $colorFondo, $tooltip) {
+    return '<span style="
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: ' . $colorFondo . ';
+        border-radius: 6px;
+        padding: 4px;
+        cursor: pointer;
+    " title="' . htmlspecialchars($tooltip) . '">' .
+        str_replace('fill="yellow"', 'fill="black"', $svg) .
+    '</span>';
+}
+
+
+$abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-bell" viewBox="0 0 16 16">
+<path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.7-14.75a.5.5 0 0 1 .6.5v.5c0 .276-.224.5-.5.5h-.4a.5.5 0 0 1-.5-.5v-.5a.5.5 0 0 1 .5-.5h.3zm-3.5 0a.5.5 0 0 1 .5.5v.5c0 .276-.224.5-.5.5h-.3a.5.5 0 0 1-.5-.5v-.5a.5.5 0 0 1 .5-.5h.3zm6.3 1.5a.5.5 0 0 1 .5.5v.5c0 .276-.224.5-.5.5h-.3a.5.5 0 0 1-.5-.5v-.5a.5.5 0 0 1 .5-.5h.3zM8 1a5.978 5.978 0 0 1 4.546 2.09c.346.41.654.87.91 1.364.256.494.46 1.02.61 1.564.15.544.234 1.11.234 1.682v2.5l1.5 1.5v.5H1v-.5l1.5-1.5v-2.5c0-.572.084-1.138.234-1.682.15-.544.354-1.07.61-1.564.256-.494.564-.954.91-1.364A5.978 5.978 0 0 1 8 1z"/>
+</svg>';
 ?>
 
 <div id="pedidoTable" class="ag-theme-alpine" style="height: 400px; width: 100%;"></div>
@@ -89,12 +110,21 @@ $estadoMap = [
                 cellRenderer: function (params) {
                     const copyBtn = `<button class="copy-btn botonTabla btnCopiar" onclick="copyToClipboard('${params.value}')">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                    <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 0 2 2H6a2 2 0 0 0-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
                     </svg></button>`;
                     return `${params.value} ${copyBtn}`;
                 }
             },
-            { headerName: "Cliente", field: "cliente", filter: 'agTextColumnFilter', flex: 2 },
+            {
+                headerName: "Cliente",
+                field: "cliente",
+                filter: 'agTextColumnFilter',
+                flex: 2,
+                cellRenderer: function (params) {
+                    return params.value;
+                }
+            },
+
             { headerName: "Referencia", field: "referencia", filter: 'agTextColumnFilter', flex: 1 },
             { headerName: "Estado", field: "estado", filter: 'agTextColumnFilter', flex: 1 },
             {
@@ -115,20 +145,35 @@ $estadoMap = [
             { headerName: "Total", field: "total", filter: 'agTextColumnFilter', flex: 1 }
         ];
 
-
         const rowData = [
             <?php foreach ($pedidos as $pedido): ?> {
-                    id_pedido: "<?= $pedido->id_pedido ?>",
-                    fecha_entrada: "<?= date('Y-m-d', strtotime($pedido->fecha_entrada)) ?>",
-                    fecha_entrega: "<?= date('Y-m-d', strtotime($pedido->fecha_entrega)) ?>",
-                    cliente: "<?= $pedido->nombre_cliente ?>",
-                    referencia: "<?= $pedido->referencia ?>",
-                    estado: "<?= $estadoMap[$pedido->estado] ?>",
-                    nombre_usuario: "<?= $pedido->nombre_usuario ?>",
-                    total: "<?= $pedido->total_pedido ?>€",
-                    bt_imprimir: <?= $pedido->bt_imprimir ?>,
-                    allowDelete: <?= json_encode($allow_delete) ?>
-                },
+                id_pedido: "<?= $pedido->id_pedido ?>",
+                fecha_entrada: "<?= date('Y-m-d', strtotime($pedido->fecha_entrada)) ?>",
+                fecha_entrega: "<?= date('Y-m-d', strtotime($pedido->fecha_entrega)) ?>",
+                cliente: `<?php
+                $tooltip = '';
+                if ($pedido->estado_incidencia == 1) {
+                    $tooltip = 'Abierta: ' . $pedido->incidencia;
+                } elseif ($pedido->estado_incidencia == 2) {
+                    $tooltip = 'En espera: ' . $pedido->incidencia;
+                }
+
+                echo ($pedido->estado_incidencia == 2
+                    ? iconoEstado($abiertaIcon, '#00bfff', $tooltip)
+                    : ($pedido->estado_incidencia == 1
+                        ? iconoEstado($abiertaIcon, 'orange', $tooltip)
+                        : '')
+                );
+                ?> <?= esc($pedido->nombre_cliente) ?>`,
+
+
+                referencia: "<?= $pedido->referencia ?>",
+                estado: "<?= $estadoMap[$pedido->estado] ?>",
+                nombre_usuario: "<?= $pedido->nombre_usuario ?>",
+                total: "<?= $pedido->total_pedido ?>€",
+                bt_imprimir: <?= $pedido->bt_imprimir ?>,
+                allowDelete: <?= json_encode($allow_delete) ?>
+            },
             <?php endforeach; ?>
         ];
 

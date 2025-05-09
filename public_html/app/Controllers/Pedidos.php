@@ -314,6 +314,8 @@ class Pedidos extends BaseController
 			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
+			'incidencia' => $this->request->getPost('incidencia'), // Actualizar incidencia
+        	'estado_incidencia' => $this->request->getPost('estado_incidencia'),
 		];
 
 		$updateData['estado'] = $pedido->estado;
@@ -735,6 +737,25 @@ public function updateBtImprimir($id_pedido)
     } catch (\Exception $e) {
         // Manejar errores del servidor
         return $this->response->setJSON(['success' => false, 'message' => 'Error del servidor: ' . $e->getMessage()]);
+    }
+}
+
+public function abrirIncidencia($id_pedido)
+{
+    $data = usuario_sesion();
+    $db = db_connect($data['new_db']);
+    $pedidoModel = new \App\Models\Pedidos_model($db);
+
+    // Obtener los datos enviados desde el formulario
+    $updateData = [
+        'incidencia' => $this->request->getPost('incidencia'),
+        'estado_incidencia' => $this->request->getPost('estado_incidencia')
+    ];
+
+    if ($pedidoModel->update($id_pedido, $updateData)) {
+        return redirect()->back()->with('success', 'Incidencia abierta correctamente.');
+    } else {
+        return redirect()->back()->with('error', 'No se pudo abrir la incidencia.');
     }
 }
 
