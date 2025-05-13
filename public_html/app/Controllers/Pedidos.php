@@ -228,6 +228,12 @@ class Pedidos extends BaseController
 		$data['amiga'] = $this->getBreadcrumbs();
 		$data['pedido'] = $pedido;
 		$data['lineas_pedido'] = $lineas_pedido;
+		//Paso las rutas de transporte a la vista
+		// Obtener rutas con detalles
+		$rutaModel = new \App\Models\Rutas_model($db);
+		$data['rutas'] = $rutaModel->getRutasWithDetails('id_pedido', $id_pedido);
+
+
 		return view('editPedido', $data);
 	}
 

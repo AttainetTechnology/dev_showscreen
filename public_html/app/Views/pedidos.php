@@ -125,6 +125,7 @@ foreach ($pedido as $ped) { ?>
                     </div>
                 </div>
             <?php } ?>
+ 
 
             <!-- Pie de página -->
             <div class="detalles-pie">
