@@ -55,8 +55,9 @@ class Index extends BaseController
         $data['terminados'] = $this->cuenta('4', $db);
 
         $data['piezasfamilia'] = $this->pedidos_tabla($estado, $db);
-        $data['rutas'] = $this->rutas_home($db);
-        $data['faltaMaterial'] = $this->obtenerFaltaMaterial($db);
+        $data['rutas'] = array_map(function ($ruta) {
+    return (array) $ruta;
+}, (new \App\Models\Rutas_model($db))->getRutasWithDetails('rutas.estado_ruta <', 2));
 
 
         if ($estado == 0) {
@@ -178,30 +179,7 @@ class Index extends BaseController
         }
     }
 
-    public function rutas_home($db)
-    {
-        $builder = new Rutas_model($db);
-        try {
-            $query = $builder
-                ->where('rutas.estado_ruta <', '2')  // table name in lowercase
-                ->join('poblaciones_rutas', 'poblaciones_rutas.id_poblacion = rutas.poblacion')  // table name in lowercase
-                ->orderBy('poblacion', 'DESC')
-                ->select('poblaciones_rutas.poblacion, rutas.recogida_entrega')  // table name in lowercase
-                ->findAll();
 
-            if ($query === false) {
-                // Log detailed error message
-                log_message('error', 'Query failed: ' . json_encode($db->error()));
-                return [];
-            }
-
-            return $query;
-        } catch (\Exception $e) {
-            // Log the error or handle it appropriately
-            log_message('error', $e->getMessage());
-            return [];
-        }
-    }
     public function incidencias()
     {
         echo "La función incidencias() se ha llamado correctamente."; // Mensaje de depuración

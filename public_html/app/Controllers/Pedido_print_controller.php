@@ -23,17 +23,27 @@ class Pedido_print_controller extends BaseControllerGC
         if ($redirect && is_string($redirectUrl)) {
             return redirect()->to($redirectUrl);
         }
-        //Saco los detalles del pedido
 
-        $Pedidos_model = model('App\Models\Pedidos_model');
+        // Obtener datos de sesión y conectar a la base de datos
+        $data = datos_user();
+        $db = db_connect($data['new_db']);
+
+        // Saco los detalles del pedido
+        $Pedidos_model = new \App\Models\Pedidos_model($db);
         $data['pedido'] = $Pedidos_model->obtener_datos_pedido($id_pedido);
-        $Lineaspedido_model = model('App\Models\Lineaspedido_model');
-        
+
+        // Obtener las líneas del pedido
+        $Lineaspedido_model = new \App\Models\Lineaspedido_model($db);
         $lineas = $Lineaspedido_model->obtener_lineas_pedido($id_pedido);
         $data['lineas'] = array_filter($lineas, function ($linea) {
             return $linea->estado !== '6';
         });
 
+        // Obtener las rutas asociadas al pedido
+        $Rutas2_model = new \App\Models\Rutas_model($db);
+        $data['rutas'] = $Rutas2_model->getRutasPorPedido($id_pedido);
+
+        // Cargar las vistas
         echo view('header_partes');
         echo view('pedidos', (array) $data);
         echo view('footer');

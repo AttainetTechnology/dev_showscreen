@@ -47,18 +47,18 @@ class Rutas_model extends Model
 
     // Obtener rutas con detalles adicionales
     public function getRutasWithDetails($coge_estado, $where_estado)
-{
-    $this->select('rutas.*, 
-                   clientes.nombre_cliente, 
-                   poblaciones_rutas.poblacion AS nombre_poblacion, 
-                   CONCAT(users.nombre_usuario, " ", users.apellidos_usuario) AS nombre_transportista, 
-                   rutas.estado_ruta AS ruta_estado'); // Asegúrate de que este campo esté incluido
-    $this->join('clientes', 'rutas.id_cliente = clientes.id_cliente', 'left');
-    $this->join('poblaciones_rutas', 'rutas.poblacion = poblaciones_rutas.id_poblacion', 'left');
-    $this->join('users', 'rutas.transportista = users.id', 'left');
-    $this->where($coge_estado, $where_estado);
-    return $this->findAll();
-}
+    {
+        $this->select('rutas.*, 
+                       clientes.nombre_cliente, 
+                       poblaciones_rutas.poblacion AS nombre_poblacion, 
+                       CONCAT(users.nombre_usuario, " ", users.apellidos_usuario) AS nombre_transportista, 
+                       rutas.estado_ruta AS ruta_estado'); // Asegúrate de que este campo esté incluido
+        $this->join('clientes', 'rutas.id_cliente = clientes.id_cliente', 'left');
+        $this->join('poblaciones_rutas', 'rutas.poblacion = poblaciones_rutas.id_poblacion', 'left');
+        $this->join('users', 'rutas.transportista = users.id', 'left');
+        $this->where($coge_estado, $where_estado);
+        return $this->findAll();
+    }
 
     // Obtener el nombre del cliente por el ID del pedido
     public function getNombreClienteByPedido($id_pedido)
@@ -75,7 +75,13 @@ class Rutas_model extends Model
     // Obtener rutas por ID de pedido
     public function getRutasPorPedido($id_pedido)
     {
-        return $this->where('id_pedido', $id_pedido)->findAll();
+        $this->select('rutas.*, 
+                       poblaciones_rutas.poblacion AS nombre_poblacion, 
+                       CONCAT(users.nombre_usuario, " ", users.apellidos_usuario) AS nombre_transportista');
+        $this->join('poblaciones_rutas', 'rutas.poblacion = poblaciones_rutas.id_poblacion', 'left');
+        $this->join('users', 'rutas.transportista = users.id', 'left');
+        $this->where('rutas.id_pedido', $id_pedido);
+        return $this->findAll();
     }
 
     // Obtener nombre del transportista por su ID
