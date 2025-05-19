@@ -53,7 +53,6 @@
                                         <th>Nº de Piezas</th>
                                         <th>Med. inicial</th>
                                         <th>Med. final</th>
-                                        <th>Producto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,13 +72,12 @@
                                             <td class="nombre_proceso"><?= $proceso['id_linea_pedido'] ?></td>
                                                 <td><?= $proceso['nombre_cliente'] ?></td>
                                                 <td>
-                                                <?= $proceso['nombre_proceso'] ?>
+                                                <?= $proceso['nombre_proceso'] ?><br><img src="<?= $proceso['imagen_producto'] ?>" alt="Imagen de producto"
+                                                        width="100"><br><strong><?= $proceso['nombre_producto'] ?></strong>
                                                 </td>
                                                 <td><strong><?= $proceso['n_piezas'] ?></strong> pzas <?= $proceso['nom_base'] ?></td>
                                                 <td><?= $proceso['med_inicial'] ?></td>
                                                 <td><?= $proceso['med_final'] ?></td>
-                                                <td><strong><?= $proceso['nombre_producto'] ?></strong><br><img src="<?= $proceso['imagen_producto'] ?>" alt="Imagen de producto"
-                                                        width="100"></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
