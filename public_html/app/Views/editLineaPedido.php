@@ -105,6 +105,14 @@
                 rows="3"><?= esc($linea_pedido['observaciones']) ?></textarea>
         </div>
         <br>
+            <?php if (isset($nivel_acceso) && $nivel_acceso > 8): ?>
+                <div class="form-group">
+                    <label for="ultimo_fichaje">Pzas. finales:</label>
+                    <textarea name="ultimo_fichaje" class="form-control"
+                        rows="3"><?= esc($linea_pedido['ultimo_fichaje']) ?></textarea>
+                </div>
+            <?php endif; ?>
+        <br>
         <div class="buttonsEditProductProveedAbajo">
             <button type="button" class="boton volverButton" data-bs-dismiss="modal">
                 Cerrar

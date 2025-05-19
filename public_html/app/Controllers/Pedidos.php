@@ -535,6 +535,7 @@ class Pedidos extends BaseController
 			'fecha_entrega' => $this->request->getPost('fecha_entrega') ?? null,
 			'observaciones' => $this->request->getPost('observaciones') ?? null,
 			'total_linea' => ($this->request->getPost('n_piezas') && $this->request->getPost('precio_venta')) ? $this->request->getPost('n_piezas') * $this->request->getPost('precio_venta') : null,
+			'ultimo_fichaje' => $this->request->getPost('ultimo_fichaje') ?? null,
 		];
 
 		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
@@ -576,6 +577,9 @@ class Pedidos extends BaseController
 	{
 		$data = datos_user();
 		$db = db_connect($data['new_db']);
+		$session = session();
+		$session_data = $session->get('logged_in');
+		$nivel_acceso = $session_data['nivel'];
 		$productosModel = new Productos_model($db);
 		$estadoModel = new EstadoModel($db);
 		$lineaPedidoModel = new LineaPedido($db);
@@ -591,6 +595,7 @@ class Pedidos extends BaseController
 		$data['estados'] = $estadoModel->findAll();
 		$data['linea_pedido'] = $linea_pedido;
 		$data['isEstadoEnCola'] = $isEstadoEnCola;
+		$data['nivel_acceso'] = $nivel_acceso;
 
 		if ($this->request->isAJAX()) {
 			return view('editLineaPedido', $data);
