@@ -15,7 +15,7 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4 col-sm-12 columna1 divMaquinas">
+                <div class="col-md-3 col-sm-12 columna1 divMaquinas">
                     <form action="<?= site_url('selectMaquina') ?>" method="POST">
                         <div class="table-responsive">
                             <table class="maquina table table-bordered w-100" style="table-layout: fixed;">
@@ -39,7 +39,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-8 col-sm-12 columna2">
+                <div class="col-md-9 col-sm-12 columna2">
                     <?php if (isset($procesos) && !empty($procesos)): ?>
                         <h2><?= $nombreMaquinaSeleccionada ?></h2>
                         <div class="table-responsive">
@@ -51,6 +51,8 @@
                                         <th>Cliente</th>
                                         <th>Proceso</th>
                                         <th>Nº de Piezas</th>
+                                        <th>Med. inicial</th>
+                                        <th>Med. final</th>
                                         <th>Producto</th>
                                     </tr>
                                 </thead>
@@ -74,6 +76,8 @@
                                                 <?= $proceso['nombre_proceso'] ?>
                                                 </td>
                                                 <td><strong><?= $proceso['n_piezas'] ?></strong> pzas <?= $proceso['nom_base'] ?></td>
+                                                <td><?= $proceso['med_inicial'] ?></td>
+                                                <td><?= $proceso['med_final'] ?></td>
                                                 <td><strong><?= $proceso['nombre_producto'] ?></strong><br><img src="<?= $proceso['imagen_producto'] ?>" alt="Imagen de producto"
                                                         width="100"></td>
                                         </tr>
