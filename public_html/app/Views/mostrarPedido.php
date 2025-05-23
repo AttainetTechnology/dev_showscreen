@@ -127,7 +127,7 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
 
             { headerName: "Referencia", field: "referencia", filter: 'agTextColumnFilter', flex: 1 },
             { headerName: "Albarán", field: "albaran", filter: 'agTextColumnFilter', flex: 1 }, 
-            { headerName: "Estado", field: "estado", filter: 'agTextColumnFilter', flex: 1 },
+
             {
                 headerName: "Fecha Entrada",
                 field: "fecha_entrada",
@@ -136,14 +136,20 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
                 valueFormatter: formatDate
             },
             {
-                headerName: "Fecha Entrega",
+                headerName: "Fecha entrega",
                 field: "fecha_entrega",
                 filter: 'agTextColumnFilter',
                 flex: 1,
-                valueFormatter: formatDate
+                valueFormatter: formatDate,
+                cellRenderer: function(params) {
+                    // Si hay fecha_compromiso, mostrarla en negrita y fondo amarillo fosforescente
+                    if (params.data.fecha_compromiso && params.data.fecha_compromiso !== '') {
+                        return `<span style="font-weight:bold;background-color:#ffff00;padding:2px 6px;border-radius:4px;">${formatDate({value: params.data.fecha_compromiso})}</span>`;
+                    }
+                    // Si no, mostrar fecha_entrega normal
+                    return formatDate(params);
+                }
             },
-            { headerName: "Usuario", field: "nombre_usuario", filter: 'agTextColumnFilter', flex: 1 },
-            { headerName: "Total", field: "total", filter: 'agTextColumnFilter', flex: 1 }
         ];
 
         const rowData = [
@@ -151,6 +157,7 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
                 id_pedido: "<?= $pedido->id_pedido ?>",
                 fecha_entrada: "<?= date('Y-m-d', strtotime($pedido->fecha_entrada)) ?>",
                 fecha_entrega: "<?= date('Y-m-d', strtotime($pedido->fecha_entrega)) ?>",
+                fecha_compromiso: "<?= empty($pedido->fecha_compromiso) ? '' : date('Y-m-d', strtotime($pedido->fecha_compromiso)) ?>",
                 cliente: `<?php
                 $tooltip = '';
                 if ($pedido->estado_incidencia == 1) {

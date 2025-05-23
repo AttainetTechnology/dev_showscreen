@@ -60,6 +60,10 @@ class Pedidos extends BaseController
 	{
 		$this->todos('estado=', '4 AND albaran=""');
 	}
+		public function compromisos()
+	{
+		$this->todos('estado=', '4 AND fecha_compromiso != ""');
+	}
 
 	public function todos($coge_estado, $where_estado)
 	{
@@ -339,7 +343,9 @@ class Pedidos extends BaseController
 			'incidencia' => $this->request->getPost('incidencia'), // Actualizar incidencia
         	'estado_incidencia' => $this->request->getPost('estado_incidencia'),
 			'albaran' => $this->request->getPost('albaran'),
+			'fecha_compromiso' => $this->request->getPost('fecha_compromiso'),
 		];
+
 
 		$updateData['estado'] = $pedido->estado;
 
@@ -536,7 +542,23 @@ class Pedidos extends BaseController
 			'observaciones' => $this->request->getPost('observaciones') ?? null,
 			'total_linea' => ($this->request->getPost('n_piezas') && $this->request->getPost('precio_venta')) ? $this->request->getPost('n_piezas') * $this->request->getPost('precio_venta') : null,
 			'ultimo_fichaje' => $this->request->getPost('ultimo_fichaje') ?? null,
+			'fecha_compromiso' => $this->request->getPost('fecha_compromiso') ?? null,
 		];
+
+	if (!empty($updateData['fecha_compromiso'])) {
+		// Obtener el id_pedido de la línea
+		$id_pedido = $this->request->getPost('id_pedido');
+		if ($id_pedido) {
+			$pedidoModel = new Pedidos_model($db);
+			$pedido = $pedidoModel->find($id_pedido);
+			if ($pedido && !empty($pedido->fecha_compromiso)) {
+				// Comparar fechas (formato Y-m-d)
+				if ($pedido->fecha_compromiso > $updateData['fecha_compromiso']) {
+					$pedidoModel->update($id_pedido, ['fecha_compromiso' => $updateData['fecha_compromiso']]);
+				}
+			}
+		}
+	}
 
 		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
 			$id_pedido = $this->request->getPost('id_pedido');

@@ -99,6 +99,15 @@
             <input type="date" name="fecha_entrega" class="form-control"
                 value="<?= esc($linea_pedido['fecha_entrega']) ?>">
         </div>
+        <div class="form-group"
+            <?php if (!empty($linea_pedido['fecha_compromiso'])): ?>
+            style="background-color: #ffff00; padding: 10px;"
+            <?php endif; ?>
+        >
+            <label for="fecha_entrega">Fecha de Compromiso:</label>
+            <input type="date" name="fecha_compromiso" class="form-control"
+            value="<?= esc($linea_pedido['fecha_compromiso']) ?>">
+        </div>
         <div class="form-group">
             <label for="observaciones">Observaciones:</label>
             <textarea name="observaciones" class="form-control"

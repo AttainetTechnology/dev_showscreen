@@ -25,21 +25,33 @@
     }
 </style>
 <div class="container mt-5 editpedido">
-
-    <h2 class="titleditPedido">Editar Pedido</h2>
-    <div class="mb-3">
-    <span class="badge bg-secondary" style="font-size: 16px;">
-        Estado actual: <strong><?= $estados_texto[$pedido->estado] ?? 'Desconocido' ?></strong>
-    </span>
-    <?php if ($pedido->bt_imprimir == 0): ?>
-                <span class="badge bg-warning" style="font-size: 12px;">Pedido en Redacción</span>
-    <?php endif; ?>  
-    <?php if ($pedido->bt_imprimir == 1): ?>
-                <span class="badge bg-warning" style="font-size: 12px;">Pendiente de imprimir</span>
-    <?php endif; ?>
-    <?php if ($pedido->bt_imprimir == 2): ?>
-                <span class="badge bg-success" style="font-size: 12px;">Pedido impreso</span>
-    <?php endif; ?>
+    <div class="row" style="display: flex; align-items: flex-start; gap: 40px; flex-wrap: wrap;">
+        <div class="d-flex align-items-center mb-3" style="gap: 20px; padding: 0;">
+            <div>
+                <h2 class="titulo" style="margin-bottom: 0;">Editar Pedido</h2>
+            </div>
+            <div>
+                <span class="badge bg-secondary" style="font-size: 12px;">
+                    Estado actual: <strong><?= $estados_texto[$pedido->estado] ?? 'Desconocido' ?></strong>
+                </span>
+            </div>
+            <div>
+                <?php if ($pedido->bt_imprimir == 0): ?>
+                    <span class="badge bg-warning" style="font-size: 12px;">Pedido en Redacción</span>
+                <?php endif; ?>  
+                <?php if ($pedido->bt_imprimir == 1): ?>
+                    <span class="badge bg-warning" style="font-size: 12px;">Pendiente de imprimir</span>
+                <?php endif; ?>
+                <?php if ($pedido->bt_imprimir == 2): ?>
+                    <span class="badge bg-success" style="font-size: 12px;">Pedido impreso</span>
+                <?php endif; ?>
+            </div>
+            <div style="margin-left:auto; background: #000; color: #fff; display: flex; align-items: center; height: 48px; padding: 0 24px; border-radius: 8px;">
+                <label style="margin: 0 10px 0 0;">ID:</label>
+                <strong style="font-size: 28px; color: #fff; text-align: center; width: 100%; display: block;"><?= esc($pedido->id_pedido) ?></strong>
+            </div>
+        </div>
+    </div>
 </div>
     <div class="mb-3">
         <label for="acciones" class="form-label"></label>
@@ -180,11 +192,6 @@
         
     </div>
 <?php endif; ?>
-      
-        <div class="form-group" style="font-size:15px;">
-            <label>ID del Pedido:</label>
-            <strong><?= esc($pedido->id_pedido) ?></strong> <label>- pedido por:</label> <strong><?= esc($pedido->pedido_por) ?></strong>
-        </div>
         <div class="btnsEditPedido">
             <a href="<?= base_url('/pedidos/enmarcha') ?>" class="boton volverButton">
                 Volver

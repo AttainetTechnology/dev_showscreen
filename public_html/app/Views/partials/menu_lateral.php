@@ -32,6 +32,7 @@
 
 
                         ?>
+
                         <!-- Elemento del menú -->
                         <div class="accordion-item" id="menu-item-<?= $index ?>">
                             <h2 class="accordion-header" id="heading<?= $index ?>">
@@ -45,7 +46,7 @@
                                 <div class="accordion-body">
                                     <!-- Submenú si existe -->
                                     <?php if (!empty($menuItem['submenu'])) : ?>
-                                        <ul class="submenu list-unstyled">
+                                       <? echo $nivelUsuario; ?> <ul class="submenu list-unstyled">
                                             <!-- Iterando sobre los elementos del submenú -->
                                             <?php foreach ($menuItem['submenu'] as $subIndex => $subMenuItem) : ?>
                                                 <!-- Filtro menu por activo y nivel  -->
