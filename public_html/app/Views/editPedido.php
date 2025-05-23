@@ -78,7 +78,7 @@
             </a>
             <?php endif; ?>
 
-            <!-- Modal -->
+            <!-- Modal de rutas -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -136,62 +136,77 @@
             <?php endif; ?>
         </div>
     </div>
+    <!-- Comienzo del formulario -->
     <form action="<?= base_url('pedidos/update/' . $pedido->id_pedido) ?>" method="post" class="formeditPedido">
-        <div class="form-group">
-            <label for="id_cliente">Empresa:</label>
-            <select id="id_cliente" name="id_cliente" class="form-control" required>
-                <?php foreach ($clientes as $cliente): ?>
-                    <option value="<?= $cliente['id_cliente'] ?>" <?= $pedido->id_cliente == $cliente['id_cliente'] ? 'selected' : '' ?>>
-                        <?= $cliente['nombre_cliente'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="id_cliente">Empresa:</label>
+                <select id="id_cliente" name="id_cliente" class="form-control" required>
+                    <?php foreach ($clientes as $cliente): ?>
+                        <option value="<?= $cliente['id_cliente'] ?>" <?= $pedido->id_cliente == $cliente['id_cliente'] ? 'selected' : '' ?>>
+                            <?= $cliente['nombre_cliente'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="referencia">Referencia:</label>
+                <input type="text" id="referencia" name="referencia" class="form-control"
+                    value="<?= esc($pedido->referencia) ?>">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="albaran">Albarán:</label>
+                <input type="text" id="albaran" name="albaran" class="form-control"
+                    value="<?= esc($pedido->albaran) ?>">
+            </div>
         </div>
-
-        <div class="form-group">
-            <label for="referencia">Referencia:</label>
-            <input type="text" id="referencia" name="referencia" class="form-control"
-                value="<?= esc($pedido->referencia) ?>">
-        </div>
-        <div class="form-group">
-            <label for="referencia">Albarán:</label>
-            <input type="text" id="albaran" name="albaran" class="form-control"
-                value="<?= esc($pedido->albaran) ?>">
-        </div>
-        <div class="form-group">
+        <div class="row">
+            <div class="form-group col-md-4">
             <label for="fecha_entrada">Fecha de Entrada:</label>
             <input type="date" id="fecha_entrada" name="fecha_entrada" class="form-control"
                 value="<?= esc($pedido->fecha_entrada) ?>" required>
-        </div>
-        <div class="form-group">
+            </div>
+            <div class="form-group col-md-4">
             <label for="fecha_entrega">Fecha de Entrega:</label>
             <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control"
                 value="<?= esc($pedido->fecha_entrega) ?>" required>
+            </div>
+            <div class="form-group col-md-4"
+                <?php if (!empty($pedido->fecha_compromiso)): ?>
+                    style="background: #ffff00; padding: 10px;"
+                <?php endif; ?>
+            >
+                <label for="fecha_compromiso">Fecha de compromiso:</label>
+                <input type="date" id="fecha_compromiso" name="fecha_compromiso" class="form-control"
+                    value="<?= esc($pedido->fecha_compromiso) ?>" required
+                    <?php if (!empty($pedido->fecha_compromiso)): ?>
+                        style="font-weight: bold;"
+                    <?php endif; ?>
+                >
+            </div>
         </div>
-        <div class="form-group">
-            <label for="observaciones">Observaciones:</label>
-            <textarea id="observaciones" name="observaciones" class="form-control"
-                style="height: 60px;"><?= esc($pedido->observaciones) ?></textarea>
+        <div class="row">
+            <div class="form-group col-6">
+                <label for="observaciones">Observaciones:</label>
+                <textarea id="observaciones" name="observaciones" class="form-control"
+                    style="height: 60px;"><?= esc($pedido->observaciones) ?></textarea>
+            </div>
+            <?php if (!empty($pedido->incidencia)): ?>
+            <div class="form-group col-6" style="background-color: 
+                <?= $pedido->estado_incidencia == 1 ? 'orange' : ($pedido->estado_incidencia == 2 ? '#00bfff' : '#ccffcc') ?>; 
+                padding: 10px; border-radius: 5px;">
+                    <div class="form-group col-3" style="margin-right:10px">
+                        <select id="estado_incidencia" name="estado_incidencia" class="form-control" onchange="actualizarEstadoIncidencia(<?= $pedido->id_pedido ?>, this.value)">
+                        <option value="1" <?= $pedido->estado_incidencia == 1 ? 'selected' : '' ?>>Incidencia abierta</option>
+                        <option value="2" <?= $pedido->estado_incidencia == 2 ? 'selected' : '' ?>>Incidencia en espera</option>
+                        <option value="3" <?= $pedido->estado_incidencia == 3 ? 'selected' : '' ?>>Incidencia Cerrada</option>
+                        </select>
+                    </div>
+                <div class="form-group">
+                    <textarea id="incidencia" name="incidencia" class="form-control" rows="5" style="min-height:5em;"><?= esc($pedido->incidencia) ?></textarea></div>
+            </div>
+            <?php endif; ?>
         </div>
-        <?php if (!empty($pedido->incidencia)): ?>
-    <div class="form-group col-12 d-flex" style="background-color: 
-        <?= $pedido->estado_incidencia == 1 ? 'orange' : ($pedido->estado_incidencia == 2 ? '#00bfff' : '#ccffcc') ?>; 
-        padding: 10px; border-radius: 5px;">
-    <div class="form-group col-2 ps-2" style="margin-right:10px"
-            <label for="estado_incidencia">Estado de la incidencia:</label>
-            <select id="estado_incidencia" name="estado_incidencia" class="form-control" onchange="actualizarEstadoIncidencia(<?= $pedido->id_pedido ?>, this.value)">
-                <option value="1" <?= $pedido->estado_incidencia == 1 ? 'selected' : '' ?>>Incidencia abierta</option>
-                <option value="2" <?= $pedido->estado_incidencia == 2 ? 'selected' : '' ?>>En espera</option>
-                <option value="3" <?= $pedido->estado_incidencia == 3 ? 'selected' : '' ?>>Cerrada</option>
-            </select>
-        </div>    
-    <div class="form-group col-10 pe-2">
-            <label for="incidencia">Incidencia:</label>
-            <textarea id="incidencia" name="incidencia" class="form-control" rows="5"><?= esc($pedido->incidencia) ?></textarea>
-        </div>
-        
-    </div>
-<?php endif; ?>
         <div class="btnsEditPedido">
             <a href="<?= base_url('/pedidos/enmarcha') ?>" class="boton volverButton">
                 Volver
