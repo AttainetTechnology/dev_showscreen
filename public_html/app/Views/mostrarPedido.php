@@ -137,7 +137,7 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
             },
             {
                 headerName: "Fecha entrega",
-                field: "fecha_entrega",
+                field: "fecha_compromiso",
                 filter: 'agTextColumnFilter',
                 flex: 1,
                 valueFormatter: formatDate,
@@ -162,6 +162,10 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
                         return `<span style="font-weight:bold;background-color:${bgColor};color:${color};padding:2px 6px;border-radius:4px;">${formatDate({value: params.data.fecha_compromiso})}</span>`;
                     }
                     // Si no, mostrar fecha_entrega normal
+                    // Si no hay fecha_compromiso, mostrar fecha_entrega
+                    if (!params.data.fecha_compromiso || params.data.fecha_compromiso === '') {
+                        return formatDate({value: params.data.fecha_entrega});
+                    }
                     return formatDate(params);
                 }
             },

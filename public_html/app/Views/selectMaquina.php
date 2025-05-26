@@ -24,7 +24,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Si hay procesos activos -->
+                                    <!-- Si hay procesos muestro listado-->
                                     <?php foreach ($maquinas as $maquina): ?>
                                         <tr>
                                             <td style="word-wrap: break-word; overflow: hidden; text-overflow: ellipsis;">
@@ -46,8 +46,7 @@
                             <table class="procesos table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th></th>
-                                        <th>Parte <input type="text" id="searchParte" onkeyup="filtrarPartes()" placeholder="Buscar..." style="width:80%;"></th> </th>
+                                        <th colspan="2">Parte <input type="text" id="searchParte" onkeyup="filtrarPartes()" placeholder="Buscar..." style="width:80%;"></th> </th>
                                         <th>Cliente</th>
                                         <th>Proceso</th>
                                         <th>Nº de Piezas</th>
@@ -70,8 +69,49 @@
                                                 </form>
                                             </td>
                                             <td class="nombre_proceso"><?= $proceso['id_linea_pedido'] ?></td>
-                                                <td><?= $proceso['nombre_cliente'] ?></td>
-                                                <td>
+                                            <td>
+                                                <?= $proceso['nombre_cliente'] ?>
+                                                <?php if (!empty($proceso['fecha_compromiso'])): ?>
+                                                    <?php
+                                                        setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain.1252');
+                                                        $fecha = DateTime::createFromFormat('Y-m-d', $proceso['fecha_compromiso']);
+                                                        if ($fecha) {
+                                                            $dias = [
+                                                                'Monday' => 'Lunes',
+                                                                'Tuesday' => 'Martes',
+                                                                'Wednesday' => 'Miércoles',
+                                                                'Thursday' => 'Jueves',
+                                                                'Friday' => 'Viernes',
+                                                                'Saturday' => 'Sábado',
+                                                                'Sunday' => 'Domingo'
+                                                            ];
+                                                            $meses = [
+                                                                'January' => 'enero',
+                                                                'February' => 'febrero',
+                                                                'March' => 'marzo',
+                                                                'April' => 'abril',
+                                                                'May' => 'mayo',
+                                                                'June' => 'junio',
+                                                                'July' => 'julio',
+                                                                'August' => 'agosto',
+                                                                'September' => 'septiembre',
+                                                                'October' => 'octubre',
+                                                                'November' => 'noviembre',
+                                                                'December' => 'diciembre'
+                                                            ];
+                                                            $diaSemana = $dias[$fecha->format('l')];
+                                                            $dia = $fecha->format('j');
+                                                            $mes = $meses[$fecha->format('F')];
+                                                            $anio = $fecha->format('Y');
+                                                            $fechaFormateada = "$diaSemana $dia $mes $anio";
+                                                        } else {
+                                                            $fechaFormateada = $proceso['fecha_compromiso'];
+                                                        }
+                                                    ?>
+                                                    <br>Fecha Entrega:<br><span style="background-color: #ffff00; font-weight: bold;"><?= $fechaFormateada ?></span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
                                                 <?= $proceso['nombre_proceso'] ?><br><img src="<?= $proceso['imagen_producto'] ?>" alt="Imagen de producto"
                                                         width="100"><br><strong><?= $proceso['nombre_producto'] ?></strong>
                                                 </td>
@@ -108,7 +148,48 @@
                                                         class="btn boton btnEditar">Editar</a>
                                                 </td>
                                                 <td class="nombre_proceso"><?= $proceso['id_linea_pedido'] ?></td>
-                                                <td><?= $proceso['nombre_cliente'] ?></td>
+                                                <td>
+                                                <?= $proceso['nombre_cliente'] ?>
+                                                <?php if (!empty($proceso['fecha_compromiso'])): ?>
+                                                    <?php
+                                                        setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain.1252');
+                                                        $fecha = DateTime::createFromFormat('Y-m-d', $proceso['fecha_compromiso']);
+                                                        if ($fecha) {
+                                                            $dias = [
+                                                                'Monday' => 'Lunes',
+                                                                'Tuesday' => 'Martes',
+                                                                'Wednesday' => 'Miércoles',
+                                                                'Thursday' => 'Jueves',
+                                                                'Friday' => 'Viernes',
+                                                                'Saturday' => 'Sábado',
+                                                                'Sunday' => 'Domingo'
+                                                            ];
+                                                            $meses = [
+                                                                'January' => 'enero',
+                                                                'February' => 'febrero',
+                                                                'March' => 'marzo',
+                                                                'April' => 'abril',
+                                                                'May' => 'mayo',
+                                                                'June' => 'junio',
+                                                                'July' => 'julio',
+                                                                'August' => 'agosto',
+                                                                'September' => 'septiembre',
+                                                                'October' => 'octubre',
+                                                                'November' => 'noviembre',
+                                                                'December' => 'diciembre'
+                                                            ];
+                                                            $diaSemana = $dias[$fecha->format('l')];
+                                                            $dia = $fecha->format('j');
+                                                            $mes = $meses[$fecha->format('F')];
+                                                            $anio = $fecha->format('Y');
+                                                            $fechaFormateada = "$diaSemana $dia $mes $anio";
+                                                        } else {
+                                                            $fechaFormateada = $proceso['fecha_compromiso'];
+                                                        }
+                                                    ?>
+                                                    <br>Fecha Entrega:<br><span style="background-color: #ffff00; font-weight: bold;"><?= $fechaFormateada ?></span>
+                                                <?php endif; ?>
+                                            </td>
                                                 <td>
                                                 <?= $proceso['nombre_proceso'] ?>
                                                 </td>

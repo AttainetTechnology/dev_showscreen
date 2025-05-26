@@ -23,7 +23,48 @@
                 <tbody>
                     <tr>
                         <td><?= esc($proceso['id_linea_pedido']) ?></td>
-                        <td><?= esc($proceso['nombre_cliente']) ?></td>
+                        <td>
+                                                <?= $proceso['nombre_cliente'] ?>
+                                                <?php if (!empty($proceso['fecha_compromiso'])): ?>
+                                                    <?php
+                                                        setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain.1252');
+                                                        $fecha = DateTime::createFromFormat('Y-m-d', $proceso['fecha_compromiso']);
+                                                        if ($fecha) {
+                                                            $dias = [
+                                                                'Monday' => 'Lunes',
+                                                                'Tuesday' => 'Martes',
+                                                                'Wednesday' => 'Miércoles',
+                                                                'Thursday' => 'Jueves',
+                                                                'Friday' => 'Viernes',
+                                                                'Saturday' => 'Sábado',
+                                                                'Sunday' => 'Domingo'
+                                                            ];
+                                                            $meses = [
+                                                                'January' => 'enero',
+                                                                'February' => 'febrero',
+                                                                'March' => 'marzo',
+                                                                'April' => 'abril',
+                                                                'May' => 'mayo',
+                                                                'June' => 'junio',
+                                                                'July' => 'julio',
+                                                                'August' => 'agosto',
+                                                                'September' => 'septiembre',
+                                                                'October' => 'octubre',
+                                                                'November' => 'noviembre',
+                                                                'December' => 'diciembre'
+                                                            ];
+                                                            $diaSemana = $dias[$fecha->format('l')];
+                                                            $dia = $fecha->format('j');
+                                                            $mes = $meses[$fecha->format('F')];
+                                                            $anio = $fecha->format('Y');
+                                                            $fechaFormateada = "$diaSemana $dia $mes $anio";
+                                                        } else {
+                                                            $fechaFormateada = $proceso['fecha_compromiso'];
+                                                        }
+                                                    ?>
+                                                    <br>Fecha Entrega:<br><span style="background-color: #ffff00; font-weight: bold;"><?= $fechaFormateada ?></span>
+                                                <?php endif; ?>
+                                            </td>
                         <td>
                             <?= esc($proceso['nombre_producto']) ?><br>
                             <img src="<?= esc($proceso['imagen_producto']) ?>" alt="<?= esc($proceso['nombre_producto']) ?>" style="max-width: 100px;">
@@ -76,7 +117,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><strong>Ultimos</strong></td>
+                                        <td><strong>Ultimo</strong></td>
                                         <td><?= esc($unidadesIndividuales['buenas']) ?></td>
                                         <td><?= esc($unidadesIndividuales['malas']) ?></td>
                                         <td><?= esc($unidadesIndividuales['repasadas']) ?></td>

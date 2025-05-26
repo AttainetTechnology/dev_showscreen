@@ -117,7 +117,7 @@ class SeleccionMaquina extends BaseFichar
                 ->orWhere('relacion_proceso_usuario.id IS NULL')
                 ->groupEnd()
                 ->orderBy('procesos_pedidos.orden', 'asc')
-                ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')
+                ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido, linea_pedidos.fecha_compromiso')
                 ->findAll();
 
             $maquinasModel = new Maquinas($db);
@@ -236,7 +236,7 @@ class SeleccionMaquina extends BaseFichar
             ->where('relacion_proceso_usuario.id_usuario', $id_usuario)
             ->where('procesos_pedidos.estado <', 4)
             ->where('relacion_proceso_usuario.estado', 1)
-            ->select('relacion_proceso_usuario.id, procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido')
+            ->select('relacion_proceso_usuario.id, procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido,linea_pedidos.fecha_compromiso')
             ->get()
             ->getResultArray();
         foreach ($procesos as &$proceso) {

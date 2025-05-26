@@ -173,7 +173,7 @@
             </div>
             <div class="form-group col-md-4"
                 <?php
-                    if ((!empty($pedido->fecha_compromiso)) && ($pedido->estado == 2 || $pedido->estado == 3 || $pedido->estado == 0)) {
+                    if (!empty($pedido->fecha_compromiso) && ($pedido->estado == 2 || $pedido->estado == 3 || $pedido->estado == 0)) {
                         $hoy = date('Y-m-d');
                         if ($pedido->fecha_compromiso < $hoy) {
                             echo 'style="background: #ff1744; padding: 10px;"';
@@ -185,7 +185,7 @@
             >
                 <label for="fecha_compromiso">Fecha de compromiso:</label>
                 <input type="date" id="fecha_compromiso" name="fecha_compromiso" class="form-control"
-                    value="<?= esc($pedido->fecha_compromiso) ?>" required
+                    value="<?= esc($pedido->fecha_compromiso) ?>"
                     <?php if (!empty($pedido->fecha_compromiso)): ?>
                         style="font-weight: bold;"
                     <?php endif; ?>

@@ -65,6 +65,8 @@ class Pedidos extends BaseController
 		$this->todos('', '(estado=0 OR estado=2 OR estado=3) AND fecha_compromiso IS NOT NULL');
 	}
 
+
+
 	public function todos($coge_estado, $where_estado)
 	{
 		$this->addBreadcrumb('Inicio', base_url('/'));
@@ -333,6 +335,10 @@ class Pedidos extends BaseController
 		if (!$pedido) {
 			return redirect()->back()->with('error', 'Pedido no encontrado');
 		}
+		$fecha_compromiso = $this->request->getPost('fecha_compromiso');
+		if (empty($fecha_compromiso) || $fecha_compromiso === '0000-00-00') {
+		$fecha_compromiso = null;
+		}
 		$updateData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
@@ -343,7 +349,7 @@ class Pedidos extends BaseController
 			'incidencia' => $this->request->getPost('incidencia'), // Actualizar incidencia
         	'estado_incidencia' => $this->request->getPost('estado_incidencia'),
 			'albaran' => $this->request->getPost('albaran'),
-			'fecha_compromiso' => $this->request->getPost('fecha_compromiso'),
+			'fecha_compromiso' => $fecha_compromiso,
 		];
 
 		if (!empty($updateData['fecha_compromiso'])) {
@@ -530,7 +536,11 @@ class Pedidos extends BaseController
 		$lineaspedidoModel = new LineaPedido($db);
 		$procesosPedidoModel = new ProcesosPedido($db);
 		$relacionProcesosUsuariosModel = model('App\Models\RelacionProcesoUsuario_model', false, $db);
-
+		//Limpio la variable fecha_compromiso si viene vacía o con valor '0000-00-00'
+		$fecha_compromiso = $this->request->getPost('fecha_compromiso');
+		if (empty($fecha_compromiso) || $fecha_compromiso === '0000-00-00') {
+		$fecha_compromiso = null;
+		}
 		$updateData = [
 			'id_producto' => $this->request->getPost('id_producto') ?? null,
 			'n_piezas' => $this->request->getPost('n_piezas') ?? null,
@@ -546,11 +556,11 @@ class Pedidos extends BaseController
 			'observaciones' => $this->request->getPost('observaciones') ?? null,
 			'total_linea' => ($this->request->getPost('n_piezas') && $this->request->getPost('precio_venta')) ? $this->request->getPost('n_piezas') * $this->request->getPost('precio_venta') : null,
 			'ultimo_fichaje' => $this->request->getPost('ultimo_fichaje') ?? null,
-			'fecha_compromiso' => $this->request->getPost('fecha_compromiso') ?? null,
+			'fecha_compromiso' => $fecha_compromiso,
 		];
 
 		// Verificar si la fecha_compromiso es menor que la fecha_compromiso del pedido
-		if (!empty($updateData['fecha_compromiso'])) {
+		if (!empty($updateData['fecha_compromiso']) && $updateData['fecha_compromiso'] !== '0000-00-00') {
 			// Obtener la fecha_compromiso actual del pedido
 			$id_pedido = $this->request->getPost('id_pedido');
 			$pedidoModel = new Pedidos_model($db);
@@ -560,7 +570,11 @@ class Pedidos extends BaseController
 				$fechaPedido = $pedido->fecha_compromiso;
 				$fechaLinea = $updateData['fecha_compromiso'];
 				$hoy = date('Y-m-d');
-				if ($fechaPedido && $fechaLinea && $fechaPedido > $fechaLinea) {
+				if (
+					!empty($fechaPedido) && $fechaPedido !== '0000-00-00' &&
+					!empty($fechaLinea) && $fechaLinea !== '0000-00-00' &&
+					$fechaPedido > $fechaLinea
+				) {
 					// Actualizar la fecha_compromiso del pedido con la de la línea
 					$pedidoModel->update($id_pedido, ['fecha_compromiso' => $fechaLinea]);
 				}
