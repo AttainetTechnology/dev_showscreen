@@ -142,9 +142,24 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
                 flex: 1,
                 valueFormatter: formatDate,
                 cellRenderer: function(params) {
-                    // Si hay fecha_compromiso, mostrarla en negrita y fondo amarillo fosforescente
-                    if (params.data.fecha_compromiso && params.data.fecha_compromiso !== '') {
-                        return `<span style="font-weight:bold;background-color:#ffff00;padding:2px 6px;border-radius:4px;">${formatDate({value: params.data.fecha_compromiso})}</span>`;
+                    // Si hay fecha_compromiso y el estado es 2 o 3, mostrarla en negrita y fondo amarillo fosforescente
+                    if (
+                        params.data.fecha_compromiso &&
+                        params.data.fecha_compromiso !== '' &&
+                        (params.data.estado === "Material recibido" || params.data.estado === "En Máquinas")
+                    ) {
+                        const compromisoDate = new Date(params.data.fecha_compromiso);
+                        const today = new Date();
+                        // Normalizar a solo fecha (sin hora)
+                        compromisoDate.setHours(0,0,0,0);
+                        today.setHours(0,0,0,0);
+                        let bgColor = '#ffff00'; // amarillo fosforescente
+                        let color = 'black';
+                        if (compromisoDate < today) {
+                            bgColor = '#ff2d2d'; // rojo fosforescente
+                            color = 'white';
+                        }
+                        return `<span style="font-weight:bold;background-color:${bgColor};color:${color};padding:2px 6px;border-radius:4px;">${formatDate({value: params.data.fecha_compromiso})}</span>`;
                     }
                     // Si no, mostrar fecha_entrega normal
                     return formatDate(params);

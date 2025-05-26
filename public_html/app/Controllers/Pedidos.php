@@ -346,6 +346,10 @@ class Pedidos extends BaseController
 			'fecha_compromiso' => $this->request->getPost('fecha_compromiso'),
 		];
 
+		if (!empty($updateData['fecha_compromiso'])) {
+			$lineaPedidoModel = new LineaPedido($db);
+			$lineaPedidoModel->where('id_pedido', $id_pedido)->set(['fecha_compromiso' => $updateData['fecha_compromiso']])->update();
+		}
 
 		$updateData['estado'] = $pedido->estado;
 
@@ -545,20 +549,23 @@ class Pedidos extends BaseController
 			'fecha_compromiso' => $this->request->getPost('fecha_compromiso') ?? null,
 		];
 
-	if (!empty($updateData['fecha_compromiso'])) {
-		// Obtener el id_pedido de la línea
-		$id_pedido = $this->request->getPost('id_pedido');
-		if ($id_pedido) {
+		// Verificar si la fecha_compromiso es menor que la fecha_compromiso del pedido
+		if (!empty($updateData['fecha_compromiso'])) {
+			// Obtener la fecha_compromiso actual del pedido
+			$id_pedido = $this->request->getPost('id_pedido');
 			$pedidoModel = new Pedidos_model($db);
 			$pedido = $pedidoModel->find($id_pedido);
-			if ($pedido && !empty($pedido->fecha_compromiso)) {
-				// Comparar fechas (formato Y-m-d)
-				if ($pedido->fecha_compromiso > $updateData['fecha_compromiso']) {
-					$pedidoModel->update($id_pedido, ['fecha_compromiso' => $updateData['fecha_compromiso']]);
+
+			if ($pedido) {
+				$fechaPedido = $pedido->fecha_compromiso;
+				$fechaLinea = $updateData['fecha_compromiso'];
+				$hoy = date('Y-m-d');
+				if ($fechaPedido && $fechaLinea && $fechaPedido > $fechaLinea) {
+					// Actualizar la fecha_compromiso del pedido con la de la línea
+					$pedidoModel->update($id_pedido, ['fecha_compromiso' => $fechaLinea]);
 				}
 			}
 		}
-	}
 
 		if ($lineaspedidoModel->update($id_lineapedido, $updateData)) {
 			$id_pedido = $this->request->getPost('id_pedido');

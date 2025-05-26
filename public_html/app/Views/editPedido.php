@@ -172,9 +172,16 @@
                 value="<?= esc($pedido->fecha_entrega) ?>" required>
             </div>
             <div class="form-group col-md-4"
-                <?php if (!empty($pedido->fecha_compromiso)): ?>
-                    style="background: #ffff00; padding: 10px;"
-                <?php endif; ?>
+                <?php
+                    if ((!empty($pedido->fecha_compromiso)) && ($pedido->estado == 2 || $pedido->estado == 3)) {
+                        $hoy = date('Y-m-d');
+                        if ($pedido->fecha_compromiso < $hoy) {
+                            echo 'style="background: #ff1744; padding: 10px;"';
+                        } else {
+                            echo 'style="background: #ffff00; padding: 10px;"';
+                        }
+                    }
+                ?>
             >
                 <label for="fecha_compromiso">Fecha de compromiso:</label>
                 <input type="date" id="fecha_compromiso" name="fecha_compromiso" class="form-control"
@@ -403,7 +410,23 @@
                     const ultimoFichaje = params.data.ultimo_fichaje && params.data.ultimo_fichaje != 0 
                         ? `<a href="#" title="${params.data.proceso}" style="text-decoration: none; color: #007bff;">${params.data.ultimo_fichaje}</a>` 
                         : '';
-                    return `${nPzas}${ultimoFichaje ? ` / ${ultimoFichaje}` : ''}`;
+                    let fechaCompromiso = '';
+                    if (
+                        (params.data.fecha_compromiso && params.data.fecha_compromiso !== '') &&
+                        (params.data.estado == 2 || params.data.estado == 3)
+                    ) {
+                        // Comprobar si la fecha de compromiso es menor que hoy
+                        const hoy = new Date();
+                        hoy.setHours(0,0,0,0);
+                        const fc = new Date(params.data.fecha_compromiso);
+                        fc.setHours(0,0,0,0);
+                        let style = "background: #ffff00; font-weight: bold; padding: 2px 6px; border-radius: 3px;";
+                        if (fc < hoy) {
+                            style = "background: #ff1744; color: #fff; font-weight: bold; padding: 2px 6px; border-radius: 3px;";
+                        }
+                        fechaCompromiso = ` <span style="${style}">${params.data.fecha_compromiso}</span>`;
+                    }
+                    return `${nPzas}${ultimoFichaje ? ` / ${ultimoFichaje}` : ''}${fechaCompromiso}`;
                     }
                 },
                 {
@@ -421,19 +444,6 @@
                     floatingFilter: true,
                 },
                 {
-                    headerName: 'Estado',
-                    field: 'estado',
-                    flex: 1,
-                    filter: 'agTextColumnFilter',
-                    floatingFilter: true,
-                    valueGetter: function (params) {
-                        return estadosTexto[params.data.estado] || 'Estado desconocido';
-                    },
-                    valueFormatter: function (params) {
-                        return estadosTexto[params.data.estado] || 'Estado desconocido';
-                    }
-                },
-                {
                     headerName: 'Med. Inicial',
                     field: 'med_inicial',
                     flex: 1,
@@ -448,14 +458,6 @@
                     maxWidth: 130,
                     filter: 'agTextColumnFilter',
                     floatingFilter: true,
-                },
-                {
-                    headerName: 'Total',
-                    field: 'total_linea',
-                    flex: 1,
-                    filter: 'agTextColumnFilter',
-                    floatingFilter: true,
-                    valueFormatter: params => `${params.value} €`,
                 },
                 ];
                 const rowData = <?= json_encode($lineas_pedido) ?>;
