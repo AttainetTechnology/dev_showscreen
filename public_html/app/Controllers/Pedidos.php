@@ -62,7 +62,7 @@ class Pedidos extends BaseController
 	}
 		public function compromisos()
 	{
-		$this->todos('estado=', '4 AND fecha_compromiso != ""');
+		$this->todos('', '(estado=0 OR estado=2 OR estado=3) AND fecha_compromiso IS NOT NULL');
 	}
 
 	public function todos($coge_estado, $where_estado)

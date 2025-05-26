@@ -173,7 +173,7 @@
             </div>
             <div class="form-group col-md-4"
                 <?php
-                    if ((!empty($pedido->fecha_compromiso)) && ($pedido->estado == 2 || $pedido->estado == 3)) {
+                    if ((!empty($pedido->fecha_compromiso)) && ($pedido->estado == 2 || $pedido->estado == 3 || $pedido->estado == 0)) {
                         $hoy = date('Y-m-d');
                         if ($pedido->fecha_compromiso < $hoy) {
                             echo 'style="background: #ff1744; padding: 10px;"';
@@ -413,7 +413,7 @@
                     let fechaCompromiso = '';
                     if (
                         (params.data.fecha_compromiso && params.data.fecha_compromiso !== '') &&
-                        (params.data.estado == 2 || params.data.estado == 3)
+                        (params.data.estado == 2 || params.data.estado == 3 || params.data.estado == 0)
                     ) {
                         // Comprobar si la fecha de compromiso es menor que hoy
                         const hoy = new Date();

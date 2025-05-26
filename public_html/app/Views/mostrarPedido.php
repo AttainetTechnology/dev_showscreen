@@ -146,7 +146,7 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
                     if (
                         params.data.fecha_compromiso &&
                         params.data.fecha_compromiso !== '' &&
-                        (params.data.estado === "Material recibido" || params.data.estado === "En Máquinas")
+                        (params.data.estado === "Material recibido" || params.data.estado === "En Máquinas" || params.data.estado === "Pendiente de material" || params.data.estado === "Falta Material")
                     ) {
                         const compromisoDate = new Date(params.data.fecha_compromiso);
                         const today = new Date();
