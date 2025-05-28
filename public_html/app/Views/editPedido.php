@@ -1,3 +1,5 @@
+user-select: none;
+
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <?= $this->include('partials/amiga') ?>
@@ -46,10 +48,45 @@
                     <span class="badge bg-success" style="font-size: 12px;">Pedido impreso</span>
                 <?php endif; ?>
             </div>
-            <div style="margin-left:auto; background: #000; color: #fff; display: flex; align-items: center; height: 48px; padding: 0 24px; border-radius: 8px;">
+            <div 
+                id="stickyPedidoId"
+                style="
+                    position: fixed;
+                    top: 16px;
+                    right: 32px;
+                    margin-left: auto;
+                    background: #000;
+                    color: #fff;
+                    display: flex;
+                    align-items: center;
+                    height: 48px;
+                    padding: 0 24px;
+                    border-radius: 8px;
+                    z-index: 3000;
+                    cursor: pointer;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                "
+                title="Haz clic para copiar el ID"
+                onclick="copyPedidoIdToClipboard(<?= esc($pedido->id_pedido) ?>)"
+            >
                 <label style="margin: 0 10px 0 0;">ID:</label>
                 <strong style="font-size: 28px; color: #fff; text-align: center; width: 100%; display: block;"><?= esc($pedido->id_pedido) ?></strong>
             </div>
+            <script>
+                function copyPedidoIdToClipboard(id) {
+                    navigator.clipboard.writeText(id)
+                        .then(function() {
+                            // Opcional: feedback visual
+                            const el = document.getElementById('stickyPedidoId');
+                            const oldBg = el.style.background;
+                            el.style.background = '#28a745';
+                            setTimeout(() => { el.style.background = oldBg; }, 500);
+                        })
+                        .catch(function() {
+                            alert('No se pudo copiar el ID');
+                        });
+                }
+            </script>
         </div>
     </div>
 </div>
@@ -173,7 +210,7 @@
             </div>
             <div class="form-group col-md-4"
                 <?php
-                    if (!empty($pedido->fecha_compromiso) && ($pedido->estado == 2 || $pedido->estado == 3 || $pedido->estado == 0)) {
+                    if ((!empty($pedido->fecha_compromiso)) && ($pedido->estado == 2 || $pedido->estado == 3 || $pedido->estado == 0)) {
                         $hoy = date('Y-m-d');
                         if ($pedido->fecha_compromiso < $hoy) {
                             echo 'style="background: #ff1744; padding: 10px;"';
