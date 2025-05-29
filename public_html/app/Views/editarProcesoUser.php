@@ -99,10 +99,12 @@
                             <input type="text" id="malas" name="malas" class="form-control" value="0" readonly>
                         </div>
 
+                        <!--
                         <div class="form-group">
                             <label for="repasadas">Repasadas:</label>
                             <input type="text" id="repasadas" name="repasadas" class="form-control" value="0" readonly>
                         </div>
+                        -->
 
                         <div class="">
                             <h3>Piezas</h3>
@@ -112,7 +114,6 @@
                                         <th></th>
                                         <th>Buenas</th>
                                         <th>Malas</th>
-                                        <th>Repasadas</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -120,15 +121,19 @@
                                         <td><strong>Ultimo</strong></td>
                                         <td><?= esc($unidadesIndividuales['buenas']) ?></td>
                                         <td><?= esc($unidadesIndividuales['malas']) ?></td>
-                                        <td><?= esc($unidadesIndividuales['repasadas']) ?></td>
                                     </tr>
                                 </tbody>
                                 <tbody>
                                     <tr>
-                                        <td><strong>Totales</strong></td>
-                                        <td><?= esc($totales['total_buenas']) ?></td>
+                                        <?php
+                                            //Si el proceso actual no es el mismo que el del pedido, se pone a 0 el ultimo fichaje
+                                            if ($proceso['id_proceso_actual'] != $proceso['id_proceso_pedido']) {
+                                                $proceso['ultimo_fichaje'] = 0;
+                                            }
+                                        ?>
+                                        <td><strong>Total fichado</strong></td>
+                                        <td><?= esc($proceso['ultimo_fichaje']) ?></td>
                                         <td><?= esc($totales['total_malas']) ?></td>
-                                        <td><?= esc($totales['total_repasadas']) ?></td>
                                     </tr>
                                 </tbody>
                             </table>

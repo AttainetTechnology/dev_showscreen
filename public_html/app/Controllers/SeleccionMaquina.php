@@ -117,7 +117,7 @@ class SeleccionMaquina extends BaseFichar
                 ->orWhere('relacion_proceso_usuario.id IS NULL')
                 ->groupEnd()
                 ->orderBy('procesos_pedidos.orden', 'asc')
-                ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido, linea_pedidos.fecha_compromiso')
+                ->select('procesos_pedidos.*, procesos.nombre_proceso, linea_pedidos.id_producto, linea_pedidos.observaciones, linea_pedidos.n_piezas, linea_pedidos.nom_base, linea_pedidos.med_final, linea_pedidos.med_inicial, linea_pedidos.id_pedido, linea_pedidos.fecha_compromiso, linea_pedidos.ultimo_fichaje, linea_pedidos.id_proceso_actual')
                 ->findAll();
 
             $maquinasModel = new Maquinas($db);
@@ -371,13 +371,15 @@ class SeleccionMaquina extends BaseFichar
     }
     //Si es el mismo proceso que el último fichaje, sumo el valor de "buenas" al último fichaje
     if ($lineaPedido && $lineaPedido['id_proceso_actual'] == $registro['id_proceso_pedido']) {
-        $buenas += $lineaPedido['ultimo_fichaje'];
-        
-    } 
+        $totales = $buenas + $lineaPedido['ultimo_fichaje'];
+    } else {
+        // Si es un proceso diferente, guardo el valor de "buenas" directamente
+        $totales = $buenas;
+    }
     // Guardo el valor de "buenas" en el último fichaje de la línea de pedido y la id de proceso actual
     $lineaPedidoModel->where('id_lineapedido', $id_lineapedido)
         ->update([
-            'ultimo_fichaje' => $buenas,
+            'ultimo_fichaje' => $totales,
             'id_proceso_actual' => $id_proceso,
             'proceso' => $nom_proceso
         ]);
