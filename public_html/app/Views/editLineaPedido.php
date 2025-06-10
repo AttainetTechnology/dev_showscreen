@@ -121,7 +121,7 @@
                 rows="3"><?= esc($linea_pedido['observaciones']) ?></textarea>
         </div>
         <br>
-            <?php if (isset($nivel_acceso) && $nivel_acceso > 7): ?>
+            <?php if (isset($nivel_acceso) && $nivel_acceso > 6): ?>
                 <div class="form-group">
                     <label for="ultimo_fichaje">Pzas. finales:</label>
                     <textarea name="ultimo_fichaje" class="form-control"
