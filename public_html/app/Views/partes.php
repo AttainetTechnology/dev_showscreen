@@ -84,6 +84,11 @@
                             <address>
                                 <strong><? echo $p->referencia; ?></strong>
                             </address>
+                            <?php if (!empty($p->observaciones)) { ?>
+                                <div class="observaciones-pedido" style="background-color: #eee; color: #000; font-size: 12px!Important; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px;">
+                                    Observaciones del pedido:<br> <?php echo $p->observaciones; ?>
+                                </div>
+                            <?php } ?>
                         </div>
                         <div id="parte_fila_right" class="imagenparte">
                             <div class="capa-numero-parte">
@@ -98,9 +103,7 @@
                         </div>
 
                         <!-- END Cabecera -->
-                    </div><!-- /.row -->
-                    <!-- Table row -->
-                    <div class="row">
+                    
                         <div class="col-xs-12 table-responsive" id="tabla_tipopieza">
                             <table class="table">
                                 <thead>
@@ -130,8 +133,7 @@
                                     Distancia de las ranuras: <strong><? echo $l->distancia; ?> cm.</strong><br><br>
                                 <?php } ?>
                                 <?php if ($l->observaciones != "") { ?>
-                                    Observaciones: <strong><? echo $l->observaciones; ?></strong>
-
+                                    Observaciones del parte:<br> <strong><? echo $l->observaciones; ?></strong>
                                 <?php } ?>
                             </div>
                         </div>
@@ -142,87 +144,6 @@
                             <?php
                             $i = '1';
                             foreach ($procesos as $proc) { ?>
-                                <?php if ($i == '6') { ?>
-                                    <div class="detalles-pie">
-
-                                        Entrada: <? echo date("d-m-Y", strtotime($p->fecha_entrada)); ?> &nbsp;
-                                        Entrega:
-                                        <strong><? echo date("d-m-Y", strtotime($p->fecha_entrega)); ?></strong>
-                                        <br>
-                                        User: <strong><?php echo $nombre_usuario; ?>                         <?php echo $apellidos_usuario; ?></strong> |
-                                        Impresi&oacute;n: <?php echo ' ' . date('d-m-Y') . "\n"; ?></small><br>
-                                    </div>
-                                    <div class="pagina1"></div>
-                                    <div class="pagina2"></div>
-                                    <!-- Repetimos la cabecera para la segunda pagina -->
-                                    <!-- Cabecera -->
-                                    <div class="row">
-                                        <div id="parte_fila_left">
-                                        <img src="<?php echo base_url("public/assets/uploads/files") . "/" . $url_logo; ?>" class="logo_partes"><br>
-                                         <br>
-                                            Cliente:
-                                            <address>
-                                                <strong><?php echo $cli->nombre_cliente; ?></strong>
-                                            </address>
-                                            Referencia ped:
-                                            <address>
-                                                <strong><?php echo $p->referencia; ?></strong>
-                                            </address>
-                                        </div>
-                                        <div id="parte_fila_right" class="imagenparte imgParte2hoja">
-                                            <div class="capa-numero-parte">
-                                                <div class="numero_parte">Id: <strong><?php echo $p->id_pedido; ?></strong></div>
-                                            </div>
-                                            <h3><b><?php echo $prod->nombre_producto; ?></b> </h3>
-                                            <small>L.P: <strong><?php echo $l->id_lineapedido; ?></strong></small><br>
-
-                                            <!-- Aquí modificamos la ruta de la imagen para que incluya el id_empresa -->
-                                            <img src="<?php echo base_url("public/assets/uploads/files/" . $this->data['id_empresa'] . "/productos/" . $prod->imagen); ?>"
-                                                class="imagen_parte" /><br />
-                                        </div>
-                                        <!-- END Cabecera -->
-                                        <div class="row"> <!-- DIV ROW-->
-                                            <div class="col-xs-12 table-responsive" id="tabla_tipopieza"> <!-- DIV COL XS 12-->
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Unidades</th>
-                                                            <th>Producto</th>
-                                                            <th>Nombre de la base</th>
-                                                            <th>Med. inic.</th>
-                                                            <th>Med. fin.</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td><b><?php echo $l->n_piezas; ?></b></td>
-                                                            <td><b><?php echo $prod->nombre_producto; ?></b></td>
-                                                            <td><b><?php echo $l->nom_base; ?></b></td>
-                                                            <td><b> <?php echo $l->med_inicial; ?></b></td>
-                                                            <td><b> <?php echo $l->med_final; ?></b></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <div id="observaciones">
-                                                    <?php if ($l->lado != "") { ?>
-                                                        Lado a mecanizar: <strong><?php echo $l->lado; ?></strong><br>
-                                                    <?php } ?>
-                                                    <?php if ($l->distancia != "") { ?>
-                                                        Distancia de las ranuras: <strong><?php echo $l->distancia; ?> cm.</strong><br>
-                                                    <?php } ?>
-                                                    <br>
-                                                    <?php if ($l->observaciones != "") { ?>
-                                                        Observaciones: <strong><?php echo $l->observaciones; ?></strong>
-                                                    <?php } ?>
-                                                </div><!-- DIV FILA OBSERVACIONES -->
-                                            </div> <!-- DIV COL XS 12-->
-                                        </div> <!-- DIV ROW-->
-
-                                    </div> <!-- CIERRO DIV LIBRE -->
-
-                                    <!-- Fin Repetimos la cabecera para la segunda pagina -->
-
-                                <?php } ?>
                                 <div class="linea_proceso">
                                     <table class="tabla_proceso">
                                         <tr>
