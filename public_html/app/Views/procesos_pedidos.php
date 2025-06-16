@@ -56,12 +56,9 @@
                 </svg>
             </button><br>
             <?php echo view('procesosTerminados'); ?>
-
         </div>
         <div class="column" id="col4">
             <div class="cabecera">
-                <h4 id="tituloProcesosEnMaquina">Procesos en máquina</h4>
-                <br>
                 <div style="display: inline-block; vertical-align: middle;">
                     <select id="maquinaFilterCol4" class="form-control d-inline-block" onchange="filtrarProcesosPorMaquina(this.value);">
                         <option value="">Todas las máquinas</option>
@@ -87,19 +84,16 @@
                 </div>
             </div>
             <div class="resultados">
-                <table id="sortableTable" class="table">
+                <table id="sortableTable" class="table scrollgordo">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAllCol4" class="selectAll"></th>
                             <th class="columna-id">
-                                ID Linea
-                                <br>
-                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="ID" onkeyup="filtrarPorIdCol4();">
+                                <input type="text" id="idSearchInputCol4" class="form-control d-inline-block" style="width: 70%; font-size: 1em; border: 1px solid #989A9C;" placeholder="Parte ID" onkeyup="filtrarPorIdCol4();">
                             </th>
                             <th>
-                                Cliente
-                                <select id="clienteFilterCol4" style="width: 90%;" onchange="filtrarPorClienteCol4(this.value);">
-                                    <option value="">Todos</option>
+                                <select id="clienteFilterCol4" style="width: 100%;" onchange="filtrarPorClienteCol4(this.value);">
+                                    <option value="">Cliente</option>
                                     <?php if (isset($clientes)) : ?>
                                         <?php foreach ($clientes as $cliente) : ?>
                                             <option value="<?= esc($cliente['nombre_cliente']) ?>"><?= esc($cliente['nombre_cliente']) ?></option>
@@ -108,11 +102,9 @@
                                 </select>
                             </th>
                             <th>Medidas</th>
-                            <th>Fecha Entrega</th>
                             <th>
-                                Producto
                                 <select id="productoFilterCol4" style="width: 100%;" onchange="filtrarPorProducto(this.value, 4);">
-                                    <option value="">Todos</option>
+                                    <option value="">Producto</option>
                                     <?php if (isset($productos)) : ?>
                                         <?php foreach ($productos as $producto) : ?>
                                             <option value="<?= esc($producto['nombre_producto']) ?>"><?= esc($producto['nombre_producto']) ?></option>
@@ -121,19 +113,19 @@
                                 </select>
 
                             </th>
-                            <th>Nº Piezas</th>
+                            <th>Pzas</th>
                             <th>Proceso</th>
                             <th>Base</th>
+                            <th>Entrega</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($lineasEstado3 as $linea) : ?>
                             <tr class="linea" data-nombre-cliente="<?= esc($linea['cliente']) ?>" data-nombre-proceso="<?= esc($linea['proceso']); ?>" data-nombre-producto="<?= esc($linea['producto']); ?>" data-id-maquina="<?= $linea['id_maquina']; ?>" data-estado="<?= esc($linea['guardado']) ? 'guardado' : 'no-guardado'; ?>">
                                 <td><input type="checkbox" class="checkboxCol4" name="selectedLineCol4[]"></td>
-                                <td><?= $linea['id_linea_pedido']; ?></td>
+                                <td><strong><?= $linea['id_linea_pedido']; ?></strong></td>
                                 <td><?= $linea['cliente'] ?></td>
                                 <td><?= $linea['medidas'] ?></td>
-                                <td><?= $linea['fecha'] ?></td>
                                 <td><?= $linea['producto'] ?></td>
                                 <td><?= $linea['n_piezas'] ?></td>
                                 <td>
@@ -149,6 +141,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td><?= $linea['base'] ?></td>
+                                <td><?= $linea['fecha'] ?></td>
                             </tr>
 
                         <?php endforeach; ?>

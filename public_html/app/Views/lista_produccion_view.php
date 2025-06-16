@@ -43,15 +43,22 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         const columnDefs = [
+            <?php $userLevel = $nivel; ?>
             {
                 headerName: "Pedido - Cliente - Referencia",
                 field: "pedido_completo",
                 filter: 'agTextColumnFilter',
                 minWidth: 300,
                 cellRenderer: params => {
-                    return `<a href="/pedidos/edit/${params.data.id_pedido}" style="text-decoration: none; color: #007bff;">
-                        ${params.value}
-                    </a>`;
+                    <?php if ($userLevel > 4): ?>
+                        return `<a href="/pedidos/edit/${params.data.id_pedido}" style="text-decoration: none; color: #007bff;">
+                            ${params.value}
+                        </a>`;
+                    <?php else: ?>
+                        return `<a href="<?= base_url('pedidos/print/') ?>${params.data.id_pedido}" target="_blank" style="text-decoration: none; color: #007bff;">
+                            ${params.value}
+                        </a>`;
+                    <?php endif; ?>
                 }
             },
             {

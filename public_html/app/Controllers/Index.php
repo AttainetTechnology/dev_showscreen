@@ -36,10 +36,15 @@ class Index extends BaseController
         // Saco los datos del usuario
         $data = datos_user();
 
-        // Verificar si el nivel del usuario es 1
+        // Verificar si el nivel del usuario es 1 (Transporte)
         if (isset($data['nivel']) && $data['nivel'] == 1) {
             // Redirigir a la página deseada si el nivel es 1
-            return redirect()->to('/rutas_transporte/rutas'); // Cambia "/pagina-deseada" por la URL o ruta correcta
+            return redirect()->to('/rutas_transporte/rutas'); 
+        }
+        // Verificar si el nivel del usuario es 4 (Producción)
+        if (isset($data['nivel']) && $data['nivel'] == 4) {
+            // Redirigir a la página de compromisos si el nivel es 4
+            return redirect()->to('/pedidos/compromisos'); 
         }
 
         // Conecto la BDD

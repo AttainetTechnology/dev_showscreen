@@ -116,7 +116,7 @@ class Lista_produccion extends BaseControllerGC
         $data['titulo_pagina'] = $titulo_pagina;
         $data['result'] = $result;
         $data['amiga'] = $this->getBreadcrumbs();
-
+        $data['nivel'] = $nivel;
         $pager = \Config\Services::pager();
         $data['pager'] = $pager->makeLinks($page, $perPage, $total);
 
