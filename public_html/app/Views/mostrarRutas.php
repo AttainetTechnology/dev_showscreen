@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" type="text/css" href="<?= base_url('public/assets/css/libreria.css') ?>?v=<?= time() ?>">
 <br>
-<h2>Gestión de Rutas</h2>
+<h2>Rutas de Transporte</h2>
 <br>
 <div class="botonSeparados">
     <button class="btn boton btnAdd" id="add-ruta-btn">Añadir Ruta
@@ -101,7 +101,7 @@
                 cellRenderer: params => {
                     const idPedido = params.data.id_pedido;
                     const nombreCliente = params.data.nombre_cliente || "Sin cliente";
-                    return `<a href="https://dev.showscreen.app/pedidos/edit/${idPedido}">${idPedido} - ${nombreCliente}</a>`;
+                    return `<a href="/pedidos/edit/${idPedido}">${idPedido} - ${nombreCliente}</a>`;
                 }
             }
         ];
@@ -122,6 +122,15 @@
             onGridReady: function (params) {
                 fetchRutasData(params.api);
                 params.api.sizeColumnsToFit();
+            },
+            getRowStyle: function(params) {
+                if (params.data && params.data.estado_ruta == "2") {
+                    return { background: '#e0efd8' };
+                }
+                if (params.data && params.data.estado_ruta == "1") {
+                    return { background: '#efad4d' };
+                }
+                return null;
             }
         };
 

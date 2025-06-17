@@ -56,7 +56,7 @@ function obtenerNombreTransportistaPorId($id_transportista)
                     <?php echo date('d/m/Y', strtotime($fecha)); ?> -
                     <?php if ($r->recogida_entrega == '1') { ?>RECOGER<?php } else { ?>ENTREGAR<?php } ?> en:
                     <b><?php echo $r->lugar; ?></b> para
-                    <b><?php echo $r->nombre_cliente; ?></b>
+                    <b><?php echo $r->nombre_cliente; ?></b> - id.Ped: <b><?php echo $r->id_pedido; ?></b>
                     <?php if ($data['nivel'] > 1) {
                         $transport = obtenerNombreTransportistaPorId($r->transportista);
                         ?>

@@ -1,33 +1,10 @@
 <?php
 
 namespace App\Controllers;
-
 use App\Models\Rutas_model;
 
-class Rutas extends BaseController
+class Rutas extends BaseControllerGC
 {
-
-	public function todas($coge_estado, $where_estado)
-	{
-		helper('controlacceso');
-		$redirect = check_access_level();
-		$redirectUrl = session()->getFlashdata('redirect');
-		if ($redirect && is_string($redirectUrl)) {
-			return redirect()->to($redirectUrl);
-		}
-		$this->addBreadcrumb('Inicio', base_url('/'));
-		$this->addBreadcrumb('Rutas');
-		$data['amiga'] = $this->getBreadcrumbs();
-
-		return view('mostrarRutas', [
-			'estado' => json_encode([
-				'condicion' => $coge_estado,
-				'valor' => $where_estado,
-			]),
-			'amiga' => $data['amiga']  // Pasar amiga a la vista
-		]);
-	}
-
 	public function index()
 	{
 		return $this->todas('estado_ruta!=', '9');
@@ -37,7 +14,28 @@ class Rutas extends BaseController
 	{
 		return $this->todas('estado_ruta!=', '2');
 	}
+	
+	public function todas($coge_estado, $where_estado)
+	{
+		helper('controlacceso');
+		$redirect = check_access_level();
+		$redirectUrl = session()->getFlashdata('redirect');
+		if ($redirect && is_string($redirectUrl)) {
+			return redirect()->to($redirectUrl);
+		}
+		
+		$this->addBreadcrumb('Inicio', base_url('/'));
+		$this->addBreadcrumb('Rutas');
+		$data['amiga'] = $this->getBreadcrumbs();
 
+		return view('mostrarRutas', [
+			'estado' => json_encode([
+				'condicion' => $coge_estado,
+				'valor' => $where_estado
+			]),
+			'amiga' => $data['amiga']  // Pasar amiga a la vista
+		]);
+	}
 
 	public function getRutas()
 	{
@@ -50,7 +48,7 @@ class Rutas extends BaseController
 				'message' => 'Los parámetros "coge_estado" y "where_estado" son requeridos.'
 			])->setStatusCode(400);
 		}
-
+		helper('controlacceso');
 		$data = usuario_sesion();
 		$db = db_connect($data['new_db']);
 		$model = new Rutas_model($db);

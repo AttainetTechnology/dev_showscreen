@@ -27,7 +27,9 @@ class Rutas_model extends Model
             throw new \InvalidArgumentException('Los parámetros "coge_estado" y "where_estado" son requeridos.');
         }
 
-        return $this->where($coge_estado, $where_estado)->findAll();
+        return $this->where($coge_estado, $where_estado)
+                ->orderBy($this->primaryKey, 'DESC')
+                ->findAll(3);
     }
 
     // Obtener información de una ruta por su ID
@@ -49,15 +51,16 @@ class Rutas_model extends Model
     public function getRutasWithDetails($coge_estado, $where_estado)
     {
         $this->select('rutas.*, 
-                       clientes.nombre_cliente, 
-                       poblaciones_rutas.poblacion AS nombre_poblacion, 
-                       CONCAT(users.nombre_usuario, " ", users.apellidos_usuario) AS nombre_transportista, 
-                       rutas.estado_ruta AS ruta_estado'); // Asegúrate de que este campo esté incluido
+               clientes.nombre_cliente, 
+               poblaciones_rutas.poblacion AS nombre_poblacion, 
+               CONCAT(users.nombre_usuario, " ", users.apellidos_usuario) AS nombre_transportista, 
+               rutas.estado_ruta AS ruta_estado'); 
         $this->join('clientes', 'rutas.id_cliente = clientes.id_cliente', 'left');
         $this->join('poblaciones_rutas', 'rutas.poblacion = poblaciones_rutas.id_poblacion', 'left');
         $this->join('users', 'rutas.transportista = users.id', 'left');
         $this->where($coge_estado, $where_estado);
-        return $this->findAll();
+        $this->orderBy('rutas.fecha_ruta', 'DESC');
+        return $this->findAll(200);
     }
 
     // Obtener el nombre del cliente por el ID del pedido
