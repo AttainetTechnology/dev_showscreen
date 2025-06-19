@@ -7,5 +7,5 @@ class Config_model extends Model
 {
     protected $table      ='config';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['url_fichar'];
+    protected $allowedFields = ['url_fichar', 'mensaje_alb'];
 }

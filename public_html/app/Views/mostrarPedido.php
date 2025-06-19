@@ -134,7 +134,24 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
             },
 
             { headerName: "Referencia", field: "referencia", filter: 'agTextColumnFilter', flex: 1 },
-            { headerName: "Albarán", field: "albaran", filter: 'agTextColumnFilter', flex: 1 }, 
+            {
+                headerName: "Albarán",
+                field: "albaran",
+                filter: 'agTextColumnFilter',
+                flex: 1,
+                cellRenderer: function(params) {
+                    if (!params.value) return '';
+                    // Si estado_alb es 0, mostrar el enlace en verde y negrita
+                    // Si estado_alb es 1, mostrarlo en color negro
+                    let linkStyle = '';
+                    if (params.data.estado_alb == 0) {
+                        linkStyle = 'color:green!Important;font-weight:bold;border-bottom: 1px solid green';
+                    } else if (params.data.estado_alb == 1) {
+                        linkStyle = 'color:black!Important;';
+                    }
+                    return `<a href="<?= base_url('albaranes/print/') ?>${params.data.id_pedido}" target="_blank" style="${linkStyle}">${params.value}</a>`;
+                }
+            },
 
             {
                 headerName: "Fecha Entrada",
@@ -207,8 +224,9 @@ $abiertaIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" f
                 estado: "<?= $estadoMap[$pedido->estado] ?>",
                 nombre_usuario: "<?= $pedido->nombre_usuario ?>",
                 total: "<?= $pedido->total_pedido ?>€",
-                bt_imprimir: <?= $pedido->bt_imprimir ?>,
-                allowDelete: <?= json_encode($allow_delete) ?>
+                bt_imprimir: "<?= $pedido->bt_imprimir ?>",
+                allowDelete: "<?= json_encode($allow_delete) ?>",
+                estado_alb: "<?= $pedido->estado_alb ?>",
             },
             <?php endforeach; ?>
         ];

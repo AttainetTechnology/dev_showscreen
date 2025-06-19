@@ -58,6 +58,7 @@ $routes->add('partes/print/(\d+)', 'Partes_controller::parte_print/$1');
 $routes->add('pedidos/imprimir_parte/(:num)', 'Pedidos::imprimir_parte/$1');
 $routes->add('partes/printproveedor/(\d+)', 'Partes_controller_proveedor::parte_print/$1');
 $routes->add('pedidos/print/(\d+)', 'Pedido_print_controller::pedido_print/$1');
+$routes->add('albaranes/print/(\d+)', 'Pedido_print_controller::albaran_print/$1');
 $routes->add('pedidos_proveedor/print/(\d+)', 'Pedido_print_controller::pedido_print_proveedor/$1');
 $routes->add('pedidos/parte_complejo/(\d+)', 'Parte_complejo::pedido_print/$1');
 $routes->add('informe_detalle/(\d+)', 'Informe_detalle::/$1');

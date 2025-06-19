@@ -192,9 +192,38 @@ user-select: none;
                     value="<?= esc($pedido->referencia) ?>">
             </div>
             <div class="form-group col-md-4">
-                <label for="albaran">Albarán:</label>
-                <input type="text" id="albaran" name="albaran" class="form-control"
-                    value="<?= esc($pedido->albaran) ?>">
+                <div>
+                    <label for="albaran">Albarán:</label>
+                    <?php if (isset($pedido->estado_alb) && $pedido->estado_alb == 0): ?>
+                        <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(5, 131, 35)!Important; font-weight: bold;">
+                            Imprimir albarán
+                        </a>
+                    <?php elseif (isset($pedido->estado_alb) && $pedido->estado_alb == 1): ?>
+                        <span style="margin-left: 8px; color: #000!Important; font-weight: normal;">
+                            Albarán ya impreso
+                        </span>
+                    <?php endif; ?>
+                    <input type="text" id="albaran" name="albaran" class="form-control"
+                        value="<?= esc($pedido->albaran) ?>">
+                </div>
+                <div id="div-emp-alb" style="<?= empty($pedido->albaran) ? 'display:none;' : '' ?>">
+                    <label for="emp_alb">Empresa Albarán:</label>
+                    <select name="emp_alb" id="emp_alb" class="form-control">
+                        <option value="0" <?= (isset($pedido->emp_alb) ? $pedido->emp_alb : 0) == 0 ? 'selected' : '' ?>>ACDC</option>
+                        <option value="1" <?= (isset($pedido->emp_alb) && $pedido->emp_alb == 1) ? 'selected' : '' ?>>ATTAINET</option>
+                    </select>
+                    <textarea id="obs_alb" name="obs_alb" class="form-control" rows="5" placeholder="Observaciones Albarán"><?= esc($pedido->obs_alb ?? '') ?></textarea>
+                </div>
+                <script>
+                    document.getElementById('albaran').addEventListener('input', function() {
+                        var div = document.getElementById('div-emp-alb');
+                        if (this.value.trim() !== '') {
+                            div.style.display = '';
+                        } else {
+                            div.style.display = 'none';
+                        }
+                    });
+                </script>
             </div>
         </div>
         <div class="row">

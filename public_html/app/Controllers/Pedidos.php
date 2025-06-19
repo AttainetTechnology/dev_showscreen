@@ -350,6 +350,8 @@ class Pedidos extends BaseController
         	'estado_incidencia' => $this->request->getPost('estado_incidencia'),
 			'albaran' => $this->request->getPost('albaran'),
 			'fecha_compromiso' => $fecha_compromiso,
+			'emp_alb' => $this->request->getPost('emp_alb'),
+			'obs_alb' => $this->request->getPost('obs_alb')
 		];
 
 		if (!empty($updateData['fecha_compromiso'])) {
@@ -809,6 +811,43 @@ public function updateBtImprimir($id_pedido)
         // Manejar errores del servidor
         return $this->response->setJSON(['success' => false, 'message' => 'Error del servidor: ' . $e->getMessage()]);
     }
+}
+
+public function updateEstadoAlb($id_pedido)
+{
+	$data = usuario_sesion();
+	$db = db_connect($data['new_db']);
+	$pedidoModel = new Pedidos_model($db);
+
+	try {
+		// Verificar si el pedido existe
+		$pedido = $pedidoModel->find($id_pedido);
+		if (!$pedido) {
+			return $this->response->setJSON(['success' => false, 'message' => 'Pedido no encontrado.']);
+		}
+
+		// Obtener el valor de estado_alb de la solicitud (procesar JSON)
+		$requestData = $this->request->getJSON(true); // Procesa el cuerpo JSON como un array asociativo
+		$estado_alb = $requestData['estado_alb'] ?? null;
+
+		if (!isset($estado_alb)) {
+			return $this->response->setJSON(['success' => false, 'message' => 'El valor de estado_alb es obligatorio.']);
+		}
+
+		// Actualizar el campo estado_alb
+		$update = $pedidoModel->update($id_pedido, ['estado_alb' => $estado_alb]);
+
+		if ($update) {
+			return $this->response->setJSON(['success' => true, 'message' => 'El campo estado_alb se ha actualizado correctamente.']);
+		} else {
+			$error = $db->error(); // Obtener el error de la base de datos
+			log_message('error', 'Error al actualizar estado_alb para el pedido ID: ' . $id_pedido . '. Error: ' . $error['message']);
+			return $this->response->setJSON(['success' => false, 'message' => 'No se pudo actualizar el campo estado_alb. Error: ' . $error['message']]);
+		}
+	} catch (\Exception $e) {
+		// Manejar errores del servidor
+		return $this->response->setJSON(['success' => false, 'message' => 'Error del servidor: ' . $e->getMessage()]);
+	}
 }
 
 public function abrirIncidencia($id_pedido)

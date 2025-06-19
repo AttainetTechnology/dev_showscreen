@@ -48,6 +48,47 @@ class Pedido_print_controller extends BaseControllerGC
         echo view('pedidos', (array) $data);
         echo view('footer');
     }
+     public function albaran_print ($id_pedido)
+    {
+        helper('controlacceso');
+        $redirect = check_access_level();
+        $redirectUrl = session()->getFlashdata('redirect');
+        if ($redirect && is_string($redirectUrl)) {
+            return redirect()->to($redirectUrl);
+        }
+
+        // Obtener datos de sesión y conectar a la base de datos
+        $data = datos_user();
+        $db = db_connect($data['new_db']);
+
+        // Saco los detalles del pedido
+        $Pedidos_model = new \App\Models\Pedidos_model($db);
+        $data['pedido'] = $Pedidos_model->obtener_datos_pedido($id_pedido);
+        $id_cliente = $data['pedido'][0]->id_cliente;
+        // Obtener las líneas del pedido
+        $Lineaspedido_model = new \App\Models\Lineaspedido_model($db);
+        $lineas = $Lineaspedido_model->obtener_lineas_pedido($id_pedido);
+        $data['lineas'] = array_filter($lineas, function ($linea) {
+            return $linea->estado == '4';
+        });
+        // Obtener el cliente asociado al pedido
+        $cliente = $id_cliente;
+        $ClienteModel = new \App\Models\ClienteModel($db);
+        $data['cliente'] = $ClienteModel->obtenerClientePorId($cliente);
+
+        //Obtener el mensaje del pie del albarán
+        $Config_model = new \App\Models\Config_model($db);
+        $data['mensaje'] = $Config_model->select('mensaje_alb')->get()->getRow('mensaje_alb');
+        
+        // Obtener las rutas asociadas al pedido
+        $Rutas2_model = new \App\Models\Rutas_model($db);
+        $data['rutas'] = $Rutas2_model->getRutasPorPedido($id_pedido);
+
+        // Cargar las vistas
+        echo view('header_partes');
+        echo view('albaranes', (array) $data);
+        echo view('footer');
+    }
     public function obtener_lineas_pedido($id_pedido)
     {
         $builder = $this->db->table('linea_pedido_proveedor');
