@@ -58,7 +58,7 @@ class Pedidos extends BaseController
 	}
 	public function pendientes_albaran()
 	{
-		$this->todos('estado=', '4 AND albaran=""');
+		$this->todos('', 'estado=4 AND albaran=""');
 	}
 		public function compromisos()
 	{
