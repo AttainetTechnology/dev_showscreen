@@ -16,7 +16,7 @@ foreach ($pedido as $ped) { ?>
             <style>
             #cabecera {
                 line-height: 1.2;
-                font-size: 14px;
+                font-size: 18px;
             }
             #cabecera strong {
                 font-size: unset!Important;
@@ -60,6 +60,9 @@ foreach ($pedido as $ped) { ?>
                     <!-- Columna derecha -->
                     <div style="flex: 1; margin: 2px 0; text-align:right"><h1>ALBARÁN</h1>
                         <div style="margin-top: 33px;">
+                            <div style="background: #000; color: #fff; padding: 20px; font-weight: bold; font-size: 20px; width: 200px; margin-left: auto; text-align: right;margin-bottom: 20px;">
+                                Id Pedido: <?php echo $ped->id_pedido; ?><br>
+                            </div>
                             Nº Alb: <strong><?php echo $ped->albaran; ?></strong><br>
                             Fecha alb: <strong><?php echo ' ' . date('d-m-Y') . "\n"; ?></strong>
                         </div>
@@ -127,7 +130,7 @@ foreach ($pedido as $ped) { ?>
                 text-align: center;
             }
             .pie-albaran h4 {
-                font-size: 14px!Important;
+                font-size: 18px!Important;
             }
             </style>
             <script>
