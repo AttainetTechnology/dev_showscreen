@@ -30,31 +30,31 @@ class Pedidos extends BaseController
 			return redirect()->to($redirectUrl);
 		}
 
-		$this->todos('estado<=', '6');
+		$this->todos('', 'estado<=6');
 	}
 	public function enmarcha()
 	{
-		$this->todos('estado<=', '4');
+		$this->todos('', 'estado<=4');
 	}
 	public function terminados()
 	{
-		$this->todos('estado=', '4');
+		$this->todos('', 'estado=4');
 	}
 	public function entregados()
 	{
-		$this->todos('estado=', '5');
+		$this->todos('', 'estado=5');
 	}
 	public function incidencia_abierta()
 	{
-		$this->todos('estado<=', '6 AND estado_incidencia=1');
+		$this->todos('', 'estado<=6 AND estado_incidencia=1');
 	}
 	public function incidencia_espera()
 	{
-		$this->todos('estado<=', '6 AND estado_incidencia=2');
+		$this->todos('', 'estado<=6 AND estado_incidencia=2');
 	}
 	public function incidencia_todas()
 	{
-		$this->todos('estado<=', '6 AND (estado_incidencia=1 OR estado_incidencia=2)');
+		$this->todos('', 'estado<=6 AND (estado_incidencia=1 OR estado_incidencia=2)');
 	}
 	public function pendientes_albaran()
 	{
