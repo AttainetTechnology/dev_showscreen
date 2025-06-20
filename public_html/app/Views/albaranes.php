@@ -64,7 +64,8 @@ foreach ($pedido as $ped) { ?>
                                 Id Pedido: <?php echo $ped->id_pedido; ?><br>
                             </div>
                             Nº Alb: <strong><?php echo $ped->albaran; ?></strong><br>
-                            Fecha alb: <strong><?php echo ' ' . date('d-m-Y') . "\n"; ?></strong>
+                            Fecha alb: <strong><?php echo ' ' . date('d-m-Y') . "\n"; ?></strong><br>
+                            Referencia: <strong><?php echo $ped->referencia; ?></strong><br>
                         </div>
                 </div>
             </div>
