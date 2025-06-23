@@ -198,7 +198,7 @@ user-select: none;
                         <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(5, 131, 35)!Important; font-weight: bold;">
                            Imprimir albarán
                         </a>
-                    <?php elseif (isset($pedido->estado_alb) && $pedido->estado_alb == 1): ?>
+                    <?php elseif (!empty($pedido->albaran) && isset($pedido->estado_alb) && $pedido->estado_alb == 1): ?>
                         <span style="margin-left: 8px; color: #000!Important; font-weight: normal;">
                             <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(2, 2, 2)!Important;">
                             Albarán ya impreso
