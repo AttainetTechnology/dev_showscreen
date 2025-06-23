@@ -17,7 +17,9 @@ class Rutas_model extends Model
         'recogida_entrega',
         'observaciones',
         'transportista',
-        'id_pedido'
+        'id_pedido',
+        'kg',
+        'palets'
     ];
 
     // Obtener rutas según el filtro de estado

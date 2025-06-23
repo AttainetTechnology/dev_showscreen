@@ -194,13 +194,15 @@ user-select: none;
             <div class="form-group col-md-4">
                 <div>
                     <label for="albaran">Albarán:</label>
-                    <?php if (isset($pedido->estado_alb) && $pedido->estado_alb == 0): ?>
+                    <?php if (!empty($pedido->albaran) && isset($pedido->estado_alb) && $pedido->estado_alb == 0): ?>
                         <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(5, 131, 35)!Important; font-weight: bold;">
-                            Imprimir albarán
+                           Imprimir albarán
                         </a>
                     <?php elseif (isset($pedido->estado_alb) && $pedido->estado_alb == 1): ?>
                         <span style="margin-left: 8px; color: #000!Important; font-weight: normal;">
+                            <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(2, 2, 2)!Important;">
                             Albarán ya impreso
+                        </a>
                         </span>
                     <?php endif; ?>
                     <input type="text" id="albaran" name="albaran" class="form-control"
