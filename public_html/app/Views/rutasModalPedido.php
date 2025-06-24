@@ -44,6 +44,14 @@
             <label for="fecha_ruta" class="form-label">Fecha</label>
             <input type="date" class="form-control" id="fecha_ruta" name="fecha_ruta" required>
         </div>
+        <div class="kg">
+            <label for="Kg" class="form-label">Kg</label>
+            <input type="text" class="form-control" id="kg" name="kg">
+        </div>
+        <div class="palets">
+            <label for="palets" class="form-label">Palets</label>
+            <input type="text" class="form-control" id="palets" name="palets">
+        </div>
         <div class="mb-3">
             <label for="observaciones" class="form-label">Observaciones</label>
             <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>

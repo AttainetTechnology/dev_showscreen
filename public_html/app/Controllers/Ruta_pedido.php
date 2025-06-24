@@ -85,15 +85,18 @@ class Ruta_pedido extends BaseController
             'transportista' => 'required',
             'fecha_ruta' => 'required|valid_date',
             'observaciones' => 'permit_empty',
-            'estado_ruta' => 'permit_empty'
+            'estado_ruta' => 'permit_empty',
+            'kg' => 'permit_empty',
+            'palets' => 'permit_empty'
         ]);
-
+            
         if (!$validation->withRequest($this->request)->run()) {
             return $this->response->setJSON(['error' => $validation->getErrors()]);
         }
         $rutasModel = new Rutas_model($db);
         $id_pedido = $this->request->getPost('id_pedido');
         $id_cliente = $this->request->getPost('id_cliente');
+       
         if ($this->request->getPost('id_ruta')) {
             $rutasModel->update($this->request->getPost('id_ruta'), [
                 'poblacion' => $this->request->getPost('poblacion'),
@@ -104,7 +107,9 @@ class Ruta_pedido extends BaseController
                 'observaciones' => $this->request->getPost('observaciones'),
                 'estado_ruta' => $this->request->getPost('estado_ruta'),
                 'id_cliente' => $id_cliente,
-                'id_pedido' => $id_pedido
+                'id_pedido' => $id_pedido,
+                'kg' => $this->request->getPost('kg'),
+                'palets' => $this->request->getPost('palets')
             ]);
         } else {
             $rutasModel->insert([
@@ -115,9 +120,37 @@ class Ruta_pedido extends BaseController
                 'fecha_ruta' => $this->request->getPost('fecha_ruta'),
                 'observaciones' => $this->request->getPost('observaciones'),
                 'id_cliente' => $id_cliente,
-                'id_pedido' => $id_pedido
+                'id_pedido' => $id_pedido,
+                'kg' => $this->request->getPost('kg'),
+                'palets' => $this->request->getPost('palets'),
             ]);
         }
+        
+        // Si se han introducido kg o palets, actualizamos el pedido
+        $kg = $this->request->getPost('kg');
+        $palets = $this->request->getPost('palets');
+
+        if (!empty($kg) || !empty($palets)) {
+            $pedidosModel = new Pedidos_model($db);
+            
+            // Preparamos los datos a actualizar
+            $dataUpdate = [];
+            if (!empty($kg)) {
+                $dataUpdate['kg'] = $kg;
+            }
+            if (!empty($palets)) {
+                $dataUpdate['palets'] = $palets;
+            }
+
+            if (!empty($dataUpdate)) {
+                try {
+                    $pedidosModel->update($id_pedido, $dataUpdate);
+                } catch (\Exception $e) {
+                    log_message('error', 'Error al actualizar kg/palets en pedido: ' . $e->getMessage());
+                }
+            }
+        }
+        
         $this->logAction('Rutas', 'Añade ruta, pedido ID: ' . $id_pedido, []);
         if ($this->request->isAJAX()) {
             return $this->response->setJSON(['success' => true]);

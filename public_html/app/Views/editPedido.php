@@ -176,46 +176,109 @@ user-select: none;
     <!-- Comienzo del formulario -->
     <form action="<?= base_url('pedidos/update/' . $pedido->id_pedido) ?>" method="post" class="formeditPedido">
         <div class="row">
-            <div class="form-group col-md-4">
-                <label for="id_cliente">Empresa:</label>
-                <select id="id_cliente" name="id_cliente" class="form-control" required>
-                    <?php foreach ($clientes as $cliente): ?>
-                        <option value="<?= $cliente['id_cliente'] ?>" <?= $pedido->id_cliente == $cliente['id_cliente'] ? 'selected' : '' ?>>
-                            <?= $cliente['nombre_cliente'] ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="form-group col-md-4">
-                <label for="referencia">Referencia:</label>
-                <input type="text" id="referencia" name="referencia" class="form-control"
-                    value="<?= esc($pedido->referencia) ?>">
-            </div>
-            <div class="form-group col-md-4">
-                <div>
-                    <label for="albaran">Albarán:</label>
-                    <?php if (!empty($pedido->albaran) && isset($pedido->estado_alb) && $pedido->estado_alb == 0): ?>
-                        <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(5, 131, 35)!Important; font-weight: bold;">
-                           Imprimir albarán
-                        </a>
-                    <?php elseif (!empty($pedido->albaran) && isset($pedido->estado_alb) && $pedido->estado_alb == 1): ?>
-                        <span style="margin-left: 8px; color: #000!Important; font-weight: normal;">
-                            <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(2, 2, 2)!Important;">
-                            Albarán ya impreso
-                        </a>
-                        </span>
-                    <?php endif; ?>
-                    <input type="text" id="albaran" name="albaran" class="form-control"
-                        value="<?= esc($pedido->albaran) ?>">
+            <!-- Datos del pedido -->
+            <div class="form-group col-md-7">
+                <div class="row" style="display: flex; align-items: flex-start; gap: 20px;">
+                    <div class="form-group col-md-7" style="flex: 1;">
+                        <label for="id_cliente">Empresa:</label>
+                        <select id="id_cliente" name="id_cliente" class="form-control" required>
+                            <?php foreach ($clientes as $cliente): ?>
+                                <option value="<?= $cliente['id_cliente'] ?>" <?= $pedido->id_cliente == $cliente['id_cliente'] ? 'selected' : '' ?>>
+                                    <?= $cliente['nombre_cliente'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-5" style="flex: 1;">
+                        <label for="referencia">Referencia:</label>
+                        <input type="text" id="referencia" name="referencia" class="form-control"
+                            value="<?= esc($pedido->referencia) ?>">
+                    </div>
                 </div>
-                <div id="div-emp-alb" style="<?= empty($pedido->albaran) ? 'display:none;' : '' ?>">
-                    <label for="emp_alb">Empresa Albarán:</label>
-                    <select name="emp_alb" id="emp_alb" class="form-control">
-                        <option value="0" <?= (isset($pedido->emp_alb) ? $pedido->emp_alb : 0) == 0 ? 'selected' : '' ?>>ACDC</option>
-                        <option value="1" <?= (isset($pedido->emp_alb) && $pedido->emp_alb == 1) ? 'selected' : '' ?>>ATTAINET</option>
-                    </select>
-                    <textarea id="obs_alb" name="obs_alb" class="form-control" rows="5" placeholder="Observaciones Albarán"><?= esc($pedido->obs_alb ?? '') ?></textarea>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="fecha_entrada">Fecha de Entrada:</label>
+                            <input type="date" id="fecha_entrada" name="fecha_entrada" class="form-control"
+                                value="<?= esc($pedido->fecha_entrada) ?>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="fecha_entrega">Fecha de Entrega:</label>
+                            <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control"
+                                value="<?= esc($pedido->fecha_entrega) ?>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="fecha_compromiso">Fecha de compromiso:</label>
+                            <?php
+                                $inputBgColor = '';
+                                if ((!empty($pedido->fecha_compromiso)) && ($pedido->estado == 2 || $pedido->estado == 3 || $pedido->estado == 0)) {
+                                    $hoy = date('Y-m-d');
+                                    if ($pedido->fecha_compromiso < $hoy) {
+                                        $inputBgColor = 'background: #ff1744;color: white;';
+                                    } else {
+                                        $inputBgColor = 'background: #ffff00;';
+                                    }
+                                }
+                            ?>
+                            <input type="date" id="fecha_compromiso" name="fecha_compromiso" class="form-control"
+                                value="<?= esc($pedido->fecha_compromiso) ?>"
+                                style="<?= $inputBgColor ?><?php if (!empty($pedido->fecha_compromiso)) echo 'font-weight: bold;'; ?>"
+                            >
+                        </div>
+                    </div>
+     
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label for="kg">Peso:</label>
+                        <input type="text" id="kg" name="kg" class="form-control" value="<?= esc($pedido->kg) ?>">
+                    </div>
+                    <div class="col-md-6 ">
+                        <label for="palets">Palets:</label>
+                        <input type="text" id="palets" name="palets" class="form-control" value="<?= esc($pedido->palets) ?>">
+                    </div>
                 </div>
+                    <div class="row form-group"><br>
+                        <div class="form-group col-12">
+                            <label for="observaciones">Observaciones:</label>
+                            <textarea id="observaciones" name="observaciones" class="form-control"
+                                style="height: 60px;"><?= esc($pedido->observaciones) ?></textarea>
+                            <br>
+                        Pedido creado por: <strong><?= esc($pedido->pedido_por) ?></strong>
+                        </div>
+                    </div>
+                
+            </div>
+            <div class="form-group col-md-5">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="albaran">Albarán:</label>
+                            <?php if (!empty($pedido->albaran) && isset($pedido->estado_alb) && $pedido->estado_alb == 0): ?>
+                                <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(5, 131, 35)!Important; font-weight: bold;">
+                                    Imprimir albarán
+                                </a>
+                            <?php elseif (!empty($pedido->albaran) && isset($pedido->estado_alb) && $pedido->estado_alb == 1): ?>
+                                <span style="margin-left: 8px; color: #000!Important; font-weight: normal;">
+                                    <a href="<?= base_url('albaranes/print/' . $pedido->id_pedido) ?>" target="_blank" style="margin-left: 8px; color:rgb(2, 2, 2)!Important;">
+                                        Albarán ya impreso
+                                    </a>
+                                </span>
+                            <?php endif; ?>
+                            <input type="text" id="albaran" name="albaran" class="form-control"
+                                value="<?= esc($pedido->albaran) ?>">
+                        </div>
+                        <div class="col-md-6 form-group" id="div-emp-alb" style="<?= empty($pedido->albaran) ? 'display:none;' : '' ?>">
+                            <label for="emp_alb">Empresa Albarán:</label>
+                            <select name="emp_alb" id="emp_alb" class="form-control">
+                                <option value="0" <?= (isset($pedido->emp_alb) ? $pedido->emp_alb : 0) == 0 ? 'selected' : '' ?>>ACDC</option>
+                                <option value="1" <?= (isset($pedido->emp_alb) && $pedido->emp_alb == 1) ? 'selected' : '' ?>>ATTAINET</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 form-group">
+                            <textarea id="obs_alb" name="obs_alb" class="form-control" rows="5" placeholder="Observaciones Albarán"><?= esc($pedido->obs_alb ?? '') ?></textarea>
+                        </div>
+                    </div>
+                    
                 <script>
                     document.getElementById('albaran').addEventListener('input', function() {
                         var div = document.getElementById('div-emp-alb');
@@ -226,48 +289,9 @@ user-select: none;
                         }
                     });
                 </script>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-4">
-            <label for="fecha_entrada">Fecha de Entrada:</label>
-            <input type="date" id="fecha_entrada" name="fecha_entrada" class="form-control"
-                value="<?= esc($pedido->fecha_entrada) ?>" required>
-            </div>
-            <div class="form-group col-md-4">
-            <label for="fecha_entrega">Fecha de Entrega:</label>
-            <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control"
-                value="<?= esc($pedido->fecha_entrega) ?>" required>
-            </div>
-            <div class="form-group col-md-4"
-                <?php
-                    if ((!empty($pedido->fecha_compromiso)) && ($pedido->estado == 2 || $pedido->estado == 3 || $pedido->estado == 0)) {
-                        $hoy = date('Y-m-d');
-                        if ($pedido->fecha_compromiso < $hoy) {
-                            echo 'style="background: #ff1744; padding: 10px;"';
-                        } else {
-                            echo 'style="background: #ffff00; padding: 10px;"';
-                        }
-                    }
-                ?>
-            >
-                <label for="fecha_compromiso">Fecha de compromiso:</label>
-                <input type="date" id="fecha_compromiso" name="fecha_compromiso" class="form-control"
-                    value="<?= esc($pedido->fecha_compromiso) ?>"
-                    <?php if (!empty($pedido->fecha_compromiso)): ?>
-                        style="font-weight: bold;"
-                    <?php endif; ?>
-                >
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-6">
-                <label for="observaciones">Observaciones:</label>
-                <textarea id="observaciones" name="observaciones" class="form-control"
-                    style="height: 60px;"><?= esc($pedido->observaciones) ?></textarea>
-            </div>
+                
             <?php if (!empty($pedido->incidencia)): ?>
-            <div class="form-group col-6" style="background-color: 
+            <div class="form-group" style="background-color: 
                 <?= $pedido->estado_incidencia == 1 ? 'orange' : ($pedido->estado_incidencia == 2 ? '#00bfff' : '#ccffcc') ?>; 
                 padding: 10px; border-radius: 5px;">
                     <div class="form-group col-3" style="margin-right:10px">
@@ -281,7 +305,9 @@ user-select: none;
                     <textarea id="incidencia" name="incidencia" class="form-control" rows="5" style="min-height:5em;"><?= esc($pedido->incidencia) ?></textarea></div>
             </div>
             <?php endif; ?>
+            </div>
         </div>
+        
         <div class="btnsEditPedido">
             <a href="<?= base_url('/pedidos/enmarcha') ?>" class="boton volverButton">
                 Volver
@@ -323,9 +349,11 @@ user-select: none;
                         <tr>
                             <th>Fecha</th>
                             <th>Transportista</th>
+                            <th>Kg</th>
+                            <th>Palets</th>
                             <th>Observaciones</th>
                             <th>Población</th>
-                            <th>Estado</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -333,19 +361,10 @@ user-select: none;
                             <tr style="--bs-table-bg: <?= esc($ruta['estado_ruta']) == 2 ? '#e0efd8' : (esc($ruta['estado_ruta']) == 1 ? '#ffc107' : 'inherit') ?>;">
                                 <td><?= date('d/m/Y', strtotime($ruta['fecha_ruta'])) ?></td>
                                 <td><?= esc($ruta['nombre_transportista']) ?></td>
-                                <td><?= esc($ruta['observaciones']) ?></td>
+                                <td><?= esc($ruta['kg']) ?></td>
+                                <td><?= esc($ruta['palets']) ?></td>
+                                <td><strong><?= $ruta['recogida_entrega'] == 1 ? 'Recogida' : 'Entrega' ?></strong> - <?= esc($ruta['observaciones']) ?></td>
                                 <td><?= esc($ruta['nombre_poblacion']) ?></td>
-                                <td>
-                                    <?php
-                                    if (esc($ruta['estado_ruta']) == 0 || esc($ruta['estado_ruta']) == "") {
-                                        echo "Pendiente";
-                                    } elseif (esc($ruta['estado_ruta']) == 1) {
-                                        echo "No preparado";
-                                    } elseif (esc($ruta['estado_ruta']) == 2) {
-                                        echo "Terminado";
-                                    }
-                                    ?>
-                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -680,7 +699,7 @@ user-select: none;
             </div>
         </div>
     </div>
-
+<!-- Rafa: Script para mostrar las rutas dentro de la Modal -->
     <script>
         $(document).ready(function () {
             $('#openModal').on('click', function () {
@@ -899,6 +918,8 @@ user-select: none;
                                     $('#id_ruta').val(rutaResponse.id_ruta);
                                     $('#estadoRutaDiv').show();
                                     $('#estado_ruta').val(rutaResponse.estado_ruta);
+                                    $('#kg').val(rutaResponse.kg);
+                                    $('#palets').val(rutaResponse.palets);
                                 },
                                 error: function () {
                                     alert('Error al cargar los datos de la ruta.');
@@ -989,6 +1010,7 @@ user-select: none;
             }
             abrirModalSiEsNecesario();
 
+            /* Rafa: Creo que sobra, ya que la función initializeAgGrid está definida arriba
             function initializeAgGrid(rutas, poblacionesMap, transportistasMap) {
                 var estadoMap = {
                     1: 'No preparado',
@@ -1011,7 +1033,7 @@ user-select: none;
                     filter: false
                 },
                 {
-                    headerName: "Población",
+                    headerName: "Poblaciónes",
                     field: "poblacion",
                     flex: 1,
                     filter: 'agTextColumnFilter'
@@ -1098,6 +1120,7 @@ user-select: none;
                     }
                 });
             }
+            */
 
         });
         $(document).on('click', '.btnEditarTablaLinea', function () {
@@ -1179,6 +1202,8 @@ user-select: none;
                 });
         }
     </script>
+<!-- Fin de Modal de Rutas -->
+
     <!-- Modal para abrir incidencia -->
     <div class="modal fade" id="abrirIncidenciaModal" tabindex="-1" aria-labelledby="abrirIncidenciaLabel" aria-hidden="true">
         <div class="modal-dialog">

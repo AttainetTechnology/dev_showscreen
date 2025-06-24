@@ -351,7 +351,9 @@ class Pedidos extends BaseController
 			'albaran' => $this->request->getPost('albaran'),
 			'fecha_compromiso' => $fecha_compromiso,
 			'emp_alb' => $this->request->getPost('emp_alb'),
-			'obs_alb' => $this->request->getPost('obs_alb')
+			'obs_alb' => $this->request->getPost('obs_alb'),
+			'kg' => $this->request->getPost('kg'),
+			'palets' => $this->request->getPost('palets'),
 		];
 
 		if (!empty($updateData['fecha_compromiso'])) {

@@ -9,7 +9,7 @@ class Rutas2_model extends Model
     protected $table = 'rutas';
     protected $primaryKey = 'id_ruta';
     protected $returnType = 'object';
-    protected $allowedFields = ['id_pedido', 'poblacion', 'transportista', 'fecha_ruta', 'estado_ruta', 'recogida_entrega', 'lugar'];
+    protected $allowedFields = ['id_pedido', 'poblacion', 'transportista', 'fecha_ruta', 'estado_ruta', 'recogida_entrega', 'lugar','kg','palets'];
 
     public function getRutasPorPedido($id_pedido)
     {
