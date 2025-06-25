@@ -45,7 +45,7 @@
             <input type="date" class="form-control" id="fecha_ruta" name="fecha_ruta" required>
         </div>
         <div class="kg">
-            <label for="Kg" class="form-label">Kg</label>
+            <label for="Kg" class="form-label">Peso</label>
             <input type="text" class="form-control" id="kg" name="kg">
         </div>
         <div class="palets">

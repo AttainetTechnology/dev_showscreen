@@ -183,7 +183,8 @@ class Pedidos extends BaseController
 			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
-			'pedido_por' => $nombre_usuario
+			'pedido_por' => $nombre_usuario,
+
 		];
 
 		$id_pedido = $pedidoModel->insert($pedidoData, true);

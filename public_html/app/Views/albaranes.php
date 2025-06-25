@@ -55,6 +55,7 @@ foreach ($pedido as $ped) { ?>
                     <?php echo isset($cliente['nif']) ? esc($cliente['nif']) : ''; ?><br>
                     <?php echo isset($cliente['direccion']) ? esc($cliente['direccion']) : ''; ?><br>
                     <?php echo isset($cliente['provincia']) ? esc($cliente['provincia']) : ''; ?><br>
+                    <?php echo isset($cliente['poblacion']) ? esc($cliente['poblacion']) : ''; ?><br>
                     <?php echo isset($cliente['pais']) ? esc($cliente['nombre_pais']) : ''; ?><br>
                     </div>
                     <!-- Columna derecha -->
