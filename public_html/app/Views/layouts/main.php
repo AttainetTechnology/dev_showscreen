@@ -56,6 +56,18 @@
 </head>
 
 <body>
+	<div id="cabecera" style="position:fixed; top:0; left:0; width:100%; background:#000; max-height:55px; height:55px; z-index:1000;">
+		<a class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none" href="<?php echo site_url('/Index/'); ?>">
+        <img src="<?php 
+              $session = session();
+              $session_data = $session->get('logged_in');
+              $id_empresa = $session_data['id_empresa']; 
+              echo base_url('public/assets/uploads/files/' . $url_logo);
+            ?>" class="logo_app" style="width: 150px;">
+    	</a>
+
+	</div>
+
 	<div id="container">
 		<div id="menu_lateral">
 			<!-- Muestra el menú -->

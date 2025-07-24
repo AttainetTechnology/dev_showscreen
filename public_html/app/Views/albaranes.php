@@ -101,7 +101,7 @@ foreach ($pedido as $ped) { ?>
                     <div style="font-size:16px; margin-top:20px;">
                         <br> <?php if (!empty($ped->obs_alb)): ?>
                             <strong>Observaciones:</strong><br>
-                            <?= esc($ped->obs_alb) ?><br>
+                            <?= nl2br(esc($ped->obs_alb)) ?><br>
                         <?php endif; ?>
                         
                         <?php if (!empty($ped->kg)): ?>
@@ -117,8 +117,8 @@ foreach ($pedido as $ped) { ?>
             </div>
             <br>
             <div style="text-align: center; width: 100%; font-size:16px;">
-                <?php
-                    echo esc($mensaje);
+               <?php
+                    echo nl2br(esc($mensaje)) ;
                 ?>
             </div>
 

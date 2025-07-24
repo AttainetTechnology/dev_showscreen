@@ -36,7 +36,7 @@ class Rutas_transporte extends BaseControllerGC
 
         // Ordenar y unir tablas relevantes
         $builder->orderby("rutas.poblacion", "desc");
-        $builder->select('rutas.observaciones, rutas.id_cliente, poblaciones_rutas.poblacion, rutas.recogida_entrega, rutas.lugar, rutas.observaciones, rutas.estado_ruta, rutas.fecha_ruta, rutas.id_pedido');
+        $builder->select('rutas.observaciones, rutas.id_cliente, poblaciones_rutas.poblacion, rutas.recogida_entrega, rutas.lugar, rutas.observaciones, rutas.estado_ruta, rutas.fecha_ruta, rutas.id_pedido, rutas.kg, rutas.palets');
         $builder->join('poblaciones_rutas', 'poblaciones_rutas.id_poblacion = rutas.poblacion');
         //$builder->join('Pedidos', 'Pedidos.id_pedido = Rutas.id_pedido');
         $builder->join('clientes', 'clientes.id_cliente = rutas.id_cliente');

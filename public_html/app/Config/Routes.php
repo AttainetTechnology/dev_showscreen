@@ -27,9 +27,16 @@ $routes->setAutoRoute(true);
 $routes->get('Usuarios', 'Usuarios::usuarios');
 $routes->get('google_login', 'Login::google_login');
 $routes->get('welcome/index', 'Welcome::index');
-
-
-
+$routes->get('Pedidos_terceros/productosPorProveedor/(:num)', 'Pedidos_terceros::productosPorProveedor/$1');
+//Pedidos a Terceros
+$routes->get('Pedidos_terceros/listado/(:num)', 'Pedidos_terceros::listado/$1');
+$routes->get('Pedidos_terceros/mostrarFormularioAdd/(:num)', 'Pedidos_terceros::mostrarFormularioAdd/$1');
+$routes->get('Pedidos_terceros/mostrarFormularioEditar/(:num)', 'Pedidos_terceros::mostrarFormularioEditar/$1');
+$routes->post('Pedidos_terceros/guardar', 'Pedidos_terceros::guardar');
+$routes->post('Pedidos_terceros/borrar/(:num)', 'Pedidos_terceros::borrar/$1');
+$routes->get('Pedido_terceros_print/(:num)', 'Pedido_terceros_print::mostrar/$1');
+$routes->post('Pedidos_terceros/marcarenviado/(:num)', 'Pedidos_terceros::marcarEnviado/$1');
+$routes->get('todospedidosterceros/', 'pedidosterceroslistado');
 
 $routes->get('login/', 'Login::index');
 $routes->get('Verifylogin', 'Verifylogin::index');

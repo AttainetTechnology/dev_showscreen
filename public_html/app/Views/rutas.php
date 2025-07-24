@@ -54,7 +54,13 @@ function obtenerNombreTransportistaPorId($id_transportista)
                     <?php $fecha = ($r->fecha_ruta); ?>
                     <!-- Mostrar fecha y detalles de la ruta -->
                     <?php echo date('d/m/Y', strtotime($fecha)); ?> -
-                    <?php if ($r->recogida_entrega == '1') { ?>RECOGER<?php } else { ?>ENTREGAR<?php } ?> en:
+                    <?php if ($r->recogida_entrega == '1') { ?>RECOGER<?php } else { ?>ENTREGAR<?php } ?>
+                    <?php if (isset($r->kg) && $r->kg !== null && $r->kg !== '' && $r->kg != 0) { ?>
+                        <strong><?= $r->kg ?> kg</strong>
+                    <?php } ?>
+                    <?php if (isset($r->palets) && $r->palets !== null && $r->palets !== '' && $r->palets != 0) { ?>
+                       Palets:  <strong><?= $r->palets ?></strong>
+                    <?php } ?> en:
                     <b><?php echo $r->lugar; ?></b> para
                     <b><?php echo $r->nombre_cliente; ?></b> - id.Ped: <b><?php echo $r->id_pedido; ?></b>
                     <?php if ($data['nivel'] > 1) {

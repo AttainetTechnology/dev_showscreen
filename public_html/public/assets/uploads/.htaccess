@@ -1,0 +1,15 @@
+# Deniega la ejecución de scripts PHP y otros tipos de código en uploads y subcarpetas
+
+<FilesMatch "\.(php|php[0-9]|phtml|phar|pl|py|jsp|asp|aspx|cgi|sh|bash|exe|dll|js)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Opcional: deshabilita la ejecución de scripts en esta carpeta
+RemoveHandler .php .php3 .php4 .php5 .php7 .phtml .phar .pl .py .jsp .asp .aspx .cgi .sh .bash .exe .dll .js
+RemoveType .php .php3 .php4 .php5 .php7 .phtml .phar .pl .py .jsp .asp .aspx .cgi .sh .bash .exe .dll .js
+
+# Opcional: fuerza que los archivos se descarguen en vez de ejecutarse
+<IfModule mod_headers.c>
+    Header set Content-Disposition "attachment"
+</IfModule>

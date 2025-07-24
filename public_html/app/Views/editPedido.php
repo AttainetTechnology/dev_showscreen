@@ -1,5 +1,3 @@
-user-select: none;
-
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 <?= $this->include('partials/amiga') ?>
@@ -225,7 +223,6 @@ user-select: none;
                             >
                         </div>
                     </div>
-     
                 <div class="row form-group">
                     <div class="col-md-6">
                         <label for="kg">Peso:</label>
@@ -241,11 +238,8 @@ user-select: none;
                             <label for="observaciones">Observaciones:</label>
                             <textarea id="observaciones" name="observaciones" class="form-control"
                                 style="height: 60px;"><?= esc($pedido->observaciones) ?></textarea>
-                            <br>
-                        Pedido creado por: <strong><?= esc($pedido->pedido_por) ?></strong>
                         </div>
                     </div>
-                
             </div>
             <div class="form-group col-md-5">
                     <div class="row">
@@ -307,25 +301,31 @@ user-select: none;
             <?php endif; ?>
             </div>
         </div>
-        
-        <div class="btnsEditPedido">
-            <a href="<?= base_url('/pedidos/enmarcha') ?>" class="boton volverButton">
-                Volver
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M19.5 13C19.5 13.2155 19.4144 13.4221 19.262 13.5745C19.1096 13.7269 18.903 13.8125 18.6875 13.8125H9.27386L12.7627 17.2997C12.8383 17.3753 12.8982 17.465 12.9391 17.5637C12.98 17.6624 13.001 17.7682 13.001 17.875C13.001 17.9818 12.98 18.0876 12.9391 18.1863C12.8982 18.285 12.8383 18.3747 12.7627 18.4502C12.6872 18.5258 12.5975 18.5857 12.4988 18.6266C12.4001 18.6675 12.2943 18.6885 12.1875 18.6885C12.0807 18.6885 11.9749 18.6675 11.8762 18.6266C11.7775 18.5857 11.6878 18.5258 11.6122 18.4502L6.73724 13.5752C6.66157 13.4998 6.60154 13.4101 6.56058 13.3114C6.51962 13.2127 6.49854 13.1069 6.49854 13C6.49854 12.8931 6.51962 12.7873 6.56058 12.6886C6.60154 12.5899 6.66157 12.5002 6.73724 12.4247L11.6122 7.54974C11.7648 7.39717 11.9717 7.31146 12.1875 7.31146C12.4032 7.31146 12.6102 7.39717 12.7627 7.54974C12.9153 7.7023 13.001 7.90923 13.001 8.12499C13.001 8.34075 12.9153 8.54767 12.7627 8.70024L9.27386 12.1875H18.6875C18.903 12.1875 19.1096 12.2731 19.262 12.4255C19.4144 12.5778 19.5 12.7845 19.5 13Z"
-                        fill="white" />
-                </svg>
-            </a>
-            <button type="submit" class="boton btnGuardar">
-                Guardar Cambios
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 27" fill="none">
-                    <path
-                        d="M7.11751 6.91875C6.86324 6.91875 6.61937 7.01976 6.43957 7.19956C6.25977 7.37936 6.15876 7.62322 6.15876 7.8775V19.3825C6.15876 19.6368 6.25977 19.8806 6.43957 20.0604C6.61937 20.2402 6.86324 20.3413 7.11751 20.3413H18.6225C18.8768 20.3413 19.1207 20.2402 19.3005 20.0604C19.4803 19.8806 19.5813 19.6368 19.5813 19.3825V7.8775C19.5813 7.62322 19.4803 7.37936 19.3005 7.19956C19.1207 7.01976 18.8768 6.91875 18.6225 6.91875H14.3081C14.0539 6.91875 13.81 7.01976 13.6302 7.19956C13.4504 7.37936 13.3494 7.62322 13.3494 7.8775V14.8697L15.8862 12.3319C15.9763 12.2418 16.0983 12.1913 16.2256 12.1913C16.3529 12.1913 16.475 12.2418 16.565 12.3319C16.655 12.4219 16.7056 12.544 16.7056 12.6712C16.7056 12.7985 16.655 12.9206 16.565 13.0106L13.2094 16.3663C13.1649 16.4109 13.112 16.4463 13.0537 16.4705C12.9955 16.4947 12.9331 16.5071 12.87 16.5071C12.807 16.5071 12.7445 16.4947 12.6863 16.4705C12.628 16.4463 12.5751 16.4109 12.5306 16.3663L9.17499 13.0106C9.13042 12.9661 9.09506 12.9132 9.07094 12.8549C9.04682 12.7967 9.03441 12.7343 9.03441 12.6712C9.03441 12.6082 9.04682 12.5458 9.07094 12.4876C9.09506 12.4293 9.13042 12.3764 9.17499 12.3319C9.21956 12.2873 9.27247 12.2519 9.33071 12.2278C9.38894 12.2037 9.45136 12.1913 9.51439 12.1913C9.57742 12.1913 9.63983 12.2037 9.69807 12.2278C9.7563 12.2519 9.80921 12.2873 9.85379 12.3319L12.3906 14.8697V7.8775C12.3906 7.36895 12.5927 6.88122 12.9523 6.52162C13.3119 6.16202 13.7996 5.96 14.3081 5.96H18.6225C19.1311 5.96 19.6188 6.16202 19.9784 6.52162C20.338 6.88122 20.54 7.36895 20.54 7.8775V19.3825C20.54 19.8911 20.338 20.3788 19.9784 20.7384C19.6188 21.098 19.1311 21.3 18.6225 21.3H7.11751C6.60896 21.3 6.12124 21.098 5.76164 20.7384C5.40203 20.3788 5.20001 19.8911 5.20001 19.3825V7.8775C5.20001 7.36895 5.40203 6.88122 5.76164 6.52162C6.12124 6.16202 6.60896 5.96 7.11751 5.96H9.51439C9.64153 5.96 9.76346 6.0105 9.85336 6.1004C9.94326 6.19031 9.99376 6.31224 9.99376 6.43937C9.99376 6.56651 9.94326 6.68844 9.85336 6.77834C9.76346 6.86824 9.64153 6.91875 9.51439 6.91875H7.11751Z"
-                        fill="white" />
-                </svg>
-            </button>
-        </div>
+        <div class="row">
+            <div class="form-group col-md-5">
+            Pedido creado por: <strong><?= esc($pedido->pedido_por) ?></strong>
+            </div>
+            <div class="form-group col-md-7">
+                <div class="btnsEditPedido">
+                    
+                    <a href="<?= base_url('/pedidos/enmarcha') ?>" class="boton volverButton">
+                        Volver
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M19.5 13C19.5 13.2155 19.4144 13.4221 19.262 13.5745C19.1096 13.7269 18.903 13.8125 18.6875 13.8125H9.27386L12.7627 17.2997C12.8383 17.3753 12.8982 17.465 12.9391 17.5637C12.98 17.6624 13.001 17.7682 13.001 17.875C13.001 17.9818 12.98 18.0876 12.9391 18.1863C12.8982 18.285 12.8383 18.3747 12.7627 18.4502C12.6872 18.5258 12.5975 18.5857 12.4988 18.6266C12.4001 18.6675 12.2943 18.6885 12.1875 18.6885C12.0807 18.6885 11.9749 18.6675 11.8762 18.6266C11.7775 18.5857 11.6878 18.5258 11.6122 18.4502L6.73724 13.5752C6.66157 13.4998 6.60154 13.4101 6.56058 13.3114C6.51962 13.2127 6.49854 13.1069 6.49854 13C6.49854 12.8931 6.51962 12.7873 6.56058 12.6886C6.60154 12.5899 6.66157 12.5002 6.73724 12.4247L11.6122 7.54974C11.7648 7.39717 11.9717 7.31146 12.1875 7.31146C12.4032 7.31146 12.6102 7.39717 12.7627 7.54974C12.9153 7.7023 13.001 7.90923 13.001 8.12499C13.001 8.34075 12.9153 8.54767 12.7627 8.70024L9.27386 12.1875H18.6875C18.903 12.1875 19.1096 12.2731 19.262 12.4255C19.4144 12.5778 19.5 12.7845 19.5 13Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                    <button type="submit" class="boton btnGuardar">
+                        Guardar Cambios
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 27" fill="none">
+                            <path
+                                d="M7.11751 6.91875C6.86324 6.91875 6.61937 7.01976 6.43957 7.19956C6.25977 7.37936 6.15876 7.62322 6.15876 7.8775V19.3825C6.15876 19.6368 6.25977 19.8806 6.43957 20.0604C6.61937 20.2402 6.86324 20.3413 7.11751 20.3413H18.6225C18.8768 20.3413 19.1207 20.2402 19.3005 20.0604C19.4803 19.8806 19.5813 19.6368 19.5813 19.3825V7.8775C19.5813 7.62322 19.4803 7.37936 19.3005 7.19956C19.1207 7.01976 18.8768 6.91875 18.6225 6.91875H14.3081C14.0539 6.91875 13.81 7.01976 13.6302 7.19956C13.4504 7.37936 13.3494 7.62322 13.3494 7.8775V14.8697L15.8862 12.3319C15.9763 12.2418 16.0983 12.1913 16.2256 12.1913C16.3529 12.1913 16.475 12.2418 16.565 12.3319C16.655 12.4219 16.7056 12.544 16.7056 12.6712C16.7056 12.7985 16.655 12.9206 16.565 13.0106L13.2094 16.3663C13.1649 16.4109 13.112 16.4463 13.0537 16.4705C12.9955 16.4947 12.9331 16.5071 12.87 16.5071C12.807 16.5071 12.7445 16.4947 12.6863 16.4705C12.628 16.4463 12.5751 16.4109 12.5306 16.3663L9.17499 13.0106C9.13042 12.9661 9.09506 12.9132 9.07094 12.8549C9.04682 12.7967 9.03441 12.7343 9.03441 12.6712C9.03441 12.6082 9.04682 12.5458 9.07094 12.4876C9.09506 12.4293 9.13042 12.3764 9.17499 12.3319C9.21956 12.2873 9.27247 12.2519 9.33071 12.2278C9.38894 12.2037 9.45136 12.1913 9.51439 12.1913C9.57742 12.1913 9.63983 12.2037 9.69807 12.2278C9.7563 12.2519 9.80921 12.2873 9.85379 12.3319L12.3906 14.8697V7.8775C12.3906 7.36895 12.5927 6.88122 12.9523 6.52162C13.3119 6.16202 13.7996 5.96 14.3081 5.96H18.6225C19.1311 5.96 19.6188 6.16202 19.9784 6.52162C20.338 6.88122 20.54 7.36895 20.54 7.8775V19.3825C20.54 19.8911 20.338 20.3788 19.9784 20.7384C19.6188 21.098 19.1311 21.3 18.6225 21.3H7.11751C6.60896 21.3 6.12124 21.098 5.76164 20.7384C5.40203 20.3788 5.20001 19.8911 5.20001 19.3825V7.8775C5.20001 7.36895 5.40203 6.88122 5.76164 6.52162C6.12124 6.16202 6.60896 5.96 7.11751 5.96H9.51439C9.64153 5.96 9.76346 6.0105 9.85336 6.1004C9.94326 6.19031 9.99376 6.31224 9.99376 6.43937C9.99376 6.56651 9.94326 6.68844 9.85336 6.77834C9.76346 6.86824 9.64153 6.91875 9.51439 6.91875H7.11751Z"
+                                fill="white" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
     </form>
     <div class="contenedor-tabla-boton" style="width: 100%;">
         <!-- Cargo las rutas de transporte de este pedido -->
@@ -424,23 +424,11 @@ user-select: none;
                 </div>
             </div>
         </div>
-        <br>
-        
             </div>
             <!-- Grid para mostrar las líneas de pedido -->
             <div id="lineasPedidoGrid" class="ag-theme-alpine">
             <br>
         </div>
-        <div style="text-align: right; margin-top:10px;">
-                <a href="<?= base_url('/pedidos/enmarcha') ?>" class="boton volverButton">
-                    Volver
-                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M19.5 13C19.5 13.2155 19.4144 13.4221 19.262 13.5745C19.1096 13.7269 18.903 13.8125 18.6875 13.8125H9.27386L12.7627 17.2997C12.8383 17.3753 12.8982 17.465 12.9391 17.5637C12.98 17.6624 13.001 17.7682 13.001 17.875C13.001 17.9818 12.98 18.0876 12.9391 18.1863C12.8982 18.285 12.8383 18.3747 12.7627 18.4502C12.6872 18.5258 12.5975 18.5857 12.4988 18.6266C12.4001 18.6675 12.2943 18.6885 12.1875 18.6885C12.0807 18.6885 11.9749 18.6675 11.8762 18.6266C11.7775 18.5857 11.6878 18.5258 11.6122 18.4502L6.73724 13.5752C6.66157 13.4998 6.60154 13.4101 6.56058 13.3114C6.51962 13.2127 6.49854 13.1069 6.49854 13C6.49854 12.8931 6.51962 12.7873 6.56058 12.6886C6.60154 12.5899 6.66157 12.5002 6.73724 12.4247L11.6122 7.54974C11.7648 7.39717 11.9717 7.31146 12.1875 7.31146C12.4032 7.31146 12.6102 7.39717 12.7627 7.54974C12.9153 7.7023 13.001 7.90923 13.001 8.12499C13.001 8.34075 12.9153 8.54767 12.7627 8.70024L9.27386 12.1875H18.6875C18.903 12.1875 19.1096 12.2731 19.262 12.4255C19.4144 12.5778 19.5 12.7845 19.5 13Z"
-                            fill="white" />
-                    </svg>
-                </a>
-            </div>
         <script>
             // Función para copiar al portapapeles
             function copyToClipboard(value) {
@@ -557,7 +545,7 @@ user-select: none;
                     const confirmMessage = '¿Estás seguro de que deseas anular esta línea?';
 
                     return `
-                    <button class="btn botonTabla btnEditarTabla btnEditarTablaLinea" data-id="${id}" data-bs-toggle="modal" data-bs-target="#editarLineaModal">
+                    <button type='button' class="btn botonTabla btnEditarTabla btnEditarTablaLinea" data-id="${id}" data-bs-toggle="modal" data-bs-target="#editarLineaModal">
                         Editar
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
                         <path d="M14.7513 1.98301C14.8352 2.07186 14.8823 2.19218 14.8823 2.31763C14.8823 2.44307 14.8352 2.5634 14.7513 2.65224L13.8145 3.64186L12.0182 1.74604L12.955 0.756413C13.0392 0.66756 13.1534 0.617645 13.2725 0.617645C13.3916 0.617645 13.5058 0.66756 13.59 0.756413L14.7513 1.98207V1.98301ZM13.1795 4.31109L11.3833 2.41526L5.26424 8.87435C5.21481 8.92651 5.1776 8.99013 5.15557 9.06014L4.43256 11.3484C4.41945 11.3901 4.41759 11.4349 4.42719 11.4776C4.43678 11.5204 4.45746 11.5595 4.48691 11.5906C4.51635 11.6217 4.55341 11.6435 4.59393 11.6536C4.63446 11.6637 4.67685 11.6618 4.71638 11.6479L6.88448 10.8849C6.95073 10.8619 7.011 10.823 7.06052 10.7711L13.1795 4.31109Z" fill="white"/>
@@ -1203,7 +1191,6 @@ user-select: none;
         }
     </script>
 <!-- Fin de Modal de Rutas -->
-
     <!-- Modal para abrir incidencia -->
     <div class="modal fade" id="abrirIncidenciaModal" tabindex="-1" aria-labelledby="abrirIncidenciaLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -1228,4 +1215,211 @@ user-select: none;
             </div>
         </div>
     </div>
-    <?= $this->endSection() ?>
+ <!-- Pedidos a Terceros -->
+<div class="contenedor-tabla-boton" style="width: 100%; margin-top: 40px;">
+    <div class="row">
+        <div class="col-12">
+            <h3>Pedido a Terceros</h3>
+            <button type="button" class="boton btnAdd" id="openAddPedidoTercerosModal" style="margin-bottom: 15px;">
+                Pedido a proveedor
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
+                    <path d="M13 7C13.2155 7 13.4222 7.0856 13.5745 7.23798C13.7269 7.39035 13.8125 7.59701 13.8125 7.8125V12.6875H18.6875C18.903 12.6875 19.1097 12.7731 19.262 12.9255C19.4144 13.0778 19.5 13.2845 19.5 13.5C19.5 13.7155 19.4144 13.9222 19.262 14.0745C19.1097 14.2269 18.903 14.3125 18.6875 14.3125H13.8125V19.1875C13.8125 19.403 13.7269 19.6097 13.5745 19.762C13.4222 19.9144 13.2155 20 13 20C12.7845 20 12.5778 19.9144 12.4255 19.762C12.2731 19.6097 12.1875 19.403 12.1875 19.1875V14.3125H7.3125C7.09701 14.3125 6.89035 14.2269 6.73798 14.0745C6.5856 13.9222 6.5 13.7155 6.5 13.5C6.5 13.2845 6.5856 13.0778 6.73798 12.9255C6.89035 12.7731 7.09701 12.6875 7.3125 12.6875H12.1875V7.8125C12.1875 7.59701 12.2731 7.39035 12.4255 7.23798C12.5778 7.0856 12.7845 7 13 7Z" fill="white"/>
+                </svg>
+            </button><br><br>
+            <div id="pedidosTercerosGrid" class="ag-theme-alpine" style="width: 100%;"></div>
+        </div>
+    </div>
+</div>
+<div style="text-align: right; margin-top:10px;">
+                <a href="<?= base_url('/pedidos/enmarcha') ?>" class="boton volverButton">
+                    Volver
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M19.5 13C19.5 13.2155 19.4144 13.4221 19.262 13.5745C19.1096 13.7269 18.903 13.8125 18.6875 13.8125H9.27386L12.7627 17.2997C12.8383 17.3753 12.8982 17.465 12.9391 17.5637C12.98 17.6624 13.001 17.7682 13.001 17.875C13.001 17.9818 12.98 18.0876 12.9391 18.1863C12.8982 18.285 12.8383 18.3747 12.7627 18.4502C12.6872 18.5258 12.5975 18.5857 12.4988 18.6266C12.4001 18.6675 12.2943 18.6885 12.1875 18.6885C12.0807 18.6885 11.9749 18.6675 11.8762 18.6266C11.7775 18.5857 11.6878 18.5258 11.6122 18.4502L6.73724 13.5752C6.66157 13.4998 6.60154 13.4101 6.56058 13.3114C6.51962 13.2127 6.49854 13.1069 6.49854 13C6.49854 12.8931 6.51962 12.7873 6.56058 12.6886C6.60154 12.5899 6.66157 12.5002 6.73724 12.4247L11.6122 7.54974C11.7648 7.39717 11.9717 7.31146 12.1875 7.31146C12.4032 7.31146 12.6102 7.39717 12.7627 7.54974C12.9153 7.7023 13.001 7.90923 13.001 8.12499C13.001 8.34075 12.9153 8.54767 12.7627 8.70024L9.27386 12.1875H18.6875C18.903 12.1875 19.1096 12.2731 19.262 12.4255C19.4144 12.5778 19.5 12.7845 19.5 13Z"
+                            fill="white" />
+                    </svg>
+                </a>
+            </div>
+<!-- Modal para añadir/editar pedido a proveedor -->
+<div class="modal fade" id="pedidoTercerosModal" tabindex="-1" aria-labelledby="pedidoTercerosModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pedidoTercerosModalLabel">Pedido a Terceros</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBodyPedidoTerceros">
+                <!-- Aquí se cargará el formulario por AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function () {
+    // Cargar el listado al cargar la página
+    cargarPedidosTerceros();
+
+    // Abrir modal para añadir pedido a proveedor
+    $('#openAddPedidoTercerosModal').click(function () {
+        $.ajax({
+            url: '<?= base_url("Pedidos_terceros/mostrarFormularioAdd") ?>/' + <?= $pedido->id_pedido ?>,
+            method: 'GET',
+            success: function (response) {
+                $('#modalBodyPedidoTerceros').html(response);
+                $('#pedidoTercerosModal').modal('show');
+            },
+            error: function () {
+                alert('Error al cargar el formulario.');
+            }
+        });
+    });
+
+    // Función para cargar el listado
+    function cargarPedidosTerceros() {
+        $.ajax({
+            url: '<?= base_url("Pedidos_terceros/listado") ?>/' + <?= $pedido->id_pedido ?>,
+            method: 'GET',
+            success: function (response) {
+                initializeTercerosGrid(response);
+            },
+            error: function () {
+                $('#pedidosTercerosGrid').html('<div class="alert alert-danger">Error al cargar los pedidos a terceros.</div>');
+            }
+        });
+    }
+
+    // Inicializar ag-Grid para pedidos a terceros
+    function initializeTercerosGrid(pedidos) {
+    var columnDefs = [
+        {
+            headerName: "Acciones",
+            field: "acciones",
+            flex: 2,
+            minWidth: 250,
+            cellRenderer: function (params) {
+            let botones = `
+                <button type="button" class="btn botonTabla btnEditarTabla" onclick="editarPedidoTerceros(${params.data.id_ped_terceros})">Editar</button>
+                <a href="<?= base_url('Pedido_terceros_print/') ?>${params.data.id_ped_terceros}" target="_blank" class="btn botonTabla btnVerTabla" style="background: #e5eff7; color: #222;">Imprimir <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 26 26" fill="none">
+                        <path d="M8.71593 4.72729C8.16741 4.72729 7.64136 4.95853 7.2535 5.37014C6.86564 5.78174 6.64774 6.34 6.64774 6.9221V9.11691H5.61365C5.06514 9.11691 4.53909 9.34814 4.15123 9.75975C3.76337 10.1714 3.54547 10.7296 3.54547 11.3117L3.54547 14.6039C3.54547 15.186 3.76337 15.7443 4.15123 16.1559C4.53909 16.5675 5.06514 16.7987 5.61365 16.7987H6.64774V17.8961C6.64774 18.4782 6.86564 19.0365 7.2535 19.4481C7.64136 19.8597 8.16741 20.0909 8.71593 20.0909H14.9205C15.469 20.0909 15.995 19.8597 16.3829 19.4481C16.7708 19.0365 16.9887 18.4782 16.9887 17.8961V16.7987H18.0227C18.5713 16.7987 19.0973 16.5675 19.4852 16.1559C19.873 15.7443 20.0909 15.186 20.0909 14.6039V11.3117C20.0909 10.7296 19.873 10.1714 19.4852 9.75975C19.0973 9.34814 18.5713 9.11691 18.0227 9.11691H16.9887V6.9221C16.9887 6.34 16.7708 5.78174 16.3829 5.37014C15.995 4.95853 15.469 4.72729 14.9205 4.72729H8.71593ZM7.68184 6.9221C7.68184 6.63105 7.79078 6.35192 7.98471 6.14612C8.17864 5.94032 8.44167 5.8247 8.71593 5.8247H14.9205C15.1947 5.8247 15.4578 5.94032 15.6517 6.14612C15.8456 6.35192 15.9546 6.63105 15.9546 6.9221V9.11691H7.68184V6.9221ZM8.71593 12.4091C8.16741 12.4091 7.64136 12.6404 7.2535 13.052C6.86564 13.4636 6.64774 14.0218 6.64774 14.6039V15.7013H5.61365C5.3394 15.7013 5.07637 15.5857 4.88244 15.3799C4.68851 15.1741 4.57956 14.895 4.57956 14.6039V11.3117C4.57956 11.0207 4.68851 10.7415 4.88244 10.5357C5.07637 10.3299 5.3394 10.2143 5.61365 10.2143H18.0227C18.297 10.2143 18.56 10.3299 18.754 10.5357C18.9479 10.7415 19.0568 11.0207 19.0568 11.3117V14.6039C19.0568 14.895 18.9479 15.1741 18.754 15.3799C18.56 15.5857 18.297 15.7013 18.0227 15.7013H16.9887V14.6039C16.9887 14.0218 16.7708 13.4636 16.3829 13.052C15.995 12.6404 15.469 12.4091 14.9205 12.4091H8.71593ZM15.9546 14.6039V17.8961C15.9546 18.1872 15.8456 18.4663 15.6517 18.6721C15.4578 18.8779 15.1947 18.9935 14.9205 18.9935H8.71593C8.44167 18.9935 8.17864 18.8779 7.98471 18.6721C7.79078 18.4663 7.68184 18.1872 7.68184 17.8961V14.6039C7.68184 14.3129 7.79078 14.0337 7.98471 13.8279C8.17864 13.6221 8.44167 13.5065 8.71593 13.5065H14.9205C15.1947 13.5065 15.4578 13.6221 15.6517 13.8279C15.8456 14.0337 15.9546 14.3129 15.9546 14.6039Z" fill="black" fill-opacity="0.6"/>
+                        </svg></a>
+                <button type="button" class="btn botonTabla btnEliminarTabla" onclick="borrarPedidoTerceros(${params.data.id_ped_terceros})">Borrar</button>
+            `;
+            // Solo mostrar el botón "Recibido" si estado != 2
+            if (params.data.estado != 2) {
+                botones += `
+                <button type="button" class="btn botonTabla btnRecibidoTabla" style="background: #28a745; color: #fff;" onclick="marcarPedidoTercerosRecibido(${params.data.id_ped_terceros})">Recibido</button>
+                `;
+            }
+            return botones;
+            },
+        },
+        
+        { headerName: "Proveedor", field: "nombre_proveedor", flex: 1, filter: 'agTextColumnFilter' },
+        { 
+            headerName: "F. creacion", 
+            field: "fecha_creacion", 
+            flex: 1, 
+            filter: 'agDateColumnFilter',
+            valueFormatter: function(params) {
+            if (!params.value) return '';
+            const d = new Date(params.value);
+            if (isNaN(d)) return params.value;
+            return d.toLocaleDateString('es-ES');
+            }
+        },
+        { 
+            headerName: "F. recepción", 
+            field: "fecha_recepcion", 
+            flex: 1, 
+            filter: 'agDateColumnFilter',
+            valueFormatter: function(params) {
+            if (!params.value || params.value === '0000-00-00') return '';
+            const d = new Date(params.value);
+            if (isNaN(d)) return params.value;
+            return d.toLocaleDateString('es-ES');
+            }
+        },
+        { headerName: "Cantidad", field: "cantidad", flex: 1, filter: 'agTextColumnFilter' },
+        { headerName: "Producto", field: "ref_producto", flex: 1, filter: 'agTextColumnFilter' },
+        { headerName: "Observaciones", field: "observaciones", flex: 2, filter: 'agTextColumnFilter' }
+    ];
+
+var gridOptions = {
+    columnDefs: columnDefs,
+    rowData: pedidos,
+    pagination: true,
+    paginationPageSize: 10,
+    defaultColDef: {
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+        resizable: true
+    },
+    domLayout: 'autoHeight',
+    rowHeight: 62,
+    localeText: {
+        noRowsToShow: 'No hay registros disponibles.'
+    },
+    getRowStyle: function(params) {
+        if (params.data && params.data.estado == 1) {
+            return { background: '#fdf0aa' };
+        }
+        if (params.data && params.data.estado == 2) {
+            return { background: '#e0efd8' };
+        }
+        return null;
+    }
+};
+
+    var gridDiv = document.querySelector('#pedidosTercerosGrid');
+    gridDiv.innerHTML = "";
+    new agGrid.Grid(gridDiv, gridOptions);
+}
+window.editarPedidoTerceros = function(id_ped_terceros) {
+    $.ajax({
+        url: '<?= base_url("Pedidos_terceros/mostrarFormularioEditar") ?>/' + id_ped_terceros,
+        method: 'GET',
+        success: function (response) {
+            $('#modalBodyPedidoTerceros').html(response);
+            $('#pedidoTercerosModal').modal('show');
+        },
+        error: function () {
+            alert('Error al cargar el formulario de edición.');
+        }
+    });
+};
+window.borrarPedidoTerceros = function(id_ped_terceros) {
+    if (confirm('¿Seguro que quieres borrar este pedido a terceros?')) {
+        $.ajax({
+            url: '<?= base_url("Pedidos_terceros/borrar") ?>/' + id_ped_terceros,
+            type: 'POST',
+            success: function(response) {
+                cargarPedidosTerceros(); // Recarga la grid
+            },
+            error: function() {
+                alert('Error al borrar el pedido a terceros.');
+            }
+        });
+    }
+};
+window.marcarPedidoTercerosRecibido = function(id_ped_terceros) {
+    $.ajax({
+        url: '<?= base_url("Pedidos_terceros/marcarRecibido") ?>/' + id_ped_terceros,
+        type: 'POST',
+        success: function(response) {
+            if (response.success) {
+                location.reload();
+            } else {
+                alert('No se pudo marcar como recibido.');
+            }
+        },
+        error: function() {
+            alert('Error al marcar como recibido.');
+        }
+    });
+};
+
+});
+
+</script>
+    <?= $this->endSection() ?> 
