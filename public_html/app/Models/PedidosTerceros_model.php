@@ -16,5 +16,6 @@ class PedidosTerceros_model extends Model
         'estado',
         'fecha_creacion',
         'fecha_recepcion',
+        'id_usuario',
     ];
 }

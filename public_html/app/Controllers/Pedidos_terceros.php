@@ -100,9 +100,9 @@ public function guardar()
     }
     public function creaPedidoTerceros()
     {
-		$data = datos_user();
-		$usuario_id = $data['id_user'];
-        log_message('debug', print_r($data, true));
+        $data = usuario_sesion();
+		$id_user = $data['id_user'];
+
         $db = $this->getDb();
         $model = new \App\Models\PedidosTerceros_model($db);
 
@@ -113,7 +113,7 @@ public function guardar()
             'cantidad'          => $this->request->getPost('cantidad'),
             'observaciones'     => $this->request->getPost('observaciones'),
             'fecha_creacion'    => date('Y-m-d'),
-            'id_usuario'        => $usuario_id,
+            'id_usuario'        => $id_user,
         ];
 
         $model->save($data);
