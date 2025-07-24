@@ -36,7 +36,7 @@ $routes->post('Pedidos_terceros/guardar', 'Pedidos_terceros::guardar');
 $routes->post('Pedidos_terceros/borrar/(:num)', 'Pedidos_terceros::borrar/$1');
 $routes->get('Pedido_terceros_print/(:num)', 'Pedido_terceros_print::mostrar/$1');
 $routes->post('Pedidos_terceros/marcarenviado/(:num)', 'Pedidos_terceros::marcarEnviado/$1');
-$routes->get('todospedidosterceros/', 'pedidosterceroslistado');
+$routes->get('todospedidosterceros/', 'pedidos_terceros_listado::todos');
 
 $routes->get('login/', 'Login::index');
 $routes->get('Verifylogin', 'Verifylogin::index');
