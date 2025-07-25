@@ -80,6 +80,8 @@ public function guardar()
         'cantidad'      => $this->request->getPost('cantidad'),
         'observaciones' => $this->request->getPost('observaciones'),
         'estado' => $this->request->getPost('estado'),
+        'fecha_creacion' => $this->request->getPost('fecha_creacion'),
+        'fecha_recepcion' => $this->request->getPost('fecha_recepcion')
     ];
 
     // Actualiza el registro donde id_ped_terceros
@@ -131,7 +133,10 @@ public function guardar()
     {
         $db = $this->getDb();
         $model = new PedidosTerceros_model($db);
-        $model->update($id_ped_terceros, ['estado' => 2]);
+        $model->update($id_ped_terceros, [
+            'estado' => 2,
+            'fecha_recepcion' => date('Y-m-d')
+        ]);
         return $this->response->setJSON(['success' => true]);
     }
     public function marcarEnviado($id_ped_terceros)

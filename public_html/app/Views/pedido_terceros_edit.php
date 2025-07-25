@@ -41,6 +41,14 @@
         <input type="number" name="cantidad" class="form-control" min="1" required value="<?= isset($pedido) ? esc($pedido['cantidad']) : '' ?>">
     </div>
     <div class="mb-3">
+        <label>Fecha de creación</label>
+        <input type="date" name="fecha_creacion" class="form-control" required value="<?= isset($pedido) ? esc($pedido['fecha_creacion']) : '' ?>">
+    </div>
+    <div class="mb-3">
+        <label>Fecha de recepción</label>
+        <input type="date" name="fecha_recepcion" class="form-control" value="<?= isset($pedido) ? esc($pedido['fecha_recepcion']) : '' ?>">
+    </div>
+    <div class="mb-3">
         <label>Observaciones</label>
         <textarea name="observaciones" class="form-control"><?= isset($pedido) ? esc($pedido['observaciones']) : '' ?></textarea>
     </div>
