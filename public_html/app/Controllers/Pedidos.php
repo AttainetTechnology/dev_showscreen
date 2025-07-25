@@ -529,7 +529,9 @@ class Pedidos extends BaseController
 			$this->actualizarTotalPedido($data['id_pedido']);
 			$this->actualizarEstadoPedido($data['id_pedido']);
 			$this->logAction('Pedidos', 'Añade linea pedido, Id pedido: ' . $id_pedido, []);
-			return $this->response->setJSON(['success' => 'Línea de pedido añadida correctamente']);
+			//return $this->response->setJSON(['success' => 'Línea de pedido añadida correctamente']);
+			return redirect()->to(base_url('pedidos/edit/' . $id_pedido))
+            ->with('success', 'Línea añadida correctamente');
 		} else {
 			return $this->response->setJSON(['error' => 'No se pudo añadir la línea de pedido']);
 		}
