@@ -756,7 +756,10 @@ class Pedidos extends BaseController
 		$builder->where('id_pedido', $id_pedido);
 		$query = $builder->get();
 		$estados = $query->getResultArray();
-
+		//Saco el estado actual del pedido
+		$pedidoModel = new Pedidos_model($db);
+		$pedido = $pedidoModel->find($id_pedido);
+		$estado_actual = $pedido ? $pedido->estado : null;
 		if (empty($estados)) {
 			return;
 		}
@@ -782,11 +785,13 @@ class Pedidos extends BaseController
 		$pedidoModel = new Pedidos_model($db);
 
 		$updateData = ['estado' => $nuevo_estado];
-		if ($nuevo_estado == 5) {
+		if ($nuevo_estado == 5 && $estado_actual != 5) {
 			$updateData['fecha_entrega'] = date('Y-m-d');
 		}
 
-		$pedidoModel->update($id_pedido, $updateData);
+		if ($nuevo_estado != $estado_actual) {
+			$pedidoModel->update($id_pedido, $updateData);
+		}
 		return $nuevo_estado;
 	}
 
