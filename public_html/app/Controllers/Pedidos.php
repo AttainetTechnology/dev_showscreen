@@ -469,6 +469,10 @@ class Pedidos extends BaseController
 				
 				$updateResult = $Lineaspedido_model->update($id_linea_pedido, ['escandallo' => $escandallo]);
 			}
+
+			// Actualizar la fecha_entrega del pedido con la fecha de hoy
+			$Pedidos_model = new Pedidos_model($db);
+			$Pedidos_model->update($id_pedido, ['fecha_entrega' => $fecha_hoy]);
 		} else {
 			log_message('error', 'No se pudo cargar el modelo RelacionProcesosUsuario_model');
 		}
@@ -744,42 +748,47 @@ class Pedidos extends BaseController
 		}
 	}
 	public function actualizarEstadoPedido($id_pedido)
-{
-	$data = usuario_sesion();
-	$db = db_connect($data['new_db']);
-	$builder = $db->table('linea_pedidos');
-	$builder->select('estado');
-	$builder->where('id_pedido', $id_pedido);
-	$query = $builder->get();
-	$estados = $query->getResultArray();
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
+		$builder = $db->table('linea_pedidos');
+		$builder->select('estado');
+		$builder->where('id_pedido', $id_pedido);
+		$query = $builder->get();
+		$estados = $query->getResultArray();
 
-	if (empty($estados)) {
-		return;
+		if (empty($estados)) {
+			return;
+		}
+
+		$estados_array = array_column($estados, 'estado');
+		$unicos = array_unique($estados_array);
+		sort($unicos);
+
+		// Si hay al menos una línea en estado 2 ("Material recibido") o 3 ("En Máquinas"), el pedido se pone como estado 3
+		if (in_array(2, $unicos) || in_array(3, $unicos)) {
+			$nuevo_estado = 3;
+		} elseif (count($unicos) === 1) {
+			$nuevo_estado = $unicos[0];
+		} elseif ($unicos === [5, 6]) {
+			$nuevo_estado = 5; // entregado
+		} elseif ($unicos === [4, 5, 6] || $unicos === [4, 5] || $unicos === [4, 6]) {
+			$nuevo_estado = 4; // terminado
+		} else {
+			$activos = array_filter($unicos, fn($e) => $e != 6); // eliminamos anulados
+			$nuevo_estado = min($activos);
+		}
+
+		$pedidoModel = new Pedidos_model($db);
+
+		$updateData = ['estado' => $nuevo_estado];
+		if ($nuevo_estado == 5) {
+			$updateData['fecha_entrega'] = date('Y-m-d');
+		}
+
+		$pedidoModel->update($id_pedido, $updateData);
+		return $nuevo_estado;
 	}
-
-	$estados_array = array_column($estados, 'estado');
-	$unicos = array_unique($estados_array);
-	sort($unicos);
-
-	// Si hay al menos una línea en estado 2 ("Material recibido") o 3 ("En Máquinas"), el pedido se pone como estado 3
-	if (in_array(2, $unicos) || in_array(3, $unicos)) {
-		$nuevo_estado = 3;
-	} elseif (count($unicos) === 1) {
-		$nuevo_estado = $unicos[0];
-	} elseif ($unicos === [5, 6]) {
-		$nuevo_estado = 5; // entregado
-	} elseif ($unicos === [4, 5, 6] || $unicos === [4, 5] || $unicos === [4, 6]) {
-		$nuevo_estado = 4; // terminado
-	} else {
-		$activos = array_filter($unicos, fn($e) => $e != 6); // eliminamos anulados
-		$nuevo_estado = min($activos);
-	}
-
-    
-	$pedidoModel = new Pedidos_model($db);
-	$pedidoModel->update($id_pedido, ['estado' => $nuevo_estado]);
-	return $nuevo_estado;
-}
 
 public function updateBtImprimir($id_pedido)
 {

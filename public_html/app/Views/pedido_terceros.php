@@ -106,7 +106,7 @@ function printAndMarkEnviado(divId, id_ped_terceros) {
         </div>
         <div id="contenedor_pedido" style="height:30vh;width:100%;">
         <h1>PEDIDO A PROVEEDOR</h1>
-        <hr style="max-width:100%!Importantgit;">
+        <hr style="max-width:100%!Important;">
             <div id="pedido_info" style="margin-bottom: 20px; display: flex; flex-direction: row; gap: 40px; align-items: flex-start;">
                 <div style="flex: 1; text-align: left;">
                     Cantidad:<br>

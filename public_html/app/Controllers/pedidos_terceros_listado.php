@@ -24,25 +24,11 @@ class pedidos_terceros_listado extends BaseController
         if ($redirect && is_string($redirectUrl)) {
             return redirect()->to($redirectUrl);
         }
-        $this->todos('estado!=', '6');
+        $this->todos('');
     }
 
-    public function pendientesRealizar()
-    {
-        $this->todos('estado=', '0');
-    }
-
-    public function pendientesRecibir()
-    {
-        $this->todos('estado=', '1');
-    }
- 
-    public function recibidos()
-    {
-        $this->todos('estado=', '2');
-    }
     //CREAMOS LA PAGINA DE PEDIDOS
-    public function todos()
+    public function todos($estado)
     {
         // Agregar breadcrumbs para la página de todos los pedidos
         $this->addBreadcrumb('Inicio', base_url('/'));
@@ -51,8 +37,11 @@ class pedidos_terceros_listado extends BaseController
         $data = usuario_sesion();
         $db = db_connect($data['new_db']);
         $builder = $db->table('pedido_terceros');
-
         $builder->select('*');
+        if ($estado !== '') {
+            $builder->where('estado <', $estado);
+        }
+        
         $builder->orderBy('fecha_creacion', 'desc');
         $builder->orderBy('id_ped_terceros', 'desc');
 

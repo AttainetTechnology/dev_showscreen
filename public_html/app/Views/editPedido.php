@@ -201,8 +201,14 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="fecha_entrega">Fecha de Entrega:</label>
-                            <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control"
-                                value="<?= esc($pedido->fecha_entrega) ?>" required>
+                            <?php if ($pedido->estado == 5): ?>
+                                <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control"
+                                    value="<?= esc($pedido->fecha_entrega) ?>" readonly
+                                    style="background: #e6f4ea; color: #14532d; font-weight: bold;">
+                            <?php else: ?>
+                                <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control"
+                                    value="<?= esc($pedido->fecha_entrega) ?>" required>
+                            <?php endif; ?>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="fecha_compromiso">Fecha de compromiso:</label>
