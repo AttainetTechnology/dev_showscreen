@@ -56,16 +56,30 @@
 </head>
 
 <body>
-	<div id="cabecera" style="position:fixed; top:0; left:0; width:100%; background:#000; max-height:55px; height:55px; z-index:1000;">
-		<a class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none" href="<?php echo site_url('/Index/'); ?>">
-        <img src="<?php 
-              $session = session();
-              $session_data = $session->get('logged_in');
-              $id_empresa = $session_data['id_empresa']; 
-              echo base_url('public/assets/uploads/files/' . $url_logo);
-            ?>" class="logo_app" style="width: 150px;">
-    	</a>
-
+	<div id="cabecera" style="position:fixed; top:0; left:0; width:100%; background:#fff; max-height:55px; height:55px; z-index:1000; padding:7px!important; border-bottom:1px solid #ddd; display:flex; align-items:center; gap:20px;">
+		<div style="width:30vw;">
+			<a class="d-flex align-items-center" href="<?php echo site_url('/Index/'); ?>">
+				<img src="<?php 
+					$session = session();
+					$session_data = $session->get('logged_in');
+					$id_empresa = $session_data['id_empresa']; 
+					echo base_url('public/assets/uploads/files/' . $url_logo);
+				?>" style="width:150px;">
+			</a>
+		</div>
+		<div>
+			<form method="get" action="" onsubmit="event.preventDefault(); var id = document.getElementById('buscar_pedido').value.trim(); if(id) { window.location.href = '/pedidos/edit/' + encodeURIComponent(id); }">
+				<input type="number" name="buscar_pedido" id="buscar_pedido" class="form-control" placeholder="Nº Pedido" required style="width:150px; display:inline-block;">
+				<button type="submit" class="btn btn-primary ms-2">Buscar</button>
+			</form>
+		</div>
+		<div>
+			<form method="get" action="" onsubmit="event.preventDefault(); var parteId = document.getElementById('buscar_parte').value.trim(); if(parteId) { window.location.href = '/lista_produccion/todoslospartes?parte_id=' + encodeURIComponent(parteId); }">
+				<input type="number" name="buscar_parte" id="buscar_parte" class="form-control" placeholder="Nº Parte" required style="width:150px; display:inline-block;">
+				<button type="submit" class="btn btn-success ms-2">Buscar</button>
+			</form>
+		</div>
+		<div></div>
 	</div>
 
 	<div id="container">

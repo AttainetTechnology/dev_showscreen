@@ -43,7 +43,13 @@ class Lista_produccion extends BaseControllerGC
 
     public function todoslospartes()
     {
-        $this->todos('estado<', '7', '(Todos)');
+        $parte_id = $this->request->getVar('parte_id');
+        if ($parte_id) {
+            // Filtra por id_lineapedido si parte_id está presente
+            $this->todos('id_lineapedido=', $parte_id, '(Parte específico)');
+        } else {
+            $this->todos('estado<', '7', '(Todos)');
+        }
     }
 
     public function todos($coge_estado, $where_estado, $situacion)

@@ -1,11 +1,4 @@
-    <a class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none" href="<?php echo site_url('/Index/'); ?>">
-        <img src="<?php 
-              $session = session();
-              $session_data = $session->get('logged_in');
-              $id_empresa = $session_data['id_empresa']; 
-              echo base_url('public/assets/uploads/files/' . $url_logo);
-            ?>" class="logo_app">
-    </a>
+
 
     <!-- Menú de navegación -->
     <div class="collapse show" id="navbarToggleExternalContent">
@@ -46,7 +39,7 @@
                                 <div class="accordion-body">
                                     <!-- Submenú si existe -->
                                     <?php if (!empty($menuItem['submenu'])) : ?>
-                                       <? echo $nivelUsuario; ?> <ul class="submenu list-unstyled">
+                                        <ul class="submenu list-unstyled">
                                             <!-- Iterando sobre los elementos del submenú -->
                                             <?php foreach ($menuItem['submenu'] as $subIndex => $subMenuItem) : ?>
                                                 <!-- Filtro menu por activo y nivel  -->
