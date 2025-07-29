@@ -179,11 +179,10 @@ class Pedidos extends BaseController
 		$pedidoData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
-			'id_usuario' => $this->request->getPost('id_usuario'),
 			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
-			'pedido_por' => $nombre_usuario,
+
 
 		];
 
@@ -240,11 +239,37 @@ class Pedidos extends BaseController
 		$rutaModel = new \App\Models\Rutas_model($db);
 		$data['rutas'] = $rutaModel->getRutasWithDetails('id_pedido', $id_pedido);
 
+		// Obtener incidencias del pedido
+		$incidencias = [];
+		$incidenciaBuilder = $db->table('incidencia_pedido');
+		$incidenciaBuilder->where('incidencia_id_pedido', $id_pedido);
+		$incidencias = $incidenciaBuilder->get()->getResultArray();
+		$data['incidencias'] = $incidencias;
+
 
 		return view('editPedido', $data);
 	}
 
+	public function deleteIncidenciaPedido($id_incidencia_pedido)
+	{
+		$data = usuario_sesion();
+		$db = db_connect($data['new_db']);
 
+		$builder = $db->table('incidencia_pedido');
+		$incidencia = $builder->where('id_incidencia_pedido', $id_incidencia_pedido)->get()->getRow();
+
+		if (!$incidencia) {
+			return $this->response->setJSON(['success' => false, 'message' => 'Incidencia no encontrada.']);
+		}
+
+		$delete = $builder->where('id_incidencia_pedido', $id_incidencia_pedido)->delete();
+
+		if ($delete) {
+			return $this->response->setJSON(['success' => true, 'message' => 'Incidencia eliminada correctamente.']);
+		} else {
+			return $this->response->setJSON(['success' => false, 'message' => 'No se pudo eliminar la incidencia.']);
+		}
+	}
 
 	public function duplicar($id_pedido)
 	{
@@ -319,6 +344,7 @@ class Pedidos extends BaseController
 	public function update($id_pedido)
 	{
 		$data = usuario_sesion();
+		$nombre_user = $data['username'];
 		$db = db_connect($data['new_db']);
 		$pedidoModel = new Pedidos_model($db);
 
@@ -343,11 +369,9 @@ class Pedidos extends BaseController
 		$updateData = [
 			'id_cliente' => $this->request->getPost('id_cliente'),
 			'referencia' => $this->request->getPost('referencia'),
-			'id_usuario' => $data['id_user'],
 			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
 			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
 			'observaciones' => $this->request->getPost('observaciones'),
-			'incidencia' => $this->request->getPost('incidencia'), // Actualizar incidencia
         	'estado_incidencia' => $this->request->getPost('estado_incidencia'),
 			'albaran' => $this->request->getPost('albaran'),
 			'fecha_compromiso' => $fecha_compromiso,
@@ -355,11 +379,21 @@ class Pedidos extends BaseController
 			'obs_alb' => $this->request->getPost('obs_alb'),
 			'kg' => $this->request->getPost('kg'),
 			'palets' => $this->request->getPost('palets'),
+
 		];
 
 		if (!empty($updateData['fecha_compromiso'])) {
 			$lineaPedidoModel = new LineaPedido($db);
 			$lineaPedidoModel->where('id_pedido', $id_pedido)->set(['fecha_compromiso' => $updateData['fecha_compromiso']])->update();
+		}
+		if (!empty($this->request->getPost('incidencia'))) {
+			$incidenciaData = [
+				'incidencia_id_pedido' => $id_pedido,
+				'incidencia_texto' =>$this->request->getPost('incidencia'),
+				'incidencia_user' => $nombre_user,
+				'incidencia_fecha' => date('Y-m-d H:i:s')
+			];
+			$db->table('incidencia_pedido')->insert($incidenciaData);
 		}
 
 		$updateData['estado'] = $pedido->estado;
@@ -871,14 +905,19 @@ public function updateEstadoAlb($id_pedido)
 
 public function abrirIncidencia($id_pedido)
 {
-    $data = usuario_sesion();
+
+	$data = usuario_sesion();
+	$nombre_user = $data['username'];
+
     $db = db_connect($data['new_db']);
     $pedidoModel = new \App\Models\Pedidos_model($db);
 
     // Obtener los datos enviados desde el formulario
     $updateData = [
         'incidencia' => $this->request->getPost('incidencia'),
-        'estado_incidencia' => $this->request->getPost('estado_incidencia')
+        'estado_incidencia' => $this->request->getPost('estado_incidencia'),
+		'fecha_incidencia' => date('Y-m-d H:i:s'), // Fecha y hora actual,
+		'autor_incidencia' => $nombre_user // Nombre del usuario que abre la incidencia
     ];
 
     if ($pedidoModel->update($id_pedido, $updateData)) {

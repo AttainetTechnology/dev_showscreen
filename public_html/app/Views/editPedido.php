@@ -294,16 +294,74 @@
             <div class="form-group" style="background-color: 
                 <?= $pedido->estado_incidencia == 1 ? 'orange' : ($pedido->estado_incidencia == 2 ? '#00bfff' : '#ccffcc') ?>; 
                 padding: 10px; border-radius: 5px;">
-                    <div class="form-group col-3" style="margin-right:10px">
-                        <select id="estado_incidencia" name="estado_incidencia" class="form-control" onchange="actualizarEstadoIncidencia(<?= $pedido->id_pedido ?>, this.value)">
-                        <option value="1" <?= $pedido->estado_incidencia == 1 ? 'selected' : '' ?>>Incidencia abierta</option>
-                        <option value="2" <?= $pedido->estado_incidencia == 2 ? 'selected' : '' ?>>Incidencia en espera</option>
-                        <option value="3" <?= $pedido->estado_incidencia == 3 ? 'selected' : '' ?>>Incidencia Cerrada</option>
-                        </select>
+                    <div class="form-group col-12 d-flex align-items-center" style="gap: 10px;">
+                        <div>
+                            <select id="estado_incidencia" name="estado_incidencia" class="form-control" onchange="actualizarEstadoIncidencia(<?= $pedido->id_pedido ?>, this.value)">
+                                <option value="1" <?= $pedido->estado_incidencia == 1 ? 'selected' : '' ?>>Incidencia abierta</option>
+                                <option value="2" <?= $pedido->estado_incidencia == 2 ? 'selected' : '' ?>>Incidencia en espera</option>
+                                <option value="3" <?= $pedido->estado_incidencia == 3 ? 'selected' : '' ?>>Incidencia Cerrada</option>
+                            </select>
+                        </div>
+                        <div>
+                            <?php if (!empty($pedido->autor_incidencia) && $pedido->autor_incidencia != '0'): ?>
+                                Por: <?= esc($pedido->autor_incidencia) ?> el <?= !empty($pedido->fecha_incidencia) ? date('d/m/Y', strtotime($pedido->fecha_incidencia)) : '' ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                <div class="form-group">
-                    <textarea id="incidencia" name="incidencia" class="form-control" rows="5" style="min-height:5em;"><?= esc($pedido->incidencia) ?></textarea></div>
-            </div>
+                    <div class="form-group">
+                        <strong><?= esc($pedido->incidencia) ?></strong>
+                        <?php
+                        if (!empty($incidencias) && is_array($incidencias)) {
+                            foreach ($incidencias as $incidencia) {
+                                if (!empty($incidencia['incidencia_texto'])) {
+                                    echo '<div class="mt-2">- <span>';
+                                    if (!empty($incidencia['incidencia_fecha'])) {
+                                        echo date('d/m/Y', strtotime($incidencia['incidencia_fecha'])) . ' ';
+                                    }
+                                    if (!empty($incidencia['incidencia_user'])) {
+                                        echo '<strong>- ' . esc($incidencia['incidencia_user']) . ':</strong> ';
+                                    }
+                                    echo esc($incidencia['incidencia_texto']);
+                                    echo '</span> ';
+                                }
+                                if (!empty($incidencia['incidencia_user']) && isset($data['username']) && $incidencia['incidencia_user'] === $data['username']) {
+                                    echo ' <button type="button" class="btn btn-sm" style="padding:2px 6px; border:0px solid; color:red;" onclick="deleteIncidenciaPedido(' . $incidencia['id_incidencia_pedido'] . ')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="#ff1744" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5v-7zm3.5.5v7H7v-7h2z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1H14a1 1 0 0 1 1 1v1zm-1-1V2H3v1h10z"/>
+                                        </svg>
+                                    </button>';
+                                }
+                                echo '</div><script>
+                                function deleteIncidenciaPedido(idIncidencia) {
+                                    if (confirm("¿Seguro que quieres borrar este comentario?")) {
+                                        fetch("' . base_url('pedidos/deleteIncidenciaPedido') . '/" + idIncidencia, {
+                                            method: "POST"
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                location.reload();
+                                            } else {
+                                                alert("No se pudo borrar el comentario.");
+                                            }
+                                        })
+                                        .catch(() => {
+                                            alert("Error al borrar el comentario.");
+                                        });
+                                    }
+                                }
+                                </script>';
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="incidencia">Comentar:</label>
+                    <input type="text" id="incidencia" name="incidencia" class="form-control">
+                </div>
+                
             <?php endif; ?>
             </div>
         </div>
