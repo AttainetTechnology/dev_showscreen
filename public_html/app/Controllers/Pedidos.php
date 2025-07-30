@@ -29,8 +29,15 @@ class Pedidos extends BaseController
 		if ($redirect && is_string($redirectUrl)) {
 			return redirect()->to($redirectUrl);
 		}
-
-		$this->todos('', 'estado<=6');
+		$albaran = $this->request->getVar('albaran');
+			if ($albaran) {
+			$this->todos('', 'estado<=6 AND albaran like "%' . $albaran . '%"');
+		}
+		else {
+			$this->todos('', 'estado<=6');
+		}
+	
+		
 	}
 	public function enmarcha()
 	{

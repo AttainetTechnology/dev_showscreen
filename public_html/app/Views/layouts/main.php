@@ -79,6 +79,12 @@
 				<button type="submit" class="btn btn-success ms-2">Buscar</button>
 			</form>
 		</div>
+		<div>
+			<form method="get" action="" onsubmit="event.preventDefault(); var albaran = document.getElementById('buscar_albaran').value.trim(); if(albaran) { window.location.href = '/pedidos?albaran=' + encodeURIComponent(albaran); }">
+				<input type="number" name="buscar_albaran" id="buscar_albaran" class="form-control" placeholder="Nº Albarán" required style="width:150px; display:inline-block;">
+				<button type="submit" class="btn btn-warning ms-2">Buscar</button>
+			</form>
+		</div>
 		<div style="display:inline-block; margin-left:20px;">
 			<a href="<?= base_url('pedidos/incidencia_abierta') ?>" title="Ver incidencias abiertas" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Incidencias abiertas">
 				<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="orange">
