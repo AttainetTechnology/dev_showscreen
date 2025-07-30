@@ -3,7 +3,7 @@
 namespace App\Controllers;
 use App\Models\Rutas_model;
 
-class Rutas extends BaseControllerGC
+class Rutas extends BaseController
 {
 	public function index()
 	{

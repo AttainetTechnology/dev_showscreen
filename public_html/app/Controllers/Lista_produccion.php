@@ -6,7 +6,7 @@ use App\Models\Lineaspedido_model;
 use App\Models\Pedidos_model;
 use App\Models\RelacionProcesoUsuario_model;
 
-class Lista_produccion extends BaseControllerGC
+class Lista_produccion extends BaseController
 {
     protected $Menu_familias_model;
 
