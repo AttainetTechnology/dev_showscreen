@@ -79,7 +79,38 @@
 				<button type="submit" class="btn btn-success ms-2">Buscar</button>
 			</form>
 		</div>
-		<div></div>
+		<div style="display:inline-block; margin-left:20px;">
+			<a href="<?= base_url('pedidos/incidencia_abierta') ?>" title="Ver incidencias abiertas" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Incidencias abiertas">
+				<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="orange">
+					<path d="M12 24q-.825 0-1.413-.588Q10 22.825 10 22h4q0 .825-.587 1.412Q12.825 24 12 24Zm10-4H2v-2l2-2v-5q0-3.125 1.688-5.35Q7.375 3.425 10 2.75V2q0-.825.587-1.412Q11.175 0 12 0q.825 0 1.413.588Q14 1.175 14 2v.75q2.625.675 4.313 2.9Q20 7.875 20 11v5l2 2Zm-4-2v-6q0-2.5-1.75-4.25T12 6q-2.5 0-4.25 1.75T6 12v6Zm-6 0Z"/>
+				</svg>
+				<span style="color: orange; font-weight: bold;"><?= isset($totalIncidencias) ? $totalIncidencias : '' ?></span>
+			</a>
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+					tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+						new bootstrap.Tooltip(tooltipTriggerEl);
+					});
+				});
+			</script>
+		</div>
+		<div style="display:inline-block; margin-left:20px;">
+			<a href="<?= base_url('pedidos/incidencia_espera') ?>" title="Ver incidencias en espera" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Incidencias en espera">
+				<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#00bfff">
+					<path d="M12 24q-.825 0-1.413-.588Q10 22.825 10 22h4q0 .825-.587 1.412Q12.825 24 12 24Zm10-4H2v-2l2-2v-5q0-3.125 1.688-5.35Q7.375 3.425 10 2.75V2q0-.825.587-1.412Q11.175 0 12 0q.825 0 1.413.588Q14 1.175 14 2v.75q2.625.675 4.313 2.9Q20 7.875 20 11v5l2 2Zm-4-2v-6q0-2.5-1.75-4.25T12 6q-2.5 0-4.25 1.75T6 12v6Zm-6 0Z"/>
+				</svg>
+				<span style="color: #00bfff; font-weight: bold;"><?= isset($totalIncidenciasEspera) ? $totalIncidenciasEspera : '' ?></span>
+			</a>
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+					tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+						new bootstrap.Tooltip(tooltipTriggerEl);
+					});
+				});
+			</script>
+		</div>
 	</div>
 
 	<div id="container">

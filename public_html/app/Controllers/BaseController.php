@@ -8,6 +8,7 @@ use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Models\Pedidos_model;
 
 class BaseController extends Controller
 {
@@ -17,6 +18,8 @@ class BaseController extends Controller
     protected $output = [];
     protected $db;
     protected $amiga = [];
+    protected $pedidosModel;
+    public $totalIncidencias = 0;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -36,9 +39,18 @@ class BaseController extends Controller
 
         // Crear una instancia del modelo de menú
         $menuModel = new MenuModel($this->db);
+        // Crear una instancia del modelo de pedidos
+        $this->pedidosModel = new Pedidos_model($this->db);
 
         // Obtener todos los elementos del menú desde la base de datos
         $menuItems = $menuModel->orderBy('posicion', 'asc')->findAll();
+        // Obtener el total de pedidos con incidencia abierta
+        $this->totalIncidencias = $this->pedidosModel->getTotalPedidosConIncidenciaAbierta();
+        $this->data['totalIncidencias'] = $this->totalIncidencias;
+
+        // Obtener el total de pedidos con incidencia en espera
+        $this->totalIncidenciasEspera = $this->pedidosModel->getTotalPedidosConIncidenciaEspera();
+        $this->data['totalIncidenciasEspera'] = $this->totalIncidenciasEspera;
 
         // Creo una instancia del modelo de usuarios
 
@@ -71,6 +83,7 @@ class BaseController extends Controller
         // Pasar los datos del menú y la página actual a la vista
         $this->data['menu'] = $structuredMenu;
         $this->data['currentPage'] = $currentPage;
+        return view('layouts/main', $this->data);
         return view('partials/menu_lateral', $this->data);
         //Output
         $this->output = (object) [

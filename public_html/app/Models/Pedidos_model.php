@@ -66,4 +66,12 @@ class Pedidos_model extends Model
     {
         return $this->where($coge_estado, $where_estado)->countAllResults();
     }
+    public function getTotalPedidosConIncidenciaAbierta()
+    {
+        return $this->where('estado_incidencia', 1)->countAllResults();
+    }
+        public function getTotalPedidosConIncidenciaEspera()
+    {
+        return $this->where('estado_incidencia', 2)->countAllResults();
+    }
 }
