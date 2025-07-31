@@ -181,16 +181,16 @@ class Pedidos extends BaseController
 		$query = $builder->get();
 		$usuario = $query->getRow();
 
-		$nombre_usuario = $usuario ? $usuario->nombre_usuario . ' ' . $usuario->apellidos_usuario : 'test';
+		$nombre_usuario = $usuario ? $usuario->nombre_usuario . ' ' . $usuario->apellidos_usuario : 'Usuario desconocido';
+
 
 		$pedidoData = [
-			'id_cliente' => $this->request->getPost('id_cliente'),
-			'referencia' => $this->request->getPost('referencia'),
-			'fecha_entrada' => $this->request->getPost('fecha_entrada'),
-			'fecha_entrega' => $this->request->getPost('fecha_entrega'),
-			'observaciones' => $this->request->getPost('observaciones'),
-
-
+		'id_cliente' => $this->request->getPost('id_cliente'),
+		'referencia' => $this->request->getPost('referencia'),
+		'fecha_entrada' => $this->request->getPost('fecha_entrada'),
+		'fecha_entrega' => $this->request->getPost('fecha_entrega'),
+		'observaciones' => $this->request->getPost('observaciones'),
+		'pedido_por' => $nombre_usuario
 		];
 
 		$id_pedido = $pedidoModel->insert($pedidoData, true);
