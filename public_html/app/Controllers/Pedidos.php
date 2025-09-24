@@ -39,6 +39,10 @@ class Pedidos extends BaseController
 	
 		
 	}
+		public function pendiente()
+	{
+		$this->todos('', 'estado<=1');
+	}
 	public function enmarcha()
 	{
 		$this->todos('', 'estado<=4');
