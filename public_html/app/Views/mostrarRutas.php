@@ -32,7 +32,8 @@
         const estadoMap = {
             "0": "Pendiente",
             "1": "No preparado",
-            "2": "Recogido/Entregado"
+            "2": "Realizado",
+            "3": "Cargado a otros"
         };
         const recogidaEntregaMap = {
             "1": "Recogida",
@@ -128,7 +129,10 @@
                     return { background: '#e0efd8' };
                 }
                 if (params.data && params.data.estado_ruta == "1") {
-                    return { background: '#efad4d' };
+                    return { background: '#ffc107' };
+                }
+                if (params.data && params.data.estado_ruta == "3") {
+                    return { background: '#f18053ff' };
                 }
                 return null;
             }

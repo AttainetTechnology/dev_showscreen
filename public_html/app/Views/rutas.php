@@ -48,8 +48,19 @@ function obtenerNombreTransportistaPorId($id_transportista)
             </h2>
             <br>
         <?php } ?>
+        <?php
+            $alertClass = 'panel-default';
+            $alertStyle = '';
+            if ($r->estado_ruta == '1') {
+                $alertClass = 'alert-warning';
+            } elseif ($r->estado_ruta == '2') {
+                $alertClass = 'alert-success';
+            } elseif ($r->estado_ruta == '3') {
+                $alertStyle = 'background-color:#f18053ff;color:#000;';
+            }
+        ?>
         <div class="col-lg-12">
-            <div class="alert <?php if ($r->estado_ruta == '1') { ?>alert-warning<?php } else { ?>panel-default<?php } ?>">
+            <div class="alert <?= $alertClass ?>" style="<?= $alertStyle ?>">
                 <div class="panel-heading">
                     <?php $fecha = ($r->fecha_ruta); ?>
                     <!-- Mostrar fecha y detalles de la ruta -->
@@ -68,6 +79,12 @@ function obtenerNombreTransportistaPorId($id_transportista)
                         ?>
                         <!-- Mostrar nombre del transportista si el nivel es mayor a 1 -->
                         <br> Transportista: <b><?php echo $transport; ?></b>
+                        <?php
+                            $estadoTexto = $r->estado_ruta == '2' ? 'Realizado' :
+                                ($r->estado_ruta == '1' ? 'No preparado' :
+                                ($r->estado_ruta == '3' ? 'Cargado a otros' : 'Pendiente'));
+                        ?>
+                        <br> Estado: <b><?php echo $estadoTexto; ?></b>
                     <?php } ?>
                 </div>
                 <div class="panel-body">
@@ -96,6 +113,16 @@ function obtenerNombreTransportistaPorId($id_transportista)
                                     d="M6.59375 10.4615C6.59375 10.3415 6.62527 10.2228 6.68652 10.1119C6.74777 10.0011 6.83754 9.9004 6.95071 9.81557C7.06389 9.73075 7.19824 9.66346 7.3461 9.61755C7.49397 9.57164 7.65245 9.54802 7.8125 9.54802C7.97255 9.54802 8.13103 9.57164 8.2789 9.61755C8.42676 9.66346 8.56111 9.73075 8.67429 9.81557C8.78746 9.9004 8.87723 10.0011 8.93848 10.1119C8.99973 10.2228 9.03125 10.3415 9.03125 10.4615C9.03125 10.7038 8.90285 10.9361 8.67429 11.1074C8.44573 11.2788 8.13573 11.375 7.8125 11.375C7.48927 11.375 7.17927 11.2788 6.95071 11.1074C6.72215 10.9361 6.59375 10.7038 6.59375 10.4615ZM6.71319 4.97599C6.69696 4.86075 6.71323 4.74423 6.76096 4.63401C6.80869 4.52378 6.8868 4.42231 6.99023 4.33617C7.09366 4.25003 7.2201 4.18116 7.36133 4.13401C7.50257 4.08686 7.65545 4.0625 7.81006 4.0625C7.96467 4.0625 8.11756 4.08686 8.25879 4.13401C8.40003 4.18116 8.52646 4.25003 8.62989 4.33617C8.73332 4.42231 8.81143 4.52378 8.85916 4.63401C8.90689 4.74423 8.92317 4.86075 8.90694 4.97599L8.48038 8.17961C8.46604 8.30546 8.38922 8.4227 8.26509 8.50813C8.14096 8.59356 7.97858 8.64097 7.81006 8.64097C7.64154 8.64097 7.47916 8.59356 7.35504 8.50813C7.23091 8.4227 7.15408 8.30546 7.13975 8.17961L6.71319 4.97599Z"
                                     fill="white" />
                             </svg>
+                        </a>
+                        <a href="<?php echo base_url() ?>/Rutas_transporte/entregar_ruta_otra/<?php echo $r->id_ruta; ?>"
+                            type="button" class="boton btnRutaOtro">Cargado a otra agencia
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 3h16v13H1z"></path>
+                            <path d="M17 8h4l3 4v4h-7"></path>
+                            <circle cx="5.5" cy="19.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="19.5" r="2.5"></circle>
+                            </svg>
+
                         </a>
                     <?php } ?>
                 </div>

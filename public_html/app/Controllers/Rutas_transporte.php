@@ -210,6 +210,12 @@ class Rutas_transporte extends BaseControllerGC
         $this->logAction('Transportista', 'Ruta FINALIZADA', $post_array);
         return $this->update_ruta($id_ruta, '2', 'rutas_transporte/rutas/entregado');
     }
+    public function entregar_ruta_otra($id_ruta)
+    {
+        $post_array = ['action' => 'Ruta FINALIZADA', 'id_ruta' => $id_ruta];
+        $this->logAction('Transportista', 'Ruta FINALIZADA', $post_array);
+        return $this->update_ruta($id_ruta, '3', 'rutas_transporte/rutas/entregado');
+    }
 
     public function pendiente_ruta($id_ruta)
     {

@@ -417,18 +417,24 @@
                             <th>Palets</th>
                             <th>Observaciones</th>
                             <th>Población</th>
-                            
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($rutas as $ruta) : ?>
-                            <tr style="--bs-table-bg: <?= esc($ruta['estado_ruta']) == 2 ? '#e0efd8' : (esc($ruta['estado_ruta']) == 1 ? '#ffc107' : 'inherit') ?>;">
+                            <tr style="--bs-table-bg: 
+                                <?= esc($ruta['estado_ruta']) == 2 ? '#e0efd8' : 
+                                (esc($ruta['estado_ruta']) == 1 ? '#ffc107' : 
+                                (esc($ruta['estado_ruta']) == 3 ? '#f18053ff' : 'inherit')) ?>;">
                                 <td><?= date('d/m/Y', strtotime($ruta['fecha_ruta'])) ?></td>
                                 <td><?= esc($ruta['nombre_transportista']) ?></td>
                                 <td><?= esc($ruta['kg']) ?></td>
                                 <td><?= esc($ruta['palets']) ?></td>
                                 <td><strong><?= $ruta['recogida_entrega'] == 1 ? 'Recogida' : 'Entrega' ?></strong> - <?= esc($ruta['observaciones']) ?></td>
                                 <td><?= esc($ruta['nombre_poblacion']) ?></td>
+                                <td> <?= esc($ruta['estado_ruta']) == 2 ? 'Realizado' : 
+                                (esc($ruta['estado_ruta']) == 1 ? 'No preparado' : 
+                                (esc($ruta['estado_ruta']) == 3 ? 'Cargado a otros' : 'inherit')) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -800,7 +806,8 @@
             function initializeAgGrid(rutas, poblacionesMap, transportistasMap) {
                 var estadoMap = {
                     1: 'No preparado',
-                    2: 'Recogido',
+                    2: 'Realizado',
+                    3: 'Cargado a otros',
                     0: 'Pendiente'
                 };
                 var columnDefs = [{
@@ -891,9 +898,15 @@
                         resizable: true
                     },
                     getRowStyle: function (params) {
-                        if (params.data && params.data.estado_ruta === 'Recogido') {
+                        if (params.data && params.data.estado_ruta === 'Realizado') {
                             return {
                                 backgroundColor: '#dff0d8',
+                                color: 'black'
+                            };
+                        }
+                        if (params.data && params.data.estado_ruta === 'Cargado a otros') {
+                            return {
+                                backgroundColor: '#f18053ff',
                                 color: 'black'
                             };
                         }

@@ -470,6 +470,11 @@
     background-color: #f0ad4e !important;
     color: white !important;
 }
+.btnRutaOtro {
+    height: 30px !important;
+    background-color: #dc8025 !important;
+    color: white !important;
+}
 
 .btnRutaNoPreparado:hover {
     background-color: #f59a19 !important;

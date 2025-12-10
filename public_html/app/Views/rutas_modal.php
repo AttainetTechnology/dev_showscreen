@@ -37,8 +37,17 @@
                                 <td><?= esc($ruta->observaciones) ?></td>
                                 <td><?= esc(date('d/m/Y', strtotime($ruta->fecha_ruta))) ?></td>
                                 <td>
-                                    <span class="badge <?= $ruta->estado_ruta == 1 ? 'bg-warning' : ($ruta->estado_ruta == 2 ? 'bg-success' : 'bg-secondary') ?>">
-                                        <?= esc($ruta->estado_ruta == 1 ? 'No preparado' : ($ruta->estado_ruta == 2 ? 'Recogido' : 'Pendiente')) ?>
+                                    <?php
+                                        $badgeClass = $ruta->estado_ruta == 1 ? 'bg-warning' :
+                                            ($ruta->estado_ruta == 2 ? 'bg-success' : 'bg-secondary');
+                                        $badgeStyle = $ruta->estado_ruta == 3 ? 'background-color:#f18053ff;color:#000;' : '';
+                                    ?>
+                                    <span class="badge <?= $badgeClass ?>" style="<?= $badgeStyle ?>">
+                                        <?= esc(
+                                            $ruta->estado_ruta == 1 ? 'No preparado' :
+                                            ($ruta->estado_ruta == 2 ? 'Realizado' :
+                                            ($ruta->estado_ruta == 3 ? 'Cargado a otros' : 'Pendiente'))
+                                        ) ?>
                                     </span>
                                 </td>
                                 <td>

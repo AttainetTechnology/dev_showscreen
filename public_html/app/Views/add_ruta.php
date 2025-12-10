@@ -74,7 +74,8 @@
         <select class="form-control" name="estado_ruta" required>
             <option value="0">Pendiente</option>
             <option value="1">No preparado</option>
-            <option value="2">Recogido/Entregado</option>
+            <option value="2">Realizado</option>
+            <option value="3">Cargado a otros</option>
         </select>
     </div>
 

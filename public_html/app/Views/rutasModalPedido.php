@@ -62,6 +62,7 @@
             <select class="form-control" id="estado_ruta" name="estado_ruta">
                 <option value="1">No preparado</option>
                 <option value="2">Recogido</option>
+                <option value="3">Cargado a otros</option>
                 <option value="0">Pendiente</option>
             </select>
         </div>

@@ -12,7 +12,7 @@ class Rutas extends BaseController
 
 	public function enmarcha()
 	{
-		return $this->todas('estado_ruta!=', '2');
+		return $this->todas('estado_ruta<', '2');
 	}
 	
 	public function todas($coge_estado, $where_estado)

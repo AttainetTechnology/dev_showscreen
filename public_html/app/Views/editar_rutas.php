@@ -70,7 +70,8 @@
     <select class="form-control" name="estado_ruta" required>
         <option value="0" <?= $ruta['estado_ruta'] == 0 ? 'selected' : '' ?>>Pendiente</option>
         <option value="1" <?= $ruta['estado_ruta'] == 1 ? 'selected' : '' ?>>No preparado</option>
-        <option value="2" <?= $ruta['estado_ruta'] == 2 ? 'selected' : '' ?>>Recogido/Entregado</option>
+        <option value="2" <?= $ruta['estado_ruta'] == 2 ? 'selected' : '' ?>>Realizado</option>
+        <option value="3" <?= $ruta['estado_ruta'] == 3 ? 'selected' : '' ?>>Cargado a otros</option>
     </select>
 </div>
 
